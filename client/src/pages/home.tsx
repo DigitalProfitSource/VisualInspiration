@@ -88,9 +88,20 @@ export default function Home() {
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-5 items-center justify-center">
               <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
-                <Button size="lg" className="relative bg-primary text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-base font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-all duration-300">
-                  Get Your AI Clarity Session
-                </Button>
+                <button className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full pt-3.5 pr-6 pb-3.5 pl-7 relative shadow-2xl backdrop-blur-xl w-full sm:w-auto">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                  <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
+                  <div className="relative z-10 flex items-center justify-center gap-3">
+                    <div className="text-left">
+                      <p className="group-hover:text-white transition-colors duration-300 text-base font-bold text-white font-sans drop-shadow-sm">Get Your AI Clarity Session</p>
+                    </div>
+                    <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                      <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
+                        <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
+                      </svg>
+                    </div>
+                  </div>
+                </button>
               </div>
               <p className="text-sm text-muted-foreground/80">
                 Fix lead flow, follow-up, and operational drag.
@@ -446,9 +457,20 @@ export default function Home() {
              viewport={{ once: true }}
              transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-xl font-semibold shadow-[0_0_40px_-10px_var(--color-primary)] transition-all hover:scale-105">
-              Get your AI Clarity Session
-            </Button>
+            <button className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full pt-4 pr-8 pb-4 pl-9 relative shadow-2xl backdrop-blur-xl inline-block">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+              <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
+              <div className="relative z-10 flex items-center justify-center gap-3">
+                <div className="text-left">
+                  <p className="group-hover:text-white transition-colors duration-300 text-xl font-bold text-white font-sans drop-shadow-sm">Get your AI Clarity Session</p>
+                </div>
+                <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                  <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
+                    <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
+                  </svg>
+                </div>
+              </div>
+            </button>
           </motion.div>
         </div>
       </section>
