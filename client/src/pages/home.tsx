@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { TechTicker } from "@/components/ui/tech-ticker";
 import { GridBeam } from "@/components/ui/grid-beam";
+import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 
@@ -64,6 +65,7 @@ export default function Home() {
         <motion.div style={{ opacity: heroOpacity, y: heroY }} className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background opacity-40" />
           <img src={heroBg} alt="Background" className="w-full h-full object-cover opacity-30 mix-blend-screen" />
+          <CircuitBeams className="opacity-60" />
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
         </motion.div>
 
