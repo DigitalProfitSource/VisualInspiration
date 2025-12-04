@@ -77,12 +77,12 @@ export default function Home() {
             </motion.div>
             
             <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-8 leading-[1.1]">
-              Adopting AI requires <br/>
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">operational precision.</span>
+              Stop Guessing How AI <br/>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Actually Fits Your Business</span>
             </motion.h1>
             
             <motion.p variants={fadeIn} className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              We help service businesses eliminate friction, map the sequences that matter, and implement the foundations required for consistency and speed.
+              We give service businesses the exact sequences and clarity to turn AI into calm, predictable leverage — without chaos, new headcount, or costly mistakes.
             </motion.p>
             
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-5 items-center justify-center">
