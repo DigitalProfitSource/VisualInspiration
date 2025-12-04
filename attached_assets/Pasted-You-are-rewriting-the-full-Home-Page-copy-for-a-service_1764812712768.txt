@@ -1,0 +1,114 @@
+You are rewriting the full Home Page copy for a service-based consulting brand called SimpleSequence.
+
+The identity and positioning must be consistent, confident, and clarity-driven.
+
+The founder is an Operational AI Advisor™ who helps service businesses adopt AI the right way — by understanding their operational friction, mapping the sequences that matter, and implementing the foundations required for consistency, faster response times, and fewer bottlenecks.
+
+This rewrite must reflect:
+	•	Authority
+	•	Calm confidence
+	•	Zero hype
+	•	Clear expertise
+	•	Operational intelligence
+	•	AI clarity (not “AI tools”)
+	•	Diagnostic-first positioning
+	•	A consultant, not an agency
+
+Do not mention tools, platforms, CRMs, software names, or technical jargon.
+Do not use emojis.
+Do not speak like a marketer.
+Do not use clichés.
+
+Write in a tone that feels like a seasoned operator who has seen hundreds of service businesses from the inside and understands why they struggle.
+
+⸻
+
+Home Page Structure + Copy Requirements
+
+1. Hero Section
+	•	Headline expressing AI clarity + operational precision
+	•	Subheadline explaining the value in one calm, strategic sentence
+	•	CTA: “Get Your AI Clarity Session”
+	•	Short supporting line on what clarity fixes (lead flow, follow-up, operational drag)
+
+2. What We Solve
+
+A section describing the universal friction patterns holding service businesses back:
+	•	Slow or inconsistent lead response
+	•	Manual follow-up that collapses under volume
+	•	Disconnected systems
+	•	People-dependent workflows
+	•	No clarity on where AI actually belongs
+	•	Operational drag that feels invisible until it’s too late
+
+Write this like you’re explaining the real problems no one talks about.
+
+3. The SimpleSequence Method
+
+Explain the advisor’s core philosophy:
+	•	First: Diagnose friction
+	•	Second: Map the sequences that matter
+	•	Third: Show exactly where AI creates leverage
+	•	Fourth: Build the operational foundation that removes chaos
+
+Make this feel like a clear, mature methodology — not a “framework.”
+
+4. The AI Clarity Assessment™ (Free)
+
+Position this as the entry point:
+	•	A quick assessment that reveals where lead flow breaks, where follow-up slows down, and where operations rely too heavily on manual effort
+	•	Delivered with an Executive AI Analysis
+	•	No fluff, no hype — genuine insight
+	•	CTA: “Take the Free Assessment”
+
+5. Core Offer Stack (High-Level)
+
+Introduce the three offers clearly and without sales language:
+
+(1) AI Clarity Session (Free)
+A short diagnostic conversation to surface the biggest friction points and identify where AI will create the fastest operational win.
+
+(2) Operational Diagnostic + AI-Clarity Blueprint™ ($997)
+A deep operational assessment + sequence-by-sequence AI opportunity map.
+Analysis, clarity, and direction — no implementation.
+
+(3) Operational Tune-Up ($3,500)
+The implementation of the Blueprint:
+A clean operational foundation, smart website, optimized lead flow, consistent follow-up sequences, local authority essentials, and an intelligent intake layer.
+
+Do not list features. Describe outcomes.
+
+6. Why SimpleSequence
+
+A short section (3–4 sentences) explaining:
+	•	Clear thinking
+	•	Deep pattern recognition
+	•	Understanding of service businesses
+	•	AI clarity without hype
+	•	Operational insights rooted in real-world behavior
+
+Position this as the antidote to tool-chasing and agency noise.
+
+7. About the Advisor
+
+Brief bio copy:
+	•	Founder is an Operational AI Advisor™
+	•	Background in operations, performance, and AI adoption
+	•	Understands friction patterns across service industries
+	•	Calm, analytical, and systems-driven
+	•	Helps businesses adopt AI with precision, not chaos
+
+8. Final CTA
+
+“Start with clarity.
+Get your AI Clarity Session.”
+
+⸻
+
+Additional Rules
+
+	•	Write complete, polished, ready-to-publish copy.
+	•	Maintain a consistent, confident tone throughout.
+
+PROMPT END
+
