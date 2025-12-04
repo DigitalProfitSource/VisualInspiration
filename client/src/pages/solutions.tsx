@@ -262,8 +262,8 @@ export default function Solutions() {
                       className={`lg:col-span-7 ${isEven ? '' : 'lg:col-start-6'}`}
                     >
                       {/* Icon Box */}
-                      <div className="w-14 h-14 mb-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                        <Icon className="w-6 h-6 text-primary" />
+                      <div className="group w-14 h-14 mb-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:scale-110 hover:border-primary/50 transition-all duration-300">
+                        <Icon className="w-6 h-6 text-primary group-hover:drop-shadow-[0_0_8px_rgba(103,232,249,0.5)]" />
                       </div>
 
                       {/* Title & Subtitle */}
