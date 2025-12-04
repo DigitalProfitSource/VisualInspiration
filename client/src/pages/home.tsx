@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { TechTicker } from "@/components/ui/tech-ticker";
 import { GridBeam } from "@/components/ui/grid-beam";
+import { ContactFormDialog } from "@/components/contact-form-dialog";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: "easeOut" }
+  transition: { duration: 0.6 }
 };
 
 const stagger = {
@@ -24,7 +25,7 @@ const fadeInUpViewport = {
   initial: { opacity: 0, y: 40 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-100px" } as const,
-  transition: { duration: 0.7, ease: "easeOut" }
+  transition: { duration: 0.7 }
 };
 
 export default function Home() {
@@ -87,23 +88,33 @@ export default function Home() {
             </motion.p>
             
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-5 items-center justify-center">
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
-                <button className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full pt-3.5 pr-6 pb-3.5 pl-7 relative shadow-2xl backdrop-blur-xl w-full sm:w-auto">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
-                  <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
-                  <div className="relative z-10 flex items-center justify-center gap-3">
-                    <div className="text-left">
-                      <p className="group-hover:text-white transition-colors duration-300 text-base font-bold text-white font-sans drop-shadow-sm">Get Your AI Clarity Session</p>
-                    </div>
-                    <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
-                      <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
-                        <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
-                      </svg>
-                    </div>
+              <ContactFormDialog
+                source="clarity-session"
+                title="Get Your AI Clarity Session"
+                description="Tell us about your business and we'll help you identify the best AI opportunities for operational efficiency."
+                trigger={
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
+                    <button 
+                      data-testid="button-hero-cta"
+                      className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full pt-3.5 pr-6 pb-3.5 pl-7 relative shadow-2xl backdrop-blur-xl w-full sm:w-auto"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                      <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
+                      <div className="relative z-10 flex items-center justify-center gap-3">
+                        <div className="text-left">
+                          <p className="group-hover:text-white transition-colors duration-300 text-base font-bold text-white font-sans drop-shadow-sm">Get Your AI Clarity Session</p>
+                        </div>
+                        <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
+                            <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
+                          </svg>
+                        </div>
+                      </div>
+                    </button>
                   </div>
-                </button>
-              </div>
+                }
+              />
               <p className="text-sm text-muted-foreground/80">
                 Fix lead flow, follow-up, and operational drag.
               </p>
@@ -153,7 +164,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
                 className="group p-8 rounded-2xl border border-white/5 bg-gradient-to-b from-white/[0.08] to-transparent hover:from-white/[0.12] hover:to-white/[0.02] transition-all relative overflow-hidden shadow-lg"
               >
@@ -270,9 +281,20 @@ export default function Home() {
               <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
                 A quick assessment that reveals where lead flow breaks, where follow-up slows down, and where operations rely too heavily on manual effort. Delivered with an Executive AI Analysis. No fluff, no hype—genuine insight.
               </p>
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]">
-                Take the Free Assessment
-              </Button>
+              <ContactFormDialog
+                source="assessment"
+                title="Take the Free Assessment"
+                description="Complete the form and we'll send you a personalized AI readiness assessment for your business."
+                trigger={
+                  <Button 
+                    size="lg" 
+                    data-testid="button-assessment-cta"
+                    className="bg-primary text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
+                  >
+                    Take the Free Assessment
+                  </Button>
+                }
+              />
             </motion.div>
             
             <motion.div 
@@ -342,9 +364,19 @@ export default function Home() {
                 A short diagnostic conversation to surface the biggest friction points and identify where AI will create the fastest operational win.
               </p>
               <div className="text-3xl font-medium mb-8 text-white">Free</div>
-              <Button className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all">
-                Book Session
-              </Button>
+              <ContactFormDialog
+                source="clarity-session"
+                title="Book Your AI Clarity Session"
+                description="Let's discuss your operational challenges and identify where AI can create the fastest wins."
+                trigger={
+                  <Button 
+                    data-testid="button-book-session"
+                    className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all"
+                  >
+                    Book Session
+                  </Button>
+                }
+              />
             </motion.div>
 
             {/* Offer 2 - Main Highlight */}
@@ -362,9 +394,19 @@ export default function Home() {
                 A deep operational assessment + sequence-by-sequence AI opportunity map. Analysis, clarity, and direction—no implementation.
               </p>
               <div className="text-3xl font-medium mb-8 text-white relative z-10">$997</div>
-              <Button className="w-full bg-primary text-primary-foreground hover:bg-cyan-300 h-12 rounded-lg font-semibold shadow-[0_0_15px_-5px_var(--color-primary)] relative z-10">
-                Get the Blueprint
-              </Button>
+              <ContactFormDialog
+                source="blueprint"
+                title="Get the Operational Blueprint"
+                description="Request a comprehensive operational assessment and AI opportunity map tailored to your business."
+                trigger={
+                  <Button 
+                    data-testid="button-get-blueprint"
+                    className="w-full bg-primary text-primary-foreground hover:bg-cyan-300 h-12 rounded-lg font-semibold shadow-[0_0_15px_-5px_var(--color-primary)] relative z-10"
+                  >
+                    Get the Blueprint
+                  </Button>
+                }
+              />
             </motion.div>
 
             {/* Offer 3 */}
@@ -377,9 +419,19 @@ export default function Home() {
                 The implementation of the Blueprint: clean operational foundation, optimized lead flow, and consistent follow-up sequences.
               </p>
               <div className="text-3xl font-medium mb-8 text-white">$3,500</div>
-              <Button className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all">
-                Apply for Tune-Up
-              </Button>
+              <ContactFormDialog
+                source="tune-up"
+                title="Apply for Operational Tune-Up"
+                description="Tell us about your needs for complete implementation and operational optimization."
+                trigger={
+                  <Button 
+                    data-testid="button-apply-tuneup"
+                    className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all"
+                  >
+                    Apply for Tune-Up
+                  </Button>
+                }
+              />
             </motion.div>
           </motion.div>
         </div>
@@ -401,7 +453,7 @@ export default function Home() {
             initial={fadeInUpViewport.initial}
             whileInView={fadeInUpViewport.whileInView}
             viewport={fadeInUpViewport.viewport}
-            transition={{ ...fadeInUpViewport.transition, delay: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
             className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-light"
           >
             We provide <span className="text-white font-normal">clear thinking</span> and deep pattern recognition for service businesses. 
