@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
+import { CircuitBeams } from "@/components/ui/circuit-beams";
+import { GridBeam } from "@/components/ui/grid-beam";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -214,6 +216,7 @@ export default function Solutions() {
       {/* Hero Section */}
       <section className="pt-40 pb-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary),0.08),transparent_50%)]" />
+        <CircuitBeams className="opacity-50" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -239,8 +242,12 @@ export default function Solutions() {
       </section>
 
       {/* Solutions Grid */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
+      <section className="py-24 relative overflow-hidden">
+        {/* Grid and beam background for workflow effect */}
+        <div className="absolute inset-0">
+          <GridBeam showCenterBeam={true} gridOpacity={0.08} />
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
           <div className="space-y-32">
             {solutions.map((solution, index) => {
               const Icon = solution.icon;
