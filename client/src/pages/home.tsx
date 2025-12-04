@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { TechTicker } from "@/components/ui/tech-ticker";
@@ -147,7 +147,7 @@ export default function Home() {
             transition={fadeInUpViewport.transition}
             className="mb-20 text-center max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl md:text-5xl font-medium mb-6">The invisible drag on your growth.</h2>
+            <h2 className="text-3xl md:text-5xl font-medium mb-6 text-[#f8fcfc]">The invisible drag on your growth.</h2>
             <p className="text-muted-foreground text-lg">The universal friction patterns holding service businesses back.</p>
           </motion.div>
 
@@ -347,10 +347,10 @@ export default function Home() {
 
             <div className="space-y-32 relative z-10">
               {[
-                { step: "01", title: "Diagnose Friction", desc: "Identify exactly where operations break down and value leaks out.", icon: Activity },
-                { step: "02", title: "Map Sequences", desc: "Document the critical paths that deliver results, removing ambiguity.", icon: Layers },
-                { step: "03", title: "Locate Leverage", desc: "Pinpoint where AI provides the highest impact, not just novelty.", icon: Brain },
-                { step: "04", title: "Build Foundation", desc: "Construct the intelligent systems that ensure consistency and speed.", icon: LayoutTemplate }
+                { step: "01", title: "Diagnose Friction", desc: "Identify exactly where operations break down and value leaks out.", icon: Stethoscope },
+                { step: "02", title: "Map Sequences", desc: "Document the critical paths that deliver results, removing ambiguity.", icon: Map },
+                { step: "03", title: "Locate Leverage", desc: "Pinpoint where AI provides the highest impact, not just novelty.", icon: Target },
+                { step: "04", title: "Build Foundation", desc: "Construct the intelligent systems that ensure consistency and speed.", icon: Blocks }
               ].map((item, i) => (
                 <motion.div 
                   key={i}
@@ -427,7 +427,7 @@ export default function Home() {
                   <Button 
                     size="lg" 
                     data-testid="button-assessment-cta"
-                    className="bg-primary text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
+                    className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
                   >
                     Take the Free Assessment
                   </Button>
