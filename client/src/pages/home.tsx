@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
@@ -125,12 +125,12 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { title: "Slow Lead Response", desc: "Leads go cold while manual intake processes create bottlenecks.", icon: Activity },
-              { title: "Manual Follow-up Collapse", desc: "Personalized follow-up is impossible to sustain at scale without systems.", icon: Layers },
-              { title: "Disconnected Systems", desc: "Data lives in silos, forcing your team to be the manual bridge between tools.", icon: Zap },
-              { title: "People-Dependent Workflows", desc: "Processes break when key people are out or overwhelmed.", icon: Brain },
-              { title: "Misplaced AI Efforts", desc: "Using tools without clarity on where they actually create leverage.", icon: ShieldCheck },
-              { title: "Invisible Operational Drag", desc: "Inefficiencies that compound daily, eating into margins and morale.", icon: LayoutTemplate }
+              { title: "Slow Lead Response", desc: "Leads go cold while manual intake processes create bottlenecks.", icon: Snail },
+              { title: "Manual Follow-up Collapse", desc: "Personalized follow-up is impossible to sustain at scale without systems.", icon: TriangleAlert },
+              { title: "Disconnected Systems", desc: "Data lives in silos, forcing your team to be the manual bridge between tools.", icon: Unplug },
+              { title: "People-Dependent Workflows", desc: "Processes break when key people are out or overwhelmed.", icon: FlagOff },
+              { title: "Misplaced AI Efforts", desc: "Using tools without clarity on where they actually create leverage.", icon: CloudOff },
+              { title: "Invisible Operational Drag", desc: "Inefficiencies that compound daily, eating into margins and morale.", icon: Frown }
             ].map((item, i) => (
               <motion.div 
                 key={i}
