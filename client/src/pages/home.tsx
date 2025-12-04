@@ -137,9 +137,9 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
+                transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
                 whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className="group p-8 rounded-2xl border border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all relative overflow-hidden"
+                className="group p-8 rounded-2xl border border-white/5 bg-gradient-to-b from-white/[0.08] to-transparent hover:from-white/[0.12] hover:to-white/[0.02] transition-all relative overflow-hidden shadow-lg"
               >
                 {/* Hover Glow */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -316,7 +316,7 @@ export default function Home() {
             className="grid lg:grid-cols-3 gap-8 items-start"
           >
             {/* Offer 1 */}
-            <motion.div variants={fadeIn} className="group p-8 rounded-2xl border border-white/5 bg-zinc-900/50 hover:border-white/10 transition-all relative">
+            <motion.div variants={fadeIn} className="group p-8 rounded-2xl border border-white/5 bg-gradient-to-b from-white/[0.08] to-transparent hover:from-white/[0.12] hover:to-white/[0.02] transition-all relative shadow-lg">
               <div className="h-12 mb-6">
                 <span className="text-sm font-mono text-muted-foreground group-hover:text-primary transition-colors">01 / DIAGNOSTIC</span>
               </div>
@@ -331,7 +331,7 @@ export default function Home() {
             </motion.div>
 
             {/* Offer 2 - Main Highlight */}
-            <motion.div variants={fadeIn} className="p-8 rounded-2xl border border-primary/20 bg-zinc-900/80 relative shadow-2xl overflow-hidden">
+            <motion.div variants={fadeIn} className="p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-zinc-800 to-zinc-950 relative shadow-2xl overflow-hidden">
               <BorderBeam size={300} duration={10} delay={0} colorFrom="var(--color-primary)" colorTo="transparent" />
               
               <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-3 py-1.5 rounded-bl-xl rounded-tr-xl tracking-wider">
@@ -351,7 +351,7 @@ export default function Home() {
             </motion.div>
 
             {/* Offer 3 */}
-            <motion.div variants={fadeIn} className="group p-8 rounded-2xl border border-white/5 bg-zinc-900/50 hover:border-white/10 transition-all relative">
+            <motion.div variants={fadeIn} className="group p-8 rounded-2xl border border-white/5 bg-gradient-to-b from-white/[0.08] to-transparent hover:from-white/[0.12] hover:to-white/[0.02] transition-all relative shadow-lg">
               <div className="h-12 mb-6">
                 <span className="text-sm font-mono text-muted-foreground group-hover:text-primary transition-colors">03 / IMPLEMENTATION</span>
               </div>
