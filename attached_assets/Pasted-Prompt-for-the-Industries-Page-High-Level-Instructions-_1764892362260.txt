@@ -1,0 +1,215 @@
+Prompt for the Industries Page
+
+
+High-Level Instructions
+	•	Create a new “Industries” page for SimpleSequence – Operational AI Advisor™.
+	•	Stay fully on brand with the current dark SaaS vibe from the Site (typography, spacing, card style, motion, etc.).
+	•	I will provide a few screenshots from the old site.
+	•	Use them only as layout/format references (section structure, card composition, content density).
+	•	Do not copy their colors.
+	•	Content below is the source of truth. You may lightly adapt microcopy, numbers/percentages, case studies, client succsses stories, for clarity, for structure and intent.
+
+⸻
+
+Page Structure
+	1.	Hero / Intro Section
+	2.	Three rows of industry carousels (6 industries total)
+	•	Row 1: Industries A & B
+	•	Row 2: Industries C & D
+	•	Row 3: Industries E & F
+	3.	Bottom CTA: “Don’t see your industry?”
+
+⸻
+
+1) Hero / Intro Section
+
+Headline:
+
+Industry-Specific AI & Operational Clarity
+
+Subheadline:
+
+We specialize in service businesses where response time, follow-up, and operational efficiency decide who wins the work.
+
+Body (short):
+
+Every industry has its own friction patterns. SimpleSequence helps you see where AI actually fits into your operations — so your team can move faster, waste less effort, and make better use of the systems you already have.
+
+(Optional small label above headline: Industries We Support)
+
+⸻
+
+2) Industry Carousels
+
+General behavior for all three rows:
+	•	Each row is a horizontal infinite carousel of cards.
+	•	No arrows, no dots. Slow, continuous scroll for readability.
+	•	Row 1 scrolls left → right.
+	•	Row 2 scrolls right → left (opposite direction).
+	•	Row 3 scrolls left → right again.
+	•	On mobile, each row should show one card at a time and still loop slowly.
+	•	Cards are tappable/hoverable but do not need deep links yet.
+
+Each card has the same internal structure:
+	•	Small industry label chip.
+	•	Title (industry name).
+	•	Short 1–2 sentence blurb.
+	•	Two compact bullet lists:
+	•	“Where operations drag”
+	•	“Where AI actually fits”
+
+Use the copy below as the content for each card.
+
+⸻
+
+Row 1 – Carousel A
+Card 1 – Home Services
+Label: Home Services
+
+Title: Home Services & Home Trades
+
+Blurb:
+
+For roofing, HVAC, plumbing, electrical, landscaping, and other home service businesses where speed, scheduling, and follow-up decide who gets the job.
+
+Where operations drag:
+	•	Leads come in from too many places with no clear intake path
+	•	Scheduling, rescheduling, and “just checking in” calls eat the day
+	•	Estimates and follow-ups depend on whoever remembers
+
+Where AI actually fits:
+	•	Clarifying a single intake sequence across phone, web, and text
+	•	Prioritizing which leads get contacted first during peak demand
+	•	Giving your team a clear follow-up rhythm they can run or automate
+
+Card 2 – Law Firms
+Label: Legal
+
+Title: Law Firms & Legal Practices
+
+Blurb:
+
+For personal injury, family law, and estate planning firms where intake quality and consistent communication drive case value.
+
+Where operations drag:
+	•	Intake forms collect info but don’t qualify cases consistently
+	•	Staff spends hours chasing documents and next steps
+	•	Clients call “just for an update” because the process isn’t clear
+
+Where AI actually fits:
+	•	Defining a repeatable case-intake sequence from first contact to consult
+	•	Standardizing follow-up and expectations between consult and engagement
+	•	Mapping which updates should be automated vs. handled by your team
+
+⸻
+
+Row 2 – Carousel B
+Card 3 – MedSpas & Aesthetic Practices
+Label: MedSpa & Aesthetics
+
+Title: MedSpas & Aesthetic Practices
+
+Blurb:
+
+For cosmetic and wellness clinics where consultation flow, package follow-up, and membership retention drive lifetime value.
+
+Where operations drag:
+	•	Consultation requests pile up without clear triage or qualification
+	•	Package follow-ups rely on manual reminders or individual providers
+	•	Membership billing and engagement happen in separate silos
+
+Where AI actually fits:
+	•	Designing a consultation journey from first interest to booked visit
+	•	Clarifying touchpoints for package follow-ups and re-engagement
+	•	Mapping a simple rhythm for check-ins, reviews, and renewals
+
+Card 4 – Real Estate
+Label: Real Estate
+
+Title: Real Estate Teams & Brokerages
+
+Blurb:
+
+For residential teams and small brokerages where lead speed, pipeline visibility, and communication discipline drive commissions.
+
+Where operations drag:
+	•	Online leads sit in inboxes or CRMs with unclear next steps
+	•	Agents each run their own follow-up style with no shared rhythm
+	•	Transaction updates are scattered across email, text, and calls
+
+Where AI actually fits:
+	•	Clarifying a single lead-handling sequence for the whole team
+	•	Designing follow-up cadences for new leads, nurture, and past clients
+	•	Defining when and how AI should assist with updates, reminders, and routing
+
+⸻
+
+Row 3 – Carousel C
+Card 5 – Pest Control & Field Services
+Label: Field Services
+
+Title: Pest Control & Field Service Operators
+
+Blurb:
+
+For pest control, wildlife removal, and similar field services where urgency, routing, and repeat visits are core to revenue.
+
+Where operations drag:
+	•	Urgent leads compete with scheduled work and overwhelm the front desk
+	•	Technicians, office staff, and customers aren’t always on the same page
+	•	Recurring or quarterly treatments slip through the cracks
+
+Where AI actually fits:
+	•	Designing a triage sequence for urgent vs. routine requests
+	•	Clarifying communication handoffs between office, tech, and customer
+	•	Mapping reminders and re-service touchpoints your team can run or automate
+
+Card 6 – Specialty Contractors
+Label: Specialty Trades
+
+Title: Specialty & Project-Based Contractors
+
+Blurb:
+
+For remodeling, concrete, garage door, and other project-based contractors where estimates, pipeline discipline, and change orders can make or break margins.
+
+Where operations drag:
+	•	Estimates and proposals are handled differently by each salesperson
+	•	Pipeline stages aren’t clear, so follow-up is inconsistent
+	•	Change orders and updates don’t flow cleanly back to the client
+
+Where AI actually fits:
+	•	Standardizing how leads move from inquiry → estimate → decision
+	•	Clarifying what information must be captured before quoting
+	•	Designing simple update and follow-up sequences around each project stage
+
+⸻
+
+3) Bottom CTA – “Don’t See Your Industry?”
+
+This section is static (no carousel).
+
+Headline:
+
+Don’t See Your Industry?
+
+Body:
+
+If your business relies on leads, calls, or booked appointments, the same operational patterns apply. We work with service businesses where response time, follow-up, and workflow clarity directly impact revenue.
+
+Secondary line (optional):
+
+If you’re not sure whether AI can actually help your operations, that’s exactly what we’re here to clarify.
+
+Primary CTA button:
+
+[Talk About Your Industry]
+Link this to either the Free Assessment or a Discovery Call page, whichever you prefer as the main entry point.
+
+⸻
+
+Interaction & Responsiveness Notes
+	•	Carousels should scroll slowly enough to read a full card without rushing.
+	•	On hover (desktop), you can pause the scroll for easier reading (optional but nice).
+	•	On mobile, make each card swipeable; the auto-scroll can still gently advance between cards.
+	•	Keep all typography, spacing, and visual hierarchy consistent with the new Services page and existing brand.
