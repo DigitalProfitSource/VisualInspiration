@@ -60,7 +60,6 @@ export default function Home() {
           </Button>
         </div>
       </motion.nav>
-
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
         {/* Background Elements */}
@@ -135,10 +134,8 @@ export default function Home() {
           <ChevronDown className="w-6 h-6" />
         </motion.div>
       </section>
-
       {/* Tech Stack Ticker */}
       <TechTicker />
-
       {/* What We Solve - Friction Grid */}
       <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
         <GridBeam showCenterBeam={false} gridOpacity={0.2} />
@@ -185,7 +182,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Customer Journey Alignment Section */}
       <section className="py-32 relative">
         <div className="container mx-auto px-6">
@@ -325,10 +321,8 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Industry Results Carousel */}
       <IndustryCarousel />
-
       {/* The SimpleSequence Method */}
       <section id="method" className="py-40 relative overflow-hidden bg-background">
         <GridBeam />
@@ -342,7 +336,7 @@ export default function Home() {
             transition={fadeInUpViewport.transition}
             className="text-center max-w-2xl mx-auto mb-24"
           >
-            <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block">Methodology</span>
+            <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block">How We Deploy</span>
             <h2 className="text-4xl md:text-5xl font-medium mb-6">The SimpleSequence Method</h2>
             <p className="text-muted-foreground text-lg">
               A clear, mature methodology to remove chaos and build the operational foundation your business needs.
@@ -407,7 +401,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* AI Clarity Assessment */}
       <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
@@ -490,7 +483,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Core Offer Stack */}
       <section id="offers" className="py-40">
         <div className="container mx-auto px-6">
@@ -732,7 +724,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Why SimpleSequence */}
       <section className="py-32 border-t border-white/5 relative">
         <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
@@ -758,7 +749,6 @@ export default function Home() {
           </motion.p>
         </div>
       </section>
-
       {/* About The Advisor */}
       <section id="about" className="py-32 bg-zinc-950/50 relative overflow-hidden">
         <div className="container mx-auto px-6 max-w-5xl relative z-10">
@@ -791,7 +781,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Final CTA */}
       <section className="py-40 text-center relative overflow-hidden">
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
@@ -828,7 +817,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="py-12 border-t border-white/5 text-sm text-zinc-600 text-center bg-black">
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
