@@ -15,6 +15,7 @@ import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { AnimatedMetric } from "@/components/ui/slot-counter";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
+import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -926,8 +927,12 @@ export default function Home() {
               className="p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent"
             >
               <div className="flex items-start gap-5 mb-6">
-                <div className="w-14 h-14 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-bold text-lg flex-shrink-0">
-                  A
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/40 flex-shrink-0 shadow-[0_0_15px_-3px_rgba(var(--primary),0.4)]">
+                  <img 
+                    src={founderPhoto} 
+                    alt="The Founder" 
+                    className="w-full h-full object-cover object-[center_20%]"
+                  />
                 </div>
                 <div>
                   <h3 className="text-xl font-display font-semibold text-white">The Founder</h3>
