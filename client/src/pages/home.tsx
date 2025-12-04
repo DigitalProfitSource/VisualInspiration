@@ -728,69 +728,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-      {/* Why SimpleSequence + Founder - Combined */}
-      <section id="about" className="py-32 border-t border-white/5 relative">
-        <div className="container mx-auto px-6 max-w-6xl relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="grid lg:grid-cols-2 gap-16 items-center"
-          >
-            {/* Left - Why Copy */}
-            <div>
-              <h2 className="text-3xl md:text-4xl font-display font-medium mb-8 text-white">
-                Why SimpleSequence?
-              </h2>
-              <div className="space-y-6 text-lg text-slate-400 leading-relaxed">
-                <p>
-                  In a market flooded with tool-chasers and agency hype, we offer <span className="text-white">clear thinking</span> and <span className="text-white">deep pattern recognition</span>.
-                </p>
-                <p>
-                  We understand service businesses from the inside out. We don't just add AI; we fix the <span className="text-primary">operational behavior</span> that makes AI effective.
-                </p>
-              </div>
-            </div>
-
-            {/* Right - Founder Card */}
-            <motion.div 
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent"
-            >
-              <div className="flex items-start gap-5 mb-6">
-                <div className="w-14 h-14 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-bold text-lg flex-shrink-0">
-                  A
-                </div>
-                <div>
-                  <h3 className="text-xl font-display font-semibold text-white">The Founder</h3>
-                  <p className="text-sm font-mono text-primary">OPERATIONAL AI ADVISOR™</p>
-                </div>
-              </div>
-              <p className="text-slate-400 leading-relaxed mb-6">
-                Background in operations, performance, and AI adoption. I help businesses adopt AI with precision, not chaos.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <div className="flex items-center gap-2 text-sm text-slate-300">
-                  <span className="text-primary">✓</span> Calm
-                </div>
-                <span className="text-slate-600">•</span>
-                <div className="flex items-center gap-2 text-sm text-slate-300">
-                  <span className="text-primary">✓</span> Analytical
-                </div>
-                <span className="text-slate-600">•</span>
-                <div className="flex items-center gap-2 text-sm text-slate-300">
-                  <span className="text-primary">✓</span> Systems-Driven
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* FAQ Section */}
       <section id="faq" className="py-32 relative">
         <div className="container mx-auto px-6 max-w-4xl">
@@ -951,6 +888,69 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Why SimpleSequence + Founder - Combined */}
+      <section id="about" className="py-32 border-t border-white/5 relative">
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="grid lg:grid-cols-2 gap-16 items-center"
+          >
+            {/* Left - Why Copy */}
+            <div>
+              <h2 className="text-3xl md:text-4xl font-display font-medium mb-8 text-white">
+                Why SimpleSequence?
+              </h2>
+              <div className="space-y-6 text-lg text-slate-400 leading-relaxed">
+                <p>
+                  In a market flooded with tool-chasers and agency hype, we offer <span className="text-white">clear thinking</span> and <span className="text-white">deep pattern recognition</span>.
+                </p>
+                <p>
+                  We understand service businesses from the inside out. We don't just add AI; we fix the <span className="text-primary">operational behavior</span> that makes AI effective.
+                </p>
+              </div>
+            </div>
+
+            {/* Right - Founder Card */}
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent"
+            >
+              <div className="flex items-start gap-5 mb-6">
+                <div className="w-14 h-14 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-bold text-lg flex-shrink-0">
+                  A
+                </div>
+                <div>
+                  <h3 className="text-xl font-display font-semibold text-white">The Founder</h3>
+                  <p className="text-sm font-mono text-primary">OPERATIONAL AI ADVISOR™</p>
+                </div>
+              </div>
+              <p className="text-slate-400 leading-relaxed mb-6">
+                Background in operations, performance, and AI adoption. I help businesses adopt AI with precision, not chaos.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <div className="flex items-center gap-2 text-sm text-slate-300">
+                  <span className="text-primary">✓</span> Calm
+                </div>
+                <span className="text-slate-600">•</span>
+                <div className="flex items-center gap-2 text-sm text-slate-300">
+                  <span className="text-primary">✓</span> Analytical
+                </div>
+                <span className="text-slate-600">•</span>
+                <div className="flex items-center gap-2 text-sm text-slate-300">
+                  <span className="text-primary">✓</span> Systems-Driven
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
