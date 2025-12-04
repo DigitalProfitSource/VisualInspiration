@@ -3,6 +3,7 @@ import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown,
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { TechTicker } from "@/components/ui/tech-ticker";
+import { GridBeam } from "@/components/ui/grid-beam";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 
 const fadeIn = {
@@ -171,6 +172,7 @@ export default function Home() {
 
       {/* The SimpleSequence Method */}
       <section id="method" className="py-40 relative overflow-hidden bg-background">
+        <GridBeam />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(var(--primary),0.03),transparent)] pointer-events-none" />
         
         <div className="container mx-auto px-6">

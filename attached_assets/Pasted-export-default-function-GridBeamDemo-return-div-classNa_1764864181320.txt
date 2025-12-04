@@ -1,0 +1,112 @@
+export default function GridBeamDemo() {
+  return (
+    <div className="relative w-full h-screen bg-zinc-950 overflow-hidden">
+      <style>
+        {`
+          @keyframes beamV {
+            0% {
+              top: -150px;
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            90% {
+              opacity: 1;
+            }
+            100% {
+              top: 100%;
+              opacity: 0;
+            }
+          }
+
+          @keyframes beamH {
+            0% {
+              left: -150px;
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            90% {
+              opacity: 1;
+            }
+            100% {
+              left: 100%;
+              opacity: 0;
+            }
+          }
+
+          @keyframes beamHRev {
+            0% {
+              right: -150px;
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            90% {
+              opacity: 1;
+            }
+            100% {
+              right: 100%;
+              opacity: 0;
+            }
+          }
+
+          .animate-beam-v {
+            animation: beamV 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          }
+
+          .animate-beam-h {
+            animation: beamH 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          }
+
+          .animate-beam-h-rev {
+            animation: beamHRev 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          }
+        `}
+      </style>
+
+      {/* Grid Background */}
+      <div 
+        className="absolute inset-0 pointer-events-none" 
+        style={{
+          backgroundImage: 'linear-gradient(to right, rgba(128, 128, 128, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(128, 128, 128, 0.03) 1px, transparent 1px)',
+          backgroundSize: '24px 24px'
+        }}
+      />
+
+      {/* Content Container */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 h-full flex items-center justify-center">
+        
+        {/* Left Vertical Beam */}
+        <div className="absolute left-4 top-0 h-full w-px bg-gradient-to-b from-transparent via-zinc-800 to-transparent overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-transparent via-cyan-500 to-transparent animate-beam-v" />
+        </div>
+
+        {/* Right Vertical Beam */}
+        <div className="absolute right-4 top-0 h-full w-px bg-gradient-to-b from-transparent via-zinc-800 to-transparent overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-transparent via-cyan-500 to-transparent animate-beam-v" />
+        </div>
+
+
+
+        {/* Horizontal Beams */}
+        <div className="absolute top-1/2 left-0 right-0 flex items-center justify-center">
+          {/* Left Horizontal Beam */}
+          <div className="h-px bg-gradient-to-r from-transparent via-zinc-800 to-zinc-800 w-full relative overflow-hidden">
+            <div className="absolute top-0 left-0 h-full w-40 bg-gradient-to-r from-transparent via-cyan-500 to-transparent animate-beam-h" />
+          </div>
+        </div>
+
+        <div className="absolute top-1/2 left-0 right-0 flex items-center justify-center">
+          {/* Right Horizontal Beam */}
+          <div className="h-px bg-gradient-to-l from-transparent via-zinc-800 to-zinc-800 w-full relative overflow-hidden">
+            <div className="absolute top-0 right-0 h-full w-40 bg-gradient-to-l from-transparent via-cyan-500 to-transparent animate-beam-h-rev" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
