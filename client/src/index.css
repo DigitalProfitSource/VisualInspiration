@@ -23,42 +23,54 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-  --color-chart-1: hsl(var(--chart-1));
-  --color-chart-2: hsl(var(--chart-2));
-  --color-chart-3: hsl(var(--chart-3));
-  --color-chart-4: hsl(var(--chart-4));
-  --color-chart-5: hsl(var(--chart-5));
   --radius: 0.5rem;
   --font-sans: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+
+  @keyframes border-beam {
+    100% {
+      offset-distance: 100%;
+    }
+  }
 }
 
 :root {
-  /* Dark mode by default for this brand */
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 5.9% 10%;
-  --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
+  /* 
+   * Exact colors from the screenshot:
+   * Background: Very dark, near black.
+   * Accent Blue (Button): #93C5FD (Tailwind blue-300) to #67E8F9 (cyan-300).
+   * Card Background: #18181B (zinc-900) or slightly lighter.
+   * Text: #F4F4F5 (zinc-100) for headings, #A1A1AA (zinc-400) for body.
+   */
+  
+  --background: 0 0% 4%; /* #0a0a0a - Very Dark */
+  --foreground: 210 40% 98%;
+
+  --card: 0 0% 7%; /* Slightly lighter than bg */
+  --card-foreground: 210 40% 98%;
+ 
+  --popover: 0 0% 7%;
+  --popover-foreground: 210 40% 98%;
+ 
+  /* The "Tech Blue/Cyan" from the button */
+  --primary: 190 90% 70%; /* Bright Cyan */
+  --primary-foreground: 220 40% 10%; /* Dark text on bright button */
+ 
+  --secondary: 240 4% 16%;
+  --secondary-foreground: 210 40% 98%;
+ 
+  --muted: 240 4% 16%;
+  --muted-foreground: 240 5% 65%;
+ 
+  --accent: 240 4% 16%;
+  --accent-foreground: 210 40% 98%;
+ 
   --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 240 4.9% 83.9%;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
+  --destructive-foreground: 210 40% 98%;
+ 
+  --border: 240 4% 16%;
+  --input: 240 4% 16%;
+  --ring: 190 90% 70%; /* Ring matches primary */
 }
 
 @layer base {
