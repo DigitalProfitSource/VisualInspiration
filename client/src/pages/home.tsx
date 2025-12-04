@@ -222,7 +222,7 @@ export default function Home() {
                   transition={{ delay: 0.1 }}
                   className="md:col-span-5 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
                 >
-                  <div className="w-10 h-10 mb-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
                     <LayoutTemplate className="w-5 h-5 text-primary" />
                   </div>
                   <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Lead Capture Architecture</h3>
@@ -239,7 +239,7 @@ export default function Home() {
                   transition={{ delay: 0.2 }}
                   className="md:col-span-7 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
                 >
-                  <div className="w-10 h-10 mb-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
                     <Layers className="w-5 h-5 text-primary" />
                   </div>
                   <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Operational Backbone Design</h3>
@@ -259,7 +259,7 @@ export default function Home() {
                   transition={{ delay: 0.3 }}
                   className="md:col-span-4 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
                 >
-                  <div className="w-10 h-10 mb-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
                     <Zap className="w-5 h-5 text-primary" />
                   </div>
                   <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Follow-Up Clarity Engine</h3>
@@ -276,7 +276,7 @@ export default function Home() {
                   transition={{ delay: 0.4 }}
                   className="md:col-span-8 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
                 >
-                  <div className="w-10 h-10 mb-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
                     <Brain className="w-5 h-5 text-primary" />
                   </div>
                   <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">AI-Ready Front Desk Layer</h3>
