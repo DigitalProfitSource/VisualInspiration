@@ -197,8 +197,8 @@ export default function Solutions() {
           <nav className="hidden md:flex items-center gap-8">
             <a href="/" className="text-sm text-muted-foreground hover:text-white transition-colors">Home</a>
             <a href="/solutions" className="text-sm text-white">Solutions</a>
+            <a href="/industries" className="text-sm text-muted-foreground hover:text-white transition-colors">Industries</a>
             <a href="/#offers" className="text-sm text-muted-foreground hover:text-white transition-colors">Offers</a>
-            <a href="/#faq" className="text-sm text-muted-foreground hover:text-white transition-colors">FAQ</a>
           </nav>
           <ContactFormDialog
             source="solutions-header"
