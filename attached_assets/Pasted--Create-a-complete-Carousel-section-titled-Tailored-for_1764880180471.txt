@@ -1,0 +1,102 @@
+
+Create a complete Carousel section titled "Tailored for High-Impact Results".
+
+1. Section Header:
+
+Main Headline: Tailored for High-Impact Results
+
+Sub-headline: Real metrics from businesses from real businesses.
+
+2. Carousel Layout & Styling:
+
+Create an infinite horizontal, and swipeable carousel containing 6 individual cards.
+
+Card Structure: Each card must have a subtle shadow. Inside each card, include:
+
+A distinct icon at the top left.
+
+The Industry Title in bold.
+
+A brief descriptive subtext below the title.
+
+A "BEFORE vs. AFTER" data comparison table.
+
+Visual emphasis: For all "AFTER" metrics, use bold text and a distinct color to highlight growth and positive change. Use upward arrows (↑) where appropriate to indicate increases.
+
+3. Card Content (All 6 Industries):
+
+Card 1: Dental Practices
+
+Icon: Tooth/Smile
+
+Subtext: Appointment reminders, insurance verification, and patient follow-up automation.
+
+Data Table:
+
+BEFORE: Missed Call Rate: 35% | Recall Scheduling: Manual Phone Calls | New Patient In-take: Business Hours Only
+
+AFTER: Missed Call Rate: <2% (Auto-Text Back) | Recall Scheduling: +45% Automation Rate | New Patient In-take: 24/7 Booking
+
+Card 2: Accounting & CPAs
+
+Icon: Document/Calculator
+
+Subtext: Client onboarding, document collection, and tax deadline reminders.
+
+Data Table:
+
+BEFORE: Doc Collection Time: 3-5 Days avg | Tax Season Response: 24+ Hours | Appointment Shows: Baseline
+
+AFTER: Doc Collection Time: <4 Hours (Auto-Nudge) | Tax Season Response: Instant (AI Agent) | Appointment Shows: +22% Improvement
+
+Card 3: Real Estate
+
+Icon: House/Building
+
+Subtext: Lead qualification, showing coordination, and transaction milestone tracking.
+
+Data Table:
+
+BEFORE: Speed-to-Lead: 1-2 Hours | Portal Lead Conv: 2% | Showing Requests: Manual Coordination
+
+AFTER: Speed-to-Lead: <1 Minute (Instant) | Portal Lead Conv: 8% (+300% ↑) | Showing Requests: Auto-Calibrated Instant Booking
+
+Card 4: Home Services (Roofing Company)
+
+Icon: House with Roof
+
+Subtext: Roofing Company
+
+Data Table:
+
+BEFORE: Lead Follow-Up Rate: 31% | Response Time: 12+ hours | Estimate Bookings: Baseline | After-Hours Conversions: 1x
+
+AFTER: Lead Follow-Up Rate: 89% (+187% ↑) | Response Time: <5 minutes | Estimate Bookings: +47% ↑ | After-Hours Conversions: 3.2x ↑
+
+Card 5: Law Firms (Personal Injury Firm)
+
+Icon: Scales of Justice
+
+Subtext: Personal Injury Firm
+
+Data Table:
+
+BEFORE: Consultation Availability: Business hours only | Qualified Case Intakes: Baseline | ROI: Baseline
+
+AFTER: Consultation Availability: 24/7 | Qualified Case Intakes: +67% ↑ | ROI: 4.5x (6 months) ↑
+
+Card 6: MedSpas (Premier MedSpa)
+
+Icon: Sparkle/Star
+
+Subtext: Premier MedSpa
+
+Data Table:
+
+BEFORE: Consultation Bookings: Baseline | No-Show Rate: High | Treatment Packages Sold: Baseline
+
+AFTER: Consultation Bookings: +127% ↑ | No-Show Rate: -64% (Decrease) | Treatment Packages Sold: +203% ↑
+
+4. Section Footer:
+
+Below the carousel, add a centered, outline-style button with the text: "View All Case Studies" followed by an arrow icon (→).

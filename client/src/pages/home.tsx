@@ -7,6 +7,7 @@ import { GridBeam } from "@/components/ui/grid-beam";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { AnimatedMetric } from "@/components/ui/slot-counter";
+import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 
 const fadeIn = {
@@ -324,6 +325,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Industry Results Carousel */}
+      <IndustryCarousel />
 
       {/* The SimpleSequence Method */}
       <section id="method" className="py-40 relative overflow-hidden bg-background">
