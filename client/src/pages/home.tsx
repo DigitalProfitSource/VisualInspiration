@@ -208,75 +208,85 @@ export default function Home() {
               </p>
             </div>
 
-            {/* 4 Core Blocks Grid */}
-            <div className="grid md:grid-cols-2 gap-6 mb-12 relative z-10">
-              {/* Block 1 - Lead Capture Architecture */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
-              >
-                <div className="w-12 h-12 mb-6 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <LayoutTemplate className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-display font-medium mb-3 text-white group-hover:text-primary transition-colors">Lead Capture Architecture</h3>
-                <p className="text-slate-400 leading-relaxed">
-                  Patterns and intake sequences that turn anonymous traffic into structured opportunities — no website rebuilds required.
-                </p>
-              </motion.div>
+            {/* 4 Core Blocks - Staggered Grid */}
+            <div className="space-y-6 mb-12 relative z-10">
+              {/* Row 1 - Staggered */}
+              <div className="grid md:grid-cols-12 gap-6">
+                {/* Block 1 - Lead Capture Architecture (narrower) */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="md:col-span-5 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
+                >
+                  <div className="w-10 h-10 mb-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <LayoutTemplate className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Lead Capture Architecture</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Patterns and intake sequences that turn anonymous traffic into structured opportunities — no website rebuilds required.
+                  </p>
+                </motion.div>
 
-              {/* Block 2 - Operational Backbone Design */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
-              >
-                <div className="w-12 h-12 mb-6 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <Layers className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-display font-medium mb-3 text-white group-hover:text-primary transition-colors">Operational Backbone Design</h3>
-                <p className="text-slate-400 leading-relaxed">
-                  A clear architectural map for how your systems, handoffs, communication layers, and AI opportunities can work together without adding complexity.
-                </p>
-              </motion.div>
+                {/* Block 2 - Operational Backbone Design (wider) */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="md:col-span-7 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
+                >
+                  <div className="w-10 h-10 mb-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <Layers className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Operational Backbone Design</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    A clear architectural map for how your systems, handoffs, communication layers, and AI opportunities can work together without adding complexity.
+                  </p>
+                </motion.div>
+              </div>
 
-              {/* Block 3 - Follow-Up Clarity Engine */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
-              >
-                <div className="w-12 h-12 mb-6 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-display font-medium mb-3 text-white group-hover:text-primary transition-colors">Follow-Up Clarity Engine</h3>
-                <p className="text-slate-400 leading-relaxed">
-                  Streamlined engagement sequences that remove guesswork and ensure every opportunity receives timely, consistent follow-up — whether human-led or AI-assisted.
-                </p>
-              </motion.div>
+              {/* Row 2 - Staggered (reversed) */}
+              <div className="grid md:grid-cols-12 gap-6">
+                {/* Block 3 - Follow-Up Clarity Engine (narrower) */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="md:col-span-4 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
+                >
+                  <div className="w-10 h-10 mb-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <Zap className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Follow-Up Clarity Engine</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Streamlined engagement sequences that remove guesswork and ensure every opportunity receives timely, consistent follow-up.
+                  </p>
+                </motion.div>
 
-              {/* Block 4 - AI-Ready Front Desk Layer */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4 }}
-                className="group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
-              >
-                <div className="w-12 h-12 mb-6 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <Brain className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-display font-medium mb-3 text-white group-hover:text-primary transition-colors">AI-Ready Front Desk Layer</h3>
-                <p className="text-slate-400 leading-relaxed">
-                  Strategic insight into where AI can support inbound calls, qualification, routing, and booking — without replacing your team or overhauling your systems.
-                </p>
-              </motion.div>
+                {/* Block 4 - AI-Ready Front Desk Layer (wider) */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 }}
+                  className="md:col-span-8 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
+                >
+                  <div className="w-10 h-10 mb-5 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                    <Brain className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">AI-Ready Front Desk Layer</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    Strategic insight into where AI can support inbound calls, qualification, routing, and booking — without replacing your team or overhauling your systems.
+                  </p>
+                  <div className="flex gap-3 mt-4">
+                    <span className="text-xs font-mono text-primary/70 px-3 py-1 rounded-full bg-primary/5 border border-primary/10">Strategic Clarity</span>
+                    <span className="text-xs font-mono text-primary/70 px-3 py-1 rounded-full bg-primary/5 border border-primary/10">AI Readiness</span>
+                  </div>
+                </motion.div>
+              </div>
             </div>
 
             {/* Divider */}
