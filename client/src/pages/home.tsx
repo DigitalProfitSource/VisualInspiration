@@ -125,7 +125,8 @@ export default function Home() {
       <TechTicker />
 
       {/* What We Solve - Friction Grid */}
-      <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative">
+      <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
+        <GridBeam showCenterBeam={false} gridOpacity={0.2} />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div 
             initial={fadeInUpViewport.initial}

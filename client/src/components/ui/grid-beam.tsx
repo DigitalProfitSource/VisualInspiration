@@ -2,9 +2,11 @@ import { cn } from "@/lib/utils";
 
 interface GridBeamProps {
   className?: string;
+  showCenterBeam?: boolean;
+  gridOpacity?: number;
 }
 
-export function GridBeam({ className }: GridBeamProps) {
+export function GridBeam({ className, showCenterBeam = true, gridOpacity = 0.15 }: GridBeamProps) {
   return (
     <div className={cn("absolute inset-0 w-full h-full overflow-hidden pointer-events-none", className)}>
       <style>
@@ -76,9 +78,10 @@ export function GridBeam({ className }: GridBeamProps) {
 
       {/* Grid Background */}
       <div 
-        className="absolute inset-0 opacity-[0.15]" 
+        className="absolute inset-0" 
         style={{
-          backgroundImage: 'linear-gradient(to right, rgba(128, 128, 128, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(128, 128, 128, 0.1) 1px, transparent 1px)',
+          opacity: gridOpacity,
+          backgroundImage: 'linear-gradient(to right, rgba(128, 128, 128, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(128, 128, 128, 0.25) 1px, transparent 1px)',
           backgroundSize: '40px 40px'
         }}
       />
@@ -97,9 +100,11 @@ export function GridBeam({ className }: GridBeamProps) {
         </div>
 
         {/* Center Vertical Beam (optional, aligning with content) */}
-        <div className="absolute left-1/2 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/5 to-transparent overflow-hidden hidden md:block">
-           <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-transparent via-primary/30 to-transparent animate-beam-v" style={{ animationDelay: '2s' }} />
-        </div>
+        {showCenterBeam && (
+          <div className="absolute left-1/2 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/5 to-transparent overflow-hidden hidden md:block">
+             <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-transparent via-primary/30 to-transparent animate-beam-v" style={{ animationDelay: '2s' }} />
+          </div>
+        )}
 
         {/* Horizontal Beams */}
         <div className="absolute top-[20%] left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/5 to-transparent overflow-hidden">
