@@ -728,29 +728,66 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-      {/* Why SimpleSequence */}
-      <section className="py-32 border-t border-white/5 relative">
-        <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
-          <motion.h2 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="text-3xl md:text-4xl font-medium mb-10"
+      {/* Why SimpleSequence + Founder - Combined */}
+      <section id="about" className="py-32 border-t border-white/5 relative">
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="grid lg:grid-cols-2 gap-16 items-center"
           >
-            Why SimpleSequence?
-          </motion.h2>
-          <motion.p 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-light"
-          >
-            We provide <span className="text-white font-normal">clear thinking</span> and deep pattern recognition for service businesses. 
-            We understand the friction that comes with growth. 
-            SimpleSequence brings <span className="text-primary">AI clarity without the hype</span>, delivering operational insights rooted in real-world behavior—the antidote to tool-chasing and agency noise.
-          </motion.p>
+            {/* Left - Why Copy */}
+            <div>
+              <h2 className="text-3xl md:text-4xl font-display font-medium mb-8 text-white">
+                Why SimpleSequence?
+              </h2>
+              <div className="space-y-6 text-lg text-slate-400 leading-relaxed">
+                <p>
+                  In a market flooded with tool-chasers and agency hype, we offer <span className="text-white">clear thinking</span> and <span className="text-white">deep pattern recognition</span>.
+                </p>
+                <p>
+                  We understand service businesses from the inside out. We don't just add AI; we fix the <span className="text-primary">operational behavior</span> that makes AI effective.
+                </p>
+              </div>
+            </div>
+
+            {/* Right - Founder Card */}
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent"
+            >
+              <div className="flex items-start gap-5 mb-6">
+                <div className="w-14 h-14 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-bold text-lg flex-shrink-0">
+                  A
+                </div>
+                <div>
+                  <h3 className="text-xl font-display font-semibold text-white">The Founder</h3>
+                  <p className="text-sm font-mono text-primary">OPERATIONAL AI ADVISOR™</p>
+                </div>
+              </div>
+              <p className="text-slate-400 leading-relaxed mb-6">
+                Background in operations, performance, and AI adoption. I help businesses adopt AI with precision, not chaos.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <div className="flex items-center gap-2 text-sm text-slate-300">
+                  <span className="text-primary">✓</span> Calm
+                </div>
+                <span className="text-slate-600">•</span>
+                <div className="flex items-center gap-2 text-sm text-slate-300">
+                  <span className="text-primary">✓</span> Analytical
+                </div>
+                <span className="text-slate-600">•</span>
+                <div className="flex items-center gap-2 text-sm text-slate-300">
+                  <span className="text-primary">✓</span> Systems-Driven
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -918,38 +955,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About The Advisor */}
-      <section id="about" className="py-32 bg-zinc-950/50 relative overflow-hidden">
-        <div className="container mx-auto px-6 max-w-5xl relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex flex-col md:flex-row items-center gap-12 bg-white/[0.02] border border-white/5 p-12 rounded-3xl"
-          >
-            <div className="w-40 h-40 rounded-full bg-zinc-800 flex-shrink-0 overflow-hidden border-2 border-white/10 shadow-xl relative group">
-               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-               {/* Placeholder for avatar */}
-               <div className="w-full h-full bg-zinc-800 flex items-center justify-center text-zinc-600">
-                  <Brain className="w-12 h-12 opacity-20" />
-               </div>
-            </div>
-            <div>
-              <h3 className="text-3xl font-medium mb-4 text-white">The Operational AI Advisor™</h3>
-              <p className="text-muted-foreground leading-relaxed mb-8 text-lg">
-                With a background in operations, performance, and AI adoption, our founder understands the friction patterns that plague service industries. 
-                Calm, analytical, and systems-driven, he helps businesses adopt AI with precision, not chaos.
-              </p>
-              <div className="flex gap-4">
-                 <div className="flex items-center gap-2 text-sm text-primary/80 px-4 py-2 rounded-full bg-primary/5 border border-primary/10">
-                    <ShieldCheck className="w-4 h-4" /> Verified Expert
-                 </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
       {/* Final CTA */}
       <section className="py-40 text-center relative overflow-hidden">
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
