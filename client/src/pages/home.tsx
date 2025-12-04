@@ -499,7 +499,7 @@ export default function Home() {
             transition={fadeInUpViewport.transition}
             className="text-center mb-16"
           >
-            <span className="text-sm font-mono text-primary mb-4 block">SOLUTIONS</span>
+            <span className="text-sm font-mono text-primary mb-4 block">SERVICES</span>
             <h2 className="text-4xl md:text-5xl font-display font-medium mb-6">Choose Your Path Forward</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">From strategic clarity to full operational transformation — select the level that matches where you are today.</p>
           </motion.div>
@@ -826,7 +826,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Testimonials Section */}
       <section className="py-32 bg-zinc-950/50 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary),0.05),transparent_50%)]" />
@@ -892,7 +891,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Why SimpleSequence + Founder - Combined */}
       <section id="about" className="py-32 border-t border-white/5 relative">
         <div className="container mx-auto px-6 max-w-6xl relative z-10">
@@ -959,7 +957,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Final CTA */}
       <section className="py-40 text-center relative overflow-hidden">
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
