@@ -753,6 +753,171 @@ export default function Home() {
           </motion.p>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-32 relative">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <motion.div 
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="text-center mb-16"
+          >
+            <span className="text-sm font-mono text-primary mb-4 block">FAQ</span>
+            <h2 className="text-4xl md:text-5xl font-display font-medium">Common Questions</h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <Accordion type="single" collapsible className="space-y-4">
+              <AccordionItem value="item-1" className="border border-white/10 rounded-xl px-6 bg-white/[0.02] hover:bg-white/[0.04] transition-colors data-[state=open]:border-primary/30">
+                <AccordionTrigger className="text-left text-lg font-medium py-6 hover:no-underline text-white hover:text-primary transition-colors" data-testid="faq-trigger-1">
+                  What does SimpleSequence actually do?
+                </AccordionTrigger>
+                <AccordionContent className="text-slate-400 pb-6 leading-relaxed">
+                  <p className="mb-4">SimpleSequence helps you understand exactly how your business should operate across lead flow, follow-up, internal communication, and customer workflows — and where AI can create real leverage without adding complexity.</p>
+                  <p className="mb-4">You get a clear operational map, tailored to your business, showing which processes should stay human, which can be streamlined, and which are strong candidates for AI support.</p>
+                  <p className="text-primary/80 font-medium">No software pitches. No implementation traps. Just clarity.</p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2" className="border border-white/10 rounded-xl px-6 bg-white/[0.02] hover:bg-white/[0.04] transition-colors data-[state=open]:border-primary/30">
+                <AccordionTrigger className="text-left text-lg font-medium py-6 hover:no-underline text-white hover:text-primary transition-colors" data-testid="faq-trigger-2">
+                  How is this different from hiring a web agency?
+                </AccordionTrigger>
+                <AccordionContent className="text-slate-400 pb-6 leading-relaxed">
+                  <p className="mb-4"><span className="text-white">Agencies build things.</span> SimpleSequence clarifies what should be built in the first place — and why.</p>
+                  <p className="mb-4">A web agency will redesign your site. An automation shop will install tools. But neither will diagnose the root operational friction or the AI opportunities unique to your workflow.</p>
+                  <p>I help you avoid unnecessary spending, avoid shiny-object traps, and avoid building systems that don't align with how your business truly works.</p>
+                  <p className="text-primary/80 font-medium mt-4">This is strategic architecture — not execution.</p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3" className="border border-white/10 rounded-xl px-6 bg-white/[0.02] hover:bg-white/[0.04] transition-colors data-[state=open]:border-primary/30">
+                <AccordionTrigger className="text-left text-lg font-medium py-6 hover:no-underline text-white hover:text-primary transition-colors" data-testid="faq-trigger-3">
+                  Do I need to replace my current tools?
+                </AccordionTrigger>
+                <AccordionContent className="text-slate-400 pb-6 leading-relaxed">
+                  <p className="mb-4"><span className="text-primary font-medium">Usually, no.</span></p>
+                  <p className="mb-4">Most businesses don't need more tools — they need a clearer understanding of how the tools they already have should work together.</p>
+                  <p className="mb-2">Part of the diagnostic includes:</p>
+                  <ul className="space-y-2 mb-4 ml-4">
+                    <li className="flex items-start gap-2"><span className="text-primary">•</span> Identifying where your tools are creating friction</li>
+                    <li className="flex items-start gap-2"><span className="text-primary">•</span> Uncovering gaps in handoffs or follow-up</li>
+                    <li className="flex items-start gap-2"><span className="text-primary">•</span> Showing where AI could support the workflow without replacing your systems</li>
+                  </ul>
+                  <p>If a replacement is genuinely necessary, you'll get a clear rationale — not a sales pitch.</p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4" className="border border-white/10 rounded-xl px-6 bg-white/[0.02] hover:bg-white/[0.04] transition-colors data-[state=open]:border-primary/30">
+                <AccordionTrigger className="text-left text-lg font-medium py-6 hover:no-underline text-white hover:text-primary transition-colors" data-testid="faq-trigger-4">
+                  How long until I see results?
+                </AccordionTrigger>
+                <AccordionContent className="text-slate-400 pb-6 leading-relaxed">
+                  <p className="mb-4"><span className="text-white">Most clients experience clarity within the first session.</span></p>
+                  <p className="mb-2">The Operational Diagnostic typically reveals:</p>
+                  <ul className="space-y-2 mb-4 ml-4">
+                    <li className="flex items-start gap-2"><span className="text-primary">•</span> Where time is being lost</li>
+                    <li className="flex items-start gap-2"><span className="text-primary">•</span> Which workflows are causing drag</li>
+                    <li className="flex items-start gap-2"><span className="text-primary">•</span> Which AI opportunities will produce immediate leverage</li>
+                  </ul>
+                  <p className="mb-4">From there, businesses often see faster decisions, smoother coordination, and better follow-up rhythm within 30 days — even before implementing larger changes.</p>
+                  <p className="text-primary/80 font-medium">Clarity is an accelerant.</p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5" className="border border-white/10 rounded-xl px-6 bg-white/[0.02] hover:bg-white/[0.04] transition-colors data-[state=open]:border-primary/30">
+                <AccordionTrigger className="text-left text-lg font-medium py-6 hover:no-underline text-white hover:text-primary transition-colors" data-testid="faq-trigger-5">
+                  What's the best way to get started?
+                </AccordionTrigger>
+                <AccordionContent className="text-slate-400 pb-6 leading-relaxed">
+                  <p className="mb-4">Start with the free <span className="text-primary font-medium">Operational Clarity Score™</span>.</p>
+                  <p className="mb-2">It gives you:</p>
+                  <ul className="space-y-2 mb-4 ml-4">
+                    <li className="flex items-start gap-2"><span className="text-primary">•</span> A high-level look at your lead flow, follow-up, operations, and AI readiness</li>
+                    <li className="flex items-start gap-2"><span className="text-primary">•</span> Estimated time lost each month</li>
+                    <li className="flex items-start gap-2"><span className="text-primary">•</span> Early friction patterns</li>
+                  </ul>
+                  <p>If the diagnostic uncovers deeper issues, the next step is the <span className="text-white">Operational Diagnostic + AI-Clarity Blueprint</span>, which maps your architecture and identifies the highest-leverage improvements.</p>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-32 bg-zinc-950/50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary),0.05),transparent_50%)]" />
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <motion.div 
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="text-center mb-16"
+          >
+            <span className="text-sm font-mono text-primary mb-4 block">RESULTS</span>
+            <h2 className="text-4xl md:text-5xl font-display font-medium">What Business Owners Say</h2>
+          </motion.div>
+
+          <motion.div 
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={stagger}
+            className="grid md:grid-cols-3 gap-6"
+          >
+            {[
+              {
+                quote: "We stopped losing leads. The system captures every inquiry, responds instantly, and the automated follow-up means nothing falls through the cracks anymore.",
+                name: "Jake Martinez",
+                role: "Roofing Company Owner",
+                initials: "JM"
+              },
+              {
+                quote: "Our operations finally work together. Everything is connected — website, CRM, follow-up. We're converting more with less effort.",
+                name: "Sarah Chen",
+                role: "MedSpa Director",
+                initials: "SC"
+              },
+              {
+                quote: "The optimization work is ongoing and measurable. Every month we see improvements in how leads are qualified and moved through our intake process.",
+                name: "David Walsh",
+                role: "Managing Partner, Law Firm",
+                initials: "DW"
+              }
+            ].map((testimonial, i) => (
+              <motion.div 
+                key={i}
+                variants={fadeIn}
+                className="group relative p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent hover:border-primary/30 transition-all duration-500"
+              >
+                <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <Quote className="w-12 h-12 text-primary" />
+                </div>
+                <p className="text-slate-300 leading-relaxed mb-8 italic relative z-10">"{testimonial.quote}"</p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-primary font-bold text-sm">
+                    {testimonial.initials}
+                  </div>
+                  <div>
+                    <p className="font-medium text-white">{testimonial.name}</p>
+                    <p className="text-sm text-slate-500">{testimonial.role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* About The Advisor */}
       <section id="about" className="py-32 bg-zinc-950/50 relative overflow-hidden">
         <div className="container mx-auto px-6 max-w-5xl relative z-10">
