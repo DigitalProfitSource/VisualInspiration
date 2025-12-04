@@ -6,6 +6,7 @@ import { TechTicker } from "@/components/ui/tech-ticker";
 import { GridBeam } from "@/components/ui/grid-beam";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
+import { AnimatedMetric } from "@/components/ui/slot-counter";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 
 const fadeIn = {
@@ -293,32 +294,33 @@ export default function Home() {
             <div className="border-t border-white/5 my-12" />
 
             {/* Metrics Row */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5 }}
-              className="relative z-10"
-            >
-              <h3 className="text-center text-sm font-mono text-primary mb-10 tracking-wider">CLARITY DELIVERED. EFFICIENCY UNLOCKED.</h3>
+            <div className="relative z-10">
+              <motion.h3 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center text-sm font-mono text-primary mb-10 tracking-wider"
+              >
+                CLARITY DELIVERED. EFFICIENCY UNLOCKED.
+              </motion.h3>
               <div className="grid md:grid-cols-3 gap-8">
-                {/* Metric 1 */}
-                <div className="text-center p-6 rounded-xl bg-white/[0.02] border border-white/5">
-                  <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2">40–90<span className="text-primary text-2xl ml-1">hrs/mo</span></div>
-                  <p className="text-slate-500 text-sm">Time regained once operational loops are clarified.</p>
-                </div>
-                {/* Metric 2 */}
-                <div className="text-center p-6 rounded-xl bg-white/[0.02] border border-white/5">
-                  <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2">82<span className="text-primary text-2xl">%</span></div>
-                  <p className="text-slate-500 text-sm">Average reduction in friction across lead, follow-up, and ops sequences.</p>
-                </div>
-                {/* Metric 3 */}
-                <div className="text-center p-6 rounded-xl bg-white/[0.02] border border-white/5">
-                  <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2">3×<span className="text-primary text-2xl ml-1">faster</span></div>
-                  <p className="text-slate-500 text-sm">Typical timeframe for clients to gain AI adoption clarity.</p>
-                </div>
+                <AnimatedMetric 
+                  value="40-90" 
+                  suffix="hrs/mo" 
+                  description="Time regained once operational loops are clarified."
+                />
+                <AnimatedMetric 
+                  value="82" 
+                  suffix="%" 
+                  description="Average reduction in friction across lead, follow-up, and ops sequences."
+                />
+                <AnimatedMetric 
+                  value="3" 
+                  suffix="× faster" 
+                  description="Typical timeframe for clients to gain AI adoption clarity."
+                />
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>
