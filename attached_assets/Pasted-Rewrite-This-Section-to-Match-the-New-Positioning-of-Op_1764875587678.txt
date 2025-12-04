@@ -1,0 +1,110 @@
+Rewrite This Section to Match the New Positioning of “Operational AI Advisor™” While Keeping the Same Layout
+
+🔹 GUIDELINES FOR THE REWRITE
+
+Apply all of the following rules:
+
+1. KEEP the overall structure + layout
+	•	Headline + subheadline
+	•	Four core blocks
+	•	A metrics row
+
+2. UPDATE the messaging to match this positioning
+
+The brand is now an Operational AI Advisor™, NOT an agency and NOT an implementation service.
+
+The tone must reflect:
+	•	systems clarity
+	•	workflow architecture
+	•	AI readiness
+	•	operational insight
+	•	strategic guidance
+NOT:
+	•	funnels
+	•	campaigns
+	•	automation builds
+	•	AI agent creation
+	•	design or software delivery
+
+3. REWRITE the old blocks using the new descriptions below
+
+Replace all existing copy with these updated versions:
+
+⸻
+
+NEW SECTION CONTENT (Use This)
+
+Headline
+
+We Align Your Entire Customer Journey Into One Intelligent Flow.
+
+Subheadline
+
+SimpleSequence clarifies how every touchpoint — human, system, or AI — should work together so your business runs smoother, responds faster, and scales without chaos.
+
+⸻
+
+BLOCK 1 — Lead Capture Architecture
+
+Replace old “Lead Capture Infrastructure” text with this:
+
+Patterns and intake sequences that turn anonymous traffic into structured opportunities — no website rebuilds required.
+
+⸻
+
+BLOCK 2 — Operational Backbone Design
+
+Replace old “Operational Backbone” text with this:
+
+A clear architectural map for how your systems, handoffs, communication layers, and AI opportunities can work together without adding complexity.
+
+⸻
+
+BLOCK 3 — Follow-Up Clarity Engine
+
+Replace old “Persistent Follow-Up Engine” text with this:
+
+Streamlined engagement sequences that remove guesswork and ensure every opportunity receives timely, consistent follow-up — whether human-led or AI-assisted.
+
+⸻
+
+BLOCK 4 — AI-Ready Front Desk Layer
+
+Replace old “AI-Assisted Front Desk” text with this:
+
+Strategic insight into where AI can support inbound calls, qualification, routing, and booking — without replacing your team or overhauling your systems.
+
+⸻
+
+NEW METRICS ROW (Replace old KPI cards)
+
+Title
+
+Clarity Delivered. Efficiency Unlocked.
+
+Metric 1
+40–90 hrs/mo
+Time regained once operational loops are clarified.
+
+Metric 2
+82%
+Average reduction in friction across lead, follow-up, and ops sequences.
+
+Metric 3
+3× faster decisions
+Typical timeframe for clients to gain AI adoption clarity.
+
+⸻
+
+🔹 ADDITIONAL RULES FOR THE EDITOR
+	•	Do not imply implementation or building of tools, funnels, websites, or agents.
+	•	Do not reference software or platforms.
+	•	Do not use language that sounds like a marketing agency.
+	•	Keep tone calm, strategic, clear, authoritative.
+	•	The copy should speak to founders/operators who want clarity, not tactics.
+
+⸻
+
+🎯 OUTPUT GOAL
+
+A polished website section that clearly communicates the value of an Operational AI Advisor™, maintains your page structure, and positions you as the architect — not the builder — of intelligent workflows.

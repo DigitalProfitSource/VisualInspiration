@@ -184,6 +184,135 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Customer Journey Alignment Section */}
+      <section className="py-32 relative">
+        <div className="container mx-auto px-6">
+          {/* Main Container with all cards */}
+          <motion.div 
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="rounded-3xl border border-white/10 bg-gradient-to-b from-zinc-900/60 to-zinc-950/80 p-10 md:p-16 relative overflow-hidden"
+          >
+            {/* Subtle background glow */}
+            <div className="absolute top-0 left-1/4 w-1/2 h-64 bg-primary/5 blur-3xl rounded-full pointer-events-none" />
+            
+            {/* Header */}
+            <div className="text-center max-w-4xl mx-auto mb-16 relative z-10">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 leading-tight">
+                We Align Your Entire Customer Journey Into One <span className="text-primary">Intelligent Flow.</span>
+              </h2>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                SimpleSequence clarifies how every touchpoint — human, system, or AI — should work together so your business runs smoother, responds faster, and scales without chaos.
+              </p>
+            </div>
+
+            {/* 4 Core Blocks Grid */}
+            <div className="grid md:grid-cols-2 gap-6 mb-12 relative z-10">
+              {/* Block 1 - Lead Capture Architecture */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
+              >
+                <div className="w-12 h-12 mb-6 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <LayoutTemplate className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-display font-medium mb-3 text-white group-hover:text-primary transition-colors">Lead Capture Architecture</h3>
+                <p className="text-slate-400 leading-relaxed">
+                  Patterns and intake sequences that turn anonymous traffic into structured opportunities — no website rebuilds required.
+                </p>
+              </motion.div>
+
+              {/* Block 2 - Operational Backbone Design */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
+              >
+                <div className="w-12 h-12 mb-6 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <Layers className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-display font-medium mb-3 text-white group-hover:text-primary transition-colors">Operational Backbone Design</h3>
+                <p className="text-slate-400 leading-relaxed">
+                  A clear architectural map for how your systems, handoffs, communication layers, and AI opportunities can work together without adding complexity.
+                </p>
+              </motion.div>
+
+              {/* Block 3 - Follow-Up Clarity Engine */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
+              >
+                <div className="w-12 h-12 mb-6 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-display font-medium mb-3 text-white group-hover:text-primary transition-colors">Follow-Up Clarity Engine</h3>
+                <p className="text-slate-400 leading-relaxed">
+                  Streamlined engagement sequences that remove guesswork and ensure every opportunity receives timely, consistent follow-up — whether human-led or AI-assisted.
+                </p>
+              </motion.div>
+
+              {/* Block 4 - AI-Ready Front Desk Layer */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className="group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
+              >
+                <div className="w-12 h-12 mb-6 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <Brain className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-display font-medium mb-3 text-white group-hover:text-primary transition-colors">AI-Ready Front Desk Layer</h3>
+                <p className="text-slate-400 leading-relaxed">
+                  Strategic insight into where AI can support inbound calls, qualification, routing, and booking — without replacing your team or overhauling your systems.
+                </p>
+              </motion.div>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-white/5 my-12" />
+
+            {/* Metrics Row */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="relative z-10"
+            >
+              <h3 className="text-center text-sm font-mono text-primary mb-10 tracking-wider">CLARITY DELIVERED. EFFICIENCY UNLOCKED.</h3>
+              <div className="grid md:grid-cols-3 gap-8">
+                {/* Metric 1 */}
+                <div className="text-center p-6 rounded-xl bg-white/[0.02] border border-white/5">
+                  <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2">40–90<span className="text-primary text-2xl ml-1">hrs/mo</span></div>
+                  <p className="text-slate-500 text-sm">Time regained once operational loops are clarified.</p>
+                </div>
+                {/* Metric 2 */}
+                <div className="text-center p-6 rounded-xl bg-white/[0.02] border border-white/5">
+                  <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2">82<span className="text-primary text-2xl">%</span></div>
+                  <p className="text-slate-500 text-sm">Average reduction in friction across lead, follow-up, and ops sequences.</p>
+                </div>
+                {/* Metric 3 */}
+                <div className="text-center p-6 rounded-xl bg-white/[0.02] border border-white/5">
+                  <div className="text-4xl md:text-5xl font-display font-bold text-white mb-2">3×<span className="text-primary text-2xl ml-1">faster</span></div>
+                  <p className="text-slate-500 text-sm">Typical timeframe for clients to gain AI adoption clarity.</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* The SimpleSequence Method */}
       <section id="method" className="py-40 relative overflow-hidden bg-background">
         <GridBeam />
