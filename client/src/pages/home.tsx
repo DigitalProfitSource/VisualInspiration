@@ -338,9 +338,7 @@ export default function Home() {
           >
             <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block">How We Deploy</span>
             <h2 className="text-4xl md:text-5xl font-medium mb-6">The SimpleSequence Method</h2>
-            <p className="text-muted-foreground text-lg">
-              A clear, mature methodology to remove chaos and build the operational foundation your business needs.
-            </p>
+            <p className="text-muted-foreground text-lg">From diagnostic audit to fully-operational system in weeks, not months.</p>
           </motion.div>
 
           <div className="relative max-w-5xl mx-auto">
