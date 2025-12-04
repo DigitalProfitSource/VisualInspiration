@@ -58,6 +58,7 @@ export default function Home() {
             SimpleSequence
           </div>
           <div className="hidden md:flex gap-10 text-sm font-medium text-muted-foreground">
+            <a href="/solutions" className="hover:text-primary transition-colors duration-300">Solutions</a>
             <a href="#method" className="hover:text-primary transition-colors duration-300">Method</a>
             <a href="#offers" className="hover:text-primary transition-colors duration-300">Offers</a>
             <a href="#about" className="hover:text-primary transition-colors duration-300">About</a>
