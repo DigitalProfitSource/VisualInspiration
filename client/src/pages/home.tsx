@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
+import { TechTicker } from "@/components/ui/tech-ticker";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 
 const fadeIn = {
@@ -118,6 +119,9 @@ export default function Home() {
           <ChevronDown className="w-6 h-6" />
         </motion.div>
       </section>
+
+      {/* Tech Stack Ticker */}
+      <TechTicker />
 
       {/* What We Solve - Friction Grid */}
       <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative">
