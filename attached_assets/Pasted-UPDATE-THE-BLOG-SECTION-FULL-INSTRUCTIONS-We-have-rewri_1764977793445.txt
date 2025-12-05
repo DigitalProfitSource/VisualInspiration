@@ -1,0 +1,260 @@
+UPDATE THE BLOG SECTION — FULL INSTRUCTIONS
+
+We have rewritten the blog page using a very specific style.
+Use this prompt to replace ALL existing blog content and update the blog system.
+
+⸻
+
+1. BLOG STRATEGY & STYLE (APPLY TO ALL POSTS)
+
+All blog articles must follow this format:
+
+HOOK SECTION (3–4 short paragraphs)
+	•	Written fully in customer pain language
+	•	Use story-style scenarios
+	•	No technical jargon
+	•	Describe real frustrations businesses feel before using AI
+	•	Emotional but concise
+
+INSIGHT SECTION
+	•	1–2 sentences naming the pattern or insight
+	•	Maintain clarity-language, not hype
+	•	This is where our POV as “Operational AI Advisor™” subtly shows up
+
+FRAMEWORK SECTION (4–7 steps)
+	•	Steps must be written in simple clarity-language
+	•	Each step should include 1–2 lines of practical explanation
+	•	Format must be LLM-friendly: short sentences, bullets, clear labels
+
+MINI CASE STUDY
+	•	1–2 sentences showing a concrete “before/after”
+	•	Universal examples (NOT industry-specific)
+
+FAQ SECTION
+	•	3–5 plain-language Q&As
+	•	Designed for LLM extraction
+	•	No promotional language
+
+ABSOLUTELY NO CTAs IN ANY BLOG POST
+	•	Remove all internal CTAs
+	•	Blog content is for LLM indexing and content repurposing only
+
+⸻
+
+2. BLOG INDEX PAGE: UPDATE DESIGN & FUNCTION
+
+Keep the current visual layout, but update:
+	•	Titles → Use the new post titles below
+	•	Excerpts → Show the first 2–3 sentences of the Hook
+	•	Tags → Use categories provided below
+	•	Dates → Keep the example dates provided or use current system defaults
+	•	Ensure each card links cleanly to its full article
+
+Do NOT add any CTA sections on the blog index page.
+
+⸻
+
+3. BLOG ARTICLE TEMPLATE: UPDATE THE COMPONENTS
+
+Modify the article template to support these consistent blocks:
+	•	Hook section (multi-paragraph)
+	•	Insight highlight block
+	•	Numbered step-by-step framework
+	•	Mini case study callout
+	•	FAQ block
+
+Remove any CTA or button that appears in the template.
+
+⸻
+
+4. PUBLISH THESE SIX BLOG POSTS EXACTLY AS WRITTEN BELOW
+
+POST 1 — How to Reduce Operational Drag Using Practical AI
+
+Category: Operations
+Date: January 14, 2025
+
+HOOK:
+The owner of a 20-person service business told me something I hear every week:
+“Why does everything feel harder than it should? We’re busy, but nothing feels smooth.”
+Their team wasn’t lazy. Their tools weren’t bad. But every day felt the same: slow follow-ups, unclear handoffs, piling tasks. Tiny delays stacked until the whole day became heavy.
+They weren’t dealing with incompetence — they were dealing with invisible friction.
+
+INSIGHT:
+AI removes drag only when you know where the drag lives.
+
+FRAMEWORK:
+	1.	Identify repeated tasks draining time.
+	2.	Map the steps exactly as they happen today.
+	3.	Mark steps as manual, semi-manual, or repeatable.
+	4.	Automate predictable steps first.
+	5.	Reduce human involvement in low-value steps.
+
+MINI CASE STUDY:
+One company reduced 40–70 hours/month of admin simply by automating confirmations and reminders.
+
+FAQ:
+	•	What causes operational drag? Repeated manual tasks and unclear steps.
+	•	Where does AI help most? Repetitive workflows.
+	•	Do I need new software? Usually no.
+	•	How fast can drag be reduced? Days for basics, weeks for deeper fixes.
+
+⸻
+
+POST 2 — How to Fix Your Follow-Up System with AI (Without Automating Everything)
+
+Category: Leads
+Date: January 11, 2025
+
+HOOK:
+A business owner once showed me their follow-up system: notebooks, a spreadsheet, a half-finished CRM. They weren’t failing — they were overwhelmed.
+New leads came in faster than anyone could respond. Old leads quietly died. Follow-up depended entirely on whoever was “on it” that week.
+This is one of the most common points where businesses leak money without knowing it.
+
+INSIGHT:
+AI doesn’t replace follow-up — it makes it consistent.
+
+FRAMEWORK:
+	1.	Separate leads into new, warm, dormant.
+	2.	Define the first three touches for each group.
+	3.	Mark where humans add value.
+	4.	Add AI to fill timing gaps.
+	5.	Use AI to notify humans when real conversations matter.
+
+MINI CASE STUDY:
+One contractor increased follow-up completion from 31% to 89% using AI for timing, not tone.
+
+FAQ:
+	•	What should be automated first? First-touch and reminders.
+	•	Will AI sound robotic? Not when AI handles timing, not tone.
+	•	How do I divide human vs AI tasks? Humans handle nuance; AI handles repetition.
+
+⸻
+
+POST 3 — The Simplest Way to Map Your Customer Journey for AI
+
+Category: Systems
+Date: January 9, 2025
+
+HOOK:
+A business came to me drowning in tools — CRM, forms, chat widgets, messy automations.
+Customers felt it too: unanswered forms, double reminders, unclear next steps.
+Nobody truly knew the journey. Everyone assumed someone else did.
+
+INSIGHT:
+AI can only improve what is already clear.
+
+FRAMEWORK:
+	1.	Break the journey into 5 phases.
+	2.	List every touchpoint.
+	3.	Mark each touchpoint by automation level.
+	4.	Identify bottlenecks.
+	5.	Fix the flow before adding AI.
+
+MINI CASE STUDY:
+A medspa cut no-shows by 64% after mapping their journey and adding AI at the right moments.
+
+FAQ:
+	•	Why start with a journey map? It prevents automating the wrong things.
+	•	How long should it be? One page.
+	•	Where does AI fit best? Timing and consistency.
+
+⸻
+
+POST 4 — Where AI Is Actually Useful in Service Businesses Today
+
+Category: AI Adoption
+Date: January 7, 2025
+
+HOOK:
+People talk about AI like it’s magic, but business owners ask something different:
+“Where does AI help me today without breaking my operations?”
+The good news: the answer is simple, and far less dramatic than the hype.
+
+INSIGHT:
+AI works best where work repeats.
+
+FRAMEWORK:
+	1.	Instant responses to new inquiries.
+	2.	Routing requests to the right person.
+	3.	Sending reminders and updates.
+	4.	Qualifying leads with simple questions.
+	5.	Answering repeated internal questions.
+
+MINI CASE STUDY:
+A firm increased qualified intakes by 67% using simple AI-assisted intake questions.
+
+FAQ:
+	•	Is AI better for customers or teams? Both.
+	•	Will AI replace staff? No — it removes busywork.
+	•	Does AI need a perfect system? No — just clarity.
+
+⸻
+
+POST 5 — How to Use AI to Improve Team Communication
+
+Category: Operations
+Date: January 4, 2025
+
+HOOK:
+Most internal mistakes happen not from laziness but from misalignment.
+Teams interpret tasks differently, forget details, or miss messages buried in apps.
+I’ve watched teams argue over things that were never clearly defined.
+
+INSIGHT:
+AI reduces miscommunication by standardizing repetition.
+
+FRAMEWORK:
+	1.	Centralize rules and processes.
+	2.	Turn repeated questions into AI prompts.
+	3.	Use AI to summarize updates.
+	4.	Use AI to notify the right people.
+	5.	Add AI to the weekly team rhythm.
+
+MINI CASE STUDY:
+A 15-person company cut internal mistakes by half using AI summaries and alerts.
+
+FAQ:
+	•	Does AI replace communication? No — it organizes it.
+	•	Where should AI pull from? One central source.
+	•	Does it work for small teams? Even better.
+
+⸻
+
+POST 6 — The 30-Minute Weekly Ops Review That Improves Everything
+
+Category: Management
+Date: January 1, 2025
+
+HOOK:
+Most owners only discover problems when they’ve already exploded.
+Teams don’t escalate early, owners can’t check everything, and issues “fix themselves” (they don’t).
+Small operational problems become revenue problems fast.
+
+INSIGHT:
+AI makes a weekly review fast and predictable.
+
+FRAMEWORK:
+	1.	Pull last week’s data into one place.
+	2.	Let AI summarize key issues.
+	3.	Identify the top 3 priorities.
+	4.	Assign owners.
+	5.	Let AI track changes next week.
+
+MINI CASE STUDY:
+One business caught months of missed follow-up in a single 30-minute session because AI surfaced the pattern.
+
+FAQ:
+	•	Why weekly? Best rhythm for ops.
+	•	What to review first? Handoffs and follow-up.
+	•	What does AI do? Highlights patterns humans miss.
+
+⸻
+
+5. FOOTER UPDATE
+
+Replace the “Operational Playbook” link with a simple “Blog” link under Navigation.
+
+⸻
+
+END OF PROMPT — EXECUTE ALL CHANGES ABOVE
