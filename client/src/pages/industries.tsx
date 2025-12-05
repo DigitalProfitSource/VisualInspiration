@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, useSpring, useMotionValue } from "framer-motion";
 import { 
   Home, 
   Scale, 
@@ -10,7 +10,60 @@ import {
 import { Button } from "@/components/ui/button";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
+
+function AnimatedCounter({ value, className }: { value: string; className?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: false, margin: "-50px" });
+  const [displayValue, setDisplayValue] = useState(value);
+  
+  useEffect(() => {
+    if (!isInView) {
+      setDisplayValue(value.replace(/[\d.]+/, "0"));
+      return;
+    }
+    
+    const match = value.match(/^([+-]?)(\d+\.?\d*)(.*)/);
+    if (!match) {
+      setDisplayValue(value);
+      return;
+    }
+    
+    const [, prefix, numStr, suffix] = match;
+    const targetNum = parseFloat(numStr);
+    const hasDecimal = numStr.includes(".");
+    const decimalPlaces = hasDecimal ? (numStr.split(".")[1]?.length || 0) : 0;
+    
+    const duration = 1500;
+    const steps = 60;
+    const stepDuration = duration / steps;
+    let currentStep = 0;
+    
+    const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+    
+    const interval = setInterval(() => {
+      currentStep++;
+      const progress = easeOutQuart(currentStep / steps);
+      const currentNum = targetNum * progress;
+      
+      if (currentStep >= steps) {
+        setDisplayValue(value);
+        clearInterval(interval);
+      } else {
+        const formatted = hasDecimal ? currentNum.toFixed(decimalPlaces) : Math.round(currentNum).toString();
+        setDisplayValue(`${prefix}${formatted}${suffix}`);
+      }
+    }, stepDuration);
+    
+    return () => clearInterval(interval);
+  }, [isInView, value]);
+  
+  return (
+    <span ref={ref} className={className}>
+      {displayValue}
+    </span>
+  );
+}
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -252,7 +305,7 @@ function IndustrySection({ industry, index }: { industry: Industry; index: numbe
                     transition={{ duration: 0.5, delay: i * 0.15 }}
                   >
                     <div className={`${metricSizeClasses[industry.cardSize]} font-display font-semibold text-primary mb-2`}>
-                      {metric.value}
+                      <AnimatedCounter value={metric.value} />
                     </div>
                     <div className="text-sm text-slate-400 leading-relaxed">
                       {metric.label}
