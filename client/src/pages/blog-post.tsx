@@ -1,11 +1,9 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Calendar, Tag, Lightbulb } from "lucide-react";
+import { ArrowLeft, Calendar, Lightbulb, TrendingUp, HelpCircle } from "lucide-react";
 import { Footer } from "@/components/footer";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
-import { ContactFormDialog } from "@/components/contact-form-dialog";
-import { Button } from "@/components/ui/button";
 import { useParams } from "wouter";
-import { blogPosts, BlogPost } from "./blog";
+import { blogPosts } from "./blog";
 
 const categoryColors: Record<string, string> = {
   "Operations": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
@@ -57,16 +55,6 @@ export default function BlogPostPage() {
             <a href="/offers" className="text-sm text-muted-foreground hover:text-white transition-colors">Offers</a>
             <a href="/blog" className="text-sm text-white">Blog</a>
           </nav>
-          <ContactFormDialog
-            source="blog-post-header"
-            title="Get Started"
-            description="Tell us about your business and we'll help you find the right solution."
-            trigger={
-              <Button variant="outline" className="h-9 border-white/10 hover:bg-white/5 hover:text-white text-xs font-medium rounded-full px-6 transition-all duration-300 hover:border-primary/50">
-                Get Started
-              </Button>
-            }
-          />
         </div>
       </header>
 
@@ -100,13 +88,9 @@ export default function BlogPostPage() {
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium tracking-tight mb-8 leading-[1.1]">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium tracking-tight leading-[1.1]">
               {post.title}
             </h1>
-            
-            <p className="text-xl text-slate-400 leading-relaxed">
-              {post.excerpt}
-            </p>
           </motion.div>
         </div>
       </section>
@@ -120,78 +104,100 @@ export default function BlogPostPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="max-w-3xl mx-auto"
           >
-            {/* Introduction - uses excerpt as fallback if no intro */}
-            <div className="mb-12 p-6 rounded-xl border border-white/5 bg-white/[0.02]">
-              <h2 className="text-lg font-display font-medium text-white mb-3">Introduction</h2>
-              <p className="text-slate-300 leading-relaxed">
-                {post.content.intro || post.excerpt}
-              </p>
-            </div>
-
-            {/* Content Sections */}
-            <div className="space-y-10">
-              {post.content.sections.map((section, index) => (
-                <div key={index} className="group">
-                  <h2 className="text-2xl font-display font-medium text-white mb-4 flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary mt-3 flex-shrink-0" />
-                    {section.heading}
-                  </h2>
-                  <div className="pl-4 space-y-3">
-                    {section.content.map((paragraph, pIndex) => (
-                      <p 
-                        key={pIndex} 
-                        className={`leading-relaxed ${
-                          paragraph.startsWith('•') 
-                            ? 'text-slate-300 pl-4' 
-                            : 'text-slate-400'
-                        }`}
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-                </div>
+            {/* Hook Section */}
+            <div className="mb-16 space-y-6">
+              {post.hook.map((paragraph, index) => (
+                <p 
+                  key={index} 
+                  className={`text-lg leading-relaxed ${
+                    paragraph.startsWith('"') 
+                      ? 'text-white italic pl-4 border-l-2 border-primary/40' 
+                      : 'text-slate-300'
+                  }`}
+                >
+                  {paragraph}
+                </p>
               ))}
             </div>
 
-            {/* Key Takeaways */}
-            <div className="mt-16 p-8 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-transparent relative overflow-hidden">
+            {/* Insight Highlight Block */}
+            <div className="mb-16 p-8 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-transparent relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl rounded-full" />
               <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                     <Lightbulb className="w-5 h-5 text-primary" />
                   </div>
-                  <h3 className="text-xl font-display font-medium text-white">Key Takeaways</h3>
+                  <span className="text-xs font-mono text-primary uppercase tracking-wider">Key Insight</span>
                 </div>
-                <ul className="space-y-3">
-                  {post.content.keyTakeaways.map((takeaway, index) => (
-                    <li key={index} className="flex items-start gap-3 text-slate-300 leading-relaxed">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2.5 flex-shrink-0" />
-                      {takeaway}
-                    </li>
-                  ))}
-                </ul>
+                <p className="text-xl md:text-2xl font-display font-medium text-white leading-relaxed">
+                  {post.insight}
+                </p>
               </div>
             </div>
 
-            {/* CTA */}
-            <div className="mt-16 text-center">
-              <ContactFormDialog
-                source={`blog-post-${post.slug}`}
-                title="Book a Diagnostic"
-                description="Start with a simple, non-technical assessment and get a clear view of where AI can improve your business today."
-                trigger={
-                  <Button 
-                    size="lg"
-                    className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
-                    data-testid="button-blog-post-cta"
+            {/* Framework Section */}
+            <div className="mb-16">
+              <h2 className="text-2xl font-display font-medium text-white mb-8 flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                Framework
+              </h2>
+              <div className="space-y-4">
+                {post.framework.map((item) => (
+                  <div 
+                    key={item.step}
+                    className="flex gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-colors"
                   >
-                    Book a Diagnostic
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                }
-              />
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-mono font-medium text-primary">{item.step}</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-white font-medium">{item.title}</p>
+                      {item.description && (
+                        <p className="text-slate-400 text-sm mt-1">{item.description}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mini Case Study Callout */}
+            <div className="mb-16 p-6 rounded-xl border border-emerald-500/20 bg-emerald-500/5 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 blur-2xl rounded-full" />
+              <div className="relative z-10 flex gap-4">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
+                  <TrendingUp className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-2 block">Real Result</span>
+                  <p className="text-slate-200 leading-relaxed">
+                    {post.miniCaseStudy}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* FAQ Block */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-display font-medium text-white mb-8 flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                Frequently Asked Questions
+              </h2>
+              <div className="space-y-4">
+                {post.faq.map((item, index) => (
+                  <div 
+                    key={index}
+                    className="p-5 rounded-xl border border-white/5 bg-white/[0.02]"
+                  >
+                    <div className="flex items-start gap-3 mb-2">
+                      <HelpCircle className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
+                      <h3 className="text-white font-medium">{item.question}</h3>
+                    </div>
+                    <p className="text-slate-400 pl-7">{item.answer}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.article>
         </div>
