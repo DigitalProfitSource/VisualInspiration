@@ -14,6 +14,7 @@ import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { AnimatedMetric } from "@/components/ui/slot-counter";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
+import { Footer } from "@/components/footer";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 
@@ -758,24 +759,7 @@ export default function Home() {
         </div>
       </section>
       {/* Footer */}
-      <footer className="py-12 border-t border-white/5 text-sm bg-black">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-center md:text-left">
-              <p className="text-white font-medium mb-1">Practical AI for Service Businesses</p>
-              <p className="text-zinc-500">Operationally grounded. Revenue-relevant. No hype.</p>
-            </div>
-            <div className="flex gap-6 text-zinc-600">
-              <a href="#" className="hover:text-zinc-400 transition-colors">Privacy</a>
-              <a href="#" className="hover:text-zinc-400 transition-colors">Terms</a>
-              <a href="#" className="hover:text-zinc-400 transition-colors">Contact</a>
-            </div>
-          </div>
-          <div className="mt-8 pt-6 border-t border-white/5 text-center text-zinc-600">
-            <p>&copy; 2025 SimpleSequence. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
