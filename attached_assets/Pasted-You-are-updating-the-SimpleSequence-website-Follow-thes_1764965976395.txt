@@ -1,0 +1,299 @@
+You are updating the SimpleSequence website.
+Follow these instructions exactly:
+
+⸻
+
+1️⃣ Update the Global Footer (Use This Copy Exactly)
+
+Rebuild the global footer using the text below.
+You have full creative control over layout, spacing, iconography, and visual hierarchy, but do not change the copy unless required for formatting.
+
+SimpleSequence
+
+Practical AI for Service Businesses
+Clarity-first systems. Smarter workflows. Better decisions.
+
+⸻
+
+Navigation
+
+• Home
+• Solutions
+• Industries
+• Process
+• Offers
+• About
+• Blog
+
+⸻
+
+Get Clarity
+
+Book a Diagnostic →
+Start with a simple, non-technical assessment and get a clear view of where AI can improve your business today.
+
+⸻
+
+Company
+
+• Contact
+• Privacy Policy
+• Terms
+
+⸻
+
+Bottom Line
+
+© SimpleSequence.ai  Practical AI, thoughtfully applied.
+
+⸻
+
+2️⃣ Create a New “Blog” Page
+
+You have full creative control of layout, typography, spacing, and component structure.
+Do NOT add stock images or irrelevant visuals.
+
+Blog Page Requirements:
+
+Top Section
+• Page Title: “Insights & How-To Guides”
+• Subline: “Straightforward, practical guidance for applying AI to everyday operations. No hype — just clarity.”
+
+Blog Index Layout
+• Grid or list (your choice)
+• Show: title, short excerpt, category tag, publish date
+• Clicking a post opens a dedicated blog-post page
+
+Blog Post Template
+Each post page must include:
+• Title
+• Publish date
+• Category
+• Intro summary
+• H2/H3 hierarchy
+• Bullets
+• Key takeaways section
+• Optional CTA at the bottom (“Book a Diagnostic →”)
+
+⸻
+
+3️⃣ Add These First 6 Blog Posts (Use EXACT COPY)
+
+⸻
+
+POST 1
+
+Title: How to Reduce Operational Drag Using Practical AI
+
+Category: Operations
+Excerpt: Most service businesses lose 30–90 hours a month to avoidable manual work. Here’s how to identify and remove the bottlenecks.
+
+Body:
+Introduction
+Operational drag isn’t caused by bad employees — it’s caused by unclear workflows. This guide shows you where AI actually makes a difference today (and where it doesn’t).
+
+1. Identify your “manual loops”
+
+These are tasks repeated daily or weekly that follow the same steps each time.
+Examples: intake, follow-up, scheduling, updates, qualification.
+
+2. Determine which loops require judgment
+
+AI is great at structured tasks, not ambiguous ones.
+Mark loops as:
+• admin
+• communication
+• decision-support
+
+3. Deploy AI only on structured, repeatable sequences
+
+This is where real ROI appears — not in random experiments.
+
+4. Track before→after impact
+
+Measure:
+• hours saved
+• response time improvement
+• follow-up completion
+• fewer customer complaints
+
+Key Takeaways
+AI removes bottlenecks only when workflows are clear. Fix clarity first, then apply AI deliberately.
+
+⸻
+
+POST 2
+
+Title: How to Fix Your Follow-Up System with AI (Without Automating Everything)
+
+Category: Leads
+Excerpt: Follow-up creates more revenue than lead generation — but most businesses fail at it. Here’s a practical fix.
+
+Body:
+Introduction
+You don’t need “AI agents” to improve follow-up. You need a clean sequence that AI can support.
+
+1. Map the actual follow-up steps
+
+No tools. No apps. Just the real flow:
+Inquiry → first reply → qualification → offer → reminder → close → review request.
+
+2. Add AI only where predictable
+
+Examples:
+• confirming inquiries
+• sending reminders
+• summarizing customer notes
+• detecting stalled leads
+
+3. Keep humans where nuance matters
+
+Offers, negotiation, complex questions — human only.
+
+4. Measure “follow-up completion rate”
+
+This metric determines revenue predictability.
+
+Key Takeaways
+AI boosts follow-up consistency, but the sequence must be clear first.
+
+⸻
+
+POST 3
+
+Title: The Simplest Way to Map Your Customer Journey for AI
+
+Category: Systems
+Excerpt: Before AI can help, your business needs a clear, step-by-step customer journey. Here’s the simplest method.
+
+Body:
+Introduction
+AI can’t fix chaos. It can only enhance clarity. This framework gives you that clarity.
+
+1. Break the journey into 5 phases
+
+Awareness → Inquiry → Conversion → Delivery → Retention
+
+2. List every touchpoint
+
+Forms, emails, calls, texts, tasks, reminders.
+
+3. Mark each touchpoint as:
+
+• Manual
+• Semi-automated
+• Fully automated
+• AI-supported
+• AI-ready (but not implemented)
+
+4. Identify bottlenecks
+
+Common ones: slow replies, unclear next steps, manual routing, inconsistent updates.
+
+Key Takeaways
+A clean journey map is the foundation of all operational AI work.
+
+⸻
+
+POST 4
+
+Title: Where AI Is Actually Useful in Service Businesses Today
+
+Category: AI Adoption
+Excerpt: Here are the use cases producing real results — and the ones still overhyped.
+
+Body:
+Introduction
+AI can reduce friction, but it must be used where the patterns are stable.
+
+Useful Today
+
+• Intake confirmation
+• Lead scoring
+• Customer updates
+• Scheduling assistance
+• SOP generation
+• Message drafting
+• Internal summaries
+
+Not Useful Yet
+
+• Full conversation replacement
+• Emotional handling
+• Complex troubleshooting
+• Long-form negotiation
+• Anything requiring deep context
+
+Key Takeaways
+Practical AI is narrow, structured, and specific — not general intelligence.
+
+⸻
+
+POST 5
+
+Title: How to Use AI to Improve Team Communication
+
+Category: Operations
+Excerpt: Most internal mistakes happen because teams don’t have a shared understanding. AI can fix that.
+
+Body:
+
+1. Use AI to summarize calls, notes, and updates
+
+Everyone stays aligned.
+
+2. Use AI to create SOP drafts
+
+Then humans refine them.
+
+3. Use AI to detect missing info
+
+AI can tell you when something needs clarification.
+
+Key Takeaways
+AI enhances alignment — but not leadership.
+
+⸻
+
+POST 6
+
+Title: The 30-Minute Weekly Ops Review That Improves Everything
+
+Category: Management
+Excerpt: This simple habit makes AI adoption easier and operations more predictable.
+
+Body:
+
+Step 1: List last week’s failures or friction
+
+No blaming. Just patterns.
+
+Step 2: Map each issue to a sequence
+
+Intake, follow-up, scheduling, handoffs, etc.
+
+Step 3: Decide whether the fix is:
+
+• clarity
+• SOP
+• automation
+• AI support
+• human training
+
+Step 4: Track improvements weekly
+
+This builds momentum.
+
+Key Takeaways
+AI works best in businesses that review their ops regularly.
+
+⸻
+
+4️⃣ Implementation Instructions (Builder)
+
+• Add all 6 posts to the Blog page automatically.
+• Ensure each post links to its own dedicated article page.
+• Ensure the Blog page is reachable globally through the footer.
+• Keep everything fully aligned with SimpleSequence brand voice.
+• Maintain consistent structure and spacing across all posts.
+
