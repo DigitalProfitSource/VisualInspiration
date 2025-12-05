@@ -87,12 +87,16 @@ export default function Home() {
               Operational AI Advisor™
             </motion.div>
             
-            <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl lg:text-8xl font-display font-medium tracking-tight mb-8 leading-[1.1] text-balance max-w-5xl mx-auto">
-              Stop Guessing How AI <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Actually Fits Your Business</span>
+            <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl lg:text-8xl font-display font-medium tracking-tight mb-6 leading-[1.1] text-balance max-w-5xl mx-auto">
+              Practical AI for <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Service Businesses</span>
             </motion.h1>
+
+            <motion.p variants={fadeIn} className="text-lg text-primary/80 mb-6 font-medium">
+              Operationally grounded. Revenue-relevant. No hype — just clarity and real-world leverage.
+            </motion.p>
             
             <motion.p variants={fadeIn} className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              We give service businesses the exact sequences and clarity to turn AI into calm, predictable leverage — without chaos, new headcount, or costly mistakes.
+              We help service businesses understand exactly where AI fits, what to ignore, and which sequences create actual operational lift. No chaos, no shiny objects, no guessing.
             </motion.p>
             
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-5 items-center justify-center">
