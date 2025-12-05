@@ -50,25 +50,25 @@ const phases: Phase[] = [
     number: 1,
     icon: Search,
     title: "Diagnostic & Audit",
-    description: "We analyze your operational reality and map the exact sequences, bottlenecks, and AI opportunities before anything is built.",
+    description: "Before we fix anything, we find out what's actually broken. We map your workflows, identify where leads slip away, and uncover the friction your team feels every day.",
     leftColumn: {
       title: "What We Analyze",
       items: [
-        "Lead flow paths and conversion points",
-        "Communication touchpoints and follow-up gaps",
-        "Digital presence and authority signals",
-        "Operational friction points and manual processes",
-        "AI readiness and automation opportunities"
+        "Where leads come in and where they disappear",
+        "Follow-up gaps that cost you business",
+        "Manual processes draining your team's time",
+        "Friction points you feel but can't quite name",
+        "Where AI could help — and where it can't"
       ]
     },
     rightColumn: {
       title: "What You Receive",
       items: [
-        "Operational Clarity Score with bottleneck visualization",
-        "Lead leakage assessment and revenue impact",
-        "Prioritized improvement roadmap",
-        "30-day Quick-Win Action Plan",
-        "System architecture blueprint (clarity only; no implementation)"
+        "Operational Clarity Score showing exactly where you're stuck",
+        "Lead leakage report with real revenue impact",
+        "Prioritized roadmap of what to fix first",
+        "30-day Quick-Win Action Plan to see fast results",
+        "System architecture blueprint for long-term clarity"
       ]
     },
     timeline: "5–7 business days from kickoff to final diagnostic report + clarity blueprint."
@@ -77,25 +77,25 @@ const phases: Phase[] = [
     number: 2,
     icon: Wrench,
     title: "Build & Deploy",
-    description: "For clients who choose to move forward beyond the Diagnostic, we architect and deploy the foundational operational system outlined in the blueprint.",
+    description: "Once you have clarity, we build. We deploy the systems you need — integrated with what you already use — so your team can finally stop firefighting and start executing.",
     leftColumn: {
       title: "Our Approach",
       items: [
-        "Modular implementation in priority order",
-        "Integration with existing tools (no forced replacements)",
-        "Custom workflow setup aligned to your operations",
-        "AI enhancements for qualifying and nurturing",
-        "Staff training and clarity documentation"
+        "We build in priority order — quick wins first",
+        "Works with your existing tools (no forced replacements)",
+        "Custom workflows that match how you actually operate",
+        "AI that qualifies and nurtures for you",
+        "Training so your team feels confident, not confused"
       ]
     },
     rightColumn: {
       title: "Communication Cadence",
       items: [
-        "Weekly progress updates",
-        "Milestone reviews and approvals",
-        "Direct access to development environment",
-        "Testing and feedback loops",
-        "Final walkthrough and handoff"
+        "Weekly updates so you always know what's happening",
+        "Milestone reviews for your input and approval",
+        "Direct access so you can see progress in real time",
+        "Testing loops to catch issues before go-live",
+        "Full walkthrough and handoff when we're done"
       ]
     },
     timeline: "3–6 weeks depending on package tier and system complexity."
@@ -104,25 +104,25 @@ const phases: Phase[] = [
     number: 3,
     icon: TrendingUp,
     title: "Optimize & Scale",
-    description: "We monitor performance, refine workflows, and guide your AI adoption as your business grows.",
+    description: "Your business evolves — your systems should too. We monitor what's working, fix what isn't, and help you scale without adding more chaos.",
     leftColumn: {
       title: "Included Review Cycles",
       items: [
-        "Performance tracking and KPI reporting",
-        "Bottleneck identification and resolution",
-        "Workflow optimization based on real data",
-        "Messaging and conversion refinement",
-        "Priority recommendations for next improvements"
+        "Performance tracking so you see what's improving",
+        "Bottleneck fixes as new friction points emerge",
+        "Workflow tuning based on real usage data",
+        "Conversion improvements as you learn more",
+        "Recommendations for what to tackle next"
       ]
     },
     rightColumn: {
       title: "Optional Ongoing Support",
       items: [
-        "Monthly performance insights",
-        "Continuous A/B testing",
-        "New feature and workflow refinement",
-        "Strategic operations consulting",
-        "Priority support for urgent issues"
+        "Monthly insights so you stay ahead",
+        "A/B testing to continuously improve",
+        "New workflows as your business grows",
+        "Strategic consulting when you need guidance",
+        "Priority support when something breaks"
       ]
     },
     timeline: "Review cycles at 30, 60, and 90 days post-launch. Ongoing optimization available as a monthly retainer."
@@ -133,60 +133,60 @@ const principles = [
   {
     icon: Microscope,
     title: "Evidence-Based",
-    description: "Every recommendation comes from forensic analysis — not assumptions."
+    description: "We don't guess — we diagnose. Every recommendation comes from looking at your actual data and workflows."
   },
   {
     icon: Target,
     title: "Outcome-Focused",
-    description: "We optimize for clarity, decisions, and revenue — not tools or feature count."
+    description: "We're not here to sell you tools. We're here to help you make decisions that move the needle."
   },
   {
     icon: RefreshCw,
     title: "Adaptive",
-    description: "Systems evolve with your business. Nothing locks you into rigid workflows."
+    description: "Your business changes. Your systems should too. Nothing we build locks you into rigid workflows."
   }
 ];
 
 const faqs = [
   {
-    question: "How long does a typical project take from start to finish?",
-    answer: "Diagnostic: 5–7 business days. Build & Deploy: 3–6 weeks depending on complexity. Review cycles: 30, 60, 90 days."
+    question: "How long until I see results?",
+    answer: "Diagnostic: 5–7 business days to get your clarity report. Build: 3–6 weeks to deploy. Many clients see quick wins within the first 30 days."
   },
   {
     question: "What do I need to provide to get started?",
-    answer: "A short questionnaire, view-only access to your tools, and one clarity session. That's it."
+    answer: "Just a short questionnaire, view-only access to your tools, and one clarity session. We handle the rest."
   },
   {
-    question: "Will my business operations be disrupted during implementation?",
-    answer: "No. All work happens in parallel with your existing workflow. No downtime."
+    question: "Will this disrupt my day-to-day operations?",
+    answer: "No. Everything happens alongside your current workflow. No downtime, no chaos."
   },
   {
-    question: "What happens if I need changes after the system is deployed?",
-    answer: "You have built-in review cycles plus optional ongoing optimization for continuous improvement."
+    question: "What if I need changes after the system is live?",
+    answer: "That's expected. You get built-in review cycles at 30, 60, and 90 days — plus optional ongoing support."
   },
   {
-    question: "Do you integrate with tools I already use?",
-    answer: "Yes. We optimize your existing stack unless something cannot support the architecture."
+    question: "Do I have to replace the tools I'm already using?",
+    answer: "Almost never. We work with what you have — unless something truly can't support the architecture."
   },
   {
-    question: "What's included in the Diagnostic vs. Build phase?",
-    answer: "Diagnostic = clarity only. Build = actual workflow and system deployment."
+    question: "What's the difference between Diagnostic and Build?",
+    answer: "Diagnostic gives you clarity on what's broken and what to do. Build actually deploys the fix."
   },
   {
     question: "How do you measure success?",
-    answer: "Reduced friction, faster response times, cleaner handoffs, repeatable workflows, and conversion-linked improvements."
+    answer: "Less friction, faster response times, smoother handoffs, and measurable improvements in conversion and follow-up."
   },
   {
-    question: "What if I'm not ready for a full system?",
-    answer: "Start with the Diagnostic + AI Clarity Blueprint. You can implement it yourself or return when ready."
+    question: "What if I'm not ready for a full build?",
+    answer: "Start with just the Diagnostic + Blueprint. You can implement it yourself or come back when you're ready."
   },
   {
-    question: "Do you provide training for my team?",
-    answer: "Yes. Every Build engagement includes training and documentation."
+    question: "Will my team be trained on the new systems?",
+    answer: "Yes. Every Build engagement includes training and documentation so your team feels confident."
   },
   {
-    question: "What industries do you specialize in?",
-    answer: "Any service business where speed, follow-up, and operational clarity drive revenue."
+    question: "What kinds of businesses do you work with?",
+    answer: "Any service business where speed, follow-up, and operational clarity make the difference between winning and losing."
   }
 ];
 
@@ -330,7 +330,7 @@ export default function Process() {
               How We <span className="text-primary">Work</span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto">
-              A three-phase methodology that transforms operational confusion into clarity, structure, and strategic AI readiness. Zero guesswork. Maximum insight.
+              You're tired of guessing. We're here to give you the clarity you need — a structured process that shows exactly where your operations break down and how to fix them.
             </p>
           </motion.div>
         </div>
@@ -363,7 +363,7 @@ export default function Process() {
               Why This <span className="text-primary">Methodology Works</span>
             </h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Because clarity beats complexity. We architect solutions tailored to your operational reality.
+              Because we focus on what matters: understanding your reality, fixing what's broken, and building systems that grow with you.
             </p>
           </motion.div>
 
@@ -405,7 +405,7 @@ export default function Process() {
               Frequently Asked <span className="text-primary">Questions</span>
             </h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Everything you need to know about working with SimpleSequence.
+              Honest answers to the questions business owners ask before getting started.
             </p>
           </motion.div>
 

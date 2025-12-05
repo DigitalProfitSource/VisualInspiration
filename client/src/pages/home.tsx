@@ -96,7 +96,7 @@ export default function Home() {
             </motion.p>
             
             <motion.p variants={fadeIn} className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              We help service businesses understand exactly where AI fits, what to ignore, and which sequences create actual operational lift. No chaos, no shiny objects, no guessing.
+              If you're tired of leads slipping, follow-up failing, and guessing where AI actually fits — we bring the clarity you need to fix what's broken and grow without chaos.
             </motion.p>
             
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-5 items-center justify-center">
@@ -128,7 +128,7 @@ export default function Home() {
                 }
               />
               <p className="text-sm text-muted-foreground/80">
-                Fix lead flow, follow-up, and the operational drag limiting your growth.
+                Stop losing leads. Stop guessing. Start with clarity.
               </p>
             </motion.div>
           </motion.div>
@@ -156,18 +156,18 @@ export default function Home() {
             transition={fadeInUpViewport.transition}
             className="mb-20 text-center max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl md:text-5xl font-medium mb-6 text-[#f8fcfc]">The unseen friction slowing your business down.</h2>
-            <p className="text-muted-foreground text-lg">The universal operational patterns holding service businesses back — long before AI enters the picture.</p>
+            <h2 className="text-3xl md:text-5xl font-medium mb-6 text-[#f8fcfc]">Why things keep falling through the cracks.</h2>
+            <p className="text-muted-foreground text-lg">These are the operational patterns that drain your energy and kill your margins — usually invisible until you map them.</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { title: "Slow Lead Response", desc: "Manual intake slows down response speed and kills high-intent demand.", icon: Snail },
-              { title: "Manual Follow-Up Collapse", desc: "Human-dependent follow-up breaks at scale, leaving revenue on the table.", icon: TriangleAlert },
-              { title: "Disconnected Systems", desc: "Your tools don't talk — your team becomes the glue holding everything together.", icon: Unplug },
-              { title: "People-Dependent Workflows", desc: "If key people get tired, busy, or leave… your entire operation slows.", icon: FlagOff },
-              { title: "Misplaced AI Efforts", desc: "Businesses use AI tools in the wrong places — gaining novelty instead of leverage.", icon: CloudOff },
-              { title: "Invisible Operational Drag", desc: "Friction compounds daily, eating margins, straining staff, and reducing speed.", icon: Frown }
+              { title: "Slow Lead Response", desc: "By the time you call back, the lead is already talking to someone else.", icon: Snail },
+              { title: "Follow-Up That Forgets", desc: "Your team means well, but things slip. Leads go cold. Revenue disappears.", icon: TriangleAlert },
+              { title: "Systems That Don't Talk", desc: "Your tools are scattered. Your team fills the gaps manually. It's exhausting.", icon: Unplug },
+              { title: "Too Dependent on People", desc: "When key staff get busy or leave, the whole operation grinds down.", icon: FlagOff },
+              { title: "AI in the Wrong Places", desc: "You've tried tools — but nothing sticks because it wasn't built for your workflow.", icon: CloudOff },
+              { title: "Invisible Daily Drag", desc: "Small friction points compound into big problems: stress, churn, and shrinking margins.", icon: Frown }
             ].map((item, i) => (
               <motion.div 
                 key={i}
@@ -211,7 +211,7 @@ export default function Home() {
                 We Align Your Entire Customer Journey Into One <span className="text-primary">Intelligent Flow.</span>
               </h2>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                SimpleSequence clarifies how every touchpoint — human, system, or AI — should work together so your business runs smoother, responds faster, and scales with less effort.
+                Instead of scattered tools and manual workarounds, you get a clear map of how people, systems, and AI should work together — so your business runs smoother and scales without adding headcount.
               </p>
             </div>
 
@@ -232,7 +232,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Lead Capture Architecture</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">
-                    Turn anonymous traffic into structured opportunities — without rebuilding your website.
+                    Stop losing visitors. Turn traffic into captured leads without rebuilding your entire website.
                   </p>
                 </motion.div>
 
@@ -249,7 +249,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Operational Backbone Design</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">
-                    A clear map showing how your systems, communication layers, and AI opportunities work together without adding complexity.
+                    Get a clear blueprint of how your systems should connect — so your team stops being the glue.
                   </p>
                 </motion.div>
               </div>
@@ -269,7 +269,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Follow-Up Clarity Engine</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">
-                    Sequence-by-sequence clarity that ensures every lead receives timely, consistent engagement — human or AI-assisted.
+                    No more leads going cold because someone forgot. Consistent follow-up that actually happens.
                   </p>
                 </motion.div>
 
@@ -286,7 +286,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">AI-Ready Front Desk Layer</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">
-                    Practical guidance on where AI can support calls, routing, qualification, and booking — without replacing your team.
+                    Know exactly where AI can help with calls, routing, and qualification — and where your team still needs to lead.
                   </p>
                   <div className="flex gap-3 mt-4">
                     <span className="text-xs font-mono text-primary/70 px-3 py-1 rounded-full bg-primary/5 border border-primary/10">Strategic Clarity</span>
@@ -347,7 +347,7 @@ export default function Home() {
           >
             <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block">How We Deploy</span>
             <h2 className="text-4xl md:text-5xl font-medium mb-6">The SimpleSequence Method</h2>
-            <p className="text-muted-foreground text-lg">From diagnostic audit to fully operational clarity — in weeks, not months.</p>
+            <p className="text-muted-foreground text-lg">A clear, structured process that moves you from confusion to clarity — in weeks, not months.</p>
           </motion.div>
 
           <div className="relative max-w-5xl mx-auto">
@@ -356,10 +356,10 @@ export default function Home() {
 
             <div className="space-y-32 relative z-10">
               {[
-                { step: "01", title: "Diagnose Friction", desc: "Find exactly where operations break down and value leaks.", icon: Stethoscope },
-                { step: "02", title: "Map Sequences", desc: "Document the critical paths that drive revenue and remove ambiguity.", icon: Map },
-                { step: "03", title: "Locate Leverage", desc: "Pinpoint the touchpoints where AI delivers actual operational lift — not novelty.", icon: Target },
-                { step: "04", title: "Architect the Flow", desc: "Design the intelligent journey that aligns people, systems, and AI.", icon: Blocks }
+                { step: "01", title: "Diagnose Friction", desc: "We find exactly where things break down — the hidden drag you've been feeling but couldn't name.", icon: Stethoscope },
+                { step: "02", title: "Map Sequences", desc: "We document the workflows that actually drive revenue and expose what's unclear or broken.", icon: Map },
+                { step: "03", title: "Locate Leverage", desc: "We identify where AI creates real lift — not shiny distractions, but genuine operational improvement.", icon: Target },
+                { step: "04", title: "Architect the Flow", desc: "We design the system that aligns your people, tools, and AI into one intelligent flow.", icon: Blocks }
               ].map((item, i) => (
                 <motion.div 
                   key={i}
@@ -426,7 +426,7 @@ export default function Home() {
               </div>
               <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight">The AI Clarity Assessment™</h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                A rapid operational assessment that reveals where lead flow breaks, where follow-up collapses, and where manual loops create drag. Delivered with an Executive AI Analysis.
+                A quick assessment that reveals where you're losing leads, where follow-up breaks down, and where your team is stuck doing work that should be automated. Delivered with an Executive AI Analysis.
               </p>
               <p className="text-lg text-primary/80 font-medium mb-10">
                 No fluff. No hype. Just practical insight.

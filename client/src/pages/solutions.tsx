@@ -40,7 +40,7 @@ const solutions = [
   {
     number: "01",
     title: "Customer-Ready Website Architecture",
-    subtitle: "Your website is no longer a brochure — it's a behavioral intake layer that shapes how leads flow into your system.",
+    subtitle: "Your website is no longer a brochure — it's a behavioral intake layer that captures intent instead of letting visitors disappear.",
     icon: Globe,
     clarifies: [
       "How your site should capture intent at different stages",
@@ -58,7 +58,7 @@ const solutions = [
   {
     number: "02",
     title: "CRM Pipeline Architecture",
-    subtitle: "A blueprint showing how every opportunity should be tracked, organized, and advanced — before any automation exists.",
+    subtitle: "A blueprint showing how every opportunity should be tracked and advanced — so nothing falls through the cracks.",
     icon: Database,
     clarifies: [
       "Ideal pipeline stages for the business",
@@ -95,7 +95,7 @@ const solutions = [
   {
     number: "04",
     title: "Follow-Up Clarity Protocols",
-    subtitle: "Before automation exists, you need the rules for consistent follow-up.",
+    subtitle: "The rules for consistent follow-up — so leads stop going cold and your team stops guessing what to do next.",
     icon: Zap,
     clarifies: [
       "Follow-up timing standards",
@@ -114,7 +114,7 @@ const solutions = [
   {
     number: "05",
     title: "Lead Reactivation Framework",
-    subtitle: "Your database contains hidden revenue — if you know how to activate it.",
+    subtitle: "Your database contains hidden revenue — old leads you've been ignoring that could become real opportunities.",
     icon: RefreshCw,
     clarifies: [
       "Which cold leads are worth re-engaging",
@@ -230,12 +230,12 @@ export default function Solutions() {
               The SimpleSequence <span className="text-primary">Operational Stack</span>
             </h1>
             <p className="text-xl text-slate-400 leading-relaxed mb-8 max-w-3xl mx-auto">
-              Eight interconnected clarity frameworks that show you exactly how your business should run — across lead capture, follow-up, operations, and AI adoption.
+              Eight interconnected clarity frameworks that show you exactly how your business should run — so you stop guessing and start scaling with confidence.
             </p>
             <div className="p-6 rounded-2xl border border-white/10 bg-white/[0.02] max-w-2xl mx-auto">
               <p className="text-slate-300 leading-relaxed">
                 <span className="text-white font-medium">This is not software.</span><br />
-                This is the architecture that makes your software, team, and future AI tools actually work together.
+                This is the architecture that makes your software, team, and AI investments actually work together — instead of creating more complexity.
               </p>
             </div>
           </motion.div>
@@ -341,7 +341,7 @@ export default function Solutions() {
               Ready for <span className="text-primary">operational clarity</span>?
             </h2>
             <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
-              Start with a free assessment to see where your business stands across these eight critical frameworks.
+              Stop wondering what's broken. Start with a free assessment to see exactly where you stand — and what to fix first.
             </p>
             <ContactFormDialog
               source="solutions-cta"

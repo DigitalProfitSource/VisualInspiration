@@ -92,13 +92,13 @@ const industries: Industry[] = [
   {
     label: "Home Services",
     title: "Home Services",
-    description: "For roofing, HVAC, plumbing, electrical, and other home service businesses where speed and availability win contracts.",
+    description: "You know the frustration: leads come in while you're on a roof or under a house. By the time you call back, they've already booked someone else. We fix that.",
     icon: Home,
     deliverables: [
-      { title: "Intake Flow Architecture", desc: "Clear pathways for leads across phone, web, and text" },
-      { title: "Priority Routing Logic", desc: "Know which leads need immediate attention" },
-      { title: "Follow-Up Sequences", desc: "A consistent, profitable rhythm for estimates and callbacks" },
-      { title: "AI-Readiness Map", desc: "Identify where AI improves response time without harming trust" }
+      { title: "Intake Flow Architecture", desc: "Never miss a lead — capture calls, texts, and web inquiries automatically" },
+      { title: "Priority Routing Logic", desc: "Know instantly which leads are hot and need immediate attention" },
+      { title: "Follow-Up Sequences", desc: "Stop forgetting callbacks — consistent follow-up that closes more estimates" },
+      { title: "AI-Readiness Map", desc: "Where AI can respond for you — without customers feeling ignored" }
     ],
     caseStudy: {
       title: "Real Results",
@@ -113,13 +113,13 @@ const industries: Industry[] = [
   {
     label: "Legal",
     title: "Law Firms",
-    description: "For personal injury, family law, and estate planning practices where consultation quality determines case value.",
+    description: "Your front desk is overwhelmed. Leads call after hours. Prospects go cold before you can follow up. Good cases slip to competitors who answered faster.",
     icon: Scale,
     deliverables: [
-      { title: "Case Intake Sequences", desc: "From first contact to qualified consultation" },
-      { title: "Nurture Campaign Clarity", desc: "Keep prospects engaged during decision period" },
-      { title: "Referral Partner Workflows", desc: "Make it easy for others to send you cases" },
-      { title: "Client Communication Hub", desc: "Reduce \"where's my case\" calls" }
+      { title: "Case Intake Sequences", desc: "Capture and qualify cases 24/7 — even when your office is closed" },
+      { title: "Nurture Campaign Clarity", desc: "Stay top-of-mind while prospects make their decision" },
+      { title: "Referral Partner Workflows", desc: "Make it effortless for partners to send you qualified cases" },
+      { title: "Client Communication Hub", desc: "Eliminate the constant \"where's my case\" calls draining your staff" }
     ],
     caseStudy: {
       title: "Case Study",
@@ -135,13 +135,13 @@ const industries: Industry[] = [
   {
     label: "MedSpa & Aesthetics",
     title: "MedSpas & Aesthetic Practices",
-    description: "For cosmetic and wellness businesses where consultation experience and follow-up determine lifetime value.",
+    description: "High no-show rates. Consultations that don't convert. Membership churn. Package buyers who never come back for their next treatment. Sound familiar?",
     icon: Sparkles,
     deliverables: [
-      { title: "Consultation Booking Flow", desc: "Smart scheduling with service pre-qualification" },
-      { title: "Treatment Series Logic", desc: "Follow-up sequences for package buyers" },
-      { title: "Membership Clarity", desc: "Retain recurring revenue clients" },
-      { title: "Post-Treatment Check-Ins", desc: "Automated care and upsell opportunities" }
+      { title: "Consultation Booking Flow", desc: "Pre-qualify leads so your consults convert higher" },
+      { title: "Treatment Series Logic", desc: "Automatic reminders that bring package buyers back in" },
+      { title: "Membership Clarity", desc: "Stop losing recurring revenue to preventable churn" },
+      { title: "Post-Treatment Check-Ins", desc: "Build loyalty and surface upsell opportunities naturally" }
     ],
     caseStudy: {
       title: "Client Success Story",
@@ -156,13 +156,13 @@ const industries: Industry[] = [
   {
     label: "Real Estate",
     title: "Real Estate Teams & Brokerages",
-    description: "For teams where lead speed, visibility, and follow-through drive commissions.",
+    description: "Leads come in hot and go cold fast. Your agents respond inconsistently. Past clients forget you exist. You're leaving commissions on the table every month.",
     icon: Building2,
     deliverables: [
-      { title: "Lead Response Sequences", desc: "Consistent handling across the whole team" },
-      { title: "Nurture Cadences", desc: "Stay top-of-mind with past clients" },
-      { title: "Pipeline Stage Clarity", desc: "Know exactly where every deal stands" },
-      { title: "Transaction Updates", desc: "Keep buyers informed without manual effort" }
+      { title: "Lead Response Sequences", desc: "Every agent responds the same way — fast, professional, consistent" },
+      { title: "Nurture Cadences", desc: "Past clients think of you first when it's time to buy or sell again" },
+      { title: "Pipeline Stage Clarity", desc: "See exactly where every deal stands without chasing agents" },
+      { title: "Transaction Updates", desc: "Keep buyers informed automatically so you're not babysitting deals" }
     ],
     caseStudy: {
       title: "Real Results",
@@ -177,13 +177,13 @@ const industries: Industry[] = [
   {
     label: "Dental",
     title: "Dental Practices",
-    description: "For dental offices where retention, recall scheduling, and treatment acceptance drive revenue.",
+    description: "Missed appointments drain your schedule. Treatment plans sit unsigned. Recall reminders get ignored. Your front desk is buried in phone calls instead of helping patients.",
     icon: Smile,
     deliverables: [
-      { title: "New Patient Onboarding", desc: "Seamless intake from first call to first visit" },
-      { title: "Recall Reminder Logic", desc: "Never let hygiene appointments slip" },
-      { title: "Treatment Acceptance Flow", desc: "Follow-up that moves patients to yes" },
-      { title: "Front Desk Efficiency", desc: "Reduce phone tag and manual scheduling" }
+      { title: "New Patient Onboarding", desc: "Smooth intake that makes a great first impression" },
+      { title: "Recall Reminder Logic", desc: "Patients actually show up for their cleanings — automatically" },
+      { title: "Treatment Acceptance Flow", desc: "Follow-up that turns \"I'll think about it\" into scheduled procedures" },
+      { title: "Front Desk Efficiency", desc: "Free your team from phone tag so they can focus on patient care" }
     ],
     caseStudy: {
       title: "Practice Results",
@@ -370,13 +370,13 @@ export default function Industries() {
           >
             <span className="text-sm font-mono text-primary mb-6 block">INDUSTRIES WE SUPPORT</span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium mb-8 tracking-tight">
-              Industry-Specific <span className="text-primary">Operational Clarity</span>
+              We Know <span className="text-primary">Your Industry</span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto mb-6">
-              Practical AI for service businesses where response time, follow-up, and operational efficiency decide who wins the work.
+              You're losing leads. Follow-up is inconsistent. Your team is stretched thin. These aren't unique problems — they're industry-wide.
             </p>
             <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
-              We help you understand exactly where AI improves intake, follow-up, routing, and execution — and where human judgment still matters.
+              We bring tailored operational clarity so you stop guessing, stop missing opportunities, and start running smoother.
             </p>
           </motion.div>
         </div>
@@ -401,7 +401,7 @@ export default function Industries() {
               Don't See <span className="text-primary">Your Industry</span>?
             </h2>
             <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
-              We work with any service business where operational clarity and practical AI adoption can meaningfully improve response times, follow-up, and workflow consistency.
+              If you're a service business losing leads, struggling with follow-up, or feeling like operations could be smoother — we can help.
             </p>
             <ContactFormDialog
               source="industries-cta"
