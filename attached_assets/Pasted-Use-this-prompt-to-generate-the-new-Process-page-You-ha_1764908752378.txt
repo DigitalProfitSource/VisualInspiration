@@ -1,0 +1,256 @@
+Use this prompt to generate the new Process page.
+You have full creative freedom for layout, visuals, spacing, iconography, grid structure, animations, and hierarchy.
+Stay fully on-brand with SimpleSequence’s new Operational AI Advisor™ identity.
+The images provided are ONLY for layout/format reference — not for copy, styling, or component reuse.
+
+⸻
+
+PAGE CONTEXT
+
+SimpleSequence is now positioned as an Operational AI Advisor™, not an agency and not a systems builder.
+This page must clearly show how clients move through a structured three-phase methodology:
+
+Confusion → Clarity → Systems → AI-Readiness → Continuous Improvement
+
+Tone should be:
+	•	calm
+	•	expert
+	•	clarity-first
+	•	premium consulting
+	•	zero hype
+	•	no tool-pushing
+
+⸻
+
+SECTION 1 — Page Intro
+
+Headline
+How We Work
+
+Subline
+A three-phase methodology that transforms operational confusion into clarity and strategic AI readiness. Zero guesswork. Maximum insight.
+
+⸻
+
+SECTION 2 — Phase 1: Diagnostic & Audit
+
+Phase Title
+Diagnostic & Audit
+
+Short Description
+We analyze your operational reality and map the exact sequences, bottlenecks, and AI opportunities before anything is built.
+
+What We Analyze
+	•	Lead flow paths and conversion points
+	•	Communication touchpoints and follow-up gaps
+	•	Digital presence and authority signals
+	•	Operational friction points and manual processes
+	•	AI readiness and automation opportunities
+
+What You Receive
+	•	Operational Clarity Score with bottleneck visualization
+	•	Lead leakage assessment and revenue impact
+	•	Prioritized improvement roadmap
+	•	30-day Quick-Win Action Plan
+	•	System architecture blueprint (clarity only; no implementation)
+
+Timeline Block
+5–7 business days from kickoff to full diagnostic report + clarity blueprint.
+
+⸻
+
+SECTION 3 — Phase 2: Build & Deploy
+
+IMPORTANT: Implementation is only part of Tune-Up or higher tiers.
+Copy must emphasize that we ONLY build once clarity is established.
+
+Phase Title
+Build & Deploy
+
+Short Description
+For clients who move beyond the Diagnostic, we architect and deploy the foundational operational system outlined in the blueprint.
+
+Our Approach
+	•	Modular implementation in priority order
+	•	Integration with existing tools (no forced replacements)
+	•	Custom workflow setup aligned to your operations
+	•	AI enhancements for qualifying and nurturing
+	•	Staff training and clarity documentation
+
+Communication Cadence
+	•	Weekly progress updates
+	•	Milestone reviews and approvals
+	•	Direct access to development environment
+	•	Testing and feedback loops
+	•	Final walkthrough and handoff
+
+Timeline Block
+3–6 weeks depending on package tier and system complexity.
+
+⸻
+
+SECTION 4 — Phase 3: Optimize & Scale
+
+Phase Title
+Optimize & Scale
+
+Short Description
+We monitor performance, refine workflows, and guide your AI adoption as your business grows.
+
+Included Review Cycles
+	•	Performance tracking and KPI reporting
+	•	Bottleneck identification and resolution
+	•	Workflow optimization based on real data
+	•	Messaging and conversion refinement
+	•	Priority recommendations for next improvements
+
+Optional Ongoing Support
+	•	Monthly performance insights
+	•	Continuous A/B testing
+	•	New feature and workflow refinement
+	•	Strategic operations consulting
+	•	Priority support for urgent issues
+
+Timeline Block
+Review cycles at 30, 60, and 90 days post-launch.
+Ongoing optimization available as a monthly retainer.
+
+⸻
+
+SECTION 5 — Why This Methodology Works
+
+Evidence-Based
+Every recommendation comes from forensic analysis of your operational reality — not assumptions.
+
+Outcome-Focused
+We optimize for clarity, decisions, and revenue — not tools or feature count.
+
+Adaptive
+Systems evolve with your business. Nothing locks you into rigid workflows.
+
+⸻
+
+SECTION 6 — Frequently Asked Questions
+
+(Builder chooses layout: accordion, grid, multi-column, etc.)
+
+⸻
+
+How long does a typical project take from start to finish?
+
+The Diagnostic phase takes 5–7 business days from kickoff.
+Build & Deploy packages typically launch in 3–6 weeks depending on complexity.
+Review cycles occur at 30, 60, and 90 days post-launch, with optional ongoing support available.
+
+⸻
+
+What do I need to provide to get started?
+
+Just a few essentials:
+	•	View-only access to your CRM or tools
+	•	A short context questionnaire
+	•	A 45-minute clarity session
+
+We handle all diagnostic work, analysis, scoring, and blueprint creation.
+
+⸻
+
+Will my business operations be disrupted during implementation?
+
+No.
+All work happens in parallel with your current workflow.
+No leads lost, no downtime, no system outages.
+We never force tool replacements unless necessary.
+
+⸻
+
+What happens if I need changes after the system is deployed?
+
+We refine your system through built-in review cycles using real performance data.
+If you want ongoing iteration, the monthly optimization retainer includes:
+	•	Workflow updates
+	•	Messaging refinement
+	•	AI adoption guidance
+	•	Continuous testing
+	•	Priority support
+
+Your system grows with your business.
+
+⸻
+
+Do you integrate with tools I already use?
+
+Yes — and it’s usually preferred.
+Our goal is to improve your operational clarity, not force you into new software.
+
+⸻
+
+What’s included in the Diagnostic vs. the Build phase?
+
+Diagnostic (Clarity Only)
+You receive:
+	•	Operational Clarity Score
+	•	Lead leakage + revenue impact analysis
+	•	Bottleneck map
+	•	AI-readiness assessment
+	•	30-day Quick-Win Plan
+	•	System architecture blueprint
+No implementation happens in this phase.
+
+Build & Deploy (Implementation)
+We install the workflows, sequences, and intake layers defined in the blueprint and train your team.
+
+⸻
+
+How do you measure success?
+
+We measure:
+	•	Reduced manual friction
+	•	Faster response and follow-up times
+	•	Clearer sequences and handoffs
+	•	Time saved per month
+	•	Improved visibility
+	•	Conversion-linked behavior improvements
+
+When applicable, we also measure revenue lifts (recovery rates, booking increases, etc.)
+
+⸻
+
+What if I’m not ready for a full system?
+
+Start with the Operational Diagnostic + AI-Clarity Blueprint.
+You’ll walk away with:
+	•	A clear understanding of what’s broken
+	•	A prioritized roadmap
+	•	Your AI fit analysis
+	•	A detailed operational architecture
+
+You can implement internally or return when ready.
+
+⸻
+
+Do you provide training for my team?
+
+Yes.
+Every Build package includes training, documentation, and a final walkthrough.
+Ongoing optimization includes continued support as needed.
+
+⸻
+
+What industries do you specialize in?
+
+Service-based businesses where:
+	•	Speed matters
+	•	Follow-up drives revenue
+	•	Operational clarity is the bottleneck
+	•	AI can meaningfully reduce manual work
+
+Home services, medspas, legal, clinics, real estate, and more.
+
+⸻
+
+DESIGN NOTES FOR BUILDER
+	•	Maintain full alignment with SimpleSequence’s brand identity and premium consulting feel.
+	•	Do not reuse visuals from the reference images — use them ONLY as layout inspiration.
+	•	You have total creative freedom for layout, visual hierarchy, animations, grids, spacing, and icon styles.
+	•	Build the page as a clarity-forward Operational AI Advisor™ experience, not a tech-agency page.
