@@ -1,23 +1,10 @@
-import { motion } from "framer-motion";
-import { Activity } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Activity, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
-
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
-};
-
-const stagger = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
+import { useState } from "react";
 
 const fadeInUpViewport = {
   initial: { opacity: 0, y: 40 },
@@ -27,6 +14,8 @@ const fadeInUpViewport = {
 };
 
 export default function Offers() {
+  const [entryCardsHovered, setEntryCardsHovered] = useState(false);
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
       {/* Header */}
@@ -171,30 +160,76 @@ export default function Offers() {
             transition={fadeInUpViewport.transition}
             className="text-center mb-16"
           >
-            <span className="text-sm font-mono text-primary mb-4 block">SERVICES</span>
-            <h2 className="text-4xl md:text-5xl font-display font-medium mb-6">Select Your Package</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">From strategic clarity to full operational transformation — select the level that matches where you are today.</p>
+            <span className="text-sm font-mono text-primary mb-4 block">SELECT YOUR PACKAGE</span>
+            <h2 className="text-4xl md:text-5xl font-display font-medium">Find Your Fit</h2>
           </motion.div>
 
-          {/* Tier 1 & 2: Foundation Row */}
+          {/* Tier 1 & 2: Entry Level Row with Dual-Hover Animation */}
           <motion.div 
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={stagger}
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
             className="grid md:grid-cols-2 gap-6 mb-6"
+            onMouseEnter={() => setEntryCardsHovered(true)}
+            onMouseLeave={() => setEntryCardsHovered(false)}
           >
-            {/* Blueprint */}
-            <motion.div variants={fadeIn} className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent hover:border-primary/30 transition-all relative">
+            {/* 01 - Blueprint $997 */}
+            <div 
+              className={`group p-8 rounded-2xl border bg-gradient-to-b from-white/[0.06] to-transparent transition-all duration-300 ${
+                entryCardsHovered ? 'border-primary/30' : 'border-white/10 hover:border-primary/30'
+              }`}
+              data-testid="card-offers-blueprint"
+            >
               <div className="flex items-center justify-between mb-6">
-                <span className="text-xs font-mono text-primary/70">01 / BLUEPRINT</span>
-                <span className="text-xs font-mono text-slate-500">STRATEGY</span>
+                <span className="text-xs font-mono text-primary">01</span>
+                <span className="text-3xl font-display font-bold text-white">$997</span>
               </div>
-              <h3 className="text-2xl font-display font-medium mb-2 text-white">Operational Diagnostic + AI-Clarity Blueprint™</h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                A deep operational assessment + sequence-by-sequence AI opportunity map. Analysis, clarity, and direction — no implementation.
+              
+              <h3 className="text-2xl font-display font-medium mb-3 text-white">
+                Operational Diagnostic + AI-Clarity Blueprint™
+              </h3>
+              
+              <p className="text-primary text-sm font-medium mb-4">
+                If you want answers before you spend real money.
               </p>
-              <div className="text-3xl font-display font-semibold mb-6 text-white">$997</div>
+              
+              <p className="text-muted-foreground mb-6 leading-relaxed text-sm italic">
+                This is for businesses that say: "I know something isn't working… I just don't know what."
+              </p>
+
+              {/* Expandable Content */}
+              <AnimatePresence>
+                {entryCardsHovered && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mb-6">
+                      <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A clear picture of where you're losing revenue</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A breakdown of what's slowing you down</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A map of where automation actually helps</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A simple, prioritized plan telling you exactly what to fix first</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Your Operational Clarity Score (0–100)</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A no-fluff AI-readiness analysis</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
+                      <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
+                      <p className="text-slate-300 text-sm">
+                        You finally know what's broken, why it's broken, and what to do next — without buying a full system.
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <ContactFormDialog
                 source="blueprint"
                 title="Get the AI-Clarity Blueprint"
@@ -208,19 +243,64 @@ export default function Offers() {
                   </Button>
                 }
               />
-            </motion.div>
+            </div>
 
-            {/* Tune-Up */}
-            <motion.div variants={fadeIn} className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent hover:border-primary/30 transition-all relative">
+            {/* 02 - Tune-Up $3,500 */}
+            <div 
+              className={`group p-8 rounded-2xl border bg-gradient-to-b from-white/[0.06] to-transparent transition-all duration-300 ${
+                entryCardsHovered ? 'border-primary/30' : 'border-white/10 hover:border-primary/30'
+              }`}
+              data-testid="card-offers-tuneup"
+            >
               <div className="flex items-center justify-between mb-6">
-                <span className="text-xs font-mono text-primary/70">02 / TUNE-UP</span>
-                <span className="text-xs font-mono text-slate-500">IMPLEMENTATION</span>
+                <span className="text-xs font-mono text-primary">02</span>
+                <span className="text-3xl font-display font-bold text-white">$3,500</span>
               </div>
-              <h3 className="text-2xl font-display font-medium mb-2 text-white">Operational Tune-Up</h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                The implementation of the Blueprint: clean operational foundation, smart website, optimized lead flow, consistent follow-up sequences, local authority essentials, and an intelligent intake layer.
+              
+              <h3 className="text-2xl font-display font-medium mb-3 text-white">
+                Operational Tune-Up
+              </h3>
+              
+              <p className="text-primary text-sm font-medium mb-4">
+                If you want things to "just work" without rebuilding everything.
               </p>
-              <div className="text-3xl font-display font-semibold mb-6 text-white">$3,500</div>
+              
+              <p className="text-muted-foreground mb-6 leading-relaxed text-sm italic">
+                This is for owners who say: "I don't need a big system. I just need things to stop falling apart."
+              </p>
+
+              {/* Expandable Content */}
+              <AnimatePresence>
+                {entryCardsHovered && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mb-6">
+                      <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A cleaned-up CRM that actually makes sense</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A website that captures leads instead of losing them</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Follow-up that doesn't forget or stall</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A helpful AI chat assistant for basic questions</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Better routing so the right leads reach the right person</li>
+                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Reduced manual work for your team</li>
+                      </ul>
+                    </div>
+                    
+                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
+                      <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
+                      <p className="text-slate-300 text-sm">
+                        Your business stops leaking. Your team stops guessing. Leads stop slipping.
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               <ContactFormDialog
                 source="tune-up"
                 title="Apply for Operational Tune-Up"
@@ -234,7 +314,7 @@ export default function Offers() {
                   </Button>
                 }
               />
-            </motion.div>
+            </div>
           </motion.div>
 
           {/* Tier 3: Growth Architecture - Featured */}
@@ -255,16 +335,14 @@ export default function Offers() {
               <div className="grid lg:grid-cols-2 gap-10 relative z-10">
                 <div>
                   <div className="flex items-center gap-3 mb-6">
-                    <span className="text-xs font-mono text-primary">03 / ARCHITECTURE</span>
-                    <span className="text-xs font-mono text-slate-500">•</span>
-                    <span className="text-xs font-mono text-slate-500">AUTOMATION</span>
+                    <span className="text-xs font-mono text-primary">03</span>
+                    <span className="text-3xl font-display font-bold text-white">$7,500</span>
                   </div>
                   <h3 className="text-3xl font-display font-semibold mb-3 text-white">The Growth Architecture</h3>
-                  <p className="text-primary text-lg mb-4 font-medium">Automate the journey. Accelerate conversions.</p>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">
-                    Built for businesses ready to introduce AI-assisted systems and multi-channel conversion paths. Your acquisition, follow-up, and qualification become semi-autonomous.
+                  <p className="text-primary text-lg mb-4 font-medium">If you want more leads, more sales, and less staff pressure.</p>
+                  <p className="text-muted-foreground mb-8 leading-relaxed">
+                    Built for businesses ready to grow without hiring more people.
                   </p>
-                  <div className="text-4xl font-display font-bold mb-6 text-white">$7,500</div>
                   <ContactFormDialog
                     source="growth-architecture"
                     title="Build Your Growth Architecture"
@@ -281,21 +359,20 @@ export default function Offers() {
                 </div>
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-sm font-mono text-primary mb-4">CAPABILITIES</h4>
+                    <h4 className="text-sm font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
                     <ul className="space-y-2 text-sm text-slate-300">
-                      <li className="flex items-start gap-3"><span className="text-primary mt-0.5">✓</span> Everything in the Tune-Up</li>
-                      <li className="flex items-start gap-3"><span className="text-primary mt-0.5">✓</span> Intelligent intake assistant (chat-based)</li>
-                      <li className="flex items-start gap-3"><span className="text-primary mt-0.5">✓</span> Business knowledge base</li>
-                      <li className="flex items-start gap-3"><span className="text-primary mt-0.5">✓</span> Up to 2 high-performance funnels</li>
-                      <li className="flex items-start gap-3"><span className="text-primary mt-0.5">✓</span> Review & reputation automation</li>
-                      <li className="flex items-start gap-3"><span className="text-primary mt-0.5">✓</span> Behavioral nurture sequences</li>
-                      <li className="flex items-start gap-3"><span className="text-primary mt-0.5">✓</span> Funnel-testing setup</li>
-                      <li className="flex items-start gap-3"><span className="text-primary mt-0.5">✓</span> Two diagnostic review cycles</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> An AI assistant that pre-qualifies leads automatically</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Two high-performance funnels</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Automated review + reputation system</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Follow-up sequences that reactivate dead leads</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A nurture engine that keeps prospects warm</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Testing + optimization to increase conversions</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Two diagnostic review cycles</li>
                     </ul>
                   </div>
                   <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
                     <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
-                    <p className="text-slate-300 text-sm">Your business handles more volume, more channels, and more leads — without extra staff.</p>
+                    <p className="text-slate-300 text-sm">Your business becomes a lead machine that responds faster, converts more, and runs itself ~80% of the time.</p>
                   </div>
                 </div>
               </div>
@@ -310,20 +387,18 @@ export default function Offers() {
             transition={fadeInUpViewport.transition}
             className="mb-6"
           >
-            <div className="p-10 rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900/50 to-transparent relative overflow-hidden">
+            <div className="p-10 rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900/50 to-transparent relative overflow-hidden hover:border-primary/20 transition-all">
               <div className="grid lg:grid-cols-2 gap-10">
                 <div>
                   <div className="flex items-center gap-3 mb-6">
-                    <span className="text-xs font-mono text-primary/70">04 / OPERATING SYSTEM</span>
-                    <span className="text-xs font-mono text-slate-500">•</span>
-                    <span className="text-xs font-mono text-slate-500">ENTERPRISE</span>
+                    <span className="text-xs font-mono text-primary/70">04</span>
+                    <span className="text-3xl font-display font-bold text-white">$12,500</span>
                   </div>
                   <h3 className="text-3xl font-display font-semibold mb-3 text-white">AI-Powered Business Operating System</h3>
-                  <p className="text-slate-400 text-lg mb-4">A fully integrated system that runs the business with you.</p>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">
-                    A complete AI-assisted operational engine for acquisition, qualification, nurturing, booking, reporting, and staff enablement.
+                  <p className="text-primary/80 text-lg mb-4 font-medium">If you want a system that runs the business with you, not a collection of tools.</p>
+                  <p className="text-muted-foreground mb-8 leading-relaxed">
+                    Built for businesses that want enterprise-level capability with a small-team budget.
                   </p>
-                  <div className="text-4xl font-display font-bold mb-6 text-white">$12,500</div>
                   <ContactFormDialog
                     source="operating-system"
                     title="Deploy Your Operating System"
@@ -340,28 +415,28 @@ export default function Offers() {
                 </div>
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-sm font-mono text-primary/70 mb-4">CAPABILITIES</h4>
+                    <h4 className="text-sm font-mono text-primary/70 mb-4">WHAT YOU REALLY GET</h4>
                     <ul className="space-y-2 text-sm text-slate-400">
-                      <li className="flex items-start gap-3"><span className="text-primary/70 mt-0.5">✓</span> Everything in Growth Architecture</li>
-                      <li className="flex items-start gap-3"><span className="text-primary/70 mt-0.5">✓</span> Voice-based AI intake & follow-up</li>
-                      <li className="flex items-start gap-3"><span className="text-primary/70 mt-0.5">✓</span> Outbound qualification & recovery calls</li>
-                      <li className="flex items-start gap-3"><span className="text-primary/70 mt-0.5">✓</span> Advanced behavioral logic routing</li>
-                      <li className="flex items-start gap-3"><span className="text-primary/70 mt-0.5">✓</span> Executive KPI dashboard</li>
-                      <li className="flex items-start gap-3"><span className="text-primary/70 mt-0.5">✓</span> Team SOP + training documents</li>
-                      <li className="flex items-start gap-3"><span className="text-primary/70 mt-0.5">✓</span> Cross-channel attribution tracking</li>
-                      <li className="flex items-start gap-3"><span className="text-primary/70 mt-0.5">✓</span> Three diagnostic review cycles</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Voice-based AI that answers calls + follows up</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Automated outbound recovery calls</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Smart routing that sends the right leads to the right person</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Executive KPI dashboard</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Staff SOPs + training docs</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Cross-channel attribution</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Three review cycles</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Everything in Growth Architecture included</li>
                     </ul>
                   </div>
                   <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
                     <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
-                    <p className="text-slate-400 text-sm">Your business operates at enterprise-scale capacity, even with a small team.</p>
+                    <p className="text-slate-400 text-sm">Your business operates like a scaled organization, even with a small team.</p>
                   </div>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Tier 5: Ongoing Support Add-On */}
+          {/* Ongoing Optimization Partner */}
           <motion.div 
             initial={fadeInUpViewport.initial}
             whileInView={fadeInUpViewport.whileInView}
@@ -369,35 +444,37 @@ export default function Offers() {
             transition={fadeInUpViewport.transition}
           >
             <div className="p-8 rounded-2xl border border-dashed border-white/10 bg-transparent relative group hover:border-primary/20 transition-all">
-              <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-xs font-mono text-slate-500">OPTIONAL ADD-ON</span>
-                  </div>
-                  <h3 className="text-2xl font-display font-medium mb-2 text-white">Ongoing Optimization Partner</h3>
-                  <p className="text-primary text-sm mb-4 font-medium">Keep improving. Protect your investment.</p>
-                  <p className="text-muted-foreground leading-relaxed max-w-2xl mb-4">
-                    For businesses that want continuous system evolution and long-term stability. We monitor performance, optimize workflows, test new automation, refine messaging, and ensure your system adapts as your business grows. Includes monthly reports, ongoing consulting, and unlimited iteration support.
-                  </p>
-                  <p className="text-slate-400 text-sm leading-relaxed max-w-2xl">
-                    Ongoing optimization typically ranges between <span className="text-white font-medium">$300–$900/mo</span>, depending on the size and complexity of your system. Most clients budget around 8–12% of their original build for continuous performance improvements and AI refinement.
-                  </p>
+              <div className="max-w-4xl">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-xs font-mono text-slate-500">ONGOING SUPPORT</span>
                 </div>
-                <div className="flex-shrink-0">
-                  <ContactFormDialog
-                    source="ongoing-support"
-                    title="Explore Ongoing Support"
-                    description="Interested in continuous optimization for your systems? Let's discuss your needs."
-                    trigger={
-                      <Button 
-                        data-testid="button-offers-ongoing-support"
-                        variant="outline"
-                        className="border-white/10 hover:border-primary/30 hover:bg-white/5 text-white h-12 px-6 rounded-lg font-medium transition-all"
-                      >
-                        Explore Ongoing Support <span className="ml-2 opacity-50 group-hover:opacity-100">→</span>
-                      </Button>
-                    }
-                  />
+                <h3 className="text-2xl font-display font-medium mb-2 text-white">Ongoing Optimization Partner</h3>
+                <p className="text-primary text-sm mb-6 font-medium">Keep improving. Protect your investment.</p>
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  For businesses that want their system to evolve and strengthen over time.
+                </p>
+                
+                <div className="grid md:grid-cols-2 gap-8 mb-8">
+                  <div>
+                    <h4 className="text-xs font-mono text-primary/70 mb-4">WHAT YOU GET</h4>
+                    <ul className="space-y-2 text-sm text-slate-400">
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Monthly performance checkups</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Workflow refinements</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Messaging + conversion improvements</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> New automation testing</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Priority consulting</li>
+                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Unlimited iteration support</li>
+                    </ul>
+                  </div>
+                  <div className="p-6 rounded-xl bg-white/[0.02] border border-white/5">
+                    <h4 className="text-xs font-mono text-slate-500 mb-3">PRICING TRANSPARENCY</h4>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-3">
+                      Ongoing optimization typically ranges between <span className="text-white font-medium">$300–$900/mo</span>, depending on the size and complexity of your system.
+                    </p>
+                    <p className="text-slate-500 text-sm">
+                      Most clients budget around 8–12% of their original build for continuous performance improvements and AI refinement.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -419,7 +496,7 @@ export default function Offers() {
               Not Sure Where to <span className="text-primary">Start</span>?
             </h2>
             <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
-              Take the free AI Clarity Assessment and we'll help you identify the right path forward for your business.
+              Take the free AI Clarity Assessment and we'll help you identify the right path forward.
             </p>
             <ContactFormDialog
               source="offers-bottom-cta"
