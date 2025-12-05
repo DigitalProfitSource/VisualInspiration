@@ -1,0 +1,192 @@
+Pls. Rebuild the entire Offers page using the instructions and copy below.
+You have full creative control over layout, structure, spacing, visuals, and animations.
+Maintain the SimpleSequence brand guidelines and premium aesthetic.
+
+⸻
+
+1️⃣ PAGE OBJECTIVE
+
+Communicate each offer in plain buyer language—simple, clear, and outcome-centered—while preserving the professional, credibility-driven design. The user reading this page should feel:
+	•	“Ah, this is exactly what I get.”
+	•	“This makes sense.”
+	•	“I understand what I’m paying for.”
+
+No jargon. No fluff. No abstract “consultant-speak.”
+
+⸻
+
+2️⃣ REWRITE USING THIS EXACT COPY ( USE AS THE SOLE CONTENT SOURCE )
+
+⸻
+
+HEADER SECTION
+
+Choose Your Path Forward
+From strategic clarity to full operational transformation — select the level that matches where you are today.
+
+⸻
+
+THE AI CLARITY ASSESSMENT™
+
+A quick assessment that reveals where lead flow breaks, where follow-up slows down, and where operations rely too heavily on manual effort. Delivered with an Executive AI Analysis. No fluff, no hype—genuine insight.
+
+CTA: Take the Free Assessment
+
+⸻
+
+SELECT YOUR PACKAGE
+
+⸻
+
+01 — Operational Diagnostic + AI-Clarity Blueprint™ — $997
+
+If you want answers before you spend real money.
+
+This is for businesses that say:
+
+“I know something isn’t working… I just don’t know what.”
+
+What You Really Get:
+	•	A clear picture of where you’re losing revenue
+	•	A breakdown of what’s slowing you down
+	•	A map of where automation actually helps
+	•	A simple, prioritized plan telling you exactly what to fix first
+	•	Your Operational Clarity Score (0–100)
+	•	A no-fluff AI-readiness analysis
+
+Outcome:
+You finally know what’s broken, why it’s broken, and what to do next — without buying a full system.
+
+CTA: Get the Blueprint
+
+⸻
+
+02 — Operational Tune-Up — $3,500
+
+If you want things to “just work” without rebuilding everything.
+
+This is for owners who say:
+
+“I don’t need a big system. I just need things to stop falling apart.”
+
+What You Really Get:
+	•	A cleaned-up CRM that actually makes sense
+	•	A website that captures leads instead of losing them
+	•	Follow-up that doesn’t forget or stall
+	•	A helpful AI chat assistant for basic questions
+	•	Better routing so the right leads reach the right person
+	•	Reduced manual work for your team
+
+Outcome:
+Your business stops leaking. Your team stops guessing. Leads stop slipping.
+
+CTA: Apply for Tune-Up
+
+⸻
+
+03 — The Growth Architecture — $7,500
+
+If you want more leads, more sales, and less staff pressure.
+
+Built for businesses ready to grow without hiring more people.
+
+What You Really Get:
+	•	An AI assistant that pre-qualifies leads automatically
+	•	Two high-performance funnels
+	•	Automated review + reputation system
+	•	Follow-up sequences that reactivate dead leads
+	•	A nurture engine that keeps prospects warm
+	•	Testing + optimization to increase conversions
+	•	Two diagnostic review cycles
+
+Outcome:
+Your business becomes a lead machine that responds faster, converts more, and runs itself ~80% of the time.
+
+CTA: Build My Architecture
+
+⸻
+
+04 — AI-Powered Business Operating System — $12,500
+
+If you want a system that runs the business with you, not a collection of tools.
+
+Built for businesses that want enterprise-level capability with a small-team budget.
+
+What You Really Get:
+	•	Voice-based AI that answers calls + follows up
+	•	Automated outbound recovery calls
+	•	Smart routing that sends the right leads to the right person
+	•	Executive KPI dashboard
+	•	Staff SOPs + training docs
+	•	Cross-channel attribution
+	•	Three review cycles
+	•	Everything in Growth Architecture included
+
+Outcome:
+Your business operates like a scaled organization, even with a small team.
+
+CTA: Deploy My Operating System
+
+⸻
+
+ONGOING OPTIMIZATION PARTNER
+
+Keep improving. Protect your investment.
+
+For businesses that want their system to evolve and strengthen over time.
+
+What You Get:
+	•	Monthly performance checkups
+	•	Workflow refinements
+	•	Messaging + conversion improvements
+	•	New automation testing
+	•	Priority consulting
+	•	Unlimited iteration support
+
+Pricing Transparency:
+Ongoing optimization typically ranges between $300–$900/mo, depending on the size and complexity of your system.
+Most clients budget around 8–12% of their original build for continuous performance improvements and AI refinement.
+
+⸻
+
+FINAL CTA BLOCK
+
+Not Sure Where to Start?
+Take the free AI Clarity Assessment and we’ll help you identify the right path forward.
+
+CTA: Take the Free Assessment
+
+⸻
+
+3️⃣ INTERACTION & ANIMATION REQUIREMENTS
+
+Mandatory: Dual-Hover Animation for the $997 and $3,500 cards
+
+When a user hovers over either card:
+
+✔ Reveal BOTH cards’ “What You Really Get” sections
+✔ Reveal BOTH cards’ “Outcome” sections
+✔ Reveal simultaneously, using a synchronized fade-in or slide-up animation
+✔ When hover ends, both cards return to default compact view
+
+Purpose:
+Show the overlap and differences between the two “entry-level” offers while visually reinforcing clarity.
+
+⸻
+
+4️⃣ DESIGN REQUIREMENTS
+	•	Maintain SimpleSequence’s current style, spacing, and typographic hierarchy.
+	•	Use buyer-friendly, simple language — do NOT rewrite anything.
+	•	Ensure pricing is clear and prominent.
+	•	Keep the visual presentation premium and minimal.
+	•	CTA buttons must match the existing visual theme.
+	•	Avoid clutter. Keep the page emotionally calm and clarity-driven.
+
+⸻
+
+5️⃣ IMPORTANT EXECUTION NOTES
+	•	Use the rewritten copy exactly as given.
+	•	Do not introduce technical jargon or consultant-speak.
+	•	Layout and spacing should feel like a natural extension of the existing design system.
+	•	This page must feel like the “buying page,” not a brochure.
+
