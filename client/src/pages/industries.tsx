@@ -5,15 +5,11 @@ import {
   Sparkles, 
   Building2, 
   Smile,
-  Users,
-  CheckCircle2,
-  TrendingUp,
-  Quote
+  CheckCircle2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
-import { useEffect, useRef, useState } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -24,13 +20,8 @@ const fadeInUp = {
 
 interface CaseStudy {
   title: string;
+  subtitle?: string;
   metrics: { value: string; label: string }[];
-}
-
-interface ClientQuote {
-  quote: string;
-  name: string;
-  role: string;
 }
 
 interface Industry {
@@ -38,95 +29,85 @@ interface Industry {
   title: string;
   description: string;
   icon: React.ElementType;
-  clarifies: string[];
+  deliverables: { title: string; desc: string }[];
   caseStudy: CaseStudy;
-  clientQuote?: ClientQuote;
 }
 
 const industries: Industry[] = [
   {
     label: "Home Services",
     title: "Home Services",
-    description: "Speed and follow-through define success in home services. When leads slip through the cracks or scheduling falls apart, revenue walks out the door.",
+    description: "For roofing, HVAC, plumbing, electrical, and other home service businesses where speed and availability win contracts.",
     icon: Home,
-    clarifies: [
-      "Intake flow clarity across phone, web, and text channels",
-      "Lead prioritization sequences during peak demand windows",
-      "Follow-up rhythm mapping for estimates and callbacks",
-      "AI-readiness assessment for scheduling and routing"
+    deliverables: [
+      { title: "Intake Flow Architecture", desc: "Clear pathways for leads across phone, web, and text" },
+      { title: "Priority Routing Logic", desc: "Know which leads need immediate attention" },
+      { title: "Follow-Up Sequences", desc: "Consistent rhythm for estimates and callbacks" },
+      { title: "AI-Readiness Map", desc: "Where automation genuinely helps vs. hinders" }
     ],
     caseStudy: {
-      title: "Roofing Company",
+      title: "Real Results",
       metrics: [
-        { value: "31%", label: "Increase in estimate bookings" },
-        { value: "2.4×", label: "Faster lead response time" },
-        { value: "27 hrs", label: "Operational time regained monthly" }
+        { value: "47%", label: "Increase in estimate bookings for roofing company" },
+        { value: "3.2×", label: "More emergency calls converted after hours" },
+        { value: "89%", label: "Lead follow-up completion rate (vs. 31% before)" }
       ]
-    },
-    clientQuote: {
-      quote: "We finally see exactly where leads get stuck. The clarity alone changed how we think about our day.",
-      name: "Marcus T.",
-      role: "Owner, Reliable Roofing Co."
     }
   },
   {
     label: "Legal",
-    title: "Law Firms & Legal Practices",
-    description: "Case value begins at intake. Inconsistent qualification and unclear follow-up sequences leave potential clients uncertain and unengaged.",
+    title: "Law Firms",
+    description: "For personal injury, family law, and estate planning practices where initial consultation quality determines case value.",
     icon: Scale,
-    clarifies: [
-      "Case intake sequence from first contact to consultation",
-      "Qualification logic for consistent case screening",
-      "Client communication cadence during evaluation period",
-      "Document request workflow and follow-up clarity"
+    deliverables: [
+      { title: "Case Intake Sequences", desc: "From first contact to qualified consultation" },
+      { title: "Nurture Campaign Clarity", desc: "Keep prospects engaged during decision period" },
+      { title: "Referral Partner Workflows", desc: "Make it easy for others to send you cases" },
+      { title: "Client Communication Hub", desc: "Reduce \"where's my case\" calls" }
     ],
     caseStudy: {
-      title: "Personal Injury Firm",
+      title: "Case Study",
+      subtitle: "Personal Injury Firm",
       metrics: [
-        { value: "24/7", label: "Intake visibility across channels" },
-        { value: "41%", label: "More qualified case intakes" },
-        { value: "3.2×", label: "ROI in first 6 months" }
+        { value: "24/7", label: "Consultation availability" },
+        { value: "67%", label: "More qualified case intakes" },
+        { value: "4.5×", label: "ROI in first 6 months" }
       ]
     }
   },
   {
     label: "MedSpa & Aesthetics",
-    title: "MedSpas & Aesthetic Clinics",
-    description: "Consultation flow and package follow-up drive lifetime value. When prospects fall through the cracks, so does recurring revenue.",
+    title: "MedSpas & Aesthetic Practices",
+    description: "For cosmetic and wellness businesses where consultation experience and follow-up determine lifetime customer value.",
     icon: Sparkles,
-    clarifies: [
-      "Consultation journey from inquiry to booked appointment",
-      "Package follow-up touchpoints and re-engagement timing",
-      "Membership renewal and retention workflow mapping",
-      "AI-readiness for appointment reminders and check-ins"
+    deliverables: [
+      { title: "Consultation Booking Flow", desc: "Smart scheduling with service pre-qualification" },
+      { title: "Treatment Series Logic", desc: "Follow-up sequences for package buyers" },
+      { title: "Membership Clarity", desc: "Retain recurring revenue clients" },
+      { title: "Post-Treatment Check-Ins", desc: "Automated care and upsell opportunities" }
     ],
     caseStudy: {
-      title: "Premier MedSpa",
+      title: "Client Success Story",
       metrics: [
-        { value: "+89%", label: "Consultation booking rate" },
-        { value: "-52%", label: "No-show reduction" },
-        { value: "+127%", label: "Treatment package conversions" }
+        { value: "+127%", label: "Consultation bookings" },
+        { value: "-64%", label: "No-show rate" },
+        { value: "+203%", label: "Treatment packages sold" }
       ]
-    },
-    clientQuote: {
-      quote: "SimpleSequence showed us the gaps we couldn't see. Our consultation process finally makes sense.",
-      name: "Sarah C.",
-      role: "Director, Premier MedSpa"
     }
   },
   {
     label: "Real Estate",
     title: "Real Estate Teams & Brokerages",
-    description: "Lead speed and pipeline discipline determine who closes. Without shared sequences, every agent operates in a silo.",
+    description: "For residential teams and brokerages where lead speed, pipeline visibility, and follow-through drive commissions.",
     icon: Building2,
-    clarifies: [
-      "Lead-handling sequence for consistent team response",
-      "Follow-up cadences for new leads, nurture, and past clients",
-      "Pipeline stage clarity and accountability mapping",
-      "Transaction update workflow and communication standards"
+    deliverables: [
+      { title: "Lead Response Sequences", desc: "Consistent handling across the whole team" },
+      { title: "Nurture Cadences", desc: "Stay top-of-mind with past clients" },
+      { title: "Pipeline Stage Clarity", desc: "Know exactly where every deal stands" },
+      { title: "Transaction Updates", desc: "Keep buyers informed without manual effort" }
     ],
     caseStudy: {
-      title: "Regional Brokerage",
+      title: "Real Results",
       metrics: [
         { value: "18%", label: "Faster average lead response" },
         { value: "2.1×", label: "Improvement in lead conversion" },
@@ -137,198 +118,111 @@ const industries: Industry[] = [
   {
     label: "Dental",
     title: "Dental Practices",
-    description: "Patient retention and recare scheduling drive practice health. Missed appointments and inconsistent follow-up erode both revenue and trust.",
+    description: "For dental offices where patient retention, recare scheduling, and treatment acceptance drive practice health.",
     icon: Smile,
-    clarifies: [
-      "New patient intake and onboarding sequence clarity",
-      "Recare and hygiene appointment reminder workflows",
-      "Treatment acceptance follow-up mapping",
-      "AI-readiness for scheduling and patient communication"
+    deliverables: [
+      { title: "New Patient Onboarding", desc: "Seamless intake from first call to first visit" },
+      { title: "Recare Reminder Logic", desc: "Never let hygiene appointments slip" },
+      { title: "Treatment Acceptance Flow", desc: "Follow-up that moves patients to yes" },
+      { title: "Front Desk Efficiency", desc: "Reduce phone tag and manual scheduling" }
     ],
     caseStudy: {
-      title: "Family Dental Practice",
+      title: "Practice Results",
       metrics: [
         { value: "-38%", label: "Reduction in missed appointments" },
         { value: "+24%", label: "Increase in treatment acceptance" },
         { value: "19 hrs", label: "Front desk time regained weekly" }
       ]
-    },
-    clientQuote: {
-      quote: "Our recare system was chaos. Now we actually know which patients need attention and when.",
-      name: "Dr. Amanda R.",
-      role: "Owner, Bright Smile Dental"
-    }
-  },
-  {
-    label: "Professional Services",
-    title: "Coaching & Professional Services",
-    description: "Discovery calls and client onboarding set the tone for the entire relationship. Unclear sequences create friction before work even begins.",
-    icon: Users,
-    clarifies: [
-      "Discovery call intake and qualification sequence",
-      "Client onboarding workflow and milestone clarity",
-      "Engagement follow-up and check-in rhythm mapping",
-      "Referral and testimonial request timing"
-    ],
-    caseStudy: {
-      title: "Executive Coaching Firm",
-      metrics: [
-        { value: "+47%", label: "Discovery call booking rate" },
-        { value: "2.8×", label: "Client onboarding efficiency" },
-        { value: "+31%", label: "Referral conversion improvement" }
-      ]
     }
   }
 ];
 
-function IndustryCard({ industry }: { industry: Industry }) {
+function IndustrySection({ industry, index }: { industry: Industry; index: number }) {
   const Icon = industry.icon;
+  const isReversed = index % 2 === 1;
   
   return (
-    <div className="flex-shrink-0 w-[520px] md:w-[600px] lg:w-[700px] rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent backdrop-blur-sm hover:border-primary/30 transition-all duration-500 group overflow-hidden">
-      <div className="grid md:grid-cols-12 h-full">
-        {/* Main Content */}
-        <div className="md:col-span-7 p-8">
-          {/* Label Chip */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono text-primary mb-5">
-            <Icon className="w-3.5 h-3.5" />
-            {industry.label}
-          </div>
-          
-          {/* Title & Description */}
-          <h3 className="text-xl font-display font-medium text-white mb-3 group-hover:text-primary transition-colors">
-            {industry.title}
-          </h3>
-          <p className="text-sm text-slate-400 leading-relaxed mb-6">
-            {industry.description}
-          </p>
-          
-          {/* What We Clarify For You */}
-          <div>
-            <h4 className="text-xs font-mono text-primary/80 uppercase tracking-wider mb-4">What We Clarify For You</h4>
-            <ul className="space-y-2.5">
-              {industry.clarifies.map((point, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-sm text-slate-300">
-                  <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        
-        {/* Case Study Panel */}
-        <div className="md:col-span-5 p-6 bg-white/[0.02] border-l border-white/5 flex flex-col justify-between">
-          {/* Metrics */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="w-4 h-4 text-primary/60" />
-              <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Case Study</span>
+    <section className="py-24 md:py-32 relative">
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+          className={`grid lg:grid-cols-2 gap-16 lg:gap-24 items-start ${isReversed ? 'lg:flex-row-reverse' : ''}`}
+        >
+          {/* Main Content */}
+          <div className={`${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
+            {/* Icon Box */}
+            <div className="w-16 h-16 mb-8 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:scale-105 hover:border-primary/50 transition-all duration-300">
+              <Icon className="w-7 h-7 text-primary" />
             </div>
-            <p className="text-sm font-medium text-white mb-4">{industry.caseStudy.title}</p>
-            <div className="space-y-4">
-              {industry.caseStudy.metrics.map((metric, i) => (
-                <div key={i}>
-                  <div className="text-2xl font-display font-semibold text-primary">{metric.value}</div>
-                  <div className="text-xs text-slate-500">{metric.label}</div>
-                </div>
-              ))}
+
+            {/* Title & Description */}
+            <h2 className="text-3xl md:text-4xl font-display font-medium text-white mb-4">
+              {industry.title}
+            </h2>
+            <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-lg">
+              {industry.description}
+            </p>
+
+            {/* The Clarity We Deliver */}
+            <div>
+              <h3 className="text-base font-semibold text-white mb-6">The Clarity We Deliver:</h3>
+              <ul className="space-y-5">
+                {industry.deliverables.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-medium text-white">{item.title}:</span>{" "}
+                      <span className="text-slate-400">{item.desc}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-          
-          {/* Client Quote */}
-          {industry.clientQuote && (
-            <div className="mt-6 pt-5 border-t border-white/5">
-              <Quote className="w-4 h-4 text-primary/40 mb-2" />
-              <p className="text-xs text-slate-400 italic leading-relaxed mb-3">
-                "{industry.clientQuote.quote}"
-              </p>
-              <div>
-                <p className="text-xs font-medium text-white">{industry.clientQuote.name}</p>
-                <p className="text-xs text-slate-500">{industry.clientQuote.role}</p>
+
+          {/* Results Card */}
+          <div className={`${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
+            <div className="p-8 md:p-10 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent">
+              {/* Card Header */}
+              <div className="mb-8">
+                <h4 className="text-lg font-semibold text-white">{industry.caseStudy.title}</h4>
+                {industry.caseStudy.subtitle && (
+                  <p className="text-sm text-slate-500 mt-1">{industry.caseStudy.subtitle}</p>
+                )}
+              </div>
+
+              {/* Metrics */}
+              <div className="space-y-8">
+                {industry.caseStudy.metrics.map((metric, i) => (
+                  <div key={i}>
+                    <div className="text-4xl md:text-5xl font-display font-semibold text-primary mb-2">
+                      {metric.value}
+                    </div>
+                    <div className="text-sm text-slate-400 leading-relaxed">
+                      {metric.label}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        </motion.div>
       </div>
-    </div>
-  );
-}
 
-function InfiniteCarousel({ 
-  items, 
-  direction = "left"
-}: { 
-  items: Industry[];
-  direction?: "left" | "right";
-}) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
-  
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-    
-    let animationId: number;
-    let scrollPosition = direction === "left" ? 0 : scrollContainer.scrollWidth / 2;
-    
-    const animate = () => {
-      if (!isPaused && scrollContainer) {
-        if (direction === "left") {
-          scrollPosition += 0.4;
-          if (scrollPosition >= scrollContainer.scrollWidth / 2) {
-            scrollPosition = 0;
-          }
-        } else {
-          scrollPosition -= 0.4;
-          if (scrollPosition <= 0) {
-            scrollPosition = scrollContainer.scrollWidth / 2;
-          }
-        }
-        scrollContainer.scrollLeft = scrollPosition;
-      }
-      animationId = requestAnimationFrame(animate);
-    };
-    
-    animationId = requestAnimationFrame(animate);
-    
-    return () => {
-      cancelAnimationFrame(animationId);
-    };
-  }, [direction, isPaused]);
-  
-  // Duplicate items for seamless loop
-  const duplicatedItems = [...items, ...items];
-  
-  return (
-    <div 
-      className="relative overflow-hidden"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
-      {/* Gradient Masks */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-      
-      <div 
-        ref={scrollRef}
-        className="flex gap-6 overflow-x-hidden py-2"
-        style={{ scrollBehavior: 'auto' }}
-      >
-        {duplicatedItems.map((industry, index) => (
-          <IndustryCard key={`${industry.label}-${index}`} industry={industry} />
-        ))}
-      </div>
-    </div>
+      {/* Section Divider */}
+      {index < industries.length - 1 && (
+        <div className="container mx-auto px-6 mt-24 md:mt-32">
+          <div className="border-b border-white/5" />
+        </div>
+      )}
+    </section>
   );
 }
 
 export default function Industries() {
-  // Split industries into pairs for each row
-  const row1Industries = [industries[0], industries[1]]; // Home Services, Law Firms
-  const row2Industries = [industries[2], industries[3]]; // MedSpas, Real Estate
-  const row3Industries = [industries[4], industries[5]]; // Dental, Coaching
-  
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
       {/* Header */}
@@ -369,52 +263,21 @@ export default function Industries() {
           >
             <span className="text-sm font-mono text-primary mb-6 block">INDUSTRIES WE SUPPORT</span>
             <h1 className="text-4xl md:text-6xl font-display font-medium mb-8 tracking-tight">
-              Industry-Specific <span className="text-primary">AI & Operational Clarity</span>
+              Industry-Specific <span className="text-primary">Operational Clarity</span>
             </h1>
-            <p className="text-xl text-slate-400 leading-relaxed mb-6 max-w-3xl mx-auto">
+            <p className="text-xl text-slate-400 leading-relaxed max-w-3xl mx-auto">
               We specialize in service businesses where response time, follow-up, and operational efficiency decide who wins the work.
-            </p>
-            <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
-              Every industry has its own friction patterns. SimpleSequence helps you see where AI actually fits into your operations — so your team can move faster, waste less effort, and make better use of the systems you already have.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Industry Carousels */}
-      <section className="py-12 space-y-10">
-        {/* Row 1 - Left to Right */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <InfiniteCarousel items={row1Industries} direction="left" />
-        </motion.div>
-        
-        {/* Row 2 - Right to Left */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <InfiniteCarousel items={row2Industries} direction="right" />
-        </motion.div>
-        
-        {/* Row 3 - Left to Right */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <InfiniteCarousel items={row3Industries} direction="left" />
-        </motion.div>
-      </section>
+      {/* Industry Sections */}
+      {industries.map((industry, index) => (
+        <IndustrySection key={industry.label} industry={industry} index={index} />
+      ))}
 
-      {/* Bottom CTA - Don't See Your Industry? */}
+      {/* Bottom CTA */}
       <section className="py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
         <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
