@@ -97,8 +97,8 @@ const industries: Industry[] = [
     deliverables: [
       { title: "Intake Flow Architecture", desc: "Clear pathways for leads across phone, web, and text" },
       { title: "Priority Routing Logic", desc: "Know which leads need immediate attention" },
-      { title: "Follow-Up Sequences", desc: "Consistent rhythm for estimates and callbacks" },
-      { title: "AI-Readiness Map", desc: "Where automation genuinely helps vs. hinders" }
+      { title: "Follow-Up Sequences", desc: "A consistent, profitable rhythm for estimates and callbacks" },
+      { title: "AI-Readiness Map", desc: "Identify where AI improves response time without harming trust" }
     ],
     caseStudy: {
       title: "Real Results",
@@ -113,7 +113,7 @@ const industries: Industry[] = [
   {
     label: "Legal",
     title: "Law Firms",
-    description: "For personal injury, family law, and estate planning practices where initial consultation quality determines case value.",
+    description: "For personal injury, family law, and estate planning practices where consultation quality determines case value.",
     icon: Scale,
     deliverables: [
       { title: "Case Intake Sequences", desc: "From first contact to qualified consultation" },
@@ -135,7 +135,7 @@ const industries: Industry[] = [
   {
     label: "MedSpa & Aesthetics",
     title: "MedSpas & Aesthetic Practices",
-    description: "For cosmetic and wellness businesses where consultation experience and follow-up determine lifetime customer value.",
+    description: "For cosmetic and wellness businesses where consultation experience and follow-up determine lifetime value.",
     icon: Sparkles,
     deliverables: [
       { title: "Consultation Booking Flow", desc: "Smart scheduling with service pre-qualification" },
@@ -156,7 +156,7 @@ const industries: Industry[] = [
   {
     label: "Real Estate",
     title: "Real Estate Teams & Brokerages",
-    description: "For residential teams and brokerages where lead speed, pipeline visibility, and follow-through drive commissions.",
+    description: "For teams where lead speed, visibility, and follow-through drive commissions.",
     icon: Building2,
     deliverables: [
       { title: "Lead Response Sequences", desc: "Consistent handling across the whole team" },
@@ -177,11 +177,11 @@ const industries: Industry[] = [
   {
     label: "Dental",
     title: "Dental Practices",
-    description: "For dental offices where patient retention, recare scheduling, and treatment acceptance drive practice health.",
+    description: "For dental offices where retention, recall scheduling, and treatment acceptance drive revenue.",
     icon: Smile,
     deliverables: [
       { title: "New Patient Onboarding", desc: "Seamless intake from first call to first visit" },
-      { title: "Recare Reminder Logic", desc: "Never let hygiene appointments slip" },
+      { title: "Recall Reminder Logic", desc: "Never let hygiene appointments slip" },
       { title: "Treatment Acceptance Flow", desc: "Follow-up that moves patients to yes" },
       { title: "Front Desk Efficiency", desc: "Reduce phone tag and manual scheduling" }
     ],
@@ -372,8 +372,11 @@ export default function Industries() {
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium mb-8 tracking-tight">
               Industry-Specific <span className="text-primary">Operational Clarity</span>
             </h1>
-            <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto">
-              We specialize in service businesses where response time, follow-up, and operational efficiency decide who wins the work.
+            <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto mb-6">
+              Practical AI for service businesses where response time, follow-up, and operational efficiency decide who wins the work.
+            </p>
+            <p className="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
+              We help you understand exactly where AI improves intake, follow-up, routing, and execution — and where human judgment still matters.
             </p>
           </motion.div>
         </div>
@@ -398,7 +401,7 @@ export default function Industries() {
               Don't See <span className="text-primary">Your Industry</span>?
             </h2>
             <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
-              We work with any service business where operational clarity and response consistency drive revenue. Let's discuss your specific needs.
+              We work with any service business where operational clarity and practical AI adoption can meaningfully improve response times, follow-up, and workflow consistency.
             </p>
             <ContactFormDialog
               source="industries-cta"
@@ -419,13 +422,21 @@ export default function Industries() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 border-t border-white/5 text-sm text-zinc-600 text-center bg-black">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p>&copy; 2025 SimpleSequence. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-zinc-400 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-zinc-400 transition-colors">Terms</a>
-            <a href="#" className="hover:text-zinc-400 transition-colors">Contact</a>
+      <footer className="py-12 border-t border-white/5 text-sm bg-black">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-center md:text-left">
+              <p className="text-white font-medium mb-1">Practical AI for Service Businesses</p>
+              <p className="text-zinc-500">Operationally grounded. Revenue-relevant. No hype.</p>
+            </div>
+            <div className="flex gap-6 text-zinc-600">
+              <a href="#" className="hover:text-zinc-400 transition-colors">Privacy</a>
+              <a href="#" className="hover:text-zinc-400 transition-colors">Terms</a>
+              <a href="#" className="hover:text-zinc-400 transition-colors">Contact</a>
+            </div>
+          </div>
+          <div className="mt-8 pt-6 border-t border-white/5 text-center text-zinc-600">
+            <p>&copy; 2025 SimpleSequence. All rights reserved.</p>
           </div>
         </div>
       </footer>

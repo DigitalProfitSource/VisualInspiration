@@ -1,0 +1,132 @@
+Update the Industries page using the copy provided below.
+Do not change layout, spacing, or section structure.
+Apply SimpleSequence’s brand tone: calm, precise, operational, analytical.
+Highlight practical AI adoption in every industry without implying full automation or AI overreach.
+Use existing icons, blocks, and metrics.
+Replace only the text.
+
+⸻
+
+SECTION 1 — HERO
+
+Headline:
+Industry-Specific Operational Clarity
+
+Subhead:
+Practical AI for service businesses where response time, follow-up, and operational efficiency decide who wins the work.
+
+Supporting Line:
+We help you understand exactly where AI improves intake, follow-up, routing, and execution — and where human judgment still matters.
+
+⸻
+
+SECTION 2 — HOME SERVICES
+
+Header: Home Services
+Subtext: For roofing, HVAC, plumbing, electrical, and other home service businesses where speed and availability win contracts.
+
+Clarity Delivered:
+	•	Intake Flow Architecture — Clear pathways for leads across phone, web, and text.
+	•	Priority Routing Logic — Know which leads need immediate attention.
+	•	Follow-Up Sequences — A consistent, profitable rhythm for estimates and callbacks.
+	•	AI-Readiness Map — Identify where AI improves response time without harming trust.
+
+Practical AI Insights:
+	•	Where AI can triage inbound calls/messages
+	•	Safe areas for AI-generated follow-up
+	•	When humans must take over
+	•	Where routing automation reduces friction
+
+Keep existing metrics block.
+
+⸻
+
+SECTION 3 — LAW FIRMS
+
+Header: Law Firms
+Subtext: For personal injury, family law, and estate planning practices where consultation quality determines case value.
+
+Clarity Delivered:
+	•	Case Intake Sequences
+	•	Nurture Campaign Clarity
+	•	Referral Partner Workflows
+	•	Client Communication Hub
+
+Practical AI Insights:
+	•	Safe intake support
+	•	AI vs human communication boundaries
+	•	AI-assisted client updates
+	•	Risk-pattern detection
+
+Keep case study block.
+
+⸻
+
+SECTION 4 — MEDSPAS
+
+Header: MedSpas & Aesthetic Practices
+Subtext: For cosmetic and wellness businesses where consultation experience and follow-up determine lifetime value.
+
+Clarity Delivered:
+	•	Consultation Booking Flow
+	•	Treatment Series Logic
+	•	Membership Clarity
+	•	Post-Treatment Check-Ins
+
+Practical AI Insights:
+	•	Pre-consult screening
+	•	AI reminders that reduce no-shows
+	•	Package follow-up automation
+	•	AI support for retention workflows
+
+Keep metrics block.
+
+⸻
+
+SECTION 5 — REAL ESTATE TEAMS
+
+Header: Real Estate Teams & Brokerages
+Subtext: For teams where lead speed, visibility, and follow-through drive commissions.
+
+Clarity Delivered:
+	•	Lead Response Sequences
+	•	Nurture Cadences
+	•	Pipeline Stage Clarity
+	•	Transaction Updates
+
+Practical AI Insights:
+	•	Showing coordination
+	•	Automated follow-up drafts
+	•	Intent scoring
+	•	Pipeline reminder systems
+
+Keep metrics block.
+
+⸻
+
+SECTION 6 — DENTAL PRACTICES
+
+Header: Dental Practices
+Subtext: For dental offices where retention, recall scheduling, and treatment acceptance drive revenue.
+
+Clarity Delivered:
+	•	New Patient Onboarding
+	•	Recall Reminder Logic
+	•	Treatment Acceptance Flow
+	•	Front Desk Efficiency
+
+Practical AI Insights:
+	•	Recall automation safety
+	•	Clinical-language boundaries
+	•	Treatment-plan reminders
+	•	Admin workload reduction
+
+Keep metrics block.
+
+⸻
+
+SECTION 7 — UNIVERSAL CTA
+
+Headline: Don’t See Your Industry?
+Subtext: We work with any service business where operational clarity and practical AI adoption can meaningfully improve response times, follow-up, and workflow consistency.
+CTA: Schedule a Discovery Call

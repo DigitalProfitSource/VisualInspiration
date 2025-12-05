@@ -440,13 +440,21 @@ export default function Offers() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 border-t border-white/5 text-sm text-zinc-600 text-center bg-black">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p>&copy; 2025 SimpleSequence. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-zinc-400 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-zinc-400 transition-colors">Terms</a>
-            <a href="#" className="hover:text-zinc-400 transition-colors">Contact</a>
+      <footer className="py-12 border-t border-white/5 text-sm bg-black">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="text-center md:text-left">
+              <p className="text-white font-medium mb-1">Practical AI for Service Businesses</p>
+              <p className="text-zinc-500">Operationally grounded. Revenue-relevant. No hype.</p>
+            </div>
+            <div className="flex gap-6 text-zinc-600">
+              <a href="#" className="hover:text-zinc-400 transition-colors">Privacy</a>
+              <a href="#" className="hover:text-zinc-400 transition-colors">Terms</a>
+              <a href="#" className="hover:text-zinc-400 transition-colors">Contact</a>
+            </div>
+          </div>
+          <div className="mt-8 pt-6 border-t border-white/5 text-center text-zinc-600">
+            <p>&copy; 2025 SimpleSequence. All rights reserved.</p>
           </div>
         </div>
       </footer>
