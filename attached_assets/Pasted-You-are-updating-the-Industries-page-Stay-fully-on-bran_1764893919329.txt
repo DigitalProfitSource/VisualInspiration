@@ -1,0 +1,127 @@
+You are updating the Industries page.
+Stay fully on-brand with the new SimpleSequence style, voice, spacing, and typography.
+Do NOT use old copy.
+Use the attached images ONLY as layout / formatting references, NOT for tone or content.
+
+⸻
+
+📌 Page Goal
+
+Create a modern carousel-style Industries page with six industries, each with:
+	•	A short industry description
+	•	A “What We Clarify For You” list
+	•	A case study panel with conservative, realistic metrics
+	•	A client quote (for some industries)
+	•	Clean layout using alternating left/right horizontal carousels
+	•	Infinite looping, slow auto-scroll, no arrows
+	•	Rows of two industries per row
+
+End with a static CTA: “Don’t see your industry?”
+
+⸻
+
+📌 Brand Voice Requirements
+
+Use the SimpleSequence voice:
+	•	Clarity-first
+	•	Calm, confident, and advisory — not agency-coded
+	•	Emphasize operational clarity, not implementation
+	•	Never imply that SimpleSequence builds funnels, deploys agents, or manages campaigns
+	•	Focus on:
+	•	Sequence clarity
+	•	Reducing operational friction
+	•	AI-readiness insight
+	•	Better decision-making
+	•	Cleaner workflows
+
+⸻
+
+📌 Industries to Include (6 Total)
+
+Rewrite all content using this structure (do NOT reuse old text):
+
+1. Home Services
+
+2. Law Firms / Legal Practices
+
+3. MedSpas & Aesthetic Clinics
+
+4. Real Estate Teams / Brokerages (NEW)
+
+5. Dental Practices (NEW)
+
+6. Coaching & Professional Services (NEW)
+
+⸻
+
+📌 Required Structure for EACH Industry Card
+
+(A) Industry Title + Short Description
+
+1–2 sentences describing the operational challenges this industry faces and why clarity matters.
+
+⸻
+
+(B) “What We Clarify For You” List
+
+4 bullets, clarity-focused — NOT implementation.
+
+Examples (rewrite uniquely for each industry):
+	•	Intake flow clarity
+	•	Qualification sequences
+	•	AI-readiness opportunities
+	•	Follow-up workflow mapping
+	•	Bottleneck identification
+	•	Customer journey architecture
+
+⸻
+
+(C) Case Study Box (Right or Left)
+
+Use realistic, conservative metrics (Option A style).
+
+Example metrics format:
+	•	31% increase in qualified inquiries
+	•	18% reduction in no-show rate
+	•	2.1× faster lead routing
+	•	41 hrs/mo operational time regained
+
+⚠️ Builder: These are example formats only.
+The actual metrics will come from the rewritten content below.
+
+⸻
+
+(D) Optional Client Quote Box
+
+Short, believable quote + name & role.
+
+⸻
+
+📌 Page Layout Requirements
+	•	Carousel sections (infinite loop, no arrows)
+	•	Two industries per row
+	•	Alternating direction per row (left → right, then right → left)
+	•	Maintain spacing and block style consistent with the new site aesthetic
+	•	Keep everything lightweight, elegant, and clean
+	•	All metric boxes should match the visual style of the reference images
+
+⸻
+
+📌 At the bottom of the page
+
+Static section:
+
+Don’t See Your Industry?
+Text: “We work with any service business where operational clarity and response consistency drive revenue. Let’s discuss your specific needs.”
+CTA button: Schedule a Discovery Call
+
+⸻
+
+📌 Use the images I will provide ONLY to replicate:
+	•	Section structure
+	•	Layout spacing
+	•	Metric/card arrangement
+	•	Formatting rhythm
+
+Do NOT copy the text from the images.
+Stay aligned to SimpleSequence’s new operational AI advisor identity.
