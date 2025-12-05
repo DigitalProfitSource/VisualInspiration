@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   Home, 
   Scale, 
@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
+import { useRef } from "react";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -31,6 +32,7 @@ interface Industry {
   icon: React.ElementType;
   deliverables: { title: string; desc: string }[];
   caseStudy: CaseStudy;
+  cardSize: "compact" | "medium" | "large";
 }
 
 const industries: Industry[] = [
@@ -52,7 +54,8 @@ const industries: Industry[] = [
         { value: "3.2×", label: "More emergency calls converted after hours" },
         { value: "89%", label: "Lead follow-up completion rate (vs. 31% before)" }
       ]
-    }
+    },
+    cardSize: "large"
   },
   {
     label: "Legal",
@@ -73,7 +76,8 @@ const industries: Industry[] = [
         { value: "67%", label: "More qualified case intakes" },
         { value: "4.5×", label: "ROI in first 6 months" }
       ]
-    }
+    },
+    cardSize: "medium"
   },
   {
     label: "MedSpa & Aesthetics",
@@ -93,7 +97,8 @@ const industries: Industry[] = [
         { value: "-64%", label: "No-show rate" },
         { value: "+203%", label: "Treatment packages sold" }
       ]
-    }
+    },
+    cardSize: "compact"
   },
   {
     label: "Real Estate",
@@ -113,7 +118,8 @@ const industries: Industry[] = [
         { value: "2.1×", label: "Improvement in lead conversion" },
         { value: "34 hrs", label: "Agent time saved monthly" }
       ]
-    }
+    },
+    cardSize: "large"
   },
   {
     label: "Dental",
@@ -133,88 +139,135 @@ const industries: Industry[] = [
         { value: "+24%", label: "Increase in treatment acceptance" },
         { value: "19 hrs", label: "Front desk time regained weekly" }
       ]
-    }
+    },
+    cardSize: "medium"
   }
 ];
+
+const cardSizeClasses = {
+  compact: "p-6 md:p-8",
+  medium: "p-8 md:p-10",
+  large: "p-10 md:p-12"
+};
+
+const metricSizeClasses = {
+  compact: "text-3xl md:text-4xl",
+  medium: "text-4xl md:text-5xl",
+  large: "text-5xl md:text-6xl"
+};
 
 function IndustrySection({ industry, index }: { industry: Industry; index: number }) {
   const Icon = industry.icon;
   const isReversed = index % 2 === 1;
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const contentX = useTransform(
+    scrollYProgress, 
+    [0, 0.3, 0.7, 1], 
+    isReversed ? [80, 0, 0, 80] : [-80, 0, 0, -80]
+  );
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  
+  const cardX = useTransform(
+    scrollYProgress, 
+    [0, 0.3, 0.7, 1], 
+    isReversed ? [-80, 0, 0, -80] : [80, 0, 0, 80]
+  );
+  const cardOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const cardScale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.9, 1, 1, 0.9]);
   
   return (
-    <section className="py-24 md:py-32 relative">
+    <section ref={sectionRef} className="py-28 md:py-36 relative overflow-hidden">
       <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
-          className={`grid lg:grid-cols-2 gap-16 lg:gap-24 items-start ${isReversed ? 'lg:flex-row-reverse' : ''}`}
-        >
+        <div className={`grid lg:grid-cols-2 gap-20 lg:gap-28 items-center`}>
           {/* Main Content */}
-          <div className={`${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
+          <motion.div 
+            style={{ x: contentX, opacity: contentOpacity }}
+            className={`${isReversed ? 'lg:order-2' : 'lg:order-1'}`}
+          >
             {/* Icon Box */}
-            <div className="w-16 h-16 mb-8 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:scale-105 hover:border-primary/50 transition-all duration-300">
+            <div className="w-16 h-16 mb-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:scale-105 hover:border-primary/50 transition-all duration-300">
               <Icon className="w-7 h-7 text-primary" />
             </div>
 
             {/* Title & Description */}
-            <h2 className="text-3xl md:text-4xl font-display font-medium text-white mb-4">
+            <h2 className="text-3xl md:text-5xl font-display font-medium text-white mb-5">
               {industry.title}
             </h2>
-            <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-lg">
+            <p className="text-lg md:text-xl text-slate-400 leading-relaxed mb-12 max-w-xl">
               {industry.description}
             </p>
 
             {/* The Clarity We Deliver */}
             <div>
-              <h3 className="text-base font-semibold text-white mb-6">The Clarity We Deliver:</h3>
-              <ul className="space-y-5">
+              <h3 className="text-base font-semibold text-white mb-8">The Clarity We Deliver:</h3>
+              <ul className="space-y-6">
                 {industry.deliverables.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <motion.li 
+                    key={i} 
+                    className="flex items-start gap-4"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: false, margin: "-50px" }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                  >
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-1" />
                     <div>
                       <span className="font-medium text-white">{item.title}:</span>{" "}
                       <span className="text-slate-400">{item.desc}</span>
                     </div>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
-          </div>
+          </motion.div>
 
           {/* Results Card */}
-          <div className={`${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
-            <div className="p-8 md:p-10 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent">
+          <motion.div 
+            style={{ x: cardX, opacity: cardOpacity, scale: cardScale }}
+            className={`${isReversed ? 'lg:order-1' : 'lg:order-2'} flex ${isReversed ? 'lg:justify-start' : 'lg:justify-end'}`}
+          >
+            <div className={`${cardSizeClasses[industry.cardSize]} rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.02] to-transparent backdrop-blur-sm max-w-md w-full`}>
               {/* Card Header */}
-              <div className="mb-8">
-                <h4 className="text-lg font-semibold text-white">{industry.caseStudy.title}</h4>
+              <div className="mb-10">
+                <h4 className="text-xl font-semibold text-white">{industry.caseStudy.title}</h4>
                 {industry.caseStudy.subtitle && (
-                  <p className="text-sm text-slate-500 mt-1">{industry.caseStudy.subtitle}</p>
+                  <p className="text-sm text-slate-500 mt-2">{industry.caseStudy.subtitle}</p>
                 )}
               </div>
 
               {/* Metrics */}
-              <div className="space-y-8">
+              <div className="space-y-10">
                 {industry.caseStudy.metrics.map((metric, i) => (
-                  <div key={i}>
-                    <div className="text-4xl md:text-5xl font-display font-semibold text-primary mb-2">
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, margin: "-30px" }}
+                    transition={{ duration: 0.5, delay: i * 0.15 }}
+                  >
+                    <div className={`${metricSizeClasses[industry.cardSize]} font-display font-semibold text-primary mb-2`}>
                       {metric.value}
                     </div>
                     <div className="text-sm text-slate-400 leading-relaxed">
                       {metric.label}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Section Divider */}
       {index < industries.length - 1 && (
-        <div className="container mx-auto px-6 mt-24 md:mt-32">
+        <div className="container mx-auto px-6 mt-28 md:mt-36">
           <div className="border-b border-white/5" />
         </div>
       )}
@@ -251,7 +304,7 @@ export default function Industries() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-40 pb-16 relative overflow-hidden">
+      <section className="pt-44 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary),0.08),transparent_50%)]" />
         <CircuitBeams className="opacity-40" />
         <div className="container mx-auto px-6 relative z-10">
@@ -262,10 +315,10 @@ export default function Industries() {
             className="max-w-4xl mx-auto text-center"
           >
             <span className="text-sm font-mono text-primary mb-6 block">INDUSTRIES WE SUPPORT</span>
-            <h1 className="text-4xl md:text-6xl font-display font-medium mb-8 tracking-tight">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium mb-8 tracking-tight">
               Industry-Specific <span className="text-primary">Operational Clarity</span>
             </h1>
-            <p className="text-xl text-slate-400 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto">
               We specialize in service businesses where response time, follow-up, and operational efficiency decide who wins the work.
             </p>
           </motion.div>
@@ -278,7 +331,7 @@ export default function Industries() {
       ))}
 
       {/* Bottom CTA */}
-      <section className="py-32 relative overflow-hidden">
+      <section className="py-36 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
         <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
           <motion.div
@@ -287,10 +340,10 @@ export default function Industries() {
             viewport={fadeInUp.viewport}
             transition={fadeInUp.transition}
           >
-            <h2 className="text-4xl md:text-5xl font-display font-medium mb-8">
+            <h2 className="text-4xl md:text-6xl font-display font-medium mb-10">
               Don't See <span className="text-primary">Your Industry</span>?
             </h2>
-            <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
               We work with any service business where operational clarity and response consistency drive revenue. Let's discuss your specific needs.
             </p>
             <ContactFormDialog
@@ -300,7 +353,7 @@ export default function Industries() {
               trigger={
                 <Button 
                   size="lg"
-                  className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
+                  className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
                   data-testid="button-industries-cta"
                 >
                   Schedule a Discovery Call
@@ -312,7 +365,7 @@ export default function Industries() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-white/5 text-sm text-zinc-600 text-center bg-black">
+      <footer className="py-16 border-t border-white/5 text-sm text-zinc-600 text-center bg-black">
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p>&copy; 2025 SimpleSequence. All rights reserved.</p>
           <div className="flex gap-6">
