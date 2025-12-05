@@ -60,7 +60,7 @@ export default function Home() {
           <div className="hidden md:flex gap-10 text-sm font-medium text-muted-foreground">
             <a href="/solutions" className="hover:text-primary transition-colors duration-300">Solutions</a>
             <a href="/industries" className="hover:text-primary transition-colors duration-300">Industries</a>
-            <a href="#method" className="hover:text-primary transition-colors duration-300">Method</a>
+            <a href="/process" className="hover:text-primary transition-colors duration-300">Process</a>
             <a href="#offers" className="hover:text-primary transition-colors duration-300">Offers</a>
           </div>
           <Button variant="outline" className="h-9 border-white/10 hover:bg-white/5 hover:text-white text-xs font-medium rounded-full px-6 transition-all duration-300 hover:border-primary/50">

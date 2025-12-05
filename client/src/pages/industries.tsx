@@ -341,6 +341,7 @@ export default function Industries() {
             <a href="/" className="text-sm text-muted-foreground hover:text-white transition-colors">Home</a>
             <a href="/solutions" className="text-sm text-muted-foreground hover:text-white transition-colors">Solutions</a>
             <a href="/industries" className="text-sm text-white">Industries</a>
+            <a href="/process" className="text-sm text-muted-foreground hover:text-white transition-colors">Process</a>
             <a href="/#offers" className="text-sm text-muted-foreground hover:text-white transition-colors">Offers</a>
           </nav>
           <ContactFormDialog
