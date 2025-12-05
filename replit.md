@@ -5,10 +5,11 @@
 SimpleSequence is a consulting service website for an Operational AI Advisor helping service-based businesses adopt AI strategically. The platform provides diagnostic clarity on operational friction, workflow mapping, and AI implementation guidance without selling tools or services. The site features a modern, dark-themed design with animated components, lead capture functionality, and industry-specific case studies showcasing business transformation metrics.
 
 **Site Pages:**
-- **Home** (`/`) - Landing page with hero, tech ticker, friction grid, customer journey, method, industry carousel, pricing, FAQ, testimonials, and founder section
+- **Home** (`/`) - Landing page with hero, tech ticker, friction grid, customer journey, method, industry carousel, AI Clarity Assessment, FAQ, testimonials, and founder section
 - **Solutions** (`/solutions`) - 8 operational stack frameworks with circuit beam effects and grid visualizations
 - **Industries** (`/industries`) - 5 industry-specific sections with bidirectional scroll animations, varied card sizes, and jackpot-style number counters
 - **Process** (`/process`) - Three-phase methodology (Diagnostic & Audit, Build & Deploy, Optimize & Scale) with phase cards, timeline boxes, "Why This Methodology Works" principles, and FAQ accordion
+- **Offers** (`/offers`) - AI Clarity Assessment and full 5-tier pricing section (Blueprint, Tune-Up, Growth Architecture, Operating System, Ongoing Optimization Partner)
 
 ## User Preferences
 
