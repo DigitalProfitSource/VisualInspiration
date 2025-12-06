@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, Zap } from "lucide-react";
+import { ArrowLeft, Calendar, CheckCircle2 } from "lucide-react";
 import { Footer } from "@/components/footer";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { useParams } from "wouter";
@@ -86,9 +86,13 @@ export default function BlogPostPage() {
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium tracking-tight leading-[1.1]">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium tracking-tight leading-[1.1] mb-4">
               {post.title}
             </h1>
+            
+            <p className="text-xl text-primary/80 italic">
+              {post.subtitle}
+            </p>
           </motion.div>
         </div>
       </section>
@@ -102,31 +106,59 @@ export default function BlogPostPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="max-w-3xl mx-auto"
           >
-            {/* Main Content Paragraphs */}
-            <div className="mb-16 space-y-8">
-              {post.paragraphs.map((paragraph, index) => (
-                <p 
-                  key={index} 
-                  className="text-lg text-slate-300 leading-relaxed"
-                >
-                  {paragraph}
-                </p>
-              ))}
+            {/* Main Content */}
+            <div className="mb-16 space-y-6">
+              {post.content.map((block, index) => {
+                const lines = block.split('\n');
+                
+                if (lines.length === 1 && block.length < 60) {
+                  return (
+                    <p 
+                      key={index} 
+                      className="text-2xl md:text-3xl font-display font-medium text-white"
+                    >
+                      {block}
+                    </p>
+                  );
+                }
+                
+                return (
+                  <div key={index} className="space-y-1">
+                    {lines.map((line, lineIndex) => (
+                      <p 
+                        key={lineIndex} 
+                        className="text-lg text-slate-300 leading-relaxed"
+                      >
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                );
+              })}
             </div>
 
-            {/* TLDR Block */}
+            {/* Action Steps */}
             <div className="p-8 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-transparent relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl rounded-full" />
               <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-primary" />
+                    <CheckCircle2 className="w-5 h-5 text-primary" />
                   </div>
-                  <span className="text-xs font-mono text-primary uppercase tracking-wider">TLDR</span>
+                  <span className="text-lg font-display font-medium text-white">Action Steps</span>
                 </div>
-                <p className="text-lg md:text-xl text-white leading-relaxed">
-                  {post.tldr}
-                </p>
+                <ol className="space-y-4">
+                  {post.actionSteps.map((step, index) => (
+                    <li key={index} className="flex gap-4">
+                      <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/20 text-primary text-sm font-medium flex items-center justify-center">
+                        {index + 1}
+                      </span>
+                      <p className="text-slate-300 leading-relaxed pt-0.5">
+                        {step}
+                      </p>
+                    </li>
+                  ))}
+                </ol>
               </div>
             </div>
           </motion.article>

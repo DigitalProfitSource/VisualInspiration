@@ -6,51 +6,88 @@ import { CircuitBeams } from "@/components/ui/circuit-beams";
 export interface BlogPost {
   slug: string;
   title: string;
+  subtitle: string;
   category: string;
   date: string;
-  paragraphs: string[];
-  tldr: string;
+  content: string[];
+  actionSteps: string[];
 }
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "when-everything-depends-on-the-owner",
-    title: "When Everything Depends on the Owner",
+    slug: "when-the-business-starts-slipping-through-the-cracks",
+    title: "When the Business Starts Slipping Through the Cracks",
+    subtitle: "What happens when growth arrives faster than structure.",
     category: "Operations",
     date: "2025-01-14",
-    paragraphs: [
-      "There's a moment every owner hits where the business stops growing because they're out of bandwidth, not out of opportunity. They don't usually say it directly, but their days all sound the same. Missed calls, half-written follow-ups, notes scattered between a phone, a whiteboard, and whatever they remember at the end of the day. Nothing is \"broken,\" but nothing is moving cleanly either.",
-      "It doesn't feel like a collapse. It feels like being pulled apart by a thousand tiny obligations. Every decision is stuck in their head. Every reminder depends on their memory. Every lead depends on whether they happen to catch the call. They're not running the business anymore—the business is running them.",
-      "The part they rarely acknowledge is the accumulation. A delayed quote here, a lost voicemail there, a follow-up pushed to tomorrow. None of these moments feel catastrophic. But over months, these tiny delays become patterns, and those patterns become drag. Slow responses. Slow decisions. Slow everything. Not because they're lazy—because the business has no structure supporting them.",
-      "The real shift begins when the owner finally sees the system underneath the chaos. Once the flow becomes visible, the pressure drops. Work stops circling. Decisions stop stacking. And they stop being the only person holding the whole thing together. AI doesn't replace them; it absorbs the predictable, repetitive decision-making that's been eating their evenings for years. What changes isn't the business. What changes is how the business runs without consuming them."
+    content: [
+      "The owner swore things \"weren't that bad.\"\nJust a few missed calls. A couple follow-ups that fell through the cracks.\nNothing catastrophic.",
+      "Then the patterns showed up.",
+      "Quotes sent but never followed up.\nCustomers calling back frustrated because nobody replied.\nTasks floating between text messages, sticky notes, and \"I'll handle it later.\"",
+      "No big failure — just a hundred small ones.",
+      "Every day felt like catching falling plates.\nEvery win took twice the effort it should.\nEvery opportunity required manual pushing to move forward.",
+      "The truth usually hits them in one quiet moment:",
+      "The business didn't break.\nIt simply outgrew the way it's being run.",
+      "AI doesn't fix everything.\nBut it does create breathing room —\nwhen the work is predictable, repeatable, and stupidly time-consuming.",
+      "The owners don't ask for sophistication.\nThey ask for relief.",
+      "Relief from juggling everything.\nRelief from babysitting every lead.\nRelief from being the person who remembers everything.",
+      "And when the structure becomes visible, the overwhelm finally makes sense.\nThe cracks weren't random.\nThey were predictable."
     ],
-    tldr: "Most owners aren't overwhelmed because the business is too big. They're overwhelmed because the structure is too vague. When the operational flow becomes clear—and AI takes on the grunt work—the entire business becomes lighter, faster, and easier to manage."
+    actionSteps: [
+      "List every repeated task you touch more than twice a day. This becomes your \"automation priority list.\"",
+      "Track response times for one week. Identify where prospects are waiting the longest.",
+      "Record one real customer journey. Watch where messages, tasks, and decisions get lost.",
+      "Pick ONE friction point and fix it first. Small wins sustain momentum; big overhauls kill it."
+    ]
   },
   {
-    slug: "the-invisible-cost-of-slow-follow-up",
-    title: "The Invisible Cost of Slow Follow-Up",
-    category: "Leads",
-    date: "2025-01-11",
-    paragraphs: [
-      "Every owner knows they should follow up faster, but everyone underestimates how much money slow responses actually cost. Not in theory—hour by hour, day by day, opportunity by opportunity. The worst part is they can feel the friction but can never quite point to where the breakdown is happening. They blame busyness, or staffing, or the phone system, or \"just a rough week.\" But the real issue is simpler: the business isn't structured to respond at the speed customers expect.",
-      "People don't wait anymore. They move on fast. They're already talking to competitors before the owner even sees the notification. Not because the owner doesn't care, but because everything is manual. Every follow-up requires attention. Every call needs intention. Every quote requires energy they don't always have left.",
-      "This creates a quiet erosion that almost no one sees. Leads don't say, \"You took too long.\" They just stop responding. Opportunities don't announce that they died; they just fade into the background. Owners think they need more marketing, more traffic, more leads. What they actually need is a system that moves as fast as their customers do.",
-      "The clarity unlock happens when they finally see the workflow as a sequence, not a scramble. The moment they map the actual steps—capture, qualify, follow-up, decision—the holes become obvious. And once the structure is visible, AI can reinforce it. Not to sound robotic, not to replace a human voice, but to keep momentum alive when the owner is on another job, in another meeting, or finally taking a damn day off."
-    ],
-    tldr: "Most businesses don't have a lead problem—they have a response-time problem. Once the flow is clear and the system moves instantly, AI becomes support, not a gimmick, and the business stops bleeding opportunities."
-  },
-  {
-    slug: "when-the-business-outgrows-the-owners-brain",
-    title: "When the Business Outgrows the Owner's Brain",
+    slug: "the-hidden-drag-inside-daily-decisions",
+    title: "The Hidden Drag Inside Daily Decisions",
+    subtitle: "Why the owner always feels busy but never fully caught up.",
     category: "Management",
-    date: "2025-01-08",
-    paragraphs: [
-      "There comes a point where the owner knows too much, remembers too much, and carries too much. Every task, every exception, every special case lives in their head. It worked when the business was small. It even worked when the business doubled. But eventually, the decisions pile up faster than they can process them, and the whole operation slows under the weight of their memory.",
-      "This is the stage where owners start saying things like, \"I'll get to it tonight,\" or \"I'll remember to send that,\" or \"I'll follow up when things calm down.\" But things never calm down. And each of those small promises becomes another point of friction. Another moment where the business leans too heavily on the only person keeping it upright.",
-      "The funny thing is—they don't notice the shift happening. What used to be simple routines now feel heavier. Tasks they used to do instantly now sit for hours. They start avoiding certain parts of the business because they just don't have the mental space to deal with them. And slowly, without meaning to, the business becomes limited by the capacity of one person's mind.",
-      "The breakthrough comes when the owner externalizes the system—when the invisible becomes visible. When decisions become steps, when steps become sequences, and when sequences become something AI can help reinforce. Not to replace judgment, but to protect the owner from drowning in repetitive, low-impact decisions that should never have been theirs to carry alone."
+    date: "2025-01-11",
+    content: [
+      "The owner wasn't drowning.\nNot exactly.\nBut every day felt heavy — like carrying the business on their back.",
+      "Not because the work was impossible.\nBut because every single decision passed through them:",
+      "\"Should we qualify this lead?\"\n\"Can you call this customer back?\"\n\"Did we ever send that quote?\"\n\"What's the status of that job?\"",
+      "Dozens of tiny, harmless questions.\nUntil the questions multiplied.\nAnd suddenly the owner isn't running a business —\nthey're running everyone's brain.",
+      "The drag is invisible until you name it:",
+      "Decision Bottleneck.",
+      "The owner becomes the system.\nThe calendar becomes the memory.\nThe inbox becomes the workflow.",
+      "And they wonder why they feel exhausted.",
+      "AI becomes powerful only when the decisions themselves are clear:\nwhat to ask, what to route, what qualifies, what disqualifies, what moves forward.",
+      "Not automating everything —\njust removing the decisions that never needed a human in the first place."
     ],
-    tldr: "Businesses don't stall because owners lack effort—they stall because owners exceed their cognitive bandwidth. When the structure is mapped and AI supports the repetitive load, the owner finally gets to lead instead of chase."
+    actionSteps: [
+      "Write down the top 5 questions your team asks you every week. These are your first automation or SOP candidates.",
+      "Define \"if X, then Y\" rules for each one. Turn the decisions into simple sequences.",
+      "Move ONE decision out of your inbox and into a system. Let the business rely on the process — not your memory.",
+      "Recheck in 7 days. If it saved 30+ minutes, automate the next one."
+    ]
+  },
+  {
+    slug: "when-follow-up-becomes-a-full-time-job",
+    title: "When Follow-Up Becomes a Full-Time Job",
+    subtitle: "The emotional cost nobody admits out loud.",
+    category: "Leads",
+    date: "2025-01-08",
+    content: [
+      "Nobody likes admitting they're behind on follow-up.\nIt sounds irresponsible.\nUnprofessional.\nLike they don't care about the business.",
+      "But the real problem isn't laziness.\nIt's capacity.",
+      "Some days the phone won't stop ringing.\nOther days they're buried on job sites.\nAnd by the time they sit down at night, the messages blur together:",
+      "\"Who did I promise I'd call back?\"\n\"Did I send that update?\"\n\"Who's waiting on a quote?\"",
+      "The owner doesn't see the missed revenue —\nthey feel the guilt.",
+      "They know those leads are slipping.\nThey know the conversations went cold.\nThey know the business loses money every time a follow-up gets delayed.",
+      "AI doesn't replace the relationship.\nIt simply covers the gaps —\nthe hours the owner can't be everywhere.",
+      "Not to \"sound robotic.\"\nBut to make the business feel consistent.",
+      "Every lead gets acknowledged.\nEvery message gets answered.\nEvery opportunity moves forward — whether the owner is available or not."
+    ],
+    actionSteps: [
+      "Track the number of follow-ups you send manually for 7 days. The real number will shock you.",
+      "List your top 3 message types (quote, reschedule, check-in). These become templates.",
+      "Create ONE automated follow-up fallback for after-hours. A simple, human-sounding message.",
+      "Measure response lift for 14 days. Even a 20% improvement is a major operational win."
+    ]
   }
 ];
 
@@ -69,10 +106,10 @@ function formatDate(dateStr: string) {
   });
 }
 
-function getExcerpt(paragraphs: string[]): string {
-  const firstParagraph = paragraphs[0] || "";
-  const sentences = firstParagraph.split(/(?<=[.!?])\s+/).slice(0, 2);
-  return sentences.join(" ");
+function getExcerpt(content: string[]): string {
+  const firstBlock = content[0] || "";
+  const lines = firstBlock.split('\n').slice(0, 2);
+  return lines.join(' ');
 }
 
 export default function Blog() {
@@ -146,12 +183,16 @@ export default function Blog() {
                     </span>
                   </div>
                   
-                  <h2 className="text-xl font-display font-medium text-white mb-3 group-hover:text-primary transition-colors leading-tight">
+                  <h2 className="text-xl font-display font-medium text-white mb-2 group-hover:text-primary transition-colors leading-tight">
                     {post.title}
                   </h2>
                   
+                  <p className="text-sm text-primary/70 mb-3 italic">
+                    {post.subtitle}
+                  </p>
+                  
                   <p className="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                    {getExcerpt(post.paragraphs)}
+                    {getExcerpt(post.content)}
                   </p>
                   
                   <div className="flex items-center gap-1.5 text-primary text-sm font-medium group-hover:gap-2 transition-all">
