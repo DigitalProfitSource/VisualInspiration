@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, Lightbulb, TrendingUp, HelpCircle } from "lucide-react";
+import { ArrowLeft, Calendar, Zap } from "lucide-react";
 import { Footer } from "@/components/footer";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { useParams } from "wouter";
@@ -8,8 +8,6 @@ import { blogPosts } from "./blog";
 const categoryColors: Record<string, string> = {
   "Operations": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   "Leads": "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  "Systems": "bg-purple-500/10 text-purple-400 border-purple-500/20",
-  "AI Adoption": "bg-primary/10 text-primary border-primary/20",
   "Management": "bg-amber-500/10 text-amber-400 border-amber-500/20"
 };
 
@@ -104,99 +102,31 @@ export default function BlogPostPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="max-w-3xl mx-auto"
           >
-            {/* Hook Section */}
-            <div className="mb-16 space-y-6">
-              {post.hook.map((paragraph, index) => (
+            {/* Main Content Paragraphs */}
+            <div className="mb-16 space-y-8">
+              {post.paragraphs.map((paragraph, index) => (
                 <p 
                   key={index} 
-                  className={`text-lg leading-relaxed ${
-                    paragraph.startsWith('"') 
-                      ? 'text-white italic pl-4 border-l-2 border-primary/40' 
-                      : 'text-slate-300'
-                  }`}
+                  className="text-lg text-slate-300 leading-relaxed"
                 >
                   {paragraph}
                 </p>
               ))}
             </div>
 
-            {/* Insight Highlight Block */}
-            <div className="mb-16 p-8 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-transparent relative overflow-hidden">
+            {/* TLDR Block */}
+            <div className="p-8 rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-transparent relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl rounded-full" />
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Lightbulb className="w-5 h-5 text-primary" />
+                    <Zap className="w-5 h-5 text-primary" />
                   </div>
-                  <span className="text-xs font-mono text-primary uppercase tracking-wider">Key Insight</span>
+                  <span className="text-xs font-mono text-primary uppercase tracking-wider">TLDR</span>
                 </div>
-                <p className="text-xl md:text-2xl font-display font-medium text-white leading-relaxed">
-                  {post.insight}
+                <p className="text-lg md:text-xl text-white leading-relaxed">
+                  {post.tldr}
                 </p>
-              </div>
-            </div>
-
-            {/* Framework Section */}
-            <div className="mb-16">
-              <h2 className="text-2xl font-display font-medium text-white mb-8 flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Framework
-              </h2>
-              <div className="space-y-4">
-                {post.framework.map((item) => (
-                  <div 
-                    key={item.step}
-                    className="flex gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-white/10 transition-colors"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-sm font-mono font-medium text-primary">{item.step}</span>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-white font-medium">{item.title}</p>
-                      {item.description && (
-                        <p className="text-slate-400 text-sm mt-1">{item.description}</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Mini Case Study Callout */}
-            <div className="mb-16 p-6 rounded-xl border border-emerald-500/20 bg-emerald-500/5 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 blur-2xl rounded-full" />
-              <div className="relative z-10 flex gap-4">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-                  <TrendingUp className="w-5 h-5 text-emerald-400" />
-                </div>
-                <div>
-                  <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-2 block">Real Result</span>
-                  <p className="text-slate-200 leading-relaxed">
-                    {post.miniCaseStudy}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* FAQ Block */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-display font-medium text-white mb-8 flex items-center gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Frequently Asked Questions
-              </h2>
-              <div className="space-y-4">
-                {post.faq.map((item, index) => (
-                  <div 
-                    key={index}
-                    className="p-5 rounded-xl border border-white/5 bg-white/[0.02]"
-                  >
-                    <div className="flex items-start gap-3 mb-2">
-                      <HelpCircle className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
-                      <h3 className="text-white font-medium">{item.question}</h3>
-                    </div>
-                    <p className="text-slate-400 pl-7">{item.answer}</p>
-                  </div>
-                ))}
               </div>
             </div>
           </motion.article>

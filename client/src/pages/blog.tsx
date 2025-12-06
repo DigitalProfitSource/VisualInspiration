@@ -8,180 +8,55 @@ export interface BlogPost {
   title: string;
   category: string;
   date: string;
-  hook: string[];
-  insight: string;
-  framework: {
-    step: number;
-    title: string;
-    description?: string;
-  }[];
-  miniCaseStudy: string;
-  faq: {
-    question: string;
-    answer: string;
-  }[];
+  paragraphs: string[];
+  tldr: string;
 }
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "reduce-operational-drag-using-practical-ai",
-    title: "How to Reduce Operational Drag Using Practical AI",
+    slug: "when-everything-depends-on-the-owner",
+    title: "When Everything Depends on the Owner",
     category: "Operations",
     date: "2025-01-14",
-    hook: [
-      "The owner of a 20-person service business told me something I hear every week:",
-      "\"Why does everything feel harder than it should? We're busy, but nothing feels smooth.\"",
-      "Their team wasn't lazy. Their tools weren't bad. But every day felt the same: slow follow-ups, unclear handoffs, piling tasks. Tiny delays stacked until the whole day became heavy.",
-      "They weren't dealing with incompetence — they were dealing with invisible friction."
+    paragraphs: [
+      "There's a moment every owner hits where the business stops growing because they're out of bandwidth, not out of opportunity. They don't usually say it directly, but their days all sound the same. Missed calls, half-written follow-ups, notes scattered between a phone, a whiteboard, and whatever they remember at the end of the day. Nothing is \"broken,\" but nothing is moving cleanly either.",
+      "It doesn't feel like a collapse. It feels like being pulled apart by a thousand tiny obligations. Every decision is stuck in their head. Every reminder depends on their memory. Every lead depends on whether they happen to catch the call. They're not running the business anymore—the business is running them.",
+      "The part they rarely acknowledge is the accumulation. A delayed quote here, a lost voicemail there, a follow-up pushed to tomorrow. None of these moments feel catastrophic. But over months, these tiny delays become patterns, and those patterns become drag. Slow responses. Slow decisions. Slow everything. Not because they're lazy—because the business has no structure supporting them.",
+      "The real shift begins when the owner finally sees the system underneath the chaos. Once the flow becomes visible, the pressure drops. Work stops circling. Decisions stop stacking. And they stop being the only person holding the whole thing together. AI doesn't replace them; it absorbs the predictable, repetitive decision-making that's been eating their evenings for years. What changes isn't the business. What changes is how the business runs without consuming them."
     ],
-    insight: "AI removes drag only when you know where the drag lives.",
-    framework: [
-      { step: 1, title: "Identify repeated tasks draining time." },
-      { step: 2, title: "Map the steps exactly as they happen today." },
-      { step: 3, title: "Mark steps as manual, semi-manual, or repeatable." },
-      { step: 4, title: "Automate predictable steps first." },
-      { step: 5, title: "Reduce human involvement in low-value steps." }
-    ],
-    miniCaseStudy: "One company reduced 40–70 hours/month of admin simply by automating confirmations and reminders.",
-    faq: [
-      { question: "What causes operational drag?", answer: "Repeated manual tasks and unclear steps." },
-      { question: "Where does AI help most?", answer: "Repetitive workflows." },
-      { question: "Do I need new software?", answer: "Usually no." },
-      { question: "How fast can drag be reduced?", answer: "Days for basics, weeks for deeper fixes." }
-    ]
+    tldr: "Most owners aren't overwhelmed because the business is too big. They're overwhelmed because the structure is too vague. When the operational flow becomes clear—and AI takes on the grunt work—the entire business becomes lighter, faster, and easier to manage."
   },
   {
-    slug: "fix-follow-up-system-with-ai",
-    title: "How to Fix Your Follow-Up System with AI (Without Automating Everything)",
+    slug: "the-invisible-cost-of-slow-follow-up",
+    title: "The Invisible Cost of Slow Follow-Up",
     category: "Leads",
     date: "2025-01-11",
-    hook: [
-      "A business owner once showed me their follow-up system: notebooks, a spreadsheet, a half-finished CRM. They weren't failing — they were overwhelmed.",
-      "New leads came in faster than anyone could respond. Old leads quietly died. Follow-up depended entirely on whoever was \"on it\" that week.",
-      "This is one of the most common points where businesses leak money without knowing it."
+    paragraphs: [
+      "Every owner knows they should follow up faster, but everyone underestimates how much money slow responses actually cost. Not in theory—hour by hour, day by day, opportunity by opportunity. The worst part is they can feel the friction but can never quite point to where the breakdown is happening. They blame busyness, or staffing, or the phone system, or \"just a rough week.\" But the real issue is simpler: the business isn't structured to respond at the speed customers expect.",
+      "People don't wait anymore. They move on fast. They're already talking to competitors before the owner even sees the notification. Not because the owner doesn't care, but because everything is manual. Every follow-up requires attention. Every call needs intention. Every quote requires energy they don't always have left.",
+      "This creates a quiet erosion that almost no one sees. Leads don't say, \"You took too long.\" They just stop responding. Opportunities don't announce that they died; they just fade into the background. Owners think they need more marketing, more traffic, more leads. What they actually need is a system that moves as fast as their customers do.",
+      "The clarity unlock happens when they finally see the workflow as a sequence, not a scramble. The moment they map the actual steps—capture, qualify, follow-up, decision—the holes become obvious. And once the structure is visible, AI can reinforce it. Not to sound robotic, not to replace a human voice, but to keep momentum alive when the owner is on another job, in another meeting, or finally taking a damn day off."
     ],
-    insight: "AI doesn't replace follow-up — it makes it consistent.",
-    framework: [
-      { step: 1, title: "Separate leads into new, warm, dormant." },
-      { step: 2, title: "Define the first three touches for each group." },
-      { step: 3, title: "Mark where humans add value." },
-      { step: 4, title: "Add AI to fill timing gaps." },
-      { step: 5, title: "Use AI to notify humans when real conversations matter." }
-    ],
-    miniCaseStudy: "One contractor increased follow-up completion from 31% to 89% using AI for timing, not tone.",
-    faq: [
-      { question: "What should be automated first?", answer: "First-touch and reminders." },
-      { question: "Will AI sound robotic?", answer: "Not when AI handles timing, not tone." },
-      { question: "How do I divide human vs AI tasks?", answer: "Humans handle nuance; AI handles repetition." }
-    ]
+    tldr: "Most businesses don't have a lead problem—they have a response-time problem. Once the flow is clear and the system moves instantly, AI becomes support, not a gimmick, and the business stops bleeding opportunities."
   },
   {
-    slug: "map-customer-journey-for-ai",
-    title: "The Simplest Way to Map Your Customer Journey for AI",
-    category: "Systems",
-    date: "2025-01-09",
-    hook: [
-      "A business came to me drowning in tools — CRM, forms, chat widgets, messy automations.",
-      "Customers felt it too: unanswered forms, double reminders, unclear next steps.",
-      "Nobody truly knew the journey. Everyone assumed someone else did."
-    ],
-    insight: "AI can only improve what is already clear.",
-    framework: [
-      { step: 1, title: "Break the journey into 5 phases." },
-      { step: 2, title: "List every touchpoint." },
-      { step: 3, title: "Mark each touchpoint by automation level." },
-      { step: 4, title: "Identify bottlenecks." },
-      { step: 5, title: "Fix the flow before adding AI." }
-    ],
-    miniCaseStudy: "A medspa cut no-shows by 64% after mapping their journey and adding AI at the right moments.",
-    faq: [
-      { question: "Why start with a journey map?", answer: "It prevents automating the wrong things." },
-      { question: "How long should it be?", answer: "One page." },
-      { question: "Where does AI fit best?", answer: "Timing and consistency." }
-    ]
-  },
-  {
-    slug: "where-ai-is-useful-in-service-businesses",
-    title: "Where AI Is Actually Useful in Service Businesses Today",
-    category: "AI Adoption",
-    date: "2025-01-07",
-    hook: [
-      "People talk about AI like it's magic, but business owners ask something different:",
-      "\"Where does AI help me today without breaking my operations?\"",
-      "The good news: the answer is simple, and far less dramatic than the hype."
-    ],
-    insight: "AI works best where work repeats.",
-    framework: [
-      { step: 1, title: "Instant responses to new inquiries." },
-      { step: 2, title: "Routing requests to the right person." },
-      { step: 3, title: "Sending reminders and updates." },
-      { step: 4, title: "Qualifying leads with simple questions." },
-      { step: 5, title: "Answering repeated internal questions." }
-    ],
-    miniCaseStudy: "A firm increased qualified intakes by 67% using simple AI-assisted intake questions.",
-    faq: [
-      { question: "Is AI better for customers or teams?", answer: "Both." },
-      { question: "Will AI replace staff?", answer: "No — it removes busywork." },
-      { question: "Does AI need a perfect system?", answer: "No — just clarity." }
-    ]
-  },
-  {
-    slug: "use-ai-to-improve-team-communication",
-    title: "How to Use AI to Improve Team Communication",
-    category: "Operations",
-    date: "2025-01-04",
-    hook: [
-      "Most internal mistakes happen not from laziness but from misalignment.",
-      "Teams interpret tasks differently, forget details, or miss messages buried in apps.",
-      "I've watched teams argue over things that were never clearly defined."
-    ],
-    insight: "AI reduces miscommunication by standardizing repetition.",
-    framework: [
-      { step: 1, title: "Centralize rules and processes." },
-      { step: 2, title: "Turn repeated questions into AI prompts." },
-      { step: 3, title: "Use AI to summarize updates." },
-      { step: 4, title: "Use AI to notify the right people." },
-      { step: 5, title: "Add AI to the weekly team rhythm." }
-    ],
-    miniCaseStudy: "A 15-person company cut internal mistakes by half using AI summaries and alerts.",
-    faq: [
-      { question: "Does AI replace communication?", answer: "No — it organizes it." },
-      { question: "Where should AI pull from?", answer: "One central source." },
-      { question: "Does it work for small teams?", answer: "Even better." }
-    ]
-  },
-  {
-    slug: "weekly-ops-review-improves-everything",
-    title: "The 30-Minute Weekly Ops Review That Improves Everything",
+    slug: "when-the-business-outgrows-the-owners-brain",
+    title: "When the Business Outgrows the Owner's Brain",
     category: "Management",
-    date: "2025-01-01",
-    hook: [
-      "Most owners only discover problems when they've already exploded.",
-      "Teams don't escalate early, owners can't check everything, and issues \"fix themselves\" (they don't).",
-      "Small operational problems become revenue problems fast."
+    date: "2025-01-08",
+    paragraphs: [
+      "There comes a point where the owner knows too much, remembers too much, and carries too much. Every task, every exception, every special case lives in their head. It worked when the business was small. It even worked when the business doubled. But eventually, the decisions pile up faster than they can process them, and the whole operation slows under the weight of their memory.",
+      "This is the stage where owners start saying things like, \"I'll get to it tonight,\" or \"I'll remember to send that,\" or \"I'll follow up when things calm down.\" But things never calm down. And each of those small promises becomes another point of friction. Another moment where the business leans too heavily on the only person keeping it upright.",
+      "The funny thing is—they don't notice the shift happening. What used to be simple routines now feel heavier. Tasks they used to do instantly now sit for hours. They start avoiding certain parts of the business because they just don't have the mental space to deal with them. And slowly, without meaning to, the business becomes limited by the capacity of one person's mind.",
+      "The breakthrough comes when the owner externalizes the system—when the invisible becomes visible. When decisions become steps, when steps become sequences, and when sequences become something AI can help reinforce. Not to replace judgment, but to protect the owner from drowning in repetitive, low-impact decisions that should never have been theirs to carry alone."
     ],
-    insight: "AI makes a weekly review fast and predictable.",
-    framework: [
-      { step: 1, title: "Pull last week's data into one place." },
-      { step: 2, title: "Let AI summarize key issues." },
-      { step: 3, title: "Identify the top 3 priorities." },
-      { step: 4, title: "Assign owners." },
-      { step: 5, title: "Let AI track changes next week." }
-    ],
-    miniCaseStudy: "One business caught months of missed follow-up in a single 30-minute session because AI surfaced the pattern.",
-    faq: [
-      { question: "Why weekly?", answer: "Best rhythm for ops." },
-      { question: "What to review first?", answer: "Handoffs and follow-up." },
-      { question: "What does AI do?", answer: "Highlights patterns humans miss." }
-    ]
+    tldr: "Businesses don't stall because owners lack effort—they stall because owners exceed their cognitive bandwidth. When the structure is mapped and AI supports the repetitive load, the owner finally gets to lead instead of chase."
   }
 ];
 
 const categoryColors: Record<string, string> = {
   "Operations": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   "Leads": "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  "Systems": "bg-purple-500/10 text-purple-400 border-purple-500/20",
-  "AI Adoption": "bg-primary/10 text-primary border-primary/20",
   "Management": "bg-amber-500/10 text-amber-400 border-amber-500/20"
 };
 
@@ -194,8 +69,10 @@ function formatDate(dateStr: string) {
   });
 }
 
-function getExcerpt(hook: string[]): string {
-  return hook.slice(0, 2).join(" ");
+function getExcerpt(paragraphs: string[]): string {
+  const firstParagraph = paragraphs[0] || "";
+  const sentences = firstParagraph.split(/(?<=[.!?])\s+/).slice(0, 2);
+  return sentences.join(" ");
 }
 
 export default function Blog() {
@@ -274,7 +151,7 @@ export default function Blog() {
                   </h2>
                   
                   <p className="text-slate-400 text-sm leading-relaxed mb-4 line-clamp-3">
-                    {getExcerpt(post.hook)}
+                    {getExcerpt(post.paragraphs)}
                   </p>
                   
                   <div className="flex items-center gap-1.5 text-primary text-sm font-medium group-hover:gap-2 transition-all">
