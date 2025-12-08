@@ -84,37 +84,6 @@ export function Footer() {
               </MobileAccordion>
             </div>
 
-            {/* Get Clarity Column */}
-            <div className="md:col-span-3 lg:col-span-3">
-              <div className="md:pt-0">
-                <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4 hidden md:block">Get Clarity</h4>
-                <div className="md:hidden border-b border-white/5 py-4">
-                  <span className="text-sm font-semibold text-white uppercase tracking-wider">Get Clarity</span>
-                </div>
-                <div className="pt-4 md:pt-0">
-                  <ContactFormDialog
-                    source="footer-diagnostic"
-                    title="Book a Diagnostic"
-                    description="Start with a simple, non-technical assessment and get a clear view of where AI can improve your business today."
-                    trigger={
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="border-primary/30 hover:border-primary hover:bg-primary/10 text-primary hover:text-cyan-300 rounded-full px-5 text-sm font-medium transition-all duration-300 group"
-                        data-testid="footer-book-diagnostic"
-                      >
-                        Book a Diagnostic
-                        <ArrowRight className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-0.5 transition-transform" />
-                      </Button>
-                    }
-                  />
-                  <p className="text-slate-500 text-xs leading-relaxed mt-3">
-                    Start with a simple, non-technical assessment and get a clear view of where AI can improve your business today.
-                  </p>
-                </div>
-              </div>
-            </div>
-
             {/* Company Column */}
             <div className="md:col-span-3 lg:col-span-3">
               <MobileAccordion title="Company">
