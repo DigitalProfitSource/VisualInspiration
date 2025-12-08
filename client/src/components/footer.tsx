@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ContactFormDialog } from "@/components/contact-form-dialog";
+import { ChevronDown } from "lucide-react";
 
 function MobileAccordion({ 
   title, 
@@ -18,16 +16,16 @@ function MobileAccordion({
     <div className="border-b border-white/5 md:border-none">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full py-4 md:hidden text-left"
+        className="flex items-center justify-between w-full py-3 md:hidden text-left"
         data-testid={`footer-accordion-${title.toLowerCase().replace(/\s+/g, '-')}`}
       >
-        <span className="text-sm font-semibold text-white uppercase tracking-wider">{title}</span>
+        <span className="text-xs font-semibold text-white uppercase tracking-wider">{title}</span>
         <ChevronDown 
           className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} 
         />
       </button>
-      <div className={`${isOpen ? 'block' : 'hidden'} md:block pb-4 md:pb-0`}>
-        <h4 className="hidden md:block text-sm font-semibold text-white uppercase tracking-wider mb-6">{title}</h4>
+      <div className={`${isOpen ? 'block' : 'hidden'} md:block pb-3 md:pb-0`}>
+        <h4 className="hidden md:block text-xs font-semibold text-white uppercase tracking-wider mb-3">{title}</h4>
         {children}
       </div>
     </div>
@@ -40,40 +38,39 @@ export function Footer() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(var(--primary),0.03),transparent_50%)]" />
       
       <div className="container mx-auto px-6 relative z-10">
-        <div className="py-16 md:py-20">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+        <div className="py-8 md:py-10">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
             
             {/* Brand Column */}
-            <div className="md:col-span-4 lg:col-span-4">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-3 h-3 bg-primary rounded-sm shadow-[0_0_10px_var(--color-primary)]" />
-                <span className="font-mono font-bold text-lg tracking-tighter text-white">SimpleSequence</span>
+            <div className="md:col-span-5 lg:col-span-5">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2.5 h-2.5 bg-primary rounded-sm shadow-[0_0_8px_var(--color-primary)]" />
+                <span className="font-mono font-bold text-base tracking-tighter text-white">SimpleSequence</span>
               </div>
-              <p className="text-primary/80 font-medium text-sm mb-2">
+              <p className="text-primary/80 font-medium text-xs mb-1">
                 Practical AI for Service Businesses
               </p>
-              <p className="text-slate-400 text-sm leading-relaxed">
+              <p className="text-slate-400 text-xs leading-relaxed">
                 Clarity-first systems. Smarter workflows. Better decisions.
               </p>
             </div>
 
             {/* Navigation Column */}
-            <div className="md:col-span-2">
+            <div className="md:col-span-4 lg:col-span-4">
               <MobileAccordion title="Navigation">
-                <ul className="space-y-3">
+                <ul className="flex flex-wrap gap-x-4 gap-y-1.5 md:gap-x-5">
                   {[
                     { name: "Home", href: "/" },
                     { name: "Solutions", href: "/solutions" },
                     { name: "Industries", href: "/industries" },
                     { name: "Process", href: "/process" },
                     { name: "Offers", href: "/offers" },
-                    { name: "About", href: "/about" },
                     { name: "Blog", href: "/blog" }
                   ].map((link) => (
                     <li key={link.name}>
                       <a 
                         href={link.href}
-                        className="text-slate-400 hover:text-primary transition-colors text-sm"
+                        className="text-slate-400 hover:text-primary transition-colors text-xs"
                         data-testid={`footer-link-${link.name.toLowerCase()}`}
                       >
                         {link.name}
@@ -87,16 +84,16 @@ export function Footer() {
             {/* Company Column */}
             <div className="md:col-span-3 lg:col-span-3">
               <MobileAccordion title="Company">
-                <ul className="space-y-3">
+                <ul className="flex flex-wrap gap-x-4 gap-y-1.5 md:gap-x-5">
                   {[
                     { name: "Contact", href: "/contact" },
-                    { name: "Privacy Policy", href: "/privacy" },
+                    { name: "Privacy", href: "/privacy" },
                     { name: "Terms", href: "/terms" }
                   ].map((link) => (
                     <li key={link.name}>
                       <a 
                         href={link.href}
-                        className="text-slate-400 hover:text-primary transition-colors text-sm"
+                        className="text-slate-400 hover:text-primary transition-colors text-xs"
                         data-testid={`footer-link-${link.name.toLowerCase().replace(/\s+/g, '-')}`}
                       >
                         {link.name}
@@ -110,9 +107,9 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="py-6 border-t border-white/5">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-slate-500 text-sm">
+        <div className="py-4 border-t border-white/5">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+            <p className="text-slate-500 text-xs">
               © SimpleSequence.ai  Practical AI, thoughtfully applied.
             </p>
             <div className="flex items-center gap-1">
