@@ -448,6 +448,142 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
   );
 }
 
+interface JourneyCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  frontDescription: string;
+  backIntro: string;
+  backBullets: string[];
+  backOutcome: string;
+  colSpan: string;
+  index: number;
+}
+
+function JourneyCard({ icon: Icon, title, frontDescription, backIntro, backBullets, backOutcome, colSpan, index }: JourneyCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className={`${colSpan} relative group`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Desktop: Curtain Reveal */}
+      <div className="hidden md:block relative min-h-[200px] rounded-2xl overflow-hidden">
+        {/* Back Content (revealed on hover) */}
+        <div className="absolute inset-0 p-6 rounded-2xl border border-primary/30 bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-950">
+          <div className="relative z-10">
+            <motion.div 
+              className="flex items-center gap-3 mb-3"
+              initial={{ opacity: 0, x: -15 }}
+              animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -15 }}
+              transition={{ duration: 0.4, delay: 0.25 }}
+            >
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
+                <Icon className="w-4 h-4 text-primary" />
+              </div>
+              <h4 className="text-base font-display font-semibold text-primary">{title}</h4>
+            </motion.div>
+            
+            <motion.p 
+              className="text-muted-foreground text-sm leading-relaxed mb-3"
+              initial={{ opacity: 0, x: -15 }}
+              animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -15 }}
+              transition={{ duration: 0.4, delay: 0.35 }}
+            >
+              {backIntro}
+            </motion.p>
+            
+            <ul className="space-y-1.5 mb-3">
+              {backBullets.map((bullet, i) => (
+                <motion.li 
+                  key={i} 
+                  className="flex items-start gap-2 text-xs text-slate-300"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -10 }}
+                  transition={{ duration: 0.35, delay: 0.45 + i * 0.06 }}
+                >
+                  <div className="w-1 h-1 rounded-full bg-primary mt-1.5 flex-shrink-0" />
+                  <span>{bullet}</span>
+                </motion.li>
+              ))}
+            </ul>
+            
+            <motion.div 
+              className="pt-2 border-t border-primary/20"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
+              transition={{ duration: 0.4, delay: 0.7 }}
+            >
+              <p className="text-xs text-primary/90 font-medium leading-relaxed">
+                <span className="text-primary font-semibold">Outcome:</span> {backOutcome}
+              </p>
+            </motion.div>
+          </div>
+        </div>
+        
+        {/* Front Content (curtain that slides away) */}
+        <motion.div 
+          className="absolute inset-0 p-6 rounded-2xl border border-white/5 bg-white/[0.03] overflow-hidden"
+          initial={false}
+          animate={{ 
+            x: isHovered ? "102%" : "0%",
+            opacity: isHovered ? 0.95 : 1
+          }}
+          transition={{ 
+            duration: 0.8,
+            ease: [0.25, 0.1, 0.25, 1]
+          }}
+        >
+          {/* Glowing Edge */}
+          <motion.div 
+            className="absolute right-0 top-0 bottom-0 w-12 pointer-events-none"
+            style={{
+              background: "linear-gradient(to right, transparent, rgba(103,232,249,0.1) 30%, rgba(103,232,249,0.3) 70%, rgba(103,232,249,0.5))"
+            }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.3 }}
+          />
+          
+          <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
+            <Icon className="w-5 h-5 text-primary" />
+          </div>
+          <h3 className="text-lg font-display font-medium mb-2 text-white">{title}</h3>
+          <p className="text-slate-400 text-sm leading-relaxed">{frontDescription}</p>
+          
+          <div className="flex items-center gap-2 mt-4 text-xs text-muted-foreground/50">
+            <motion.span 
+              animate={{ opacity: [0.4, 0.8, 0.4] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            >
+              Hover to explore
+            </motion.span>
+            <motion.div
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              →
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+      
+      {/* Mobile: Simple card (no hover, just front content) */}
+      <div className="md:hidden p-6 rounded-2xl border border-white/5 bg-white/[0.03]">
+        <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+          <Icon className="w-5 h-5 text-primary" />
+        </div>
+        <h3 className="text-lg font-display font-medium mb-2 text-white">{title}</h3>
+        <p className="text-slate-400 text-sm leading-relaxed">{frontDescription}</p>
+      </div>
+    </motion.div>
+  );
+}
+
 function RevenueSystemSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -714,9 +850,6 @@ export default function Home() {
       {/* Tech Stack Ticker */}
       <TechTicker />
 
-      {/* Revenue-Focused System Section */}
-      <RevenueSystemSection />
-
       {/* What We Solve - Friction Grid */}
       <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
         <GridBeam showCenterBeam={false} gridOpacity={0.2} />
@@ -783,88 +916,84 @@ export default function Home() {
                 We Align Your Entire Customer Journey Into One <span className="text-primary">Intelligent Flow.</span>
               </h2>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Instead of scattered tools and manual workarounds, you get a clear map of how people, systems, and AI should work together — so your business runs smoother and scales without adding headcount.
+                Instead of scattered tools and manual workarounds, you get a clear map of how people, systems, and AI should work together from first touch to repeat business—therefore your operations run smoother and scale without extra headcount.
               </p>
             </div>
 
-            {/* 4 Core Blocks - Staggered Grid */}
+            {/* 4 Core Blocks - Staggered Grid with Curtain Reveal */}
             <div className="space-y-6 mb-12 relative z-10">
               {/* Row 1 - Staggered */}
               <div className="grid md:grid-cols-12 gap-6">
-                {/* Block 1 - Lead Capture Architecture (narrower) */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                  className="md:col-span-5 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
-                >
-                  <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
-                    <LayoutTemplate className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Lead Capture Architecture</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    Stop losing visitors. Turn traffic into captured leads without rebuilding your entire website.
-                  </p>
-                </motion.div>
+                {/* Block 1 - Lead Capture Architecture */}
+                <JourneyCard 
+                  icon={LayoutTemplate}
+                  title="Lead Capture Architecture"
+                  frontDescription="Turn traffic into clean, captured leads across web, phone, and social—without rebuilding your entire website."
+                  backIntro="We map every entry point a lead can take, then design a capture flow that doesn't leak."
+                  backBullets={[
+                    "Consolidates forms, chats, calls, and DMs into a single intake path",
+                    "Standardizes what you collect (contact info, intent, timing, qualification)",
+                    "Fixes 'dead ends' where people click but never become leads",
+                    "Works on top of your existing site and tools, therefore no risky full redesign"
+                  ]}
+                  backOutcome="More of your existing traffic becomes trackable leads you can actually follow up with."
+                  colSpan="md:col-span-5"
+                  index={0}
+                />
 
-                {/* Block 2 - Operational Backbone Design (wider) */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
-                  className="md:col-span-7 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
-                >
-                  <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
-                    <Layers className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Operational Backbone Design</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    Get a clear blueprint of how your systems should connect — so your team stops being the glue.
-                  </p>
-                </motion.div>
+                {/* Block 2 - Operational Backbone Design */}
+                <JourneyCard 
+                  icon={Layers}
+                  title="Operational Backbone Design"
+                  frontDescription="Get a clear blueprint of how your systems should connect—so your team stops being the glue."
+                  backIntro="We untangle the mess of tools and manual handoffs so your operation has a real spine."
+                  backBullets={[
+                    "Maps how leads move from capture → qualification → booking → work done",
+                    "Defines which system owns each step (calendar, CRM, ticketing, billing, etc.)",
+                    "Removes duplicate tools and redundant steps that slow everyone down",
+                    "Documents the new flow so onboarding and training stop living in one person's head"
+                  ]}
+                  backOutcome="Your business finally runs on a predictable backbone, therefore daily chaos drops and scaling becomes possible."
+                  colSpan="md:col-span-7"
+                  index={1}
+                />
               </div>
 
               {/* Row 2 - Staggered (reversed) */}
               <div className="grid md:grid-cols-12 gap-6">
-                {/* Block 3 - Follow-Up Clarity Engine (narrower) */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 }}
-                  className="md:col-span-4 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
-                >
-                  <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
-                    <Zap className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">Follow-Up Clarity Engine</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    No more leads going cold because someone forgot. Consistent follow-up that actually happens.
-                  </p>
-                </motion.div>
+                {/* Block 3 - Follow-Up Clarity Engine */}
+                <JourneyCard 
+                  icon={Zap}
+                  title="Follow-Up Clarity Engine"
+                  frontDescription="No more leads going cold because someone forgot. Clear, consistent follow-up that actually happens."
+                  backIntro={"We turn 'someone should follow up' into a concrete, automated plan."}
+                  backBullets={[
+                    "Defines who gets followed up, how often, and on which channels",
+                    "Builds sequences for new leads, no-shows, canceled jobs, and inactive clients",
+                    "Aligns human touchpoints with automated messages so they work together",
+                    "Makes follow-up visible in dashboards, therefore nothing depends on memory"
+                  ]}
+                  backOutcome="Every qualified lead has a path from first contact to decision, not just a single reply that dies in the inbox."
+                  colSpan="md:col-span-5"
+                  index={2}
+                />
 
-                {/* Block 4 - AI-Ready Front Desk Layer (wider) */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 }}
-                  className="md:col-span-8 group p-8 rounded-2xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-primary/20 transition-all"
-                >
-                  <div className="w-10 h-10 mb-5 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:border-primary/30 transition-all duration-300">
-                    <Brain className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg font-display font-medium mb-2 text-white group-hover:text-primary transition-colors">AI-Ready Front Desk Layer</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    Know exactly where AI can help with calls, routing, and qualification — and where your team still needs to lead.
-                  </p>
-                  <div className="flex gap-3 mt-4">
-                    <span className="text-xs font-mono text-primary/70 px-3 py-1 rounded-full bg-primary/5 border border-primary/10">Strategic Clarity</span>
-                    <span className="text-xs font-mono text-primary/70 px-3 py-1 rounded-full bg-primary/5 border border-primary/10">AI Readiness</span>
-                  </div>
-                </motion.div>
+                {/* Block 4 - AI-Ready Front Desk Layer */}
+                <JourneyCard 
+                  icon={Brain}
+                  title="AI-Ready Front Desk Layer"
+                  frontDescription="Know exactly where AI should handle calls, routing, and qualification—and where your team still needs to lead."
+                  backIntro="We design a front-desk layer that's ready for AI without losing the human touch."
+                  backBullets={[
+                    "Separates repeatable, scriptable tasks from conversations that need judgment",
+                    "Defines rules for triage, routing, scheduling, and escalation",
+                    "Shows which parts can be automated now and which stay with humans (for safety, nuance, or sales)",
+                    "Sets you up to plug in AI reception and follow-up confidently, therefore you don't 'experiment' on live customers"
+                  ]}
+                  backOutcome="A front desk that's built for AI from the ground up, not a patchwork of bots bolted onto broken processes."
+                  colSpan="md:col-span-7"
+                  index={3}
+                />
               </div>
             </div>
 
@@ -885,23 +1014,27 @@ export default function Home() {
                 <AnimatedMetric 
                   value="40-90" 
                   suffix="hrs/mo" 
-                  description="Time regained once operational loops are clarified."
+                  description="Time typically regained once lead, follow-up, and front-desk loops are clarified."
                 />
                 <AnimatedMetric 
                   value="82" 
                   suffix="%" 
-                  description="Average reduction in friction across lead, follow-up, and ops sequences."
+                  description="Average perceived reduction in friction across lead handling and ops sequences reported by clients."
                 />
                 <AnimatedMetric 
                   value="3" 
                   suffix="× faster" 
-                  description="Typical timeframe for clients to gain adoption clarity and make confident decisions."
+                  description="How much faster teams gain adoption clarity and make confident system decisions once the new flow is mapped."
                 />
               </div>
             </div>
           </motion.div>
         </div>
       </section>
+
+      {/* Revenue-Focused System Section */}
+      <RevenueSystemSection />
+
       {/* Industry Results Carousel */}
       <IndustryCarousel />
       {/* The SimpleSequence Method */}
