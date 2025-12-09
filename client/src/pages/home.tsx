@@ -123,30 +123,93 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Animated Border Glow - Desktop */}
-      <motion.div
-        className="absolute -inset-[2px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 hidden md:block"
-        style={{
-          background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.5), rgba(59,130,246,0.3), transparent)",
-          backgroundSize: "300% 100%",
-        }}
-        animate={{
-          backgroundPosition: isHovered ? ["0% 0%", "300% 0%"] : "0% 0%",
-        }}
-        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-      />
+      {/* ========== PULSING BORDER BEAMS - Desktop ========== */}
+      <div className="hidden md:block absolute -inset-[1px] rounded-2xl overflow-hidden z-0">
+        {/* Base border */}
+        <div className="absolute inset-0 rounded-2xl border border-white/10" />
+        
+        {/* Traveling beam - Top edge */}
+        <motion.div
+          className="absolute top-0 left-0 h-[2px] w-24 rounded-full"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.8), rgba(103,232,249,1), rgba(103,232,249,0.8), transparent)",
+            boxShadow: "0 0 20px rgba(103,232,249,0.6), 0 0 40px rgba(103,232,249,0.4)"
+          }}
+          animate={{
+            x: ["-100%", "calc(100vw)"],
+            opacity: [0, 1, 1, 0]
+          }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 1 }}
+        />
+        
+        {/* Traveling beam - Right edge */}
+        <motion.div
+          className="absolute top-0 right-0 w-[2px] h-24 rounded-full"
+          style={{
+            background: "linear-gradient(180deg, transparent, rgba(103,232,249,0.8), rgba(103,232,249,1), rgba(103,232,249,0.8), transparent)",
+            boxShadow: "0 0 20px rgba(103,232,249,0.6), 0 0 40px rgba(103,232,249,0.4)"
+          }}
+          animate={{
+            y: ["-100%", "500%"],
+            opacity: [0, 1, 1, 0]
+          }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "linear", repeatDelay: 1.5, delay: 0.8 }}
+        />
+        
+        {/* Traveling beam - Bottom edge */}
+        <motion.div
+          className="absolute bottom-0 right-0 h-[2px] w-24 rounded-full"
+          style={{
+            background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.8), rgba(103,232,249,1), rgba(103,232,249,0.8), transparent)",
+            boxShadow: "0 0 20px rgba(103,232,249,0.6), 0 0 40px rgba(103,232,249,0.4)"
+          }}
+          animate={{
+            x: ["100%", "-500%"],
+            opacity: [0, 1, 1, 0]
+          }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 1, delay: 1.5 }}
+        />
+        
+        {/* Traveling beam - Left edge */}
+        <motion.div
+          className="absolute bottom-0 left-0 w-[2px] h-24 rounded-full"
+          style={{
+            background: "linear-gradient(180deg, transparent, rgba(103,232,249,0.8), rgba(103,232,249,1), rgba(103,232,249,0.8), transparent)",
+            boxShadow: "0 0 20px rgba(103,232,249,0.6), 0 0 40px rgba(103,232,249,0.4)"
+          }}
+          animate={{
+            y: ["100%", "-500%"],
+            opacity: [0, 1, 1, 0]
+          }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "linear", repeatDelay: 1.5, delay: 2.2 }}
+        />
+        
+        {/* Corner glows */}
+        <motion.div
+          className="absolute top-0 left-0 w-16 h-16 rounded-tl-2xl"
+          style={{ background: "radial-gradient(circle at top left, rgba(103,232,249,0.15), transparent 70%)" }}
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-0 right-0 w-16 h-16 rounded-br-2xl"
+          style={{ background: "radial-gradient(circle at bottom right, rgba(103,232,249,0.15), transparent 70%)" }}
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        />
+      </div>
       
       {/* ========== DESKTOP: Curtain Reveal Card ========== */}
       <div className="hidden md:block relative w-full min-h-[420px] rounded-2xl overflow-hidden">
         {/* Back Content Layer (Always visible, revealed by curtain) */}
-        <div className="absolute inset-0 w-full h-full p-8 lg:p-10 rounded-2xl border border-primary/40 bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-950">
-          {/* Glowing Border Effect */}
-          <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_40px_rgba(103,232,249,0.15)]" />
-          
-          {/* Animated Background */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(103,232,249,0.2),transparent_50%)]" />
+        <div className="absolute inset-0 w-full h-full p-8 lg:p-10 rounded-2xl border border-primary/30 bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-950">
+          {/* Grid Pattern Overlay */}
+          <div className="absolute inset-0 opacity-[0.07]">
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.3)_1px,transparent_1px)] bg-[size:24px_24px]" />
           </div>
+          
+          {/* Subtle Corner Glow (reduced) */}
+          <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
           
           {/* Back Content with Staggered Fade-in */}
           <div className="relative z-10">
@@ -154,7 +217,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
               className="flex items-center gap-3 mb-4"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
-              transition={{ duration: 0.4, delay: 0.15 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
             >
               <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(103,232,249,0.3)]">
                 <feature.icon className="w-5 h-5 text-primary" />
@@ -166,7 +229,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
               className="text-muted-foreground text-sm leading-relaxed mb-4"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
             >
               {feature.backIntro}
             </motion.p>
@@ -178,7 +241,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
                   className="flex items-start gap-2 text-sm text-slate-300"
                   initial={{ opacity: 0, x: -15 }}
                   animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -15 }}
-                  transition={{ duration: 0.35, delay: 0.25 + i * 0.06 }}
+                  transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
                 >
                   <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
                   <span>{bullet}</span>
@@ -190,7 +253,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
               className="pt-3 border-t border-primary/20"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-              transition={{ duration: 0.4, delay: 0.55 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
             >
               <p className="text-sm text-primary/90 font-medium leading-relaxed">
                 <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
@@ -201,55 +264,48 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
         
         {/* Front Content Layer (Curtain that slides away) */}
         <motion.div 
-          className="absolute inset-0 w-full h-full p-8 lg:p-10 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/95 via-zinc-900/90 to-zinc-950/95 overflow-hidden"
+          className="absolute inset-0 w-full h-full p-8 lg:p-10 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/98 via-zinc-900/95 to-zinc-950/98 overflow-hidden"
           initial={false}
           animate={{ 
             x: isHovered ? "102%" : "0%",
-            opacity: isHovered ? 0.9 : 1
+            opacity: isHovered ? 0.95 : 1
           }}
           transition={{ 
-            duration: 0.55,
-            ease: [0.32, 0.72, 0, 1]
+            duration: 0.9,
+            ease: [0.25, 0.1, 0.25, 1]
           }}
         >
           {/* Glowing Edge (right side of curtain) */}
           <motion.div 
-            className="absolute right-0 top-0 bottom-0 w-16 pointer-events-none"
+            className="absolute right-0 top-0 bottom-0 w-20 pointer-events-none"
             style={{
-              background: "linear-gradient(to right, transparent, rgba(103,232,249,0.15) 50%, rgba(103,232,249,0.4) 85%, rgba(103,232,249,0.6))"
+              background: "linear-gradient(to right, transparent, rgba(103,232,249,0.1) 30%, rgba(103,232,249,0.3) 70%, rgba(103,232,249,0.5) 90%, rgba(103,232,249,0.7))"
             }}
             animate={{
               opacity: isHovered ? 1 : 0
             }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.4 }}
           />
           
           {/* Animated Corner Sparkles */}
           <motion.div
             className="absolute top-4 right-4"
             animate={{ 
-              opacity: [0.3, 1, 0.3],
-              scale: [0.8, 1.2, 0.8],
+              opacity: [0.3, 0.8, 0.3],
+              scale: [0.9, 1.1, 0.9],
               rotate: [0, 180, 360]
             }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           >
-            <Sparkles className="w-5 h-5 text-primary/50" />
+            <Sparkles className="w-5 h-5 text-primary/40" />
           </motion.div>
           
-          {/* Hover Glow Effect */}
-          <motion.div 
-            className="absolute top-0 right-0 w-60 h-60 bg-primary/15 blur-[80px] rounded-full pointer-events-none"
-            animate={{ 
-              opacity: isHovered ? 0.3 : 0.2,
-              scale: isHovered ? 0.8 : 1
-            }}
-            transition={{ duration: 0.5 }}
-          />
+          {/* Subtle Corner Glow (reduced) */}
+          <div className="absolute top-0 right-0 w-48 h-48 bg-primary/[0.04] blur-[60px] rounded-full pointer-events-none" />
           
-          {/* Pulsing Background Grid */}
-          <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.1)_1px,transparent_1px)] bg-[size:20px_20px]" />
+          {/* Grid Pattern Overlay */}
+          <div className="absolute inset-0 opacity-[0.06]">
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.3)_1px,transparent_1px)] bg-[size:24px_24px]" />
           </div>
           
           {/* Icon with Floating Animation */}
