@@ -1,0 +1,97 @@
+
+
+Section Heading + Subhead
+
+Not Just an AI Receptionist.
+A Revenue-Focused System.
+
+Most tools just “pick up.” Simple Sequence decides what to do with every interaction—whether it starts as a call, text, web form, chat, or DM—therefore maximizing booking value and protecting your front-desk time.
+
+⸻
+
+Card 1 – Intelligent Triage & Routing
+
+Front of card
+
+Intelligent Triage & Routing
+Automatically classifies every inbound touchpoint—from phone calls and texts to web forms, funnels, and social DMs—and routes urgency so humans only handle high-value conversations.
+
+IMPACT: Every lead and call triaged before it hits your team
+
+On hover / expand
+
+Simple Sequence listens first, then decides what should happen next. Every call, message, or form fill is classified and routed through rules tuned to your business.
+	•	Intake from phone, SMS, web chat, GHL funnels/forms, and social DMs
+	•	Detects new leads vs existing clients vs junk in real time
+	•	Flags urgent issues (same-day requests, emergencies, escalations)
+	•	Sends routine questions to AI and only escalates what truly needs a human
+	•	Logs every interaction back into your CRM/EMR or GoHighLevel so nothing slips through
+
+Outcome: fewer interruptions, faster response times, therefore a calmer front desk that still captures every opportunity across all channels.
+
+⸻
+
+Card 2 – Follow-Up & Show-Rate Engine
+
+Front of card
+
+Follow-Up & Show-Rate Engine
+Runs multi-step SMS and email sequences on leads from any channel—calls, chats, forms, or DMs—with win-back campaigns for “never booked” and no-show leads tuned to your workflow.
+
+IMPACT: Built to increase show rates and reduce no-shows
+
+On hover / expand
+
+Most systems stop after one reply. Simple Sequence keeps going—politely, automatically, and on your behalf.
+	•	New lead flows kick in no matter where the lead came from
+	•	Reminder & reschedule logic that adapts to time zones and timing
+	•	No-show / canceled win-backs that reopen lost opportunities
+	•	Branching logic for consults, intakes, or estimates depending on your industry
+	•	Tracks responses and status in your CRM so your team always knows what’s next
+
+Outcome: more people actually show up, therefore your marketing and ad spend become booked revenue instead of missed chances.
+
+⸻
+
+Card 3 – Education & FAQ Flows
+
+Front of card
+
+Education & FAQ Flows
+Uses your own content and policies to answer routine questions before they reach your team—sending explainers, pricing ranges, and pre-visit prep automatically across SMS, email, and chat.
+
+IMPACT: Designed to cut routine FAQs by up to 80%
+
+On hover / expand
+
+Your team repeats the same explanations all day. Simple Sequence says it for them—consistently, accurately, and on-brand.
+	•	RAG-style knowledge base built from your FAQs, docs, pricing ranges, and policies
+	•	Service / procedure explainers that answer “What do I get?” and “Is this right for me?”
+	•	Pre-visit prep and post-visit instructions sent automatically after booking
+	•	Triggered from forms, chats, DMs, and pipeline stages so answers show up exactly when needed
+	•	Guardrails so the AI never steps into regulated advice—it sticks to your approved information
+
+Outcome: fewer low-value calls and emails, therefore more time for high-value conversations and better-educated clients who are ready to say yes.
+
+⸻
+
+Card 4 – White-Glove Integration & ROI
+
+Front of card
+
+White-Glove Integration & ROI
+We handle the plumbing—phones, calendars, CRM/EMR, inboxes, and GHL automation—then review performance monthly to tune scripts and flows around what actually drives revenue.
+
+IMPACT: Real-time visibility into calls, leads, and booked revenue
+
+On hover / expand
+
+You don’t need another disconnected tool. You need a front-desk system wired into how your business already runs.
+	•	Done-for-you setup across phone systems, chat widgets, GHL pipelines, calendars, and EMR/CRMs
+	•	Uses GoHighLevel’s automation strength while Simple Sequence becomes the brain deciding what to trigger and when
+	•	Centralized logging so sales, ops, and owners all see the same picture
+	•	Dashboards that track calls handled, leads captured, show-rate, and projected revenue
+	•	Monthly optimization sessions to refine messaging, routing, and campaigns based on real data
+
+Outcome: a front desk you can actually measure and improve, therefore no more guessing whether your phones and follow-ups are working—or what they’re really worth.
+
