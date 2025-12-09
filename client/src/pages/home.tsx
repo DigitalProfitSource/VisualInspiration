@@ -91,23 +91,19 @@ function RevenueSystemSection() {
       >
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.08),transparent_60%)]" />
       </motion.div>
-      
       <motion.div
         style={{ scale: glowScale }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"
       />
-      
       <motion.div
         style={{ y: circuitY }}
         className="absolute inset-0 pointer-events-none"
       >
         <CircuitBeams className="opacity-15" />
       </motion.div>
-      
       {/* Border Lines */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-      
       <div className="container mx-auto px-6 relative z-10">
         {/* Header */}
         <motion.div 
@@ -130,9 +126,7 @@ function RevenueSystemSection() {
             </span>
           </h2>
           
-          <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-            Most tools just "pick up". SimpleSequence decides what to do with every interaction to maximize booking value.
-          </p>
+          <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">Most tools just "pick up". SimpleSequence decides what to do with every interaction to maximize booking value,  and protecting your front-desk time.</p>
         </motion.div>
 
         {/* 4-Feature Grid */}
