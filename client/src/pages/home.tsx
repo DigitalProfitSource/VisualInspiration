@@ -136,20 +136,94 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
         transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
       />
       
-      {/* ========== DESKTOP: 3D Flip Card ========== */}
-      <div 
-        className="hidden md:block relative w-full"
-        style={{
-          transformStyle: "preserve-3d",
-          transition: "transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1)",
-          transform: isHovered ? "rotateY(180deg)" : "rotateY(0deg)",
-        }}
-      >
-        {/* Front of Card - Desktop */}
-        <div 
-          className="w-full min-h-[420px] p-8 lg:p-10 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-900/70 to-zinc-950/90 relative overflow-hidden"
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+      {/* ========== DESKTOP: Curtain Reveal Card ========== */}
+      <div className="hidden md:block relative w-full min-h-[420px] rounded-2xl overflow-hidden">
+        {/* Back Content Layer (Always visible, revealed by curtain) */}
+        <div className="absolute inset-0 w-full h-full p-8 lg:p-10 rounded-2xl border border-primary/40 bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-950">
+          {/* Glowing Border Effect */}
+          <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_40px_rgba(103,232,249,0.15)]" />
+          
+          {/* Animated Background */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(103,232,249,0.2),transparent_50%)]" />
+          </div>
+          
+          {/* Back Content with Staggered Fade-in */}
+          <div className="relative z-10">
+            <motion.div 
+              className="flex items-center gap-3 mb-4"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+            >
+              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(103,232,249,0.3)]">
+                <feature.icon className="w-5 h-5 text-primary" />
+              </div>
+              <h4 className="text-lg font-display font-semibold text-primary">{feature.title}</h4>
+            </motion.div>
+            
+            <motion.p 
+              className="text-muted-foreground text-sm leading-relaxed mb-4"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            >
+              {feature.backIntro}
+            </motion.p>
+            
+            <ul className="space-y-2 mb-4">
+              {feature.backBullets.map((bullet, i) => (
+                <motion.li 
+                  key={i} 
+                  className="flex items-start gap-2 text-sm text-slate-300"
+                  initial={{ opacity: 0, x: -15 }}
+                  animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -15 }}
+                  transition={{ duration: 0.35, delay: 0.25 + i * 0.06 }}
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
+                  <span>{bullet}</span>
+                </motion.li>
+              ))}
+            </ul>
+            
+            <motion.div 
+              className="pt-3 border-t border-primary/20"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
+              transition={{ duration: 0.4, delay: 0.55 }}
+            >
+              <p className="text-sm text-primary/90 font-medium leading-relaxed">
+                <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+              </p>
+            </motion.div>
+          </div>
+        </div>
+        
+        {/* Front Content Layer (Curtain that slides away) */}
+        <motion.div 
+          className="absolute inset-0 w-full h-full p-8 lg:p-10 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/95 via-zinc-900/90 to-zinc-950/95 overflow-hidden"
+          initial={false}
+          animate={{ 
+            x: isHovered ? "102%" : "0%",
+            opacity: isHovered ? 0.9 : 1
+          }}
+          transition={{ 
+            duration: 0.55,
+            ease: [0.32, 0.72, 0, 1]
+          }}
         >
+          {/* Glowing Edge (right side of curtain) */}
+          <motion.div 
+            className="absolute right-0 top-0 bottom-0 w-16 pointer-events-none"
+            style={{
+              background: "linear-gradient(to right, transparent, rgba(103,232,249,0.15) 50%, rgba(103,232,249,0.4) 85%, rgba(103,232,249,0.6))"
+            }}
+            animate={{
+              opacity: isHovered ? 1 : 0
+            }}
+            transition={{ duration: 0.3 }}
+          />
+          
           {/* Animated Corner Sparkles */}
           <motion.div
             className="absolute top-4 right-4"
@@ -167,14 +241,14 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
           <motion.div 
             className="absolute top-0 right-0 w-60 h-60 bg-primary/15 blur-[80px] rounded-full pointer-events-none"
             animate={{ 
-              opacity: isHovered ? 1 : 0.2,
-              scale: isHovered ? 1.3 : 0.8
+              opacity: isHovered ? 0.3 : 0.2,
+              scale: isHovered ? 0.8 : 1
             }}
             transition={{ duration: 0.5 }}
           />
           
           {/* Pulsing Background Grid */}
-          <div className="absolute inset-0 opacity-5 group-hover:opacity-15 transition-opacity duration-500">
+          <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
             <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.1)_1px,transparent_1px)] bg-[size:20px_20px]" />
           </div>
           
@@ -237,54 +311,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
               →
             </motion.div>
           </div>
-        </div>
-        
-        {/* Back of Card - Desktop */}
-        <div 
-          className="absolute inset-0 w-full min-h-[420px] p-8 lg:p-10 rounded-2xl border border-primary/40 bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-950 overflow-y-auto"
-          style={{ 
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)"
-          }}
-        >
-          {/* Glowing Border Effect */}
-          <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_40px_rgba(103,232,249,0.15)]" />
-          
-          {/* Animated Background */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(103,232,249,0.2),transparent_50%)]" />
-          </div>
-          
-          {/* Content */}
-          <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(103,232,249,0.3)]">
-                <feature.icon className="w-5 h-5 text-primary" />
-              </div>
-              <h4 className="text-lg font-display font-semibold text-primary">{feature.title}</h4>
-            </div>
-            
-            <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-              {feature.backIntro}
-            </p>
-            
-            <ul className="space-y-2 mb-4">
-              {feature.backBullets.map((bullet, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
-                  <span>{bullet}</span>
-                </li>
-              ))}
-            </ul>
-            
-            <div className="pt-3 border-t border-primary/20">
-              <p className="text-sm text-primary/90 font-medium leading-relaxed">
-                <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
-              </p>
-            </div>
-          </div>
-        </div>
+        </motion.div>
       </div>
       
       {/* ========== MOBILE: Expandable Card ========== */}
