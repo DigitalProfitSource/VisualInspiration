@@ -123,7 +123,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* ========== PULSING BORDER BEAMS - Desktop ========== */}
+      {/* ========== PULSING BORDER BEAMS - Desktop (desynchronized per card) ========== */}
       <div className="hidden md:block absolute -inset-[1px] rounded-2xl overflow-hidden z-0">
         {/* Base border */}
         <div className="absolute inset-0 rounded-2xl border border-white/10" />
@@ -139,7 +139,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
             x: ["-100%", "calc(100vw)"],
             opacity: [0, 1, 1, 0]
           }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 1 }}
+          transition={{ duration: 2.8 + index * 0.3, repeat: Infinity, ease: "linear", repeatDelay: 1.2 + index * 0.4, delay: index * 0.7 }}
         />
         
         {/* Traveling beam - Right edge */}
@@ -153,7 +153,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
             y: ["-100%", "500%"],
             opacity: [0, 1, 1, 0]
           }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "linear", repeatDelay: 1.5, delay: 0.8 }}
+          transition={{ duration: 2.3 + index * 0.25, repeat: Infinity, ease: "linear", repeatDelay: 1.8 + index * 0.3, delay: 0.5 + index * 0.9 }}
         />
         
         {/* Traveling beam - Bottom edge */}
@@ -167,7 +167,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
             x: ["100%", "-500%"],
             opacity: [0, 1, 1, 0]
           }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 1, delay: 1.5 }}
+          transition={{ duration: 3.2 + index * 0.2, repeat: Infinity, ease: "linear", repeatDelay: 0.8 + index * 0.5, delay: 1.2 + index * 0.6 }}
         />
         
         {/* Traveling beam - Left edge */}
@@ -181,7 +181,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
             y: ["100%", "-500%"],
             opacity: [0, 1, 1, 0]
           }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "linear", repeatDelay: 1.5, delay: 2.2 }}
+          transition={{ duration: 2.6 + index * 0.35, repeat: Infinity, ease: "linear", repeatDelay: 1.4 + index * 0.45, delay: 1.8 + index * 0.8 }}
         />
         
         {/* Corner glows */}
@@ -189,13 +189,13 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
           className="absolute top-0 left-0 w-16 h-16 rounded-tl-2xl"
           style={{ background: "radial-gradient(circle at top left, rgba(103,232,249,0.15), transparent 70%)" }}
           animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 2.2 + index * 0.3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
         />
         <motion.div
           className="absolute bottom-0 right-0 w-16 h-16 rounded-br-2xl"
           style={{ background: "radial-gradient(circle at bottom right, rgba(103,232,249,0.15), transparent 70%)" }}
           animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          transition={{ duration: 1.8 + index * 0.4, repeat: Infinity, ease: "easeInOut", delay: 0.8 + index * 0.6 }}
         />
       </div>
       
@@ -203,11 +203,6 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
       <div className="hidden md:block relative w-full min-h-[420px] rounded-2xl overflow-hidden">
         {/* Back Content Layer (Always visible, revealed by curtain) */}
         <div className="absolute inset-0 w-full h-full p-8 lg:p-10 rounded-2xl border border-primary/30 bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-950">
-          {/* Grid Pattern Overlay */}
-          <div className="absolute inset-0 opacity-[0.07]">
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.3)_1px,transparent_1px)] bg-[size:24px_24px]" />
-          </div>
-          
           {/* Subtle Corner Glow (reduced) */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
           
@@ -302,11 +297,6 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
           
           {/* Subtle Corner Glow (reduced) */}
           <div className="absolute top-0 right-0 w-48 h-48 bg-primary/[0.04] blur-[60px] rounded-full pointer-events-none" />
-          
-          {/* Grid Pattern Overlay */}
-          <div className="absolute inset-0 opacity-[0.06]">
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.3)_1px,transparent_1px)] bg-[size:24px_24px]" />
-          </div>
           
           {/* Icon with Floating Animation */}
           <motion.div 
@@ -473,32 +463,37 @@ function RevenueSystemSection() {
   
   return (
     <section ref={sectionRef} className="py-32 lg:py-40 relative overflow-hidden">
-      {/* Intense Parallax Background Layers */}
+      {/* Section Grid Pattern Background */}
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.4)_1px,transparent_1px)] bg-[size:24px_24px]" />
+      </div>
+      
+      {/* Subtle Parallax Background Layers (dimmed) */}
       <motion.div 
         style={{ y: backgroundY }}
         className="absolute inset-0 pointer-events-none"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.12),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(59,130,246,0.08),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(103,232,249,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.04),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(59,130,246,0.02),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(103,232,249,0.02),transparent_50%)]" />
       </motion.div>
       
-      {/* Animated Central Glow */}
+      {/* Subtle Central Glow (significantly dimmed) */}
       <motion.div
         style={{ scale: glowScale, opacity: glowOpacity }}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none"
       >
-        <div className="w-full h-full bg-primary/10 blur-[150px] rounded-full" />
+        <div className="w-full h-full bg-primary/[0.03] blur-[150px] rounded-full" />
       </motion.div>
       
-      {/* Secondary Floating Orbs */}
+      {/* Secondary Floating Orbs (dimmed) */}
       <motion.div
         style={{ y: circuitY }}
-        className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-500/5 blur-[100px] rounded-full pointer-events-none"
+        className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-500/[0.02] blur-[100px] rounded-full pointer-events-none"
       />
       <motion.div
         style={{ y: useTransform(scrollYProgress, [0, 1], ["20%", "-40%"]) }}
-        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-400/5 blur-[120px] rounded-full pointer-events-none"
+        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-400/[0.02] blur-[120px] rounded-full pointer-events-none"
       />
       
       {/* Circuit Beams with Enhanced Parallax */}
