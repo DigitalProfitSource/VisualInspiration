@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote } from "lucide-react";
+import { useRef } from "react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -38,6 +39,152 @@ const fadeInUpViewport = {
   viewport: { once: true, margin: "-100px" } as const,
   transition: { duration: 0.7 }
 };
+
+const revenueFeatures = [
+  {
+    icon: Route,
+    title: "Intelligent Triage & Routing",
+    description: "Detects new leads, existing clients, and spam. Routes urgency appropriately so humans only handle what matters.",
+    impact: "100%",
+    impactLabel: "Calls Routed"
+  },
+  {
+    icon: RefreshCw,
+    title: "Follow-Up & Show-Rate Engine",
+    description: "Multi-step SMS and email sequences. Win-back campaigns for 'never booked' leads. Logic tuned to your specific workflow.",
+    impact: "3x",
+    impactLabel: "Show Rates"
+  },
+  {
+    icon: BookOpen,
+    title: "Education & FAQ Flows",
+    description: "RAG-style knowledge base answers questions before they reach your team. Procedure explainers and pre-visit prep.",
+    impact: "-80%",
+    impactLabel: "Routine FAQs"
+  },
+  {
+    icon: Handshake,
+    title: "White-Glove Integration & ROI",
+    description: "Done-for-you setup across phone, CRM, and EMR. Monthly optimization sessions to tune messaging and maximize profit.",
+    impact: "Real-time",
+    impactLabel: "ROI"
+  }
+];
+
+function RevenueSystemSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+  const circuitY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const glowScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 0.8]);
+  
+  return (
+    <section ref={sectionRef} className="py-32 relative overflow-hidden">
+      {/* Parallax Background Layers */}
+      <motion.div 
+        style={{ y: backgroundY }}
+        className="absolute inset-0 pointer-events-none"
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.08),transparent_60%)]" />
+      </motion.div>
+      
+      <motion.div
+        style={{ scale: glowScale }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"
+      />
+      
+      <motion.div
+        style={{ y: circuitY }}
+        className="absolute inset-0 pointer-events-none"
+      >
+        <CircuitBeams className="opacity-15" />
+      </motion.div>
+      
+      {/* Border Lines */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+          className="text-center max-w-4xl mx-auto mb-20"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-xs font-mono text-primary mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            Beyond Basic Automation
+          </div>
+          
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium tracking-tight mb-6 leading-[1.1]">
+            Not Just an AI Receptionist.
+            <br />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-300">
+              A Revenue-Focused System.
+            </span>
+          </h2>
+          
+          <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            Most tools just "pick up". SimpleSequence decides what to do with every interaction to maximize booking value.
+          </p>
+        </motion.div>
+
+        {/* 4-Feature Grid */}
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+          {revenueFeatures.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: index * 0.15, duration: 0.6 }}
+              className="group relative"
+            >
+              <div className="h-full p-8 lg:p-10 rounded-2xl border border-white/5 bg-gradient-to-br from-white/[0.04] via-white/[0.02] to-transparent hover:border-primary/20 transition-all duration-500 relative overflow-hidden">
+                {/* Hover Glow */}
+                <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                {/* Icon */}
+                <div className="w-12 h-12 mb-6 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(103,232,249,0.3)] transition-all duration-300">
+                  <feature.icon className="w-6 h-6 text-primary" />
+                </div>
+                
+                {/* Content */}
+                <h3 className="text-xl lg:text-2xl font-display font-medium mb-3 text-white group-hover:text-primary/90 transition-colors">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed mb-8">
+                  {feature.description}
+                </p>
+                
+                {/* Impact Metric */}
+                <div className="flex items-end gap-3 pt-4 border-t border-white/5">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono text-primary/60 uppercase tracking-wider">Impact</span>
+                  </div>
+                  <div className="flex items-baseline gap-2 ml-auto">
+                    <span className="text-3xl lg:text-4xl font-display font-bold text-primary drop-shadow-[0_0_10px_rgba(103,232,249,0.5)]">
+                      {feature.impact}
+                    </span>
+                    <span className="text-sm text-muted-foreground font-medium">
+                      {feature.impactLabel}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   const { scrollY } = useScroll();
@@ -146,6 +293,10 @@ export default function Home() {
       </section>
       {/* Tech Stack Ticker */}
       <TechTicker />
+
+      {/* Revenue-Focused System Section */}
+      <RevenueSystemSection />
+
       {/* What We Solve - Friction Grid */}
       <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
         <GridBeam showCenterBeam={false} gridOpacity={0.2} />
