@@ -1,6 +1,6 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, ChevronUp, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Sparkles } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -44,32 +44,336 @@ const revenueFeatures = [
   {
     icon: Route,
     title: "Intelligent Triage & Routing",
-    description: "Detects new leads, existing clients, and spam. Routes urgency appropriately so humans only handle what matters.",
-    impact: "100%",
-    impactLabel: "Calls Routed"
+    frontDescription: "Automatically classifies every inbound touchpoint—from phone calls and texts to web forms, funnels, and social DMs—and routes urgency so humans only handle high-value conversations.",
+    impact: "Every lead and call triaged before it hits your team",
+    backIntro: "Simple Sequence listens first, then decides what should happen next. Every call, message, or form fill is classified and routed through rules tuned to your business.",
+    backBullets: [
+      "Intake from phone, SMS, web chat, GHL funnels/forms, and social DMs",
+      "Detects new leads vs existing clients vs junk in real time",
+      "Flags urgent issues (same-day requests, emergencies, escalations)",
+      "Sends routine questions to AI and only escalates what truly needs a human",
+      "Logs every interaction back into your CRM/EMR or GoHighLevel so nothing slips through"
+    ],
+    backOutcome: "Fewer interruptions, faster response times, therefore a calmer front desk that still captures every opportunity across all channels."
   },
   {
     icon: RefreshCw,
     title: "Follow-Up & Show-Rate Engine",
-    description: "Multi-step SMS and email sequences. Win-back campaigns for 'never booked' leads. Logic tuned to your specific workflow.",
-    impact: "3x",
-    impactLabel: "Show Rates"
+    frontDescription: "Runs multi-step SMS and email sequences on leads from any channel—calls, chats, forms, or DMs—with win-back campaigns for \"never booked\" and no-show leads tuned to your workflow.",
+    impact: "Built to increase show rates and reduce no-shows",
+    backIntro: "Most systems stop after one reply. Simple Sequence keeps going—politely, automatically, and on your behalf.",
+    backBullets: [
+      "New lead flows kick in no matter where the lead came from",
+      "Reminder & reschedule logic that adapts to time zones and timing",
+      "No-show / canceled win-backs that reopen lost opportunities",
+      "Branching logic for consults, intakes, or estimates depending on your industry",
+      "Tracks responses and status in your CRM so your team always knows what's next"
+    ],
+    backOutcome: "More people actually show up, therefore your marketing and ad spend become booked revenue instead of missed chances."
   },
   {
     icon: BookOpen,
     title: "Education & FAQ Flows",
-    description: "RAG-style knowledge base answers questions before they reach your team. Procedure explainers and pre-visit prep.",
-    impact: "-80%",
-    impactLabel: "Routine FAQs"
+    frontDescription: "Uses your own content and policies to answer routine questions before they reach your team—sending explainers, pricing ranges, and pre-visit prep automatically across SMS, email, and chat.",
+    impact: "Designed to cut routine FAQs by up to 80%",
+    backIntro: "Your team repeats the same explanations all day. Simple Sequence says it for them—consistently, accurately, and on-brand.",
+    backBullets: [
+      "RAG-style knowledge base built from your FAQs, docs, pricing ranges, and policies",
+      "Service / procedure explainers that answer \"What do I get?\" and \"Is this right for me?\"",
+      "Pre-visit prep and post-visit instructions sent automatically after booking",
+      "Triggered from forms, chats, DMs, and pipeline stages so answers show up exactly when needed",
+      "Guardrails so the AI never steps into regulated advice—it sticks to your approved information"
+    ],
+    backOutcome: "Fewer low-value calls and emails, therefore more time for high-value conversations and better-educated clients who are ready to say yes."
   },
   {
     icon: Handshake,
     title: "White-Glove Integration & ROI",
-    description: "Done-for-you setup across phone, CRM, and EMR. Monthly optimization sessions to tune messaging and maximize profit.",
-    impact: "Real-time",
-    impactLabel: "ROI"
+    frontDescription: "We handle the plumbing—phones, calendars, CRM/EMR, inboxes, and GHL automation—then review performance monthly to tune scripts and flows around what actually drives revenue.",
+    impact: "Real-time visibility into calls, leads, and booked revenue",
+    backIntro: "You don't need another disconnected tool. You need a front-desk system wired into how your business already runs.",
+    backBullets: [
+      "Done-for-you setup across phone systems, chat widgets, GHL pipelines, calendars, and EMR/CRMs",
+      "Uses GoHighLevel's automation strength while Simple Sequence becomes the brain deciding what to trigger and when",
+      "Centralized logging so sales, ops, and owners all see the same picture",
+      "Dashboards that track calls handled, leads captured, show-rate, and projected revenue",
+      "Monthly optimization sessions to refine messaging, routing, and campaigns based on real data"
+    ],
+    backOutcome: "A front desk you can actually measure and improve, therefore no more guessing whether your phones and follow-ups are working—or what they're really worth."
   }
 ];
+
+function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; index: number }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50, rotateX: -15, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ 
+        delay: index * 0.2, 
+        duration: 0.8,
+        type: "spring",
+        stiffness: 100
+      }}
+      className="group relative"
+      style={{ perspective: "1200px" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Animated Border Glow - Desktop */}
+      <motion.div
+        className="absolute -inset-[2px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 hidden md:block"
+        style={{
+          background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.5), rgba(59,130,246,0.3), transparent)",
+          backgroundSize: "300% 100%",
+        }}
+        animate={{
+          backgroundPosition: isHovered ? ["0% 0%", "300% 0%"] : "0% 0%",
+        }}
+        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+      />
+      
+      {/* ========== DESKTOP: 3D Flip Card ========== */}
+      <div 
+        className="hidden md:block relative w-full"
+        style={{
+          transformStyle: "preserve-3d",
+          transition: "transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1)",
+          transform: isHovered ? "rotateY(180deg)" : "rotateY(0deg)",
+        }}
+      >
+        {/* Front of Card - Desktop */}
+        <div 
+          className="w-full min-h-[420px] p-8 lg:p-10 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-900/70 to-zinc-950/90 relative overflow-hidden"
+          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+        >
+          {/* Animated Corner Sparkles */}
+          <motion.div
+            className="absolute top-4 right-4"
+            animate={{ 
+              opacity: [0.3, 1, 0.3],
+              scale: [0.8, 1.2, 0.8],
+              rotate: [0, 180, 360]
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Sparkles className="w-5 h-5 text-primary/50" />
+          </motion.div>
+          
+          {/* Hover Glow Effect */}
+          <motion.div 
+            className="absolute top-0 right-0 w-60 h-60 bg-primary/15 blur-[80px] rounded-full pointer-events-none"
+            animate={{ 
+              opacity: isHovered ? 1 : 0.2,
+              scale: isHovered ? 1.3 : 0.8
+            }}
+            transition={{ duration: 0.5 }}
+          />
+          
+          {/* Pulsing Background Grid */}
+          <div className="absolute inset-0 opacity-5 group-hover:opacity-15 transition-opacity duration-500">
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.1)_1px,transparent_1px)] bg-[size:20px_20px]" />
+          </div>
+          
+          {/* Icon with Floating Animation */}
+          <motion.div 
+            className="w-14 h-14 mb-6 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30 relative z-10"
+            animate={{ 
+              y: [-2, 2, -2],
+              boxShadow: [
+                "0 0 20px rgba(103,232,249,0.2)",
+                "0 0 35px rgba(103,232,249,0.4)",
+                "0 0 20px rgba(103,232,249,0.2)"
+              ]
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <feature.icon className="w-7 h-7 text-primary" />
+          </motion.div>
+          
+          {/* Content */}
+          <h3 className="text-xl lg:text-2xl font-display font-semibold mb-4 text-white relative z-10">
+            {feature.title}
+          </h3>
+          <p className="text-muted-foreground leading-relaxed mb-6 relative z-10 text-sm lg:text-base">
+            {feature.frontDescription}
+          </p>
+          
+          {/* Impact Metric */}
+          <div className="pt-4 border-t border-white/10 relative z-10">
+            <div className="flex items-center gap-2 mb-1">
+              <motion.div 
+                className="w-2 h-2 rounded-full bg-primary"
+                animate={{ 
+                  scale: [1, 1.5, 1],
+                  boxShadow: [
+                    "0 0 5px rgba(103,232,249,0.5)",
+                    "0 0 15px rgba(103,232,249,1)",
+                    "0 0 5px rgba(103,232,249,0.5)"
+                  ]
+                }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+              <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+            </div>
+            <p className="text-primary font-medium text-sm lg:text-base">{feature.impact}</p>
+          </div>
+          
+          {/* Desktop Hover Hint */}
+          <div className="flex items-center gap-2 mt-6 text-xs text-muted-foreground/60">
+            <motion.span 
+              animate={{ opacity: [0.4, 1, 0.4] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Hover to explore
+            </motion.span>
+            <motion.div
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              →
+            </motion.div>
+          </div>
+        </div>
+        
+        {/* Back of Card - Desktop */}
+        <div 
+          className="absolute inset-0 w-full min-h-[420px] p-8 lg:p-10 rounded-2xl border border-primary/40 bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-950 overflow-y-auto"
+          style={{ 
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            transform: "rotateY(180deg)"
+          }}
+        >
+          {/* Glowing Border Effect */}
+          <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_40px_rgba(103,232,249,0.15)]" />
+          
+          {/* Animated Background */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(103,232,249,0.2),transparent_50%)]" />
+          </div>
+          
+          {/* Content */}
+          <div className="relative z-10">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(103,232,249,0.3)]">
+                <feature.icon className="w-5 h-5 text-primary" />
+              </div>
+              <h4 className="text-lg font-display font-semibold text-primary">{feature.title}</h4>
+            </div>
+            
+            <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+              {feature.backIntro}
+            </p>
+            
+            <ul className="space-y-2 mb-4">
+              {feature.backBullets.map((bullet, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
+                  <span>{bullet}</span>
+                </li>
+              ))}
+            </ul>
+            
+            <div className="pt-3 border-t border-primary/20">
+              <p className="text-sm text-primary/90 font-medium leading-relaxed">
+                <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* ========== MOBILE: Expandable Card ========== */}
+      <div className="md:hidden">
+        <div className="w-full p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-900/70 to-zinc-950/90 relative overflow-hidden">
+          {/* Background Glow */}
+          <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 blur-[60px] rounded-full pointer-events-none" />
+          
+          {/* Icon */}
+          <div className="w-12 h-12 mb-4 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30">
+            <feature.icon className="w-6 h-6 text-primary" />
+          </div>
+          
+          {/* Content */}
+          <h3 className="text-lg font-display font-semibold mb-3 text-white relative z-10">
+            {feature.title}
+          </h3>
+          <p className="text-muted-foreground leading-relaxed mb-4 relative z-10 text-sm">
+            {feature.frontDescription}
+          </p>
+          
+          {/* Impact Metric */}
+          <div className="pt-3 border-t border-white/10 relative z-10">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(103,232,249,0.8)]" />
+              <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+            </div>
+            <p className="text-primary font-medium text-sm">{feature.impact}</p>
+          </div>
+          
+          {/* Learn More Button */}
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="mt-5 w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-primary/30 bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 active:scale-[0.98] transition-all"
+            data-testid={`learn-more-${index}`}
+          >
+            {isExpanded ? "Show Less" : "Learn More"}
+            <motion.div
+              animate={{ rotate: isExpanded ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ChevronDown className="w-4 h-4" />
+            </motion.div>
+          </button>
+        </div>
+        
+        {/* Mobile Expanded Content */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="p-5 -mt-2 pt-6 rounded-b-2xl border border-t-0 border-white/10 bg-zinc-900/70">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  {feature.backIntro}
+                </p>
+                
+                <ul className="space-y-2 mb-4">
+                  {feature.backBullets.map((bullet, i) => (
+                    <motion.li 
+                      key={i} 
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.08 }}
+                      className="flex items-start gap-2 text-sm text-slate-300"
+                    >
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                      <span>{bullet}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+                
+                <div className="pt-3 border-t border-primary/20">
+                  <p className="text-sm text-primary/90 font-medium leading-relaxed">
+                    <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
 
 function RevenueSystemSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -78,104 +382,148 @@ function RevenueSystemSection() {
     offset: ["start end", "end start"]
   });
   
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
-  const circuitY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
-  const glowScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 0.8]);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-40%", "40%"]);
+  const circuitY = useTransform(scrollYProgress, [0, 1], ["-30%", "60%"]);
+  const glowScale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.5, 1.5, 1.5, 0.5]);
+  const glowOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 1, 0.3]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [10, 0, -10]);
   
   return (
-    <section ref={sectionRef} className="py-32 relative overflow-hidden">
-      {/* Parallax Background Layers */}
+    <section ref={sectionRef} className="py-32 lg:py-40 relative overflow-hidden">
+      {/* Intense Parallax Background Layers */}
       <motion.div 
         style={{ y: backgroundY }}
         className="absolute inset-0 pointer-events-none"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.08),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.12),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(59,130,246,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(103,232,249,0.08),transparent_50%)]" />
       </motion.div>
+      
+      {/* Animated Central Glow */}
       <motion.div
-        style={{ scale: glowScale }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"
+        style={{ scale: glowScale, opacity: glowOpacity }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none"
+      >
+        <div className="w-full h-full bg-primary/10 blur-[150px] rounded-full" />
+      </motion.div>
+      
+      {/* Secondary Floating Orbs */}
+      <motion.div
+        style={{ y: circuitY }}
+        className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-500/5 blur-[100px] rounded-full pointer-events-none"
       />
+      <motion.div
+        style={{ y: useTransform(scrollYProgress, [0, 1], ["20%", "-40%"]) }}
+        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-400/5 blur-[120px] rounded-full pointer-events-none"
+      />
+      
+      {/* Circuit Beams with Enhanced Parallax */}
       <motion.div
         style={{ y: circuitY }}
         className="absolute inset-0 pointer-events-none"
       >
-        <CircuitBeams className="opacity-15" />
+        <CircuitBeams className="opacity-20" />
       </motion.div>
-      {/* Border Lines */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Header */}
+      
+      {/* Animated Border Lines */}
+      <motion.div 
+        className="absolute top-0 left-0 right-0 h-px overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <motion.div
+          className="h-full bg-gradient-to-r from-transparent via-primary to-transparent"
+          animate={{ x: ["-100%", "100%"] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        />
+      </motion.div>
+      <motion.div 
+        className="absolute bottom-0 left-0 right-0 h-px overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <motion.div
+          className="h-full bg-gradient-to-r from-transparent via-primary to-transparent"
+          animate={{ x: ["100%", "-100%"] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+        />
+      </motion.div>
+      
+      <motion.div 
+        style={{ rotateX }}
+        className="container mx-auto px-6 relative z-10"
+      >
+        {/* Header with Dramatic Entrance */}
         <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 60, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="text-center max-w-4xl mx-auto mb-20"
+          transition={{ duration: 1, type: "spring", stiffness: 80 }}
+          className="text-center max-w-5xl mx-auto mb-24"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-xs font-mono text-primary mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+          <motion.div 
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/30 bg-primary/10 text-xs font-mono text-primary mb-10"
+            animate={{ 
+              boxShadow: [
+                "0 0 20px rgba(103,232,249,0.2)",
+                "0 0 40px rgba(103,232,249,0.4)",
+                "0 0 20px rgba(103,232,249,0.2)"
+              ]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <motion.span 
+              className="w-2 h-2 rounded-full bg-primary"
+              animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
             Beyond Basic Automation
-          </div>
+          </motion.div>
           
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium tracking-tight mb-6 leading-[1.1]">
-            Not Just an AI Receptionist.
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-display font-semibold tracking-tight mb-8 leading-[1.05]">
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              Not Just an AI Receptionist.
+            </motion.span>
             <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-300">
+            <motion.span 
+              className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-300 to-cyan-300 bg-[length:200%_auto]"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              animate={{ backgroundPosition: ["0% center", "200% center"] }}
+              style={{ backgroundSize: "200% auto" }}
+            >
               A Revenue-Focused System.
-            </span>
+            </motion.span>
           </h2>
           
-          <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">Most tools just "pick up". SimpleSequence decides what to do with every interaction to maximize booking value,  and protecting your front-desk time.</p>
+          <motion.p 
+            className="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6 }}
+          >
+            Most tools just "pick up." Simple Sequence decides what to do with every interaction—whether it starts as a call, text, web form, chat, or DM—therefore maximizing booking value and protecting your front-desk time.
+          </motion.p>
         </motion.div>
 
-        {/* 4-Feature Grid */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        {/* 4-Feature Flip Card Grid */}
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
           {revenueFeatures.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: index * 0.15, duration: 0.6 }}
-              className="group relative"
-            >
-              <div className="h-full p-8 lg:p-10 rounded-2xl border border-white/5 bg-gradient-to-br from-white/[0.04] via-white/[0.02] to-transparent hover:border-primary/20 transition-all duration-500 relative overflow-hidden">
-                {/* Hover Glow */}
-                <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                {/* Icon */}
-                <div className="w-12 h-12 mb-6 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/20 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(103,232,249,0.3)] transition-all duration-300">
-                  <feature.icon className="w-6 h-6 text-primary" />
-                </div>
-                
-                {/* Content */}
-                <h3 className="text-xl lg:text-2xl font-display font-medium mb-3 text-white group-hover:text-primary/90 transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed mb-8">
-                  {feature.description}
-                </p>
-                
-                {/* Impact Metric */}
-                <div className="flex items-end gap-3 pt-4 border-t border-white/5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono text-primary/60 uppercase tracking-wider">Impact</span>
-                  </div>
-                  <div className="flex items-baseline gap-2 ml-auto">
-                    <span className="text-3xl lg:text-4xl font-display font-bold text-primary drop-shadow-[0_0_10px_rgba(103,232,249,0.5)]">
-                      {feature.impact}
-                    </span>
-                    <span className="text-sm text-muted-foreground font-medium">
-                      {feature.impactLabel}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            <FlipCard key={index} feature={feature} index={index} />
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
