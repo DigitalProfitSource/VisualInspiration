@@ -844,137 +844,6 @@ export default function Home() {
       {/* Tech Stack Ticker */}
       <TechTicker />
 
-      {/* Customer Journey Alignment Section */}
-      <section className="py-32 relative">
-        <div className="container mx-auto px-6">
-          {/* Main Container with all cards */}
-          <motion.div 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="rounded-3xl border border-white/10 bg-zinc-900/40 p-10 md:p-16 relative overflow-hidden"
-          >
-            
-            {/* Header */}
-            <div className="text-center max-w-4xl mx-auto mb-16 relative z-10">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 leading-tight">
-                We Align Your Entire Customer Journey Into One <span className="text-primary">Intelligent Flow.</span>
-              </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed">
-                Instead of scattered tools and manual workarounds, you get a clear map of how people, systems, and AI should work together from first touch to repeat business—therefore your operations run smoother and scale without extra headcount.
-              </p>
-            </div>
-
-            {/* 4 Core Blocks - 2x2 Grid with Vertical Stagger */}
-            <div className="grid md:grid-cols-2 gap-6 mb-12 relative z-10">
-              {/* Left Column - higher position */}
-              <div className="space-y-6">
-                {/* Block 1 - Lead Capture Architecture */}
-                <JourneyCard 
-                  icon={LayoutTemplate}
-                  title="Lead Capture Architecture"
-                  frontDescription="Stop losing visitors. Turn traffic into captured leads without rebuilding your entire website."
-                  backIntro="We map every entry point a lead can take, then design a capture flow that doesn't leak."
-                  backBullets={[
-                    "Consolidates forms, chats, calls, and DMs into a single intake path",
-                    "Standardizes what you collect (contact info, intent, timing, qualification)",
-                    "Fixes 'dead ends' where people click but never become leads",
-                    "Works on top of your existing site and tools, therefore no risky full redesign"
-                  ]}
-                  backOutcome="More of your existing traffic becomes trackable leads you can actually follow up with."
-                  index={0}
-                />
-
-                {/* Block 3 - Follow-Up Clarity Engine */}
-                <JourneyCard 
-                  icon={Zap}
-                  title="Follow-Up Clarity Engine"
-                  frontDescription="No more leads going cold because someone forgot. Consistent follow-up that actually happens."
-                  backIntro={"We turn 'someone should follow up' into a concrete, automated plan."}
-                  backBullets={[
-                    "Defines who gets followed up, how often, and on which channels",
-                    "Builds sequences for new leads, no-shows, canceled jobs, and inactive clients",
-                    "Aligns human touchpoints with automated messages so they work together",
-                    "Makes follow-up visible in dashboards, therefore nothing depends on memory"
-                  ]}
-                  backOutcome="Every qualified lead has a path from first contact to decision, not just a single reply that dies in the inbox."
-                  index={2}
-                />
-              </div>
-
-              {/* Right Column - offset down for stagger effect */}
-              <div className="space-y-6 md:pt-16">
-                {/* Block 2 - Operational Backbone Design */}
-                <JourneyCard 
-                  icon={Layers}
-                  title="Operational Backbone Design"
-                  frontDescription="Get a clear blueprint of how your systems should connect — so your team stops being the glue."
-                  backIntro="We untangle the mess of tools and manual handoffs so your operation has a real spine."
-                  backBullets={[
-                    "Maps how leads move from capture → qualification → booking → work done",
-                    "Defines which system owns each step (calendar, CRM, ticketing, billing, etc.)",
-                    "Removes duplicate tools and redundant steps that slow everyone down",
-                    "Documents the new flow so onboarding and training stop living in one person's head"
-                  ]}
-                  backOutcome="Your business finally runs on a predictable backbone, therefore daily chaos drops and scaling becomes possible."
-                  index={1}
-                />
-
-                {/* Block 4 - AI-Ready Front Desk Layer */}
-                <JourneyCard 
-                  icon={Brain}
-                  title="AI-Ready Front Desk Layer"
-                  frontDescription="Know exactly where AI can help with calls, routing, and qualification — and where your team still needs to lead."
-                  backIntro="We design a front-desk layer that's ready for AI without losing the human touch."
-                  backBullets={[
-                    "Separates repeatable, scriptable tasks from conversations that need judgment",
-                    "Defines rules for triage, routing, scheduling, and escalation",
-                    "Shows which parts can be automated now and which stay with humans (for safety, nuance, or sales)",
-                    "Sets you up to plug in AI reception and follow-up confidently, therefore you don't 'experiment' on live customers"
-                  ]}
-                  backOutcome="A front desk that's built for AI from the ground up, not a patchwork of bots bolted onto broken processes."
-                  index={3}
-                  tags={["Strategic Clarity", "AI Readiness"]}
-                />
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="border-t border-white/5 my-12" />
-
-            {/* Metrics Row */}
-            <div className="relative z-10">
-              <motion.h3 
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-center text-sm font-mono text-primary mb-10 tracking-wider"
-              >
-                CLARITY DELIVERED. EFFICIENCY UNLOCKED.
-              </motion.h3>
-              <div className="grid md:grid-cols-3 gap-8">
-                <AnimatedMetric 
-                  value="40-90" 
-                  suffix="hrs/mo" 
-                  description="Time typically regained once lead, follow-up, and front-desk loops are clarified."
-                />
-                <AnimatedMetric 
-                  value="82" 
-                  suffix="%" 
-                  description="Average perceived reduction in friction across lead handling and ops sequences reported by clients."
-                />
-                <AnimatedMetric 
-                  value="3" 
-                  suffix="× faster" 
-                  description="How much faster teams gain adoption clarity and make confident system decisions once the new flow is mapped."
-                />
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* What We Solve - Friction Grid */}
       <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
         <GridBeam showCenterBeam={false} gridOpacity={0.2} />
@@ -1019,6 +888,145 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Customer Journey Alignment Section */}
+      <section className="py-32 relative">
+        <div className="container mx-auto px-6">
+          {/* Main Container with all cards */}
+          <motion.div 
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="rounded-3xl border border-white/10 bg-zinc-900/40 p-10 md:p-16 relative overflow-hidden"
+          >
+            
+            {/* Header */}
+            <div className="text-center max-w-4xl mx-auto mb-16 relative z-10">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 leading-tight">
+                We Align Your Entire Customer Journey Into One <span className="text-primary">Intelligent Flow.</span>
+              </h2>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                Instead of scattered tools and manual workarounds, you get a clear map of how people, systems, and AI should work together from first touch to repeat business—therefore your operations run smoother and scale without extra headcount.
+              </p>
+            </div>
+
+            {/* 4 Core Blocks - 2x2 Grid with Width Stagger */}
+            <div className="space-y-6 mb-12 relative z-10">
+              {/* Row 1 */}
+              <div className="grid md:grid-cols-12 gap-6">
+                {/* Block 1 - Lead Capture Architecture (narrower) */}
+                <div className="md:col-span-5">
+                  <JourneyCard 
+                    icon={LayoutTemplate}
+                    title="Lead Capture Architecture"
+                    frontDescription="Stop losing visitors. Turn traffic into captured leads without rebuilding your entire website."
+                    backIntro="We map every entry point a lead can take, then design a capture flow that doesn't leak."
+                    backBullets={[
+                      "Consolidates forms, chats, calls, and DMs into a single intake path",
+                      "Standardizes what you collect (contact info, intent, timing, qualification)",
+                      "Fixes 'dead ends' where people click but never become leads",
+                      "Works on top of your existing site and tools, therefore no risky full redesign"
+                    ]}
+                    backOutcome="More of your existing traffic becomes trackable leads you can actually follow up with."
+                    index={0}
+                  />
+                </div>
+
+                {/* Block 2 - Operational Backbone Design (wider) */}
+                <div className="md:col-span-7">
+                  <JourneyCard 
+                    icon={Layers}
+                    title="Operational Backbone Design"
+                    frontDescription="Get a clear blueprint of how your systems should connect — so your team stops being the glue."
+                    backIntro="We untangle the mess of tools and manual handoffs so your operation has a real spine."
+                    backBullets={[
+                      "Maps how leads move from capture → qualification → booking → work done",
+                      "Defines which system owns each step (calendar, CRM, ticketing, billing, etc.)",
+                      "Removes duplicate tools and redundant steps that slow everyone down",
+                      "Documents the new flow so onboarding and training stop living in one person's head"
+                    ]}
+                    backOutcome="Your business finally runs on a predictable backbone, therefore daily chaos drops and scaling becomes possible."
+                    index={1}
+                  />
+                </div>
+              </div>
+
+              {/* Row 2 */}
+              <div className="grid md:grid-cols-12 gap-6">
+                {/* Block 3 - Follow-Up Clarity Engine (narrower) */}
+                <div className="md:col-span-5">
+                  <JourneyCard 
+                    icon={Zap}
+                    title="Follow-Up Clarity Engine"
+                    frontDescription="No more leads going cold because someone forgot. Consistent follow-up that actually happens."
+                    backIntro={"We turn 'someone should follow up' into a concrete, automated plan."}
+                    backBullets={[
+                      "Defines who gets followed up, how often, and on which channels",
+                      "Builds sequences for new leads, no-shows, canceled jobs, and inactive clients",
+                      "Aligns human touchpoints with automated messages so they work together",
+                      "Makes follow-up visible in dashboards, therefore nothing depends on memory"
+                    ]}
+                    backOutcome="Every qualified lead has a path from first contact to decision, not just a single reply that dies in the inbox."
+                    index={2}
+                  />
+                </div>
+
+                {/* Block 4 - AI-Ready Front Desk Layer (wider) */}
+                <div className="md:col-span-7">
+                  <JourneyCard 
+                    icon={Brain}
+                    title="AI-Ready Front Desk Layer"
+                    frontDescription="Know exactly where AI can help with calls, routing, and qualification — and where your team still needs to lead."
+                    backIntro="We design a front-desk layer that's ready for AI without losing the human touch."
+                    backBullets={[
+                      "Separates repeatable, scriptable tasks from conversations that need judgment",
+                      "Defines rules for triage, routing, scheduling, and escalation",
+                      "Shows which parts can be automated now and which stay with humans (for safety, nuance, or sales)",
+                      "Sets you up to plug in AI reception and follow-up confidently, therefore you don't 'experiment' on live customers"
+                    ]}
+                    backOutcome="A front desk that's built for AI from the ground up, not a patchwork of bots bolted onto broken processes."
+                    index={3}
+                    tags={["Strategic Clarity", "AI Readiness"]}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-white/5 my-12" />
+
+            {/* Metrics Row */}
+            <div className="relative z-10">
+              <motion.h3 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center text-sm font-mono text-primary mb-10 tracking-wider"
+              >
+                CLARITY DELIVERED. EFFICIENCY UNLOCKED.
+              </motion.h3>
+              <div className="grid md:grid-cols-3 gap-8">
+                <AnimatedMetric 
+                  value="40-90" 
+                  suffix="hrs/mo" 
+                  description="Time typically regained once lead, follow-up, and front-desk loops are clarified."
+                />
+                <AnimatedMetric 
+                  value="82" 
+                  suffix="%" 
+                  description="Average perceived reduction in friction across lead handling and ops sequences reported by clients."
+                />
+                <AnimatedMetric 
+                  value="3" 
+                  suffix="× faster" 
+                  description="How much faster teams gain adoption clarity and make confident system decisions once the new flow is mapped."
+                />
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
