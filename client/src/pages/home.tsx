@@ -1032,7 +1032,7 @@ export default function Home() {
       {/* Industry Results Carousel */}
       <IndustryCarousel />
       {/* The SimpleSequence Method */}
-      <section id="method" className="py-40 relative overflow-hidden bg-background">
+      <section id="method" className="py-40 relative overflow-hidden bg-background pl-[0px] pr-[0px] mt-[0px] mb-[0px] pt-[60px] pb-[60px]">
         <GridBeam />
         <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(var(--primary),0.03),transparent)] pointer-events-none" />
         
@@ -1136,7 +1136,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* AI Clarity Assessment */}
       <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
