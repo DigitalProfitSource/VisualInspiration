@@ -1105,19 +1105,14 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Operational Stack Band */}
-      <section className="py-16 relative border-y border-white/5">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent pointer-events-none" />
-        <div className="container mx-auto px-6 relative z-10">
+          {/* Operational Stack Band - Inside Method Section */}
           <motion.div 
             initial={fadeInUpViewport.initial}
             whileInView={fadeInUpViewport.whileInView}
             viewport={fadeInUpViewport.viewport}
             transition={fadeInUpViewport.transition}
-            className="max-w-3xl mx-auto"
+            className="mt-32 pt-32 border-t border-white/10 max-w-3xl mx-auto"
           >
             <p className="text-center text-lg text-slate-300 leading-relaxed mb-6">
               Under the hood, SimpleSequence runs on eight clarity frameworks that align your website, intake, CRM, follow-up, and operations into one intelligent flow—therefore, your AI front desk and follow-up system doesn't sit on top of broken processes.
