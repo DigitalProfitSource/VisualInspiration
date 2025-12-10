@@ -1,0 +1,205 @@
+Solutions Page Hero
+
+Label:
+THE OPERATIONAL STACK
+
+Headline:
+The SimpleSequence Operational Stack
+
+Subhead:
+Eight interconnected clarity frameworks that show you exactly how your front desk, follow-up, and operations should run — so you stop guessing and start scaling with confidence.
+
+Callout box:
+This is not software.
+This is the architecture that makes your software, team, and AI investments actually work together, therefore reducing chaos instead of creating more of it.
+
+⸻
+
+01 – Customer-Ready Website Architecture
+
+Title:
+Customer-Ready Website Architecture
+
+Body:
+Your website is no longer a brochure — it’s a behavioral intake layer that captures intent and feeds your front-desk system, instead of letting visitors disappear.
+
+WHAT THIS CLARIFIES
+	•	How your site should capture intent at different stages (cold, warm, ready now)
+	•	What information to collect (and when) so follow-up can be personal and relevant
+	•	How to reduce friction for each traffic source (search, ads, social, referrals)
+	•	Where AI assistive layers can enhance the journey without replacing humans
+
+KEY INSIGHTS DELIVERED
+	•	Visitor Intent Patterns – Understanding what visitors need at each touchpoint
+	•	Intake Sequence Mapping – Logical flow from first click to qualified lead
+	•	SEO/ESO Alignment – Structure optimized for discoverability and engagement
+	•	Website-to-CRM Handoff – Clear rules for clean, reliable data transfer
+
+⸻
+
+02 – CRM Pipeline Architecture
+
+Title:
+CRM Pipeline Architecture
+
+Body:
+A blueprint showing how every lead and opportunity should be tracked, advanced, and handed off — so nothing falls through the cracks once it’s captured.
+
+WHAT THIS CLARIFIES
+	•	Ideal pipeline stages for your business (from first contact to closed revenue)
+	•	Qualification logic: what makes a lead “ready” vs “not yet”
+	•	Follow-up timing based on stage and intent
+	•	Status definitions your team actually understands and uses consistently
+	•	Where AI can support routing, prioritization, and pattern detection
+
+KEY INSIGHTS DELIVERED
+	•	Industry-Aligned Pipeline – Model tailored to your business type
+	•	Stage-by-Stage Logic – Clear decision points at each stage
+	•	Accountability Structure – Who owns what, when
+	•	Reporting Clarity – Metrics that actually matter for revenue
+
+⸻
+
+03 – AI-Assisted Intake Opportunities
+
+Title:
+AI-Assisted Intake Opportunities
+
+Body:
+Where natural-language AI can safely support — not replace — your front-desk workflows across phone, chat, and messaging.
+
+WHAT THIS CLARIFIES
+	•	When AI should answer first (and when it shouldn’t)
+	•	When humans must handle the conversation from the start
+	•	What types of calls/messages AI can intelligently route or triage
+	•	Where AI reduces friction without harming trust or compliance
+
+KEY INSIGHTS DELIVERED
+	•	Intake Logic Tree – Decision framework for routing and escalation
+	•	AI vs Human Boundaries – Clear delineation of responsibilities
+	•	Scripts & Guardrails – Recommended language and limits for safety
+	•	Risk Analysis – Where AI helps, where it’s dangerous, and how to avoid bad deployments
+
+⸻
+
+04 – Follow-Up Clarity Protocols
+
+Title:
+Follow-Up Clarity Protocols
+
+Body:
+The rules for consistent follow-up — so leads stop going cold and your team stops guessing what to do next.
+
+WHAT THIS CLARIFIES
+	•	Follow-up timing standards by lead type and stage
+	•	Which messages matter most at each point in the journey
+	•	When human outreach is essential vs when automation can lead
+	•	What triggers follow-up behavior (events, time, actions)
+	•	Where AI can support follow-up without replacing human judgment
+
+KEY INSIGHTS DELIVERED
+	•	Sequence-by-Sequence Clarity – Logical progression of touches
+	•	Intent Segments – Messaging hierarchy by lead type and intent
+	•	Human vs AI Decision Points – Exactly when to escalate
+	•	Engagement Timing Rules – Cadence patterns that avoid both spam and neglect
+
+⸻
+
+05 – Lead Reactivation Framework
+
+Title:
+Lead Reactivation Framework
+
+Body:
+Your database contains hidden revenue — old leads you’ve been ignoring that can become real opportunities with the right timing and message.
+
+WHAT THIS CLARIFIES
+	•	Which cold leads are worth re-engaging (and which aren’t)
+	•	What message type works best for each dormancy stage
+	•	How not to sound spammy, desperate, or tone-deaf
+	•	When to use humans, automation, or AI for outreach
+
+KEY INSIGHTS DELIVERED
+	•	Dormancy Segmentation – Categorizing leads by inactivity and value
+	•	Re-engagement Logic – Strategic approach per segment
+	•	Seasonal & Event Triggers – Industry-timed nudges that feel natural
+	•	Message Pathways – Guardrails for tone, content, and call-to-action
+
+⸻
+
+06 – Reputation & Review Flow
+
+Title:
+Reputation & Review Flow
+
+Body:
+A strategic timing sequence that builds consistent reviews where trust is highest — and routes issues internally before they damage your brand.
+
+WHAT THIS CLARIFIES
+	•	Optimal moments to request reviews based on visit or project milestones
+	•	Which platforms matter most for your reputation and search
+	•	How to direct unhappy clients away from public channels and into resolution
+	•	How to incorporate sentiment into your operational loops and training
+
+KEY INSIGHTS DELIVERED
+	•	Review Timing Logic – When to ask for maximum response
+	•	Sentiment-Routing Pathways – How to handle negative feedback internally
+	•	Platform Prioritization – Where reviews matter most for your niche
+	•	Internal Escalation – Structure for resolving issues quickly and consistently
+
+⸻
+
+07 – Industry-Aligned Conversion Paths
+
+Title:
+Industry-Aligned Conversion Paths
+
+Body:
+Decision-support pathways tailored to your industry’s buying behavior and customer intent, so more inquiries move confidently toward “yes.”
+
+WHAT THIS CLARIFIES
+	•	What customers need to see or hear to move forward
+	•	What slows decisions or creates friction in your niche
+	•	What accelerates them (offers, proof, education, urgency)
+	•	Where AI can support triage or qualification without overstepping
+
+KEY INSIGHTS DELIVERED
+	•	Quote/Estimate Pathways – Consultation and estimate flow optimization
+	•	Form Progression Logic – Step-by-step intake design that doesn’t drop people
+	•	Conversion Dropoff Analysis – Identifying where and why leads bail
+	•	Messaging Clarity Map – What to say, when, and on which channel
+
+⸻
+
+08 – Operational Rhythm & Visibility
+
+Title:
+Operational Rhythm & Visibility
+
+Body:
+Your internal cadence for consistent execution and reduced friction — so the system doesn’t fall apart after launch.
+
+WHAT THIS CLARIFIES
+	•	Team handoffs and who owns each step
+	•	Daily, weekly, and monthly operational rhythms that keep things moving
+	•	Communication loops between front desk, sales, and delivery teams
+	•	AI readiness signals across operations (when you’re ready to automate more)
+
+KEY INSIGHTS DELIVERED
+	•	Process Visibility Map – See where work gets stuck and why
+	•	Accountability Roles – Clear ownership at each stage
+	•	Workflow Enhancements – Opportunities for better efficiency and outcomes
+	•	Operational Cadence Model – Rhythm that works for your actual team
+
+⸻
+
+Bottom CTA
+
+Headline:
+Ready for operational clarity?
+
+Body:
+Stop wondering what’s broken. Start with a free assessment to see exactly where you stand — and what to fix first to support a stronger front desk and follow-up system.
+
+Button:
+Get Your Free Assessment

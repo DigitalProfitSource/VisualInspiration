@@ -41,56 +41,56 @@ const solutions = [
   {
     number: "01",
     title: "Customer-Ready Website Architecture",
-    subtitle: "Your website is no longer a brochure — it's a behavioral intake layer that captures intent instead of letting visitors disappear.",
+    subtitle: "Your website is no longer a brochure — it's a behavioral intake layer that captures intent and feeds your front-desk system, instead of letting visitors disappear.",
     icon: Globe,
     clarifies: [
-      "How your site should capture intent at different stages",
-      "What information to collect (and when)",
-      "How to reduce friction for each traffic source",
-      "Where AI assistive layers can enhance the journey (without replacing humans)"
+      "How your site should capture intent at different stages (cold, warm, ready now)",
+      "What information to collect (and when) so follow-up can be personal and relevant",
+      "How to reduce friction for each traffic source (search, ads, social, referrals)",
+      "Where AI assistive layers can enhance the journey without replacing humans"
     ],
     insights: [
       { title: "Visitor Intent Patterns", desc: "Understanding what visitors need at each touchpoint" },
-      { title: "Intake Sequence Mapping", desc: "Logical flow from first touch to qualification" },
-      { title: "SEO/ESO Alignment", desc: "Optimized for AI discoverability" },
-      { title: "Website-to-CRM Handoff", desc: "Clear rules for seamless data transfer" }
+      { title: "Intake Sequence Mapping", desc: "Logical flow from first click to qualified lead" },
+      { title: "SEO/ESO Alignment", desc: "Structure optimized for discoverability and engagement" },
+      { title: "Website-to-CRM Handoff", desc: "Clear rules for clean, reliable data transfer" }
     ]
   },
   {
     number: "02",
     title: "CRM Pipeline Architecture",
-    subtitle: "A blueprint showing how every opportunity should be tracked and advanced — so nothing falls through the cracks.",
+    subtitle: "A blueprint showing how every lead and opportunity should be tracked, advanced, and handed off — so nothing falls through the cracks once it's captured.",
     icon: Database,
     clarifies: [
-      "Ideal pipeline stages for the business",
-      "Qualification logic",
-      "Follow-up timing",
-      "Status definitions your team actually understands",
+      "Ideal pipeline stages for your business (from first contact to closed revenue)",
+      "Qualification logic: what makes a lead \"ready\" vs \"not yet\"",
+      "Follow-up timing based on stage and intent",
+      "Status definitions your team actually understands and uses consistently",
       "Where AI can support routing, prioritization, and pattern detection"
     ],
     insights: [
       { title: "Industry-Aligned Pipeline", desc: "Model tailored to your business type" },
       { title: "Stage-by-Stage Logic", desc: "Clear decision points at each stage" },
-      { title: "Accountability Structure", desc: "Who owns what and when" },
-      { title: "Reporting Clarity", desc: "Metrics that matter" }
+      { title: "Accountability Structure", desc: "Who owns what, when" },
+      { title: "Reporting Clarity", desc: "Metrics that actually matter for revenue" }
     ]
   },
   {
     number: "03",
     title: "AI-Assisted Intake Opportunities",
-    subtitle: "Where natural-language AI can safely support (not replace) your front-desk workflows.",
+    subtitle: "Where natural-language AI can safely support — not replace — your front-desk workflows across phone, chat, and messaging.",
     icon: Bot,
     clarifies: [
-      "When AI should answer",
-      "When humans must answer",
-      "What types of calls/messages AI can intelligently route",
-      "Where AI reduces friction without harming trust"
+      "When AI should answer first (and when it shouldn't)",
+      "When humans must handle the conversation from the start",
+      "What types of calls/messages AI can intelligently route or triage",
+      "Where AI reduces friction without harming trust or compliance"
     ],
     insights: [
-      { title: "Intake Logic Tree", desc: "Decision framework for routing" },
+      { title: "Intake Logic Tree", desc: "Decision framework for routing and escalation" },
       { title: "AI vs Human Boundaries", desc: "Clear delineation of responsibilities" },
-      { title: "Scripts & Guardrails", desc: "Recommended frameworks for safety" },
-      { title: "Risk Analysis", desc: "Avoid harmful AI deployments" }
+      { title: "Scripts & Guardrails", desc: "Recommended language and limits for safety" },
+      { title: "Risk Analysis", desc: "Where AI helps, where it's dangerous, and how to avoid bad deployments" }
     ]
   },
   {
@@ -99,89 +99,89 @@ const solutions = [
     subtitle: "The rules for consistent follow-up — so leads stop going cold and your team stops guessing what to do next.",
     icon: Zap,
     clarifies: [
-      "Follow-up timing standards",
-      "Which messages matter most",
-      "When human outreach is essential",
-      "What triggers follow-up behavior",
-      "Where AI can support without replacing humans"
+      "Follow-up timing standards by lead type and stage",
+      "Which messages matter most at each point in the journey",
+      "When human outreach is essential vs when automation can lead",
+      "What triggers follow-up behavior (events, time, actions)",
+      "Where AI can support follow-up without replacing human judgment"
     ],
     insights: [
       { title: "Sequence-by-Sequence Clarity", desc: "Logical progression of touches" },
-      { title: "Intent Segments", desc: "Messaging hierarchy by lead type" },
-      { title: "Human vs AI Decision Points", desc: "When to escalate" },
-      { title: "Engagement Timing Rules", desc: "Optimal cadence patterns" }
+      { title: "Intent Segments", desc: "Messaging hierarchy by lead type and intent" },
+      { title: "Human vs AI Decision Points", desc: "Exactly when to escalate" },
+      { title: "Engagement Timing Rules", desc: "Cadence patterns that avoid both spam and neglect" }
     ]
   },
   {
     number: "05",
     title: "Lead Reactivation Framework",
-    subtitle: "Your database contains hidden revenue — old leads you've been ignoring that could become real opportunities.",
+    subtitle: "Your database contains hidden revenue — old leads you've been ignoring that can become real opportunities with the right timing and message.",
     icon: RefreshCw,
     clarifies: [
-      "Which cold leads are worth re-engaging",
-      "What message type works for each dormancy stage",
-      "How not to sound spammy or desperate",
-      "When to use humans, automation, or AI"
+      "Which cold leads are worth re-engaging (and which aren't)",
+      "What message type works best for each dormancy stage",
+      "How not to sound spammy, desperate, or tone-deaf",
+      "When to use humans, automation, or AI for outreach"
     ],
     insights: [
-      { title: "Dormancy Segmentation", desc: "Categorizing leads by inactivity" },
+      { title: "Dormancy Segmentation", desc: "Categorizing leads by inactivity and value" },
       { title: "Re-engagement Logic", desc: "Strategic approach per segment" },
-      { title: "Seasonal Triggers", desc: "Industry-timed reactivation" },
-      { title: "Message Pathways", desc: "Guardrails for outreach" }
+      { title: "Seasonal & Event Triggers", desc: "Industry-timed nudges that feel natural" },
+      { title: "Message Pathways", desc: "Guardrails for tone, content, and call-to-action" }
     ]
   },
   {
     number: "06",
     title: "Reputation & Review Flow",
-    subtitle: "A strategic timing sequence that builds consistent reviews where trust is highest.",
+    subtitle: "A strategic timing sequence that builds consistent reviews where trust is highest — and routes issues internally before they damage your brand.",
     icon: Star,
     clarifies: [
-      "Optimal moments to request reviews",
-      "Which platforms matter most",
-      "How to direct unhappy clients away from public channels",
-      "How to incorporate sentiment into operational loops"
+      "Optimal moments to request reviews based on visit or project milestones",
+      "Which platforms matter most for your reputation and search",
+      "How to direct unhappy clients away from public channels and into resolution",
+      "How to incorporate sentiment into your operational loops and training"
     ],
     insights: [
       { title: "Review Timing Logic", desc: "When to ask for maximum response" },
-      { title: "Sentiment-Routing Pathways", desc: "Handling negative feedback internally" },
-      { title: "Platform Prioritization", desc: "Where reviews matter most" },
-      { title: "Internal Escalation", desc: "Structure for issue resolution" }
+      { title: "Sentiment-Routing Pathways", desc: "How to handle negative feedback internally" },
+      { title: "Platform Prioritization", desc: "Where reviews matter most for your niche" },
+      { title: "Internal Escalation", desc: "Structure for resolving issues quickly and consistently" }
     ]
   },
   {
     number: "07",
     title: "Industry-Aligned Conversion Paths",
-    subtitle: "Decision-support pathways tailored to industry behavior and customer intent.",
+    subtitle: "Decision-support pathways tailored to your industry's buying behavior and customer intent, so more inquiries move confidently toward \"yes.\"",
     icon: Route,
     clarifies: [
-      "What customers need to move forward",
-      "What slows decisions",
-      "What accelerates them",
-      "Where AI can support triage or qualification"
+      "What customers need to see or hear to move forward",
+      "What slows decisions or creates friction in your niche",
+      "What accelerates them (offers, proof, education, urgency)",
+      "Where AI can support triage or qualification without overstepping"
     ],
     insights: [
-      { title: "Quote/Estimate Pathways", desc: "Consultation flow optimization" },
-      { title: "Form Progression Logic", desc: "Step-by-step intake design" },
-      { title: "Conversion Dropoff Analysis", desc: "Identifying friction points" },
-      { title: "Messaging Clarity Map", desc: "What to say and when" }
+      { title: "Quote/Estimate Pathways", desc: "Consultation and estimate flow optimization" },
+      { title: "Form Progression Logic", desc: "Step-by-step intake design that doesn't drop people" },
+      { title: "Conversion Dropoff Analysis", desc: "Identifying where and why leads bail" },
+      { title: "Messaging Clarity Map", desc: "What to say, when, and on which channel" }
     ]
   },
   {
     number: "08",
     title: "Operational Rhythm & Visibility",
-    subtitle: "Your internal cadence for consistent execution and reduced friction.",
+    subtitle: "Your internal cadence for consistent execution and reduced friction — so the system doesn't fall apart after launch.",
     icon: Clock,
     clarifies: [
-      "Team handoffs",
-      "Daily, weekly, monthly operational rhythms",
-      "Communication loops",
-      "AI readiness signals across operations"
+      "Team handoffs and who owns each step",
+      "Daily, weekly, and monthly operational rhythms that keep things moving",
+      "Communication loops between front desk, sales, and delivery teams",
+      "AI readiness signals across operations (when you're ready to automate more)"
     ],
     insights: [
-      { title: "Process Visibility Map", desc: "See where work gets stuck" },
+      { title: "Process Visibility Map", desc: "See where work gets stuck and why" },
       { title: "Accountability Roles", desc: "Clear ownership at each stage" },
-      { title: "Workflow Enhancements", desc: "Opportunities for improvement" },
-      { title: "Operational Cadence Model", desc: "Rhythm that works" }
+      { title: "Workflow Enhancements", desc: "Opportunities for better efficiency and outcomes" },
+      { title: "Operational Cadence Model", desc: "Rhythm that works for your actual team" }
     ]
   }
 ];
@@ -231,12 +231,12 @@ export default function Solutions() {
               The SimpleSequence <span className="text-primary">Operational Stack</span>
             </h1>
             <p className="text-xl text-slate-400 leading-relaxed mb-8 max-w-3xl mx-auto">
-              Eight interconnected clarity frameworks that show you exactly how your business should run — so you stop guessing and start scaling with confidence.
+              Eight interconnected clarity frameworks that show you exactly how your front desk, follow-up, and operations should run — so you stop guessing and start scaling with confidence.
             </p>
             <div className="p-6 rounded-2xl border border-white/10 bg-white/[0.02] max-w-2xl mx-auto">
               <p className="text-slate-300 leading-relaxed">
                 <span className="text-white font-medium">This is not software.</span><br />
-                This is the architecture that makes your software, team, and AI investments actually work together — instead of creating more complexity.
+                This is the architecture that makes your software, team, and AI investments actually work together, therefore reducing chaos instead of creating more of it.
               </p>
             </div>
           </motion.div>
@@ -342,7 +342,7 @@ export default function Solutions() {
               Ready for <span className="text-primary">operational clarity</span>?
             </h2>
             <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
-              Stop wondering what's broken. Start with a free assessment to see exactly where you stand — and what to fix first.
+              Stop wondering what's broken. Start with a free assessment to see exactly where you stand — and what to fix first to support a stronger front desk and follow-up system.
             </p>
             <ContactFormDialog
               source="solutions-cta"
