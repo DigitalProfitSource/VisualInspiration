@@ -1107,6 +1107,41 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Operational Stack Band */}
+      <section className="py-16 relative border-y border-white/5">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent pointer-events-none" />
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div 
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="max-w-3xl mx-auto"
+          >
+            <p className="text-center text-lg text-slate-300 leading-relaxed mb-6">
+              Under the hood, SimpleSequence runs on eight clarity frameworks that align your website, intake, CRM, follow-up, and operations into one intelligent flow—therefore, your AI front desk and follow-up system doesn't sit on top of broken processes.
+            </p>
+            <div className="flex justify-center">
+              <a 
+                href="/solutions" 
+                className="inline-flex items-center gap-2 text-primary hover:text-cyan-300 font-medium transition-colors duration-300 group"
+                data-testid="link-operational-stack"
+              >
+                See the Operational Stack
+                <motion.span
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="group-hover:translate-x-1 transition-transform"
+                >
+                  →
+                </motion.span>
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* AI Clarity Assessment */}
       <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
