@@ -1112,15 +1112,15 @@ export default function Home() {
             whileInView={fadeInUpViewport.whileInView}
             viewport={fadeInUpViewport.viewport}
             transition={fadeInUpViewport.transition}
-            className="mt-32 pt-32 border-t border-white/10 max-w-3xl mx-auto"
+            className="mt-24 pt-20 border-t border-white/10 max-w-3xl mx-auto"
           >
-            <p className="text-center text-lg text-slate-300 leading-relaxed mb-6">
+            <p className="text-center text-sm text-slate-400 leading-relaxed mb-4">
               Under the hood, SimpleSequence runs on eight clarity frameworks that align your website, intake, CRM, follow-up, and operations into one intelligent flow—therefore, your AI front desk and follow-up system doesn't sit on top of broken processes.
             </p>
             <div className="flex justify-center">
               <a 
                 href="/solutions" 
-                className="inline-flex items-center gap-2 text-primary hover:text-cyan-300 font-medium transition-colors duration-300 group"
+                className="inline-flex items-center gap-2 text-primary hover:text-cyan-300 text-sm font-medium transition-colors duration-300 group"
                 data-testid="link-operational-stack"
               >
                 See the Operational Stack
