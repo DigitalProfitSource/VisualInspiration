@@ -1057,7 +1057,7 @@ export default function Home() {
               {[
                 { step: "01", title: "Diagnose Friction", desc: "We find exactly where things break down — the hidden drag you've been feeling but couldn't name.", icon: Stethoscope },
                 { step: "02", title: "Map Sequences", desc: "We document the workflows that actually drive revenue and expose what's unclear or broken.", icon: Map },
-                { step: "03", title: "Locate Leverage", desc: "We identify where AI creates real lift — not shiny distractions, but genuine operational improvement.", icon: Target },
+                { step: "03", title: "Locate Leverage", desc: "We identify where AI creates real lift — triage, routing, and follow-up — and where your team's judgment still matters most, not shiny distractions.", icon: Target },
                 { step: "04", title: "Architect the Flow", desc: "We design the system that aligns your people, tools, and AI into one intelligent flow, ready to implement and scale.", icon: Blocks }
               ].map((item, i) => (
                 <motion.div 
