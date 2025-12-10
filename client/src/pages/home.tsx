@@ -954,26 +954,8 @@ export default function Home() {
 
               {/* Row 2 */}
               <div className="grid md:grid-cols-12 gap-6">
-                {/* Block 3 - Follow-Up Clarity Engine (narrower) */}
+                {/* Block 3 - AI-Ready Front Desk Layer (narrower) */}
                 <div className="md:col-span-5">
-                  <JourneyCard 
-                    icon={Zap}
-                    title="Follow-Up Clarity Engine"
-                    frontDescription="No more leads going cold because someone forgot. Consistent follow-up that actually happens."
-                    backIntro={"We turn 'someone should follow up' into a concrete, automated plan."}
-                    backBullets={[
-                      "Defines who gets followed up, how often, and on which channels",
-                      "Builds sequences for new leads, no-shows, canceled jobs, and inactive clients",
-                      "Aligns human touchpoints with automated messages so they work together",
-                      "Makes follow-up visible in dashboards, therefore nothing depends on memory"
-                    ]}
-                    backOutcome="Every qualified lead has a path from first contact to decision, not just a single reply that dies in the inbox."
-                    index={2}
-                  />
-                </div>
-
-                {/* Block 4 - AI-Ready Front Desk Layer (wider) */}
-                <div className="md:col-span-7">
                   <JourneyCard 
                     icon={Brain}
                     title="AI-Ready Front Desk Layer"
@@ -986,8 +968,26 @@ export default function Home() {
                       "Sets you up to plug in AI reception and follow-up confidently, therefore you don't 'experiment' on live customers"
                     ]}
                     backOutcome="A front desk that's built for AI from the ground up, not a patchwork of bots bolted onto broken processes."
-                    index={3}
+                    index={2}
                     tags={["Strategic Clarity", "AI Readiness"]}
+                  />
+                </div>
+
+                {/* Block 4 - Follow-Up Clarity Engine (wider) */}
+                <div className="md:col-span-7">
+                  <JourneyCard 
+                    icon={Zap}
+                    title="Follow-Up Clarity Engine"
+                    frontDescription="No more leads going cold because someone forgot. Consistent follow-up that actually happens."
+                    backIntro={"We turn 'someone should follow up' into a concrete, automated plan."}
+                    backBullets={[
+                      "Defines who gets followed up, how often, and on which channels",
+                      "Builds sequences for new leads, no-shows, canceled jobs, and inactive clients",
+                      "Aligns human touchpoints with automated messages so they work together",
+                      "Makes follow-up visible in dashboards, therefore nothing depends on memory"
+                    ]}
+                    backOutcome="Every qualified lead has a path from first contact to decision, not just a single reply that dies in the inbox."
+                    index={3}
                   />
                 </div>
               </div>
