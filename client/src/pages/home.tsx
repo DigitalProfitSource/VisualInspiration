@@ -843,7 +843,6 @@ export default function Home() {
       </section>
       {/* Tech Stack Ticker */}
       <TechTicker />
-
       {/* What We Solve - Friction Grid */}
       <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
         <GridBeam showCenterBeam={false} gridOpacity={0.2} />
@@ -890,7 +889,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Customer Journey Alignment Section */}
       <section className="py-32 relative">
         <div className="container mx-auto px-6">
@@ -1029,10 +1027,8 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* Revenue-Focused System Section */}
       <RevenueSystemSection />
-
       {/* Industry Results Carousel */}
       <IndustryCarousel />
       {/* The SimpleSequence Method */}
@@ -1050,7 +1046,7 @@ export default function Home() {
           >
             <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block">How We Deploy</span>
             <h2 className="text-4xl md:text-5xl font-medium mb-6">The SimpleSequence Method</h2>
-            <p className="text-muted-foreground text-lg">A clear, structured process that moves you from confusion to clarity — in weeks, not months.</p>
+            <p className="text-muted-foreground text-lg">A clear, structured process that moves you from confusion to a predictable, AI-ready flow — in weeks, not months.</p>
           </motion.div>
 
           <div className="relative max-w-5xl mx-auto">
