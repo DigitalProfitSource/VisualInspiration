@@ -952,28 +952,9 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Row 2 */}
+              {/* Row 2 - Brick pattern: wide left, narrow right */}
               <div className="grid md:grid-cols-12 gap-6">
-                {/* Block 3 - AI-Ready Front Desk Layer (narrower) */}
-                <div className="md:col-span-5">
-                  <JourneyCard 
-                    icon={Brain}
-                    title="AI-Ready Front Desk Layer"
-                    frontDescription="Know exactly where AI can help with calls, routing, and qualification — and where your team still needs to lead."
-                    backIntro="We design a front-desk layer that's ready for AI without losing the human touch."
-                    backBullets={[
-                      "Separates repeatable, scriptable tasks from conversations that need judgment",
-                      "Defines rules for triage, routing, scheduling, and escalation",
-                      "Shows which parts can be automated now and which stay with humans (for safety, nuance, or sales)",
-                      "Sets you up to plug in AI reception and follow-up confidently, therefore you don't 'experiment' on live customers"
-                    ]}
-                    backOutcome="A front desk that's built for AI from the ground up, not a patchwork of bots bolted onto broken processes."
-                    index={2}
-                    tags={["Strategic Clarity", "AI Readiness"]}
-                  />
-                </div>
-
-                {/* Block 4 - Follow-Up Clarity Engine (wider) */}
+                {/* Block 3 - Follow-Up Clarity Engine (wider - brick offset) */}
                 <div className="md:col-span-7">
                   <JourneyCard 
                     icon={Zap}
@@ -987,7 +968,26 @@ export default function Home() {
                       "Makes follow-up visible in dashboards, therefore nothing depends on memory"
                     ]}
                     backOutcome="Every qualified lead has a path from first contact to decision, not just a single reply that dies in the inbox."
+                    index={2}
+                  />
+                </div>
+
+                {/* Block 4 - AI-Ready Front Desk Layer (narrower - brick offset) */}
+                <div className="md:col-span-5">
+                  <JourneyCard 
+                    icon={Brain}
+                    title="AI-Ready Front Desk Layer"
+                    frontDescription="Know exactly where AI can help with calls, routing, and qualification — and where your team still needs to lead."
+                    backIntro="We design a front-desk layer that's ready for AI without losing the human touch."
+                    backBullets={[
+                      "Separates repeatable, scriptable tasks from conversations that need judgment",
+                      "Defines rules for triage, routing, scheduling, and escalation",
+                      "Shows which parts can be automated now and which stay with humans (for safety, nuance, or sales)",
+                      "Sets you up to plug in AI reception and follow-up confidently, therefore you don't 'experiment' on live customers"
+                    ]}
+                    backOutcome="A front desk that's built for AI from the ground up, not a patchwork of bots bolted onto broken processes."
                     index={3}
+                    tags={["Strategic Clarity", "AI Readiness"]}
                   />
                 </div>
               </div>
