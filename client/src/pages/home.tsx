@@ -200,7 +200,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
       </div>
       
       {/* ========== DESKTOP: Curtain Reveal Card ========== */}
-      <div className="hidden md:block relative w-full min-h-[420px] rounded-2xl overflow-hidden">
+      <div className="hidden md:block relative w-full min-h-[480px] rounded-2xl overflow-hidden">
         {/* Back Content Layer (Always visible, revealed by curtain) */}
         <div className="absolute inset-0 w-full h-full p-8 lg:p-10 rounded-2xl border border-primary/30 bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-950">
           {/* Subtle Corner Glow (reduced) */}
