@@ -1077,7 +1077,7 @@ export default function Home() {
                            <span className="text-xl font-bold text-primary">{item.step}</span>
                         </div>
                         <h3 className="text-3xl font-medium mb-4 group-hover:text-primary transition-colors duration-300">{item.title}</h3>
-                        <p className="text-muted-foreground text-lg leading-relaxed">{item.desc}</p>
+                        <p className="text-muted-foreground text-lg leading-relaxed text-left">{item.desc}</p>
                       </div>
                     )}
                   </div>
