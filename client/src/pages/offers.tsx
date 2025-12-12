@@ -780,20 +780,9 @@ export default function Offers() {
             viewport={fadeInUpViewport.viewport}
             transition={fadeInUpViewport.transition}
           >
-            <h2 className="text-4xl md:text-6xl font-display font-medium mb-10">
+            <h2 className="text-4xl md:text-6xl font-display font-medium">
               Not Sure Where to <span className="text-primary">Start</span>?
             </h2>
-            <a 
-              href="#ai-clarity-assessment"
-              data-testid="button-offers-not-sure-cta"
-            >
-              <Button 
-                size="lg"
-                className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
-              >
-                Take the Free Assessment
-              </Button>
-            </a>
           </motion.div>
         </div>
       </section>
