@@ -246,6 +246,387 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
   );
 }
 
+function PricingGridSection() {
+  const [entryCardsHovered, setEntryCardsHovered] = useState(false);
+  const [frontlineExpanded, setFrontlineExpanded] = useState(false);
+  const [specialistExpanded, setSpecialistExpanded] = useState(false);
+  const [commandExpanded, setCommandExpanded] = useState(false);
+
+  const frontline = pricingTiers[0];
+  const specialist = pricingTiers[1];
+  const command = pricingTiers[2];
+
+  return (
+    <section className="py-24">
+      <div className="container mx-auto px-6">
+        <motion.div 
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
+          viewport={fadeInUpViewport.viewport}
+          transition={fadeInUpViewport.transition}
+          className="text-center mb-16"
+        >
+          <span className="text-sm font-mono text-primary mb-4 block">SELECT YOUR PLAN</span>
+          <h2 className="text-4xl md:text-5xl font-display font-medium">Find Your Fit</h2>
+        </motion.div>
+
+        {/* Row 1: Frontline & Specialist side by side with dual-hover */}
+        <motion.div 
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
+          viewport={fadeInUpViewport.viewport}
+          transition={fadeInUpViewport.transition}
+          className="grid md:grid-cols-2 gap-6 mb-6 max-w-5xl mx-auto"
+          onMouseEnter={() => setEntryCardsHovered(true)}
+          onMouseLeave={() => setEntryCardsHovered(false)}
+        >
+          {/* Frontline Card */}
+          <div 
+            className={`group p-8 rounded-2xl border bg-gradient-to-b from-white/[0.06] to-transparent transition-all duration-300 ${
+              entryCardsHovered ? 'border-primary/30' : 'border-white/10 hover:border-primary/30'
+            }`}
+            data-testid="card-offers-frontline"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <span className="text-xs font-mono text-primary">{frontline.number}</span>
+              <div className="text-right">
+                <span className="text-sm text-slate-500 block">{frontline.buildFee}</span>
+                <span className="text-2xl font-display font-bold text-white">{frontline.monthlyFee}</span>
+              </div>
+            </div>
+            
+            <h3 className="text-2xl font-display font-medium mb-2 text-white">
+              {frontline.name}
+            </h3>
+            <p className="text-sm text-slate-400 mb-4">{frontline.descriptor}</p>
+            
+            <p className="text-primary text-sm font-medium mb-4">
+              {frontline.ifYouWant}
+            </p>
+
+            <AnimatePresence>
+              {entryCardsHovered && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="mb-6">
+                    <h4 className="text-xs font-mono text-slate-400 mb-3">THIS PLAN FOCUSES ON:</h4>
+                    <ul className="space-y-2 text-sm text-slate-300">
+                      {frontline.focusBullets.map((bullet, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <AnimatePresence>
+                    {frontlineExpanded && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mb-6 pt-4 border-t border-white/10">
+                          <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
+                          <ul className="space-y-3">
+                            {frontline.expandedBullets.map((bullet, i) => (
+                              <li key={i} className="text-sm">
+                                <div className="flex items-start gap-3">
+                                  <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                                  <div>
+                                    <span className="text-white font-medium">{bullet.title}</span>
+                                    <p className="text-slate-400 mt-1 text-xs">{bullet.description}</p>
+                                  </div>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  
+                  <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
+                    <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
+                    <p className="text-slate-300 text-sm">
+                      {frontline.outcome}
+                    </p>
+                  </div>
+                  
+                  <button
+                    onClick={() => setFrontlineExpanded(!frontlineExpanded)}
+                    className="w-full flex items-center justify-center gap-2 py-2 mb-4 text-sm text-slate-400 hover:text-primary transition-colors"
+                    data-testid="toggle-expand-frontline"
+                  >
+                    {frontlineExpanded ? "Show Less" : "See Full Details"}
+                    <motion.div animate={{ rotate: frontlineExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                      <ChevronDown className="w-4 h-4" />
+                    </motion.div>
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <ContactFormDialog
+              source="frontline"
+              title="Start Frontline"
+              description="Tell us about your business and we'll help you get started with Frontline."
+              trigger={
+                <Button 
+                  data-testid="button-offers-frontline"
+                  className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all group-hover:border-primary/30"
+                >
+                  {frontline.ctaText} <span className="ml-2 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+                </Button>
+              }
+            />
+          </div>
+
+          {/* Specialist Card (Most Popular) */}
+          <div 
+            className={`group p-8 rounded-2xl border bg-gradient-to-b from-zinc-800/80 to-zinc-950 relative shadow-xl transition-all duration-300 overflow-hidden ${
+              entryCardsHovered ? 'border-primary/40' : 'border-primary/30 hover:border-primary/40'
+            }`}
+            data-testid="card-offers-specialist"
+          >
+            <BorderBeam size={300} duration={12} delay={0} colorFrom="var(--color-primary)" colorTo="transparent" />
+            <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl tracking-wider">
+              MOST POPULAR
+            </div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-xs font-mono text-primary">{specialist.number}</span>
+                <div className="text-right">
+                  <span className="text-sm text-slate-500 block">{specialist.buildFee}</span>
+                  <span className="text-2xl font-display font-bold text-white">{specialist.monthlyFee}</span>
+                </div>
+              </div>
+              
+              <h3 className="text-2xl font-display font-medium mb-2 text-white">
+                {specialist.name}
+              </h3>
+              <p className="text-sm text-slate-400 mb-4">{specialist.descriptor}</p>
+              
+              <p className="text-primary text-sm font-medium mb-4">
+                {specialist.ifYouWant}
+              </p>
+
+              <AnimatePresence>
+                {entryCardsHovered && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mb-6">
+                      <h4 className="text-xs font-mono text-slate-400 mb-3">THIS PLAN FOCUSES ON:</h4>
+                      <ul className="space-y-2 text-sm text-slate-300">
+                        {specialist.focusBullets.map((bullet, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <AnimatePresence>
+                      {specialistExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mb-6 pt-4 border-t border-white/10">
+                            <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
+                            <ul className="space-y-3">
+                              {specialist.expandedBullets.map((bullet, i) => (
+                                <li key={i} className="text-sm">
+                                  <div className="flex items-start gap-3">
+                                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                                    <div>
+                                      <span className="text-white font-medium">{bullet.title}</span>
+                                      <p className="text-slate-400 mt-1 text-xs">{bullet.description}</p>
+                                    </div>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    
+                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
+                      <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
+                      <p className="text-slate-300 text-sm">
+                        {specialist.outcome}
+                      </p>
+                    </div>
+                    
+                    <button
+                      onClick={() => setSpecialistExpanded(!specialistExpanded)}
+                      className="w-full flex items-center justify-center gap-2 py-2 mb-4 text-sm text-slate-400 hover:text-primary transition-colors"
+                      data-testid="toggle-expand-specialist"
+                    >
+                      {specialistExpanded ? "Show Less" : "See Full Details"}
+                      <motion.div animate={{ rotate: specialistExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                        <ChevronDown className="w-4 h-4" />
+                      </motion.div>
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <ContactFormDialog
+                source="specialist"
+                title="Start Specialist"
+                description="Tell us about your business and we'll help you get started with Specialist."
+                trigger={
+                  <Button 
+                    data-testid="button-offers-specialist"
+                    className="w-full bg-primary text-primary-foreground hover:bg-cyan-300 h-12 rounded-lg font-medium shadow-[0_0_20px_-5px_var(--color-primary)] transition-all"
+                  >
+                    {specialist.ctaText} <span className="ml-2">→</span>
+                  </Button>
+                }
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Row 2: Command - Full Width Featured */}
+        <motion.div 
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
+          viewport={{ once: true }}
+          transition={fadeInUpViewport.transition}
+          className="max-w-5xl mx-auto"
+        >
+          <div className="p-10 rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900/50 to-transparent relative overflow-hidden hover:border-primary/20 transition-all">
+            <div className="absolute top-0 right-0 bg-white/10 text-slate-300 text-[10px] font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl tracking-wider border-l border-b border-white/10">
+              BY APPLICATION
+            </div>
+            
+            <div className="grid lg:grid-cols-2 gap-10">
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-xs font-mono text-primary/70">{command.number}</span>
+                  <div>
+                    <span className="text-sm text-slate-500 mr-2">{command.buildFee}</span>
+                    <span className="text-slate-600">•</span>
+                    <span className="text-2xl font-display font-bold text-white ml-2">{command.monthlyFee}</span>
+                  </div>
+                </div>
+                <h3 className="text-3xl font-display font-semibold mb-2 text-white">{command.name}</h3>
+                <p className="text-sm text-slate-400 mb-4">{command.descriptor}</p>
+                <p className="text-primary/80 text-base mb-4 font-medium">{command.ifYouWant}</p>
+                
+                <div className="mb-6">
+                  <h4 className="text-xs font-mono text-slate-400 mb-3">THIS PLAN FOCUSES ON:</h4>
+                  <ul className="space-y-2 text-sm text-slate-300">
+                    {command.focusBullets.map((bullet, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <ContactFormDialog
+                  source="command"
+                  title="Apply for Command"
+                  description="Tell us about your business and we'll help you get started with Command."
+                  trigger={
+                    <Button 
+                      data-testid="button-offers-command"
+                      className="bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-primary/30 h-14 px-8 rounded-lg font-medium text-base transition-all"
+                    >
+                      {command.ctaText} <span className="ml-2 opacity-50 group-hover:opacity-100">→</span>
+                    </Button>
+                  }
+                />
+              </div>
+              
+              <div className="space-y-6">
+                <AnimatePresence>
+                  {commandExpanded ? (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div>
+                        <h4 className="text-xs font-mono text-primary/70 mb-4">WHAT YOU REALLY GET</h4>
+                        <ul className="space-y-3 text-sm text-slate-400">
+                          {command.expandedBullets.map((bullet, i) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" />
+                              <div>
+                                <span className="text-white font-medium">{bullet.title}</span>
+                                <p className="text-slate-400 mt-1 text-xs">{bullet.description}</p>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <div>
+                      <h4 className="text-xs font-mono text-primary/70 mb-4">WHAT YOU REALLY GET</h4>
+                      <ul className="space-y-2 text-sm text-slate-400">
+                        {command.expandedBullets.slice(0, 3).map((bullet, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" />
+                            <span className="text-white font-medium">{bullet.title}</span>
+                          </li>
+                        ))}
+                        <li className="text-slate-500 text-sm pl-6">+ {command.expandedBullets.length - 3} more...</li>
+                      </ul>
+                    </div>
+                  )}
+                </AnimatePresence>
+                
+                <button
+                  onClick={() => setCommandExpanded(!commandExpanded)}
+                  className="flex items-center gap-2 text-sm text-slate-400 hover:text-primary transition-colors"
+                  data-testid="toggle-expand-command"
+                >
+                  {commandExpanded ? "Show Less" : "See Full Details"}
+                  <motion.div animate={{ rotate: commandExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                    <ChevronDown className="w-4 h-4" />
+                  </motion.div>
+                </button>
+                
+                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                  <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
+                  <p className="text-slate-400 text-sm">{command.outcome}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 export default function Offers() {
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
@@ -298,26 +679,8 @@ export default function Offers() {
       </section>
 
       {/* Pricing Grid - Find Your Fit */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
-          <motion.div 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="text-center mb-16"
-          >
-            <span className="text-sm font-mono text-primary mb-4 block">SELECT YOUR PLAN</span>
-            <h2 className="text-4xl md:text-5xl font-display font-medium">Find Your Fit</h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {pricingTiers.map((tier, index) => (
-              <PricingCard key={tier.name} tier={tier} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <PricingGridSection />
+    
 
       {/* Launch Build Band */}
       <section className="py-16 border-y border-white/5 bg-white/[0.01]">
