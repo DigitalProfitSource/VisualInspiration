@@ -248,8 +248,7 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
 
 function PricingGridSection() {
   const [entryCardsHovered, setEntryCardsHovered] = useState(false);
-  const [frontlineExpanded, setFrontlineExpanded] = useState(false);
-  const [specialistExpanded, setSpecialistExpanded] = useState(false);
+  const [entryCardsExpanded, setEntryCardsExpanded] = useState(false);
   const [commandExpanded, setCommandExpanded] = useState(false);
 
   const frontline = pricingTiers[0];
@@ -326,7 +325,7 @@ function PricingGridSection() {
                   </div>
                   
                   <AnimatePresence>
-                    {frontlineExpanded && (
+                    {entryCardsExpanded && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
@@ -362,12 +361,12 @@ function PricingGridSection() {
                   </div>
                   
                   <button
-                    onClick={() => setFrontlineExpanded(!frontlineExpanded)}
+                    onClick={() => setEntryCardsExpanded(!entryCardsExpanded)}
                     className="w-full flex items-center justify-center gap-2 py-2 mb-4 text-sm text-slate-400 hover:text-primary transition-colors"
                     data-testid="toggle-expand-frontline"
                   >
-                    {frontlineExpanded ? "Show Less" : "See Full Details"}
-                    <motion.div animate={{ rotate: frontlineExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                    {entryCardsExpanded ? "Show Less" : "See Full Details"}
+                    <motion.div animate={{ rotate: entryCardsExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
                       <ChevronDown className="w-4 h-4" />
                     </motion.div>
                   </button>
@@ -442,7 +441,7 @@ function PricingGridSection() {
                     </div>
                     
                     <AnimatePresence>
-                      {specialistExpanded && (
+                      {entryCardsExpanded && (
                         <motion.div
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: "auto" }}
@@ -478,12 +477,12 @@ function PricingGridSection() {
                     </div>
                     
                     <button
-                      onClick={() => setSpecialistExpanded(!specialistExpanded)}
+                      onClick={() => setEntryCardsExpanded(!entryCardsExpanded)}
                       className="w-full flex items-center justify-center gap-2 py-2 mb-4 text-sm text-slate-400 hover:text-primary transition-colors"
                       data-testid="toggle-expand-specialist"
                     >
-                      {specialistExpanded ? "Show Less" : "See Full Details"}
-                      <motion.div animate={{ rotate: specialistExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                      {entryCardsExpanded ? "Show Less" : "See Full Details"}
+                      <motion.div animate={{ rotate: entryCardsExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
                         <ChevronDown className="w-4 h-4" />
                       </motion.div>
                     </button>
@@ -613,12 +612,13 @@ function PricingGridSection() {
                     <ChevronDown className="w-4 h-4" />
                   </motion.div>
                 </button>
-                
-                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                  <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
-                  <p className="text-slate-400 text-sm">{command.outcome}</p>
-                </div>
               </div>
+            </div>
+            
+            {/* Outcome - Full width below grid */}
+            <div className="mt-8 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+              <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
+              <p className="text-slate-400 text-sm">{command.outcome}</p>
             </div>
           </div>
         </motion.div>
