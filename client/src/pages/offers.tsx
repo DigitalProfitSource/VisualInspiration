@@ -770,20 +770,119 @@ export default function Offers() {
       {/* Pricing Grid - Find Your Fit */}
       <PricingGridSection />
 
-      {/* Not Sure Where to Start? CTA */}
-      <section className="py-24 relative overflow-hidden">
+      {/* Not Sure Where to Start? + AI Clarity Assessment */}
+      <section id="ai-clarity-assessment" className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
-        <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={fadeInUpViewport.initial}
             whileInView={fadeInUpViewport.whileInView}
             viewport={fadeInUpViewport.viewport}
             transition={fadeInUpViewport.transition}
+            className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-6xl font-display font-medium">
               Not Sure Where to <span className="text-primary">Start</span>?
             </h2>
           </motion.div>
+          
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-16 max-w-6xl mx-auto">
+            <motion.div 
+              initial={fadeInUpViewport.initial}
+              whileInView={fadeInUpViewport.whileInView}
+              viewport={fadeInUpViewport.viewport}
+              transition={fadeInUpViewport.transition}
+              className="max-w-2xl"
+            >
+              <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
+                START HERE IF YOU'RE UNSURE
+              </div>
+              <h3 className="text-3xl md:text-4xl font-medium mb-4 tracking-tight">The AI Clarity Assessment™</h3>
+              <p className="text-lg text-primary/80 mb-8">
+                See how much revenue your front desk is leaking before you choose a plan.
+              </p>
+              <div className="space-y-4 text-lg text-muted-foreground mb-8 leading-relaxed">
+                <p>
+                  Before you pick a plan, run the free AI Clarity Assessment™. In a few minutes, we'll map how leads actually move through your phones, forms, and inboxes — where response time breaks, where follow-up stalls, and where your team is carrying work that AI and systems should handle.
+                </p>
+                <p>
+                  You'll receive an Operational Clarity Score (0–100), a concise breakdown of where you're losing revenue, and a clear recommendation on whether Frontline, Specialist, or Command will create the fastest lift for your business. Therefore you can decide with real data instead of guessing.
+                </p>
+              </div>
+              <ul className="space-y-3 mb-10">
+                <li className="flex items-start gap-3 text-slate-300">
+                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>How many leads are slipping through the cracks today</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Which parts of your front desk and follow-up can be automated safely</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>What your next 90-day focus should be with SimpleSequence</span>
+                </li>
+              </ul>
+              <ContactFormDialog
+                source="assessment-offers"
+                title="Take the Free Assessment"
+                description="Complete the form and we'll send you a personalized AI readiness assessment for your business."
+                trigger={
+                  <Button 
+                    size="lg" 
+                    data-testid="button-offers-assessment-cta"
+                    className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
+                  >
+                    Take the Free Assessment
+                  </Button>
+                }
+              />
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="w-full max-w-md relative"
+            >
+               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-blue-500/20 rounded-2xl blur-lg opacity-50" />
+               <div className="relative bg-zinc-900 p-8 rounded-2xl border border-white/10 shadow-2xl">
+                  <div className="flex items-center justify-between mb-8">
+                    <div className="flex gap-2">
+                      <div className="w-3 h-3 rounded-full bg-[#403e3e80]" />
+                      <div className="w-3 h-3 rounded-full bg-[#7f7e7d80]" />
+                      <div className="w-3 h-3 rounded-full bg-[#b9bdba80]" />
+                    </div>
+                    <div className="text-xs font-mono text-zinc-500">ASSESSMENT_RESULTS.PDF</div>
+                  </div>
+                  <div className="space-y-6">
+                    <div className="space-y-3">
+                      <div className="h-2 bg-white/10 rounded w-3/4" />
+                      <div className="h-2 bg-white/10 rounded w-full" />
+                      <div className="h-2 bg-white/5 rounded w-5/6" />
+                    </div>
+                    <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                      <div className="flex items-center gap-3 mb-3">
+                        <Activity className="w-4 h-4 text-primary" />
+                        <span className="text-xs font-bold text-primary">OPERATIONAL SCORE</span>
+                      </div>
+                      <div className="text-3xl font-mono font-bold text-white">72<span className="text-zinc-600">/100</span></div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-4">
+                        <div className="w-8 h-8 rounded-full bg-white/5" />
+                        <div className="space-y-1.5">
+                          <div className="h-2 bg-white/10 rounded w-24" />
+                          <div className="h-2 bg-white/5 rounded w-16" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+               </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -936,110 +1035,6 @@ export default function Offers() {
             {/* 90-Day Optimization Assurance Box with Collapsible Fine Print */}
             <AssuranceBox />
           </motion.div>
-        </div>
-      </section>
-
-      {/* AI Clarity Assessment - Lead Magnet */}
-      <section id="ai-clarity-assessment" className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
-            <motion.div 
-              initial={fadeInUpViewport.initial}
-              whileInView={fadeInUpViewport.whileInView}
-              viewport={fadeInUpViewport.viewport}
-              transition={fadeInUpViewport.transition}
-              className="max-w-2xl"
-            >
-              <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
-                START HERE IF YOU'RE UNSURE
-              </div>
-              <h2 className="text-4xl md:text-5xl font-medium mb-4 tracking-tight">The AI Clarity Assessment™</h2>
-              <p className="text-lg text-primary/80 mb-8">
-                See how much revenue your front desk is leaking before you choose a plan.
-              </p>
-              <div className="space-y-4 text-lg text-muted-foreground mb-8 leading-relaxed">
-                <p>
-                  Before you pick a plan, run the free AI Clarity Assessment™. In a few minutes, we'll map how leads actually move through your phones, forms, and inboxes — where response time breaks, where follow-up stalls, and where your team is carrying work that AI and systems should handle.
-                </p>
-                <p>
-                  You'll receive an Operational Clarity Score (0–100), a concise breakdown of where you're losing revenue, and a clear recommendation on whether Frontline, Specialist, or Command will create the fastest lift for your business. Therefore you can decide with real data instead of guessing.
-                </p>
-              </div>
-              <ul className="space-y-3 mb-10">
-                <li className="flex items-start gap-3 text-slate-300">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>How many leads are slipping through the cracks today</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-300">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Which parts of your front desk and follow-up can be automated safely</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-300">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>What your next 90-day focus should be with SimpleSequence</span>
-                </li>
-              </ul>
-              <ContactFormDialog
-                source="assessment-offers"
-                title="Take the Free Assessment"
-                description="Complete the form and we'll send you a personalized AI readiness assessment for your business."
-                trigger={
-                  <Button 
-                    size="lg" 
-                    data-testid="button-offers-assessment-cta"
-                    className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
-                  >
-                    Take the Free Assessment
-                  </Button>
-                }
-              />
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="w-full max-w-md relative"
-            >
-               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-blue-500/20 rounded-2xl blur-lg opacity-50" />
-               <div className="relative bg-zinc-900 p-8 rounded-2xl border border-white/10 shadow-2xl">
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="flex gap-2">
-                      <div className="w-3 h-3 rounded-full bg-[#403e3e80]" />
-                      <div className="w-3 h-3 rounded-full bg-[#7f7e7d80]" />
-                      <div className="w-3 h-3 rounded-full bg-[#b9bdba80]" />
-                    </div>
-                    <div className="text-xs font-mono text-zinc-500">ASSESSMENT_RESULTS.PDF</div>
-                  </div>
-                  <div className="space-y-6">
-                    <div className="space-y-3">
-                      <div className="h-2 bg-white/10 rounded w-3/4" />
-                      <div className="h-2 bg-white/10 rounded w-full" />
-                      <div className="h-2 bg-white/5 rounded w-5/6" />
-                    </div>
-                    <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Activity className="w-4 h-4 text-primary" />
-                        <span className="text-xs font-bold text-primary">OPERATIONAL SCORE</span>
-                      </div>
-                      <div className="text-3xl font-mono font-bold text-white">72<span className="text-zinc-600">/100</span></div>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-4">
-                        <div className="w-8 h-8 rounded-full bg-white/5" />
-                        <div className="space-y-1.5">
-                          <div className="h-2 bg-white/10 rounded w-24" />
-                          <div className="h-2 bg-white/5 rounded w-16" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-               </div>
-            </motion.div>
-          </div>
         </div>
       </section>
 
