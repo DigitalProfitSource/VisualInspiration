@@ -1,0 +1,112 @@
+You are updating the middle sections of the SimpleSequence “Offers” page:
+	•	The Launch Build section
+	•	The Results / 90-Day Window section
+	•	The Guarantee / Assurance box and fine print
+
+Keep the existing layout and visual style (headings, subheadings, bullets, box styling), but replace the copy with the content below.
+
+⸻
+
+SECTION 1 – What the Launch Build Includes
+
+Replace the current “What the Launch Build Includes” copy with this:
+
+Heading:
+What the Launch Build Includes
+
+Subheading:
+From kickoff to go-live in days, not months.
+
+Body copy (short paragraph):
+A focused rollout where we design, wire, and test your AI front desk and follow-up system inside the tools you already use.
+
+Mini timeline (display as 3 bullets or 3 columns):
+	•	Phase 1 – Clarity & Mapping (Days 1–2)
+We run the AI Clarity Diagnostic, map where we can make the biggest difference, and define the key scripts, routing rules, and follow-up flows you actually need.
+	•	Phase 2 – Build & Test (Days 3–7)
+We configure where AI fits best — front desk, pipelines, and sequences — connect phones/forms/calendars/CRM where supported, and test everything with your team.
+	•	Phase 3 – Go-Live & Fine-Tune (Days 7–14)
+We switch the system on, smooth out rough edges from real conversations, and make sure your team is confident using it.
+
+Small line under the bullets (muted or smaller text):
+Most Frontline and Specialist builds go live inside a week; more complex Command builds may take a bit longer, and we’ll agree on that up front.
+
+Closing line (separate paragraph):
+After go-live, we’re no longer “building” — we’re tuning, focusing the next 60–90 days on data-driven optimization so results compound instead of stalling.
+
+⸻
+
+SECTION 2 – Results / 90-Day Window
+
+Replace the current “90-day launch” / “results” text with this:
+
+Label (small, above heading):
+Realistic Expectations
+
+Heading:
+When You’ll Actually Feel the Impact
+
+Intro paragraph (condensed):
+You don’t need to wait 30 or 90 days to feel a difference. Most clients notice fewer missed calls and cleaner follow-up in the first few days after go-live. What can take 60–90 days is building stable, trustworthy numbers on response time, show-rates, and reactivation.
+
+Result phases (3 groups; each group is a bold subheading with 2–3 bullets):
+	•	Days 1–7 – Immediate Relief
+	•	New leads stop disappearing into voicemail or inbox chaos.
+	•	Your team spends less time chasing “who called about what?”.
+	•	We quickly fix any obvious script or routing issues.
+	•	Days 8–30 – Visible Movement
+	•	Faster responses and more booked appointments show up in your calendar.
+	•	Early patterns in show-rates and reactivations start to emerge.
+	•	We tweak timing and messaging based on real conversations.
+	•	Days 31–90 – Reliable Baseline
+	•	Trends in show-rates, reactivation, and reviews become clear.
+	•	Hand-offs between AI and your team feel natural instead of experimental.
+	•	You get a baseline that shows exactly what SimpleSequence is doing for your revenue and workload.
+
+Tie-off line (after the phases):
+Therefore, we treat the first 90 days after go-live as your optimization runway — the period where quick wins harden into reliable, repeatable performance.
+
+⸻
+
+SECTION 3 – 90-Day Optimization Assurance (Guarantee Box)
+
+Keep the existing visual box for the guarantee (icon, background, etc.), but replace its text with:
+
+Title:
+⚡ 90-Day Optimization Assurance
+
+Body (short, buyer-facing version):
+The first 90 days after go-live are your optimization window. We’re in this with you, not just turning on a bot and hoping for the best.
+
+If, after that period, we’re still not seeing the movement we both expected in key metrics like responsiveness and show-rate — and your team has actually been using the system, routing leads through it, and implementing the agreed changes — we will:
+
+1. Extend your subscription by 30 days at no additional subscription cost while we adjust it together, and
+2. If you’re still not satisfied after that extension, refund 100% of the subscription fees you paid during that period. Your Launch Build fee is not refundable.
+
+This assurance applies to Frontline, Specialist, and Command plans. It does not apply to fully custom builds.
+
+Fine-print line (muted):
+If you’re only looking to “test a bot for a couple weeks,” SimpleSequence is probably not the right fit.
+
+⸻
+
+SECTION 4 – Guarantee Conditions / Fine Print (detailed)
+
+Add a smaller-text block directly under the guarantee box, or make sure this language is present in your SOW/contract. It can be styled as a “Guarantee Conditions” paragraph or collapsible text.
+
+Label (optional, small):
+Guarantee Conditions (Fine Print)
+
+Copy:
+
+To qualify for the 90-Day Optimization Assurance and subscription refund:
+	•	Coverage period. The assurance covers subscription fees paid in the first 90 days after go-live, plus the 30-day optimization extension we add if results are not on track. It does not cover the Launch Build fee, usage-based fees, or any third-party tool costs.
+	•	Plans included. The assurance applies to Frontline, Specialist, and Command plans only. It does not apply to fully custom builds or one-off custom projects where scope is jointly designed outside the standard offers.
+	•	Go-live definition. “Go-live” means SimpleSequence is actively handling inbound calls/messages for at least one primary phone number or channel, and you’ve approved the initial flows/scripts in writing (email is sufficient).
+	•	Minimum usage. During the 90-day window, you agree to route at least 70–80% of relevant inbound leads/calls/messages through SimpleSequence on the agreed channels (choose and set a specific percentage, for example 75%), and maintain a minimum inbound lead volume that makes evaluation meaningful (for example, at least 30 new leads per month across all channels).
+	•	Participation. You or a delegated team member must complete onboarding tasks within the agreed timelines, attend at least 2 out of 3 scheduled optimization calls (or reschedule in good faith), and implement reasonable changes we agree on (for example, routing changes, script updates, or offer tweaks).
+	•	Request process. To invoke the assurance, you must request it in writing within 120 days of go-live, allow us to review the metrics and usage together, and participate in the 30-day optimization extension where we attempt fixes.
+	•	Refund scope. If, after the 30-day extension, we mutually agree that there has not been meaningful improvement in the agreed metrics, we will refund 100% of subscription fees paid during the 90-day window (and the extension if applicable). The Launch Build fee remains non-refundable.
+	•	One-time use. This assurance may be used once per client organization.
+
+You may adjust the exact percentages and lead-volume thresholds, but keep the structure and intent: the guarantee is strong for serious clients who fully participate, and protected against low-usage or bad-faith scenarios.
