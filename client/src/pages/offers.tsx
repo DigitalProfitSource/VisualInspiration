@@ -703,25 +703,60 @@ export default function Offers() {
     
 
       {/* Launch Build Band */}
-      <section className="py-16 border-y border-white/5 bg-white/[0.01]">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <section className="py-20 border-y border-white/5 bg-white/[0.01]">
+        <div className="container mx-auto px-6 max-w-5xl">
           <motion.div
             initial={fadeInUpViewport.initial}
             whileInView={fadeInUpViewport.whileInView}
             viewport={fadeInUpViewport.viewport}
             transition={fadeInUpViewport.transition}
           >
-            <h3 className="text-2xl font-display font-medium mb-6 text-white text-center">
+            <h3 className="text-3xl font-display font-medium mb-3 text-white text-center">
               What the Launch Build Includes
             </h3>
-            <div className="space-y-4 text-slate-400 text-center max-w-3xl mx-auto">
-              <p className="leading-relaxed">
-                Every plan starts with the <span className="text-white">SimpleSequence Launch Build</span> — a focused project that maps where leads leak, where follow-up breaks, and how your tools currently fit together.
-              </p>
-              <p className="leading-relaxed">
-                You receive an <span className="text-primary">AI Clarity Diagnostic</span> with an Operational Clarity Score (0–100) and a prioritized fix list, then we implement according to the plan you chose. Ongoing optimization is included in every tier so your system keeps improving instead of decaying.
-              </p>
+            <p className="text-lg text-primary/80 text-center mb-6">
+              From kickoff to go-live in days, not months.
+            </p>
+            <p className="text-slate-400 text-center max-w-3xl mx-auto mb-12 leading-relaxed">
+              A focused rollout where we design, wire, and test your AI front desk and follow-up system inside the tools you already use.
+            </p>
+            
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
+                <div className="text-xs font-mono text-primary mb-3">PHASE 1</div>
+                <h4 className="text-lg font-semibold text-white mb-2">Clarity & Mapping</h4>
+                <p className="text-xs text-slate-500 mb-3">Days 1–2</p>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  We run the AI Clarity Diagnostic, map where we can make the biggest difference, and define the key scripts, routing rules, and follow-up flows you actually need.
+                </p>
+              </div>
+              
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
+                <div className="text-xs font-mono text-primary mb-3">PHASE 2</div>
+                <h4 className="text-lg font-semibold text-white mb-2">Build & Test</h4>
+                <p className="text-xs text-slate-500 mb-3">Days 3–7</p>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  We configure where AI fits best — front desk, pipelines, and sequences — connect phones/forms/calendars/CRM where supported, and test everything with your team.
+                </p>
+              </div>
+              
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
+                <div className="text-xs font-mono text-primary mb-3">PHASE 3</div>
+                <h4 className="text-lg font-semibold text-white mb-2">Go-Live & Fine-Tune</h4>
+                <p className="text-xs text-slate-500 mb-3">Days 7–14</p>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  We switch the system on, smooth out rough edges from real conversations, and make sure your team is confident using it.
+                </p>
+              </div>
             </div>
+            
+            <p className="text-sm text-slate-500 text-center mb-8 italic">
+              Most Frontline and Specialist builds go live inside a week; more complex Command builds may take a bit longer, and we'll agree on that up front.
+            </p>
+            
+            <p className="text-slate-400 text-center max-w-3xl mx-auto leading-relaxed">
+              After go-live, we're no longer "building" — we're tuning, focusing the next 60–90 days on data-driven optimization so results compound instead of stalling.
+            </p>
           </motion.div>
         </div>
       </section>
@@ -735,7 +770,7 @@ export default function Offers() {
             whileInView={fadeInUpViewport.whileInView}
             viewport={fadeInUpViewport.viewport}
             transition={fadeInUpViewport.transition}
-            className="max-w-4xl mx-auto"
+            className="max-w-5xl mx-auto"
           >
             <div className="flex items-center gap-3 mb-6">
               <Shield className="w-6 h-6 text-primary" />
@@ -743,24 +778,116 @@ export default function Offers() {
             </div>
             
             <h2 className="text-3xl md:text-4xl font-display font-medium mb-8 text-white">
-              Why We Design Around a 90-Day Launch Window
+              When You'll Actually Feel the Impact
             </h2>
             
             <p className="text-lg text-slate-400 leading-relaxed mb-12">
-              We're not installing a widget. We're changing how your front desk, intake, and follow-up behave every day. In most serious service businesses, it takes about 60–90 days to route most calls, texts, and forms through the new system, tune messaging to your services and tone, and see stable numbers on response time, bookings, no-shows, and reactivations. Therefore, every Launch Build is scoped for a 90-day window: install → stabilize → then optimize based on real data — not guesswork.
+              You don't need to wait 30 or 90 days to feel a difference. Most clients notice fewer missed calls and cleaner follow-up in the first few days after go-live. What can take 60–90 days is building stable, trustworthy numbers on response time, show-rates, and reactivation.
             </p>
             
-            <div className="p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
+                <h4 className="text-lg font-semibold text-white mb-1">Days 1–7</h4>
+                <p className="text-sm text-primary mb-4">Immediate Relief</p>
+                <ul className="space-y-2 text-sm text-slate-400">
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>New leads stop disappearing into voicemail or inbox chaos.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>Your team spends less time chasing "who called about what?".</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>We quickly fix any obvious script or routing issues.</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
+                <h4 className="text-lg font-semibold text-white mb-1">Days 8–30</h4>
+                <p className="text-sm text-primary mb-4">Visible Movement</p>
+                <ul className="space-y-2 text-sm text-slate-400">
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>Faster responses and more booked appointments show up in your calendar.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>Early patterns in show-rates and reactivations start to emerge.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>We tweak timing and messaging based on real conversations.</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
+                <h4 className="text-lg font-semibold text-white mb-1">Days 31–90</h4>
+                <p className="text-sm text-primary mb-4">Reliable Baseline</p>
+                <ul className="space-y-2 text-sm text-slate-400">
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>Trends in show-rates, reactivation, and reviews become clear.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>Hand-offs between AI and your team feel natural instead of experimental.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span>You get a baseline that shows exactly what SimpleSequence is doing for your revenue and workload.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <p className="text-slate-400 text-center mb-16 leading-relaxed max-w-3xl mx-auto">
+              Therefore, we treat the first 90 days after go-live as your optimization runway — the period where quick wins harden into reliable, repeatable performance.
+            </p>
+            
+            {/* 90-Day Optimization Assurance Box */}
+            <div className="p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent mb-8">
               <h3 className="text-xl font-display font-semibold mb-4 text-primary flex items-center gap-3">
                 <Zap className="w-5 h-5" />
-                90-Day Performance Assurance
+                90-Day Optimization Assurance
               </h3>
               <p className="text-slate-300 leading-relaxed mb-6">
-                Billing is month-to-month from day one, but we treat the first 90 days as the Launch Window. If, after 90 days live, we're not seeing the movement we both expected in key metrics like responsiveness and show-rate — and your team has actually been using the system and showing up to optimization calls — we'll extend your subscription by 30 days at no additional subscription cost while we adjust it together. We'd rather prove our value than argue about it.
+                The first 90 days after go-live are your optimization window. We're in this with you, not just turning on a bot and hoping for the best.
+              </p>
+              <p className="text-slate-300 leading-relaxed mb-6">
+                If, after that period, we're still not seeing the movement we both expected in key metrics like responsiveness and show-rate — and your team has actually been using the system, routing leads through it, and implementing the agreed changes — we will:
+              </p>
+              <ol className="list-decimal list-inside space-y-2 text-slate-300 mb-6 pl-2">
+                <li>Extend your subscription by 30 days at no additional subscription cost while we adjust it together, and</li>
+                <li>If you're still not satisfied after that extension, refund 100% of the subscription fees you paid during that period. Your Launch Build fee is not refundable.</li>
+              </ol>
+              <p className="text-slate-400 text-sm mb-4">
+                This assurance applies to Frontline, Specialist, and Command plans. It does not apply to fully custom builds.
               </p>
               <p className="text-sm text-slate-500 italic">
                 If you're only looking to "test a bot for a couple weeks," SimpleSequence is probably not the right fit.
               </p>
+            </div>
+            
+            {/* Guarantee Conditions Fine Print */}
+            <div className="p-6 rounded-xl border border-white/5 bg-white/[0.01]">
+              <h4 className="text-xs font-mono text-slate-500 mb-4">GUARANTEE CONDITIONS (FINE PRINT)</h4>
+              <div className="text-xs text-slate-500 leading-relaxed space-y-3">
+                <p>To qualify for the 90-Day Optimization Assurance and subscription refund:</p>
+                <ul className="space-y-2 pl-4">
+                  <li><span className="text-slate-400">Coverage period.</span> The assurance covers subscription fees paid in the first 90 days after go-live, plus the 30-day optimization extension we add if results are not on track. It does not cover the Launch Build fee, usage-based fees, or any third-party tool costs.</li>
+                  <li><span className="text-slate-400">Plans included.</span> The assurance applies to Frontline, Specialist, and Command plans only. It does not apply to fully custom builds or one-off custom projects where scope is jointly designed outside the standard offers.</li>
+                  <li><span className="text-slate-400">Go-live definition.</span> "Go-live" means SimpleSequence is actively handling inbound calls/messages for at least one primary phone number or channel, and you've approved the initial flows/scripts in writing (email is sufficient).</li>
+                  <li><span className="text-slate-400">Minimum usage.</span> During the 90-day window, you agree to route at least 75% of relevant inbound leads/calls/messages through SimpleSequence on the agreed channels, and maintain a minimum inbound lead volume that makes evaluation meaningful (at least 30 new leads per month across all channels).</li>
+                  <li><span className="text-slate-400">Participation.</span> You or a delegated team member must complete onboarding tasks within the agreed timelines, attend at least 2 out of 3 scheduled optimization calls (or reschedule in good faith), and implement reasonable changes we agree on (routing changes, script updates, or offer tweaks).</li>
+                  <li><span className="text-slate-400">Request process.</span> To invoke the assurance, you must request it in writing within 120 days of go-live, allow us to review the metrics and usage together, and participate in the 30-day optimization extension where we attempt fixes.</li>
+                  <li><span className="text-slate-400">Refund scope.</span> If, after the 30-day extension, we mutually agree that there has not been meaningful improvement in the agreed metrics, we will refund 100% of subscription fees paid during the 90-day window (and the extension if applicable). The Launch Build fee remains non-refundable.</li>
+                  <li><span className="text-slate-400">One-time use.</span> This assurance may be used once per client organization.</li>
+                </ul>
+              </div>
             </div>
           </motion.div>
         </div>
