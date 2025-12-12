@@ -18,6 +18,7 @@ import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { Footer } from "@/components/footer";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
+import architectFlowDiagram from "@assets/Architect_the_Flow_-_Corrected_Text_Same_Style_1765574499518.png";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -1058,40 +1059,23 @@ export default function Home() {
                 { step: "01", title: "Diagnose Friction", desc: "We find exactly where things break down — the hidden drag you've been feeling but couldn't name.", icon: Stethoscope },
                 { step: "02", title: "Map Sequences", desc: "We document the workflows that actually drive revenue and expose what's unclear or broken.", icon: Map },
                 { step: "03", title: "Locate Leverage", desc: "We identify where AI creates real lift — triage, routing, and follow-up — and where your team's judgment still matters most, not shiny distractions.", icon: Target },
-                { step: "04", title: "Architect the Flow", desc: "We document the real workflows from first contact to repeat business, therefore exposing what actually drives revenue and what's unclear or broken.", icon: Blocks }
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.7 }}
-                  className={`flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-24 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''} relative group`}
-                >
-                  {/* Text Content */}
-                  <div className="flex-1 pl-20 md:pl-0 md:text-right">
-                    {i % 2 === 0 && (
-                      <div className="md:text-right">
-                        <div className="inline-flex items-center gap-2 text-primary/50 font-mono mb-2">
-                           <span>STEP</span>
-                           <span className="text-xl font-bold text-primary">{item.step}</span>
-                        </div>
-                        <h3 className="text-3xl font-medium mb-4 group-hover:text-primary transition-colors duration-300">{item.title}</h3>
-                        <p className="text-muted-foreground text-lg leading-relaxed text-left">{item.desc}</p>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Center Icon */}
-                  <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-14 h-14 rounded-full bg-background border border-primary/30 flex items-center justify-center relative z-10 shrink-0 shadow-[0_0_30px_-10px_var(--color-primary)] group-hover:scale-110 transition-transform duration-500">
-                    <div className="absolute inset-0 rounded-full bg-primary/10 animate-ping opacity-20" />
-                    <item.icon className="w-6 h-6 text-primary" />
-                  </div>
-
-                  {/* Text Content (Right side for odd items) */}
-                  <div className="flex-1 pl-20 md:pl-0 md:text-left">
-                    {i % 2 === 1 && (
-                      <div className="md:text-left">
+                { step: "04", title: "Architect the Flow", desc: "We document the real workflows from first contact to repeat business, therefore exposing what actually drives revenue and what's unclear or broken.", icon: Blocks, image: architectFlowDiagram }
+              ].map((item, i) => {
+                const hasImage = 'image' in item && item.image;
+                
+                // Special layout for items with images - text left, image right
+                if (hasImage) {
+                  return (
+                    <motion.div 
+                      key={i}
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      transition={{ duration: 0.7 }}
+                      className="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-16 relative group"
+                    >
+                      {/* Text Content - Left */}
+                      <div className="flex-1 pl-20 md:pl-0">
                         <div className="inline-flex items-center gap-2 text-primary/50 font-mono mb-2">
                            <span>STEP</span>
                            <span className="text-xl font-bold text-primary">{item.step}</span>
@@ -1099,10 +1083,79 @@ export default function Home() {
                         <h3 className="text-3xl font-medium mb-4 group-hover:text-primary transition-colors duration-300">{item.title}</h3>
                         <p className="text-muted-foreground text-lg leading-relaxed">{item.desc}</p>
                       </div>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+                      
+                      {/* Center Timeline Icon */}
+                      <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-14 h-14 rounded-full bg-background border border-primary/30 flex items-center justify-center z-10 shrink-0 shadow-[0_0_30px_-10px_var(--color-primary)] group-hover:scale-110 transition-transform duration-500">
+                        <div className="absolute inset-0 rounded-full bg-primary/10 animate-ping opacity-20" />
+                        <item.icon className="w-6 h-6 text-primary" />
+                      </div>
+                      
+                      {/* Image - Right */}
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="flex-1 relative pl-20 md:pl-0"
+                      >
+                        <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-cyan-500/10 rounded-2xl blur-xl opacity-50 animate-pulse" style={{ animationDuration: '3s' }} />
+                        <img 
+                          src={item.image} 
+                          alt={item.title}
+                          className="relative w-full max-w-md rounded-xl border border-white/10 shadow-2xl"
+                          data-testid={`img-step-${item.step}`}
+                        />
+                      </motion.div>
+                    </motion.div>
+                  );
+                }
+                
+                // Standard alternating layout for items without images
+                return (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.7 }}
+                    className={`flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-24 ${i % 2 === 1 ? 'md:flex-row-reverse' : ''} relative group`}
+                  >
+                    {/* Text Content */}
+                    <div className="flex-1 pl-20 md:pl-0 md:text-right">
+                      {i % 2 === 0 && (
+                        <div className="md:text-right">
+                          <div className="inline-flex items-center gap-2 text-primary/50 font-mono mb-2">
+                             <span>STEP</span>
+                             <span className="text-xl font-bold text-primary">{item.step}</span>
+                          </div>
+                          <h3 className="text-3xl font-medium mb-4 group-hover:text-primary transition-colors duration-300">{item.title}</h3>
+                          <p className="text-muted-foreground text-lg leading-relaxed text-left">{item.desc}</p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Center Icon */}
+                    <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-14 h-14 rounded-full bg-background border border-primary/30 flex items-center justify-center relative z-10 shrink-0 shadow-[0_0_30px_-10px_var(--color-primary)] group-hover:scale-110 transition-transform duration-500">
+                      <div className="absolute inset-0 rounded-full bg-primary/10 animate-ping opacity-20" />
+                      <item.icon className="w-6 h-6 text-primary" />
+                    </div>
+
+                    {/* Text Content (Right side for odd items) */}
+                    <div className="flex-1 pl-20 md:pl-0 md:text-left">
+                      {i % 2 === 1 && (
+                        <div className="md:text-left">
+                          <div className="inline-flex items-center gap-2 text-primary/50 font-mono mb-2">
+                             <span>STEP</span>
+                             <span className="text-xl font-bold text-primary">{item.step}</span>
+                          </div>
+                          <h3 className="text-3xl font-medium mb-4 group-hover:text-primary transition-colors duration-300">{item.title}</h3>
+                          <p className="text-muted-foreground text-lg leading-relaxed">{item.desc}</p>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
 
