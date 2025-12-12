@@ -1,0 +1,57 @@
+UPDATE AI CLARITY ASSESSMENT SECTION
+
+You are updating the Offers page for SimpleSequence.
+
+Goal:
+	•	Replace the existing two lead-magnet sections (“The AI Clarity Assessment™” + “Not Sure Where to Start?”) with one unified, stronger lead magnet.
+	•	Keep the current visual layout (left text, right score card), but update all copy as below.
+	•	Remove the duplicate bottom section, or make its button just scroll to this section (no extra copy).
+
+⸻
+
+1. Keep the Layout, Replace the Copy
+Use the existing section where the AI Clarity Assessment is shown (with the “Operational Score 72/100” card on the right). Update the text on the left to the following:
+
+Label (small, above headline):
+START HERE IF YOU'RE UNSURE
+
+Headline (H2):
+The AI Clarity Assessment™
+
+Subhead (small line under headline):
+See how much revenue your front desk is leaking before you choose a plan.
+
+Body paragraph(s):
+
+Before you pick a plan, run the free AI Clarity Assessment™. In a few minutes, we’ll map how leads actually move through your phones, forms, and inboxes — where response time breaks, where follow-up stalls, and where your team is carrying work that AI and systems should handle.
+
+You’ll receive an Operational Clarity Score (0–100), a concise breakdown of where you’re losing revenue, and a clear recommendation on whether Frontline, Specialist, or Command will create the fastest lift for your business. Therefore you can decide with real data instead of guessing.
+
+Bullet list (3 bullets under the body, label it optional “You’ll see:” or leave unlabeled):
+	•	How many leads are slipping through the cracks today
+	•	Which parts of your front desk and follow-up can be automated safely
+	•	What your next 90-day focus should be with SimpleSequence
+
+Button text:
+Take the Free Assessment
+
+Button links to the existing assessment flow.
+
+On the right-hand side, keep the existing visual card (assessment result mockup with Operational Score 72/100). If needed, update any small text on that card to align with this concept (e.g., label it “Operational Score” or “Assessment Results”).
+
+⸻
+
+2. Remove / Merge the Bottom “Not Sure Where to Start?” Section
+At the bottom of the Offers page there is currently a separate section titled “Not Sure Where to Start?” with another “Take the Free Assessment” button.
+
+Update as follows:
+	•	Either:
+	•	Remove this entire section, since its message is now fully covered by the unified AI Clarity Assessment section above.
+	•	Or, if you want to keep a footer CTA band:
+	•	Keep only the headline and button, but remove all body copy.
+	•	Set the button to scroll/jump to the AI Clarity Assessment™ section rather than opening anything new.
+	•	New footer version (if kept):
+	•	Heading: Not Sure Where to Start?
+	•	Button: Take the Free Assessment (anchors to the main Assessment section).
+
+Do not duplicate the assessment description text anywhere else on the page; the full explanation should live only in the main AI Clarity Assessment section.

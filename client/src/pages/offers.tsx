@@ -767,7 +767,7 @@ export default function Offers() {
       </section>
 
       {/* AI Clarity Assessment - Lead Magnet */}
-      <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
+      <section id="ai-clarity-assessment" className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
         
         <div className="container mx-auto px-6 relative z-10">
@@ -782,10 +782,32 @@ export default function Offers() {
               <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
                 START HERE IF YOU'RE UNSURE
               </div>
-              <h2 className="text-4xl md:text-5xl font-medium mb-8 tracking-tight">The AI Clarity Assessment™</h2>
-              <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
-                If you're not sure which plan fits, take the free AI Clarity Assessment™. In a few minutes, we'll map where lead flow breaks, where follow-up slows down, and where operations rely too heavily on manual effort. You'll receive an Operational Clarity Score (0–100), a simple breakdown of where you're losing revenue, and a recommendation for which SimpleSequence plan will give you the fastest win.
+              <h2 className="text-4xl md:text-5xl font-medium mb-4 tracking-tight">The AI Clarity Assessment™</h2>
+              <p className="text-lg text-primary/80 mb-8">
+                See how much revenue your front desk is leaking before you choose a plan.
               </p>
+              <div className="space-y-4 text-lg text-muted-foreground mb-8 leading-relaxed">
+                <p>
+                  Before you pick a plan, run the free AI Clarity Assessment™. In a few minutes, we'll map how leads actually move through your phones, forms, and inboxes — where response time breaks, where follow-up stalls, and where your team is carrying work that AI and systems should handle.
+                </p>
+                <p>
+                  You'll receive an Operational Clarity Score (0–100), a concise breakdown of where you're losing revenue, and a clear recommendation on whether Frontline, Specialist, or Command will create the fastest lift for your business. Therefore you can decide with real data instead of guessing.
+                </p>
+              </div>
+              <ul className="space-y-3 mb-10">
+                <li className="flex items-start gap-3 text-slate-300">
+                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>How many leads are slipping through the cracks today</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Which parts of your front desk and follow-up can be automated safely</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>What your next 90-day focus should be with SimpleSequence</span>
+                </li>
+              </ul>
               <ContactFormDialog
                 source="assessment-offers"
                 title="Take the Free Assessment"
@@ -861,23 +883,17 @@ export default function Offers() {
             <h2 className="text-4xl md:text-6xl font-display font-medium mb-10">
               Not Sure Where to <span className="text-primary">Start</span>?
             </h2>
-            <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
-              Start with the free AI Clarity Assessment and we'll help you identify where you're leaking revenue and which plan will create the fastest lift.
-            </p>
-            <ContactFormDialog
-              source="offers-bottom-cta"
-              title="Take the Free Assessment"
-              description="Complete the form and we'll send you a personalized AI readiness assessment for your business."
-              trigger={
-                <Button 
-                  size="lg"
-                  className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
-                  data-testid="button-offers-bottom-cta"
-                >
-                  Take the Free Assessment
-                </Button>
-              }
-            />
+            <a 
+              href="#ai-clarity-assessment"
+              data-testid="button-offers-bottom-cta"
+            >
+              <Button 
+                size="lg"
+                className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
+              >
+                Take the Free Assessment
+              </Button>
+            </a>
           </motion.div>
         </div>
       </section>
