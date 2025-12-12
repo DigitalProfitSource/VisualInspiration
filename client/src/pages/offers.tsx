@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, Check } from "lucide-react";
+import { Activity, Check, ChevronDown, Phone, Users, Brain, Shield, Zap, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
@@ -14,9 +14,239 @@ const fadeInUpViewport = {
   transition: { duration: 0.7 }
 };
 
-export default function Offers() {
-  const [entryCardsHovered, setEntryCardsHovered] = useState(false);
+interface PricingTier {
+  number: string;
+  name: string;
+  descriptor: string;
+  buildFee: string;
+  monthlyFee: string;
+  ifYouWant: string;
+  focusBullets: string[];
+  expandedBullets: { title: string; description: string }[];
+  outcome: string;
+  ctaText: string;
+  ctaSource: string;
+  isPopular?: boolean;
+  isApplication?: boolean;
+}
 
+const pricingTiers: PricingTier[] = [
+  {
+    number: "01",
+    name: "Frontline",
+    descriptor: "AI front desk & follow-up foundation",
+    buildFee: "$600 Launch Build",
+    monthlyFee: "$297/mo",
+    ifYouWant: "If you want the phones, texts, and forms handled automatically without hiring another front-desk person.",
+    focusBullets: [
+      "Always-on front desk coverage",
+      "Faster responses to new leads",
+      "Basic, consistent follow-up that actually happens"
+    ],
+    expandedBullets: [
+      { title: "24/7 AI front desk across key channels", description: "Answers phone, SMS, website chat, and lead forms so fewer people hit voicemail or get ignored." },
+      { title: "Smart triage & routing", description: "Detects new leads vs existing clients/patients vs vendors vs spam, and flags urgent issues so real emergencies get priority." },
+      { title: "Core follow-up flows", description: "New lead → consult / call / estimate booking, plus confirmations, reminders, simple reschedule flows, and a short \"win-back\" touch for recent no-shows or cancellations." },
+      { title: "Single intake & simple stages", description: "One consistent way leads come in instead of scattered forms and sticky notes, with standard stages like: New → Qualified → Scheduled → Completed → Follow-up." },
+      { title: "Daily visibility for your team", description: "A central list or view of new leads and today's appointments so your staff sees what's on deck without hunting across tools; therefore your team spends more time doing and less time searching." },
+      { title: "Monthly optimization", description: "One focused review each month to tune scripts, routing, and timing based on what's actually happening in your business." }
+    ],
+    outcome: "Your front desk stops leaking obvious money. New leads are captured, responded to, and moved forward consistently, therefore taking basic front-desk chaos off your plate without another hire.",
+    ctaText: "Start Frontline",
+    ctaSource: "frontline"
+  },
+  {
+    number: "02",
+    name: "Specialist",
+    descriptor: "Show-rate, reactivation, and reputation engine",
+    buildFee: "$1,000 Launch Build",
+    monthlyFee: "$497/mo",
+    ifYouWant: "If you want more people showing up, old leads coming back, and reviews growing without burning out your team.",
+    focusBullets: [
+      "Increasing show-rates to booked appointments",
+      "Winning back leads who went cold",
+      "Systematic review generation and complaint routing"
+    ],
+    expandedBullets: [
+      { title: "Industry-shaped pipelines", description: "We model the real stages of your world (Med-spa: New lead → Consult booked → Show/no-show → Procedure → Post-op → Review | Law: New inquiry → Conflict check → Consult → Retainer signed → Active case | Home services: New request → Visit → Quote sent → Job scheduled → Completion → Warranty follow-up)" },
+      { title: "Show-Rate Engine", description: "Multi-step reminder and nudge sequences tuned to high-value appointments; different messaging for consults vs low-stakes visits; smart reschedule prompts instead of \"sorry we missed you\" and silence." },
+      { title: "Reactivation campaigns", description: "Flows for never-booked inquiries who went quiet, no-shows and last-minute cancellations, and past clients/patients who haven't booked in a while." },
+      { title: "Reputation & review flows", description: "Asks happy clients/patients for reviews at the right moment; routes unhappy ones into an internal resolution path; prioritizes platforms that matter most for your niche, therefore protecting your reputation while you grow it." },
+      { title: "Targeted education & FAQs", description: "Pre-visit and post-visit instructions sent automatically, plus \"what to expect\" flows for key services or procedures, using your approved content so the system never gives legal/medical advice or goes off-script." },
+      { title: "Stronger ongoing tuning", description: "A deeper monthly performance review focused on show-rate, reactivation, and review trends, with clear next-step recommendations so the system keeps getting sharper instead of going stale." }
+    ],
+    outcome: "You don't just respond — you drive revenue behavior. More people show up, more old leads return, and more happy clients talk about you publicly, therefore lifting the ROI of your marketing and front-desk time without adding more staff.",
+    ctaText: "Start Specialist",
+    ctaSource: "specialist",
+    isPopular: true
+  },
+  {
+    number: "03",
+    name: "Command",
+    descriptor: "AI ops brain & strategic partner",
+    buildFee: "From $2,000 Launch Build",
+    monthlyFee: "From $997/mo",
+    ifYouWant: "If you want an AI-driven operations layer that helps your team know what to do next across leads, cases, jobs, and locations.",
+    focusBullets: [
+      "Turning your SOPs and policies into an AI-aware \"ops brain\"",
+      "Giving your team clear next-best-actions each day",
+      "Coordinating more complex, multi-location or multi-service operations"
+    ],
+    expandedBullets: [
+      { title: "AI over your playbooks (within your rules)", description: "We load your SOPs, policies, consent forms, pricing guides, and key checklists so the system can follow your rules, not invent its own; both the AI front desk and your staff can lean on the same source of truth." },
+      { title: "Ops co-pilot for your staff", description: "Team members can ask operational questions like: \"What's our process if a patient calls with concerns 10 days after treatment?\" \"What do we do if a tenant reports a leak after hours?\" The co-pilot responds with steps based on your playbooks and can create tasks or tickets in your existing tools where supported." },
+      { title: "Daily next-best-actions", description: "A prioritized list of who should be contacted today — hot leads, stalled cases, aging quotes, at-risk clients — so your team focuses on the handful of actions that matter most instead of staring at an overwhelming list." },
+      { title: "Advanced visibility & patterns", description: "Trends across response times, show-rates, conversion, reactivation, and reviews; breakdowns by channel (phone, SMS, web, DMs) and by source where the data exists, therefore giving leadership real operational insight instead of just call counts." },
+      { title: "Strategic partnership layer", description: "Dedicated point of contact, quarterly strategy and roadmap sessions, and joint experiments (new flows, campaigns, or offers) with clear success criteria." },
+      { title: "Designed for complexity", description: "Support for multi-location routing, rules, and reporting where needed, plus more complex service menus or case types without everything becoming a one-off project." }
+    ],
+    outcome: "Command turns SimpleSequence into your AI operations partner — a system that knows your rules, organizes daily actions, and helps your team coordinate complex, high-value work, therefore justifying premium, ROI-first pricing and long-term collaboration.",
+    ctaText: "Apply for Command",
+    ctaSource: "command",
+    isApplication: true
+  }
+];
+
+function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.15, duration: 0.6 }}
+      className={`group relative p-8 rounded-2xl border transition-all duration-300 ${
+        tier.isPopular 
+          ? 'border-primary/40 bg-gradient-to-b from-zinc-800/80 to-zinc-950 shadow-2xl' 
+          : 'border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent hover:border-primary/30'
+      }`}
+      data-testid={`card-offers-${tier.ctaSource}`}
+    >
+      {tier.isPopular && (
+        <>
+          <BorderBeam size={300} duration={12} delay={0} colorFrom="var(--color-primary)" colorTo="transparent" />
+          <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl tracking-wider">
+            MOST POPULAR
+          </div>
+        </>
+      )}
+      
+      {tier.isApplication && (
+        <div className="absolute top-0 right-0 bg-white/10 text-slate-300 text-[10px] font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl tracking-wider border-l border-b border-white/10">
+          BY APPLICATION
+        </div>
+      )}
+      
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-xs font-mono text-primary">{tier.number}</span>
+        </div>
+        
+        <h3 className="text-2xl md:text-3xl font-display font-semibold mb-2 text-white">
+          {tier.name}
+        </h3>
+        
+        <p className="text-sm text-slate-400 mb-4">
+          {tier.descriptor}
+        </p>
+        
+        <div className="flex items-baseline gap-2 mb-6">
+          <span className="text-sm text-slate-500">{tier.buildFee}</span>
+          <span className="text-slate-600">•</span>
+          <span className="text-2xl font-display font-bold text-white">{tier.monthlyFee}</span>
+          <span className="text-sm text-slate-500">(month-to-month)</span>
+        </div>
+        
+        <p className="text-primary text-sm font-medium mb-6">
+          {tier.ifYouWant}
+        </p>
+        
+        <div className="mb-6">
+          <h4 className="text-xs font-mono text-slate-400 mb-3">THIS PLAN FOCUSES ON:</h4>
+          <ul className="space-y-2">
+            {tier.focusBullets.map((bullet, i) => (
+              <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
+                <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="mb-6 pt-4 border-t border-white/10">
+                <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
+                <ul className="space-y-4">
+                  {tier.expandedBullets.map((bullet, i) => (
+                    <li key={i} className="text-sm">
+                      <div className="flex items-start gap-3">
+                        <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                        <div>
+                          <span className="text-white font-medium">{bullet.title}</span>
+                          <p className="text-slate-400 mt-1">{bullet.description}</p>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
+          <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
+          <p className="text-slate-300 text-sm leading-relaxed">
+            {tier.outcome}
+          </p>
+        </div>
+        
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="w-full flex items-center justify-center gap-2 py-2 mb-4 text-sm text-slate-400 hover:text-primary transition-colors"
+          data-testid={`toggle-expand-${tier.ctaSource}`}
+        >
+          {isExpanded ? "Show Less" : "See Full Details"}
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ChevronDown className="w-4 h-4" />
+          </motion.div>
+        </button>
+        
+        <ContactFormDialog
+          source={tier.ctaSource}
+          title={tier.ctaText}
+          description={`Tell us about your business and we'll help you get started with ${tier.name}.`}
+          trigger={
+            <Button 
+              data-testid={`button-offers-${tier.ctaSource}`}
+              className={`w-full h-12 rounded-lg font-medium transition-all ${
+                tier.isPopular
+                  ? 'bg-primary text-primary-foreground hover:bg-cyan-300 shadow-[0_0_20px_-5px_var(--color-primary)]'
+                  : 'bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-primary/30'
+              }`}
+            >
+              {tier.ctaText} <span className="ml-2">→</span>
+            </Button>
+          }
+        />
+      </div>
+    </motion.div>
+  );
+}
+
+export default function Offers() {
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
       {/* Header */}
@@ -61,13 +291,99 @@ export default function Offers() {
               Choose Your <span className="text-primary">Path Forward</span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto">
-              From strategic clarity to full operational transformation — select the level that matches where you are today.
+              From AI front desk and follow-up to a full AI operations partner — select the level that matches where you are today.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* AI Clarity Assessment */}
+      {/* Pricing Grid - Find Your Fit */}
+      <section className="py-24">
+        <div className="container mx-auto px-6">
+          <motion.div 
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="text-center mb-16"
+          >
+            <span className="text-sm font-mono text-primary mb-4 block">SELECT YOUR PLAN</span>
+            <h2 className="text-4xl md:text-5xl font-display font-medium">Find Your Fit</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {pricingTiers.map((tier, index) => (
+              <PricingCard key={tier.name} tier={tier} index={index} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Launch Build Band */}
+      <section className="py-16 border-y border-white/5 bg-white/[0.01]">
+        <div className="container mx-auto px-6 max-w-4xl">
+          <motion.div
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+          >
+            <h3 className="text-2xl font-display font-medium mb-6 text-white text-center">
+              What the Launch Build Includes
+            </h3>
+            <div className="space-y-4 text-slate-400 text-center max-w-3xl mx-auto">
+              <p className="leading-relaxed">
+                Every plan starts with the <span className="text-white">SimpleSequence Launch Build</span> — a focused project that maps where leads leak, where follow-up breaks, and how your tools currently fit together.
+              </p>
+              <p className="leading-relaxed">
+                You receive an <span className="text-primary">AI Clarity Diagnostic</span> with an Operational Clarity Score (0–100) and a prioritized fix list, then we implement according to the plan you chose. Ongoing optimization is included in every tier so your system keeps improving instead of decaying.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 90-Day Expectations + Assurance Section */}
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(var(--primary),0.05),transparent_60%)]" />
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <Shield className="w-6 h-6 text-primary" />
+              <span className="text-sm font-mono text-primary">REALISTIC EXPECTATIONS</span>
+            </div>
+            
+            <h2 className="text-3xl md:text-4xl font-display font-medium mb-8 text-white">
+              Why We Design Around a 90-Day Launch Window
+            </h2>
+            
+            <p className="text-lg text-slate-400 leading-relaxed mb-12">
+              We're not installing a widget. We're changing how your front desk, intake, and follow-up behave every day. In most serious service businesses, it takes about 60–90 days to route most calls, texts, and forms through the new system, tune messaging to your services and tone, and see stable numbers on response time, bookings, no-shows, and reactivations. Therefore, every Launch Build is scoped for a 90-day window: install → stabilize → then optimize based on real data — not guesswork.
+            </p>
+            
+            <div className="p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
+              <h3 className="text-xl font-display font-semibold mb-4 text-primary flex items-center gap-3">
+                <Zap className="w-5 h-5" />
+                90-Day Performance Assurance
+              </h3>
+              <p className="text-slate-300 leading-relaxed mb-6">
+                Billing is month-to-month from day one, but we treat the first 90 days as the Launch Window. If, after 90 days live, we're not seeing the movement we both expected in key metrics like responsiveness and show-rate — and your team has actually been using the system and showing up to optimization calls — we'll extend your subscription by 30 days at no additional subscription cost while we adjust it together. We'd rather prove our value than argue about it.
+              </p>
+              <p className="text-sm text-slate-500 italic">
+                If you're only looking to "test a bot for a couple weeks," SimpleSequence is probably not the right fit.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* AI Clarity Assessment - Lead Magnet */}
       <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
         
@@ -81,11 +397,11 @@ export default function Offers() {
               className="max-w-2xl"
             >
               <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
-                START HERE
+                START HERE IF YOU'RE UNSURE
               </div>
-              <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight">The AI Clarity Assessment™</h2>
-              <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
-                A quick assessment that reveals where lead flow breaks, where follow-up slows down, and where operations rely too heavily on manual effort. Delivered with an Executive AI Analysis. No fluff, no hype—genuine insight.
+              <h2 className="text-4xl md:text-5xl font-medium mb-8 tracking-tight">The AI Clarity Assessment™</h2>
+              <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
+                If you're not sure which plan fits, take the free AI Clarity Assessment™. In a few minutes, we'll map where lead flow breaks, where follow-up slows down, and where operations rely too heavily on manual effort. You'll receive an Operational Clarity Score (0–100), a simple breakdown of where you're losing revenue, and a recommendation for which SimpleSequence plan will give you the fastest win.
               </p>
               <ContactFormDialog
                 source="assessment-offers"
@@ -110,7 +426,6 @@ export default function Offers() {
               transition={{ duration: 0.8 }}
               className="w-full max-w-md relative"
             >
-               {/* Mockup Effect */}
                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-blue-500/20 rounded-2xl blur-lg opacity-50" />
                <div className="relative bg-zinc-900 p-8 rounded-2xl border border-white/10 shadow-2xl">
                   <div className="flex items-center justify-between mb-8">
@@ -150,341 +465,8 @@ export default function Offers() {
         </div>
       </section>
 
-      {/* Core Offer Stack */}
-      <section className="py-40">
-        <div className="container mx-auto px-6">
-          {/* Section Header */}
-          <motion.div 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="text-center mb-16"
-          >
-            <span className="text-sm font-mono text-primary mb-4 block">SELECT YOUR PACKAGE</span>
-            <h2 className="text-4xl md:text-5xl font-display font-medium">Find Your Fit</h2>
-          </motion.div>
-
-          {/* Tier 1 & 2: Entry Level Row with Dual-Hover Animation */}
-          <motion.div 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="grid md:grid-cols-2 gap-6 mb-6"
-            onMouseEnter={() => setEntryCardsHovered(true)}
-            onMouseLeave={() => setEntryCardsHovered(false)}
-          >
-            {/* 01 - Blueprint $997 */}
-            <div 
-              className={`group p-8 rounded-2xl border bg-gradient-to-b from-white/[0.06] to-transparent transition-all duration-300 ${
-                entryCardsHovered ? 'border-primary/30' : 'border-white/10 hover:border-primary/30'
-              }`}
-              data-testid="card-offers-blueprint"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-xs font-mono text-primary">01</span>
-                <span className="text-3xl font-display font-bold text-white">$997</span>
-              </div>
-              
-              <h3 className="text-2xl font-display font-medium mb-3 text-white">
-                Operational Diagnostic + AI-Clarity Blueprint™
-              </h3>
-              
-              <p className="text-primary text-sm font-medium mb-4">
-                If you want answers before you spend real money.
-              </p>
-              
-              <p className="text-muted-foreground mb-6 leading-relaxed text-sm italic">
-                This is for businesses that say: "I know something isn't working… I just don't know what."
-              </p>
-
-              {/* Expandable Content */}
-              <AnimatePresence>
-                {entryCardsHovered && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="mb-6">
-                      <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
-                      <ul className="space-y-2 text-sm text-slate-300">
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A clear picture of where you're losing revenue</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A breakdown of what's slowing you down</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A map of where automation actually helps</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A simple, prioritized plan telling you exactly what to fix first</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Your Operational Clarity Score (0–100)</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A no-fluff AI-readiness analysis</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
-                      <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
-                      <p className="text-slate-300 text-sm">
-                        You finally know what's broken, why it's broken, and what to do next — without buying a full system.
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <ContactFormDialog
-                source="blueprint"
-                title="Get the AI-Clarity Blueprint"
-                description="Request a comprehensive operational assessment and AI opportunity map tailored to your business."
-                trigger={
-                  <Button 
-                    data-testid="button-offers-get-blueprint"
-                    className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all group-hover:border-primary/30"
-                  >
-                    Get the Blueprint <span className="ml-2 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
-                  </Button>
-                }
-              />
-            </div>
-
-            {/* 02 - Tune-Up $3,500 */}
-            <div 
-              className={`group p-8 rounded-2xl border bg-gradient-to-b from-white/[0.06] to-transparent transition-all duration-300 ${
-                entryCardsHovered ? 'border-primary/30' : 'border-white/10 hover:border-primary/30'
-              }`}
-              data-testid="card-offers-tuneup"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-xs font-mono text-primary">02</span>
-                <span className="text-3xl font-display font-bold text-white">$3,500</span>
-              </div>
-              
-              <h3 className="text-2xl font-display font-medium mb-3 text-white">
-                Operational Tune-Up
-              </h3>
-              
-              <p className="text-primary text-sm font-medium mb-4">
-                If you want things to "just work" without rebuilding everything.
-              </p>
-              
-              <p className="text-muted-foreground mb-6 leading-relaxed text-sm italic">
-                This is for owners who say: "I don't need a big system. I just need things to stop falling apart."
-              </p>
-
-              {/* Expandable Content */}
-              <AnimatePresence>
-                {entryCardsHovered && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="mb-6">
-                      <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
-                      <ul className="space-y-2 text-sm text-slate-300">
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A cleaned-up CRM that actually makes sense</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A website that captures leads instead of losing them</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Follow-up that doesn't forget or stall</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A helpful AI chat assistant for basic questions</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Better routing so the right leads reach the right person</li>
-                        <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Reduced manual work for your team</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
-                      <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
-                      <p className="text-slate-300 text-sm">
-                        Your business stops leaking. Your team stops guessing. Leads stop slipping.
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <ContactFormDialog
-                source="tune-up"
-                title="Apply for Operational Tune-Up"
-                description="Tell us about your business and we'll help implement your operational foundation."
-                trigger={
-                  <Button 
-                    data-testid="button-offers-apply-tuneup"
-                    className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all group-hover:border-primary/30"
-                  >
-                    Apply for Tune-Up <span className="ml-2 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
-                  </Button>
-                }
-              />
-            </div>
-          </motion.div>
-
-          {/* Tier 3: Growth Architecture - Featured */}
-          <motion.div 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={{ once: true }}
-            transition={fadeInUpViewport.transition}
-            className="mb-6"
-          >
-            <div className="p-10 rounded-2xl border border-primary/30 bg-gradient-to-b from-zinc-800/80 to-zinc-950 relative shadow-2xl overflow-hidden">
-              <BorderBeam size={400} duration={12} delay={0} colorFrom="var(--color-primary)" colorTo="transparent" />
-              
-              <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl tracking-wider">
-                MOST POPULAR
-              </div>
-              
-              <div className="grid lg:grid-cols-2 gap-10 relative z-10">
-                <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="text-xs font-mono text-primary">03</span>
-                    <span className="text-3xl font-display font-bold text-white">$7,500</span>
-                  </div>
-                  <h3 className="text-3xl font-display font-semibold mb-3 text-white">The Growth Architecture</h3>
-                  <p className="text-primary text-lg mb-4 font-medium">If you want more leads, more sales, and less staff pressure.</p>
-                  <p className="text-muted-foreground mb-8 leading-relaxed">
-                    Built for businesses ready to grow without hiring more people.
-                  </p>
-                  <ContactFormDialog
-                    source="growth-architecture"
-                    title="Build Your Growth Architecture"
-                    description="Ready to automate your acquisition and conversion systems? Tell us about your business."
-                    trigger={
-                      <Button 
-                        data-testid="button-offers-growth-architecture"
-                        className="bg-primary text-primary-foreground hover:bg-cyan-300 h-14 px-8 rounded-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] text-base"
-                      >
-                        Build My Architecture <span className="ml-2">→</span>
-                      </Button>
-                    }
-                  />
-                </div>
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="text-sm font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
-                    <ul className="space-y-2 text-sm text-slate-300">
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> An AI assistant that pre-qualifies leads automatically</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Two high-performance funnels</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Automated review + reputation system</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Follow-up sequences that reactivate dead leads</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> A nurture engine that keeps prospects warm</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Testing + optimization to increase conversions</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /> Two diagnostic review cycles</li>
-                    </ul>
-                  </div>
-                  <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
-                    <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
-                    <p className="text-slate-300 text-sm">Your business becomes a lead machine that responds faster, converts more, and runs itself ~80% of the time.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Tier 4: Operating System */}
-          <motion.div 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={{ once: true }}
-            transition={fadeInUpViewport.transition}
-            className="mb-6"
-          >
-            <div className="p-10 rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900/50 to-transparent relative overflow-hidden hover:border-primary/20 transition-all">
-              <div className="grid lg:grid-cols-2 gap-10">
-                <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <span className="text-xs font-mono text-primary/70">04</span>
-                    <span className="text-3xl font-display font-bold text-white">$12,500</span>
-                  </div>
-                  <h3 className="text-3xl font-display font-semibold mb-3 text-white">AI-Powered Business Operating System</h3>
-                  <p className="text-primary/80 text-lg mb-4 font-medium">If you want a system that runs the business with you, not a collection of tools.</p>
-                  <p className="text-muted-foreground mb-8 leading-relaxed">
-                    Built for businesses that want enterprise-level capability with a small-team budget.
-                  </p>
-                  <ContactFormDialog
-                    source="operating-system"
-                    title="Deploy Your Operating System"
-                    description="Ready for a complete AI-assisted operational engine? Tell us about your business goals."
-                    trigger={
-                      <Button 
-                        data-testid="button-offers-operating-system"
-                        className="bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-primary/30 h-14 px-8 rounded-lg font-medium text-base transition-all"
-                      >
-                        Deploy My Operating System <span className="ml-2 opacity-50 group-hover:opacity-100">→</span>
-                      </Button>
-                    }
-                  />
-                </div>
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="text-sm font-mono text-primary/70 mb-4">WHAT YOU REALLY GET</h4>
-                    <ul className="space-y-2 text-sm text-slate-400">
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Voice-based AI that answers calls + follows up</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Automated outbound recovery calls</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Smart routing that sends the right leads to the right person</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Executive KPI dashboard</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Staff SOPs + training docs</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Cross-channel attribution</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Three review cycles</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Everything in Growth Architecture included</li>
-                    </ul>
-                  </div>
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                    <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
-                    <p className="text-slate-400 text-sm">Your business operates like a scaled organization, even with a small team.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Ongoing Optimization Partner */}
-          <motion.div 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={{ once: true }}
-            transition={fadeInUpViewport.transition}
-          >
-            <div className="p-8 rounded-2xl border border-dashed border-white/10 bg-transparent relative group hover:border-primary/20 transition-all">
-              <div className="max-w-4xl">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-xs font-mono text-slate-500">ONGOING SUPPORT</span>
-                </div>
-                <h3 className="text-2xl font-display font-medium mb-2 text-white">Ongoing Optimization Partner</h3>
-                <p className="text-primary text-sm mb-6 font-medium">Keep improving. Protect your investment.</p>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  For businesses that want their system to evolve and strengthen over time.
-                </p>
-                
-                <div className="grid md:grid-cols-2 gap-8 mb-8">
-                  <div>
-                    <h4 className="text-xs font-mono text-primary/70 mb-4">WHAT YOU GET</h4>
-                    <ul className="space-y-2 text-sm text-slate-400">
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Monthly performance checkups</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Workflow refinements</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Messaging + conversion improvements</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> New automation testing</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Priority consulting</li>
-                      <li className="flex items-start gap-3"><Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" /> Unlimited iteration support</li>
-                    </ul>
-                  </div>
-                  <div className="p-6 rounded-xl bg-white/[0.02] border border-white/5">
-                    <h4 className="text-xs font-mono text-slate-500 mb-3">PRICING TRANSPARENCY</h4>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-3">
-                      Ongoing optimization typically ranges between <span className="text-white font-medium">$300–$900/mo</span>, depending on the size and complexity of your system.
-                    </p>
-                    <p className="text-slate-500 text-sm">
-                      Most clients budget around 8–12% of their original build for continuous performance improvements and AI refinement.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Bottom CTA */}
-      <section className="py-36 relative overflow-hidden border-t border-white/5">
+      <section className="py-36 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
         <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
           <motion.div
@@ -497,7 +479,7 @@ export default function Offers() {
               Not Sure Where to <span className="text-primary">Start</span>?
             </h2>
             <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
-              Take the free AI Clarity Assessment and we'll help you identify the right path forward.
+              Start with the free AI Clarity Assessment and we'll help you identify where you're leaking revenue and which plan will create the fastest lift.
             </p>
             <ContactFormDialog
               source="offers-bottom-cta"
