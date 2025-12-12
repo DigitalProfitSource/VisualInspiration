@@ -612,14 +612,34 @@ function PricingGridSection() {
                     <ChevronDown className="w-4 h-4" />
                   </motion.div>
                 </button>
+                
+                {/* Outcome - in right column when collapsed */}
+                {!commandExpanded && (
+                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                    <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
+                    <p className="text-slate-400 text-sm">{command.outcome}</p>
+                  </div>
+                )}
               </div>
             </div>
             
-            {/* Outcome - Full width below grid */}
-            <div className="mt-8 p-4 rounded-xl bg-white/[0.02] border border-white/5">
-              <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
-              <p className="text-slate-400 text-sm">{command.outcome}</p>
-            </div>
+            {/* Outcome - Full width below grid only when expanded */}
+            <AnimatePresence>
+              {commandExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-8 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                    <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
+                    <p className="text-slate-400 text-sm">{command.outcome}</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </motion.div>
       </div>
