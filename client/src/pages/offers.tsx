@@ -769,7 +769,34 @@ export default function Offers() {
 
       {/* Pricing Grid - Find Your Fit */}
       <PricingGridSection />
-    
+
+      {/* Not Sure Where to Start? CTA */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
+        <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
+          <motion.div
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+          >
+            <h2 className="text-4xl md:text-6xl font-display font-medium mb-10">
+              Not Sure Where to <span className="text-primary">Start</span>?
+            </h2>
+            <a 
+              href="#ai-clarity-assessment"
+              data-testid="button-offers-not-sure-cta"
+            >
+              <Button 
+                size="lg"
+                className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
+              >
+                Take the Free Assessment
+              </Button>
+            </a>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Launch Build Band */}
       <section className="py-20 border-y border-white/5 bg-white/[0.01]">
