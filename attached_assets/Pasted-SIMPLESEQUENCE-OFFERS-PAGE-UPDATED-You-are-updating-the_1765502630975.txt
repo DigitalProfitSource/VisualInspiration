@@ -1,0 +1,293 @@
+SIMPLESEQUENCE OFFERS PAGE (UPDATED)
+
+You are updating the existing “Offers” page for SimpleSequence.
+Brand: dark, modern, minimal, teal/blue accent, same visual style and typography as the current site.
+Goal: present 3 subscription tiers + one lead magnet, anchored around “AI front desk & follow-up for service businesses,” with clear build fees, month-to-month pricing, and a 90-day expectations/assurance block.
+
+0. General layout rules
+	•	Keep the overall page styling, spacing, and card design from the current Offers page.
+	•	Use the existing card pattern:
+	•	Title + price
+	•	Short “If you want…” line
+	•	Sections titled “What you really get” and “Outcome”
+	•	For each package card, allow a collapsible body:
+	•	Default (collapsed): Title, price, “If you want…”, 2–3 short focus bullets, Outcome, CTA button.
+	•	Expanded: reveal the full “What you really get” bullet list.
+	•	Use “therefore” in a few key sentences to tie feature → outcome.
+	•	Remove references to the old packages (Growth Architecture, AI-Powered Business Operating System, etc.) and the separate “Ongoing Optimization Partner” as a standalone SKU. We will reuse some of that language inside the new tiers.
+	•	Do not include FAQs on this page.
+
+⸻
+
+1. Hero Section (top of page)
+
+Keep the existing hero structure but update copy slightly.
+
+Section label (small, above H1):
+SERVICES & PRICING
+
+H1:
+Choose Your Path Forward
+
+Subhead:
+From AI front desk and follow-up to a full AI operations partner — select the level that matches where you are today.
+
+Remove the “AI Clarity Assessment™” block from directly under the hero; we will move it further down as a lead magnet.
+
+⸻
+
+2. Pricing Grid Section – “Find Your Fit” (3 tiers)
+
+Below the hero, show a section label + heading, then three package cards laid out almost exactly like the current “Find Your Fit” grid.
+
+Section label (small):
+SELECT YOUR PLAN
+
+Heading:
+Find Your Fit
+
+3 cards, left-to-right: Frontline, Specialist, Command.
+Use the same “01 / 02 / 03” numbering tags you currently use (top-left on each card).
+
+⸻
+
+2.1 Plan 1 – Frontline
+Top line (tier number):
+01
+
+Plan name:
+Frontline
+
+Short descriptor (under name):
+AI front desk & follow-up foundation
+
+Price line:
+$600 Launch Build  •  $297/mo (month-to-month)
+
+“If you want…” line:
+If you want the phones, texts, and forms handled automatically without hiring another front-desk person.
+
+Highlight strip (optional, under price): none.
+
+Collapsed view bullets – “This plan focuses on:”
+Show 3 short bullets when collapsed:
+	•	Always-on front desk coverage
+	•	Faster responses to new leads
+	•	Basic, consistent follow-up that actually happens
+
+Expanded section title:
+What you really get
+
+Expanded bullets (detailed):
+	•	24/7 AI front desk across key channels
+Answers phone, SMS, website chat, and lead forms so fewer people hit voicemail or get ignored.
+	•	Smart triage & routing
+Detects new leads vs existing clients/patients vs vendors vs spam, and flags urgent issues so real emergencies get priority.
+	•	Core follow-up flows
+New lead → consult / call / estimate booking, plus confirmations, reminders, simple reschedule flows, and a short “win-back” touch for recent no-shows or cancellations.
+	•	Single intake & simple stages
+One consistent way leads come in instead of scattered forms and sticky notes, with standard stages like: New → Qualified → Scheduled → Completed → Follow-up.
+	•	Daily visibility for your team
+A central list or view of new leads and today’s appointments so your staff sees what’s on deck without hunting across tools; therefore your team spends more time doing and less time searching.
+	•	Monthly optimization
+One focused review each month to tune scripts, routing, and timing based on what’s actually happening in your business.
+
+Outcome box (short):
+Your front desk stops leaking obvious money. New leads are captured, responded to, and moved forward consistently, therefore taking basic front-desk chaos off your plate without another hire.
+
+CTA button:
+Start Frontline
+
+Link to your existing “Get Started” flow / form.
+
+⸻
+
+2.2 Plan 2 – Specialist (mark as “Most Popular”)
+Top line (tier number):
+02
+
+Plan name:
+Specialist
+
+Short descriptor:
+Show-rate, reactivation, and reputation engine
+
+Add a small pill/tag in the top-right corner of this card:
+Most Popular
+
+Price line:
+$1,000 Launch Build  •  $497/mo (month-to-month)
+
+“If you want…” line:
+If you want more people showing up, old leads coming back, and reviews growing without burning out your team.
+
+Collapsed view bullets – “This plan focuses on:”
+	•	Increasing show-rates to booked appointments
+	•	Winning back leads who went cold
+	•	Systematic review generation and complaint routing
+
+Expanded section title:
+What you really get
+
+Expanded bullets (detailed):
+	•	Industry-shaped pipelines
+We model the real stages of your world (for example:
+– Med-spa: New lead → Consult booked → Show/no-show → Procedure → Post-op → Review
+– Law: New inquiry → Conflict check → Consult → Retainer signed → Active case
+– Home services: New request → Visit/inspection → Quote sent → Job scheduled → Completion → Warranty follow-up)
+	•	Show-Rate Engine
+Multi-step reminder and nudge sequences tuned to high-value appointments; different messaging for consults vs low-stakes visits; smart reschedule prompts instead of “sorry we missed you” and silence.
+	•	Reactivation campaigns
+Flows for never-booked inquiries who went quiet, no-shows and last-minute cancellations, and past clients/patients who haven’t booked in a while.
+	•	Reputation & review flows
+Asks happy clients/patients for reviews at the right moment; routes unhappy ones into an internal resolution path; prioritizes platforms that matter most for your niche, therefore protecting your reputation while you grow it.
+	•	Targeted education & FAQs
+Pre-visit and post-visit instructions sent automatically, plus “what to expect” flows for key services or procedures, using your approved content so the system never gives legal/medical advice or goes off-script.
+	•	Stronger ongoing tuning
+A deeper monthly performance review focused on show-rate, reactivation, and review trends, with clear next-step recommendations so the system keeps getting sharper instead of going stale.
+
+Outcome box:
+You don’t just respond — you drive revenue behavior. More people show up, more old leads return, and more happy clients talk about you publicly, therefore lifting the ROI of your marketing and front-desk time without adding more staff.
+
+CTA button:
+Start Specialist
+
+⸻
+
+2.3 Plan 3 – Command
+Top line (tier number):
+03
+
+Plan name:
+Command
+
+Short descriptor:
+AI ops brain & strategic partner
+
+Price line:
+From $2,000 Launch Build  •  From $997/mo (month-to-month)
+
+“If you want…” line:
+If you want an AI-driven operations layer that helps your team know what to do next across leads, cases, jobs, and locations.
+
+Collapsed view bullets – “This plan focuses on:”
+	•	Turning your SOPs and policies into an AI-aware “ops brain”
+	•	Giving your team clear next-best-actions each day
+	•	Coordinating more complex, multi-location or multi-service operations
+
+Expanded section title:
+What you really get
+
+Expanded bullets (detailed):
+	•	AI over your playbooks (within your rules)
+We load your SOPs, policies, consent forms, pricing guides, and key checklists so the system can follow your rules, not invent its own; both the AI front desk and your staff can lean on the same source of truth.
+	•	Ops co-pilot for your staff
+Team members can ask operational questions like:
+“What’s our process if a patient calls with concerns 10 days after treatment?”
+“What do we do if a tenant reports a leak after hours?”
+“What’s the next step for this lead that hasn’t signed yet?”
+The co-pilot responds with steps based on your playbooks and can create tasks or tickets in your existing tools where supported.
+	•	Daily next-best-actions
+A prioritized list of who should be contacted today — hot leads, stalled cases, aging quotes, at-risk clients — so your team focuses on the handful of actions that matter most instead of staring at an overwhelming list.
+	•	Advanced visibility & patterns
+Trends across response times, show-rates, conversion, reactivation, and reviews; breakdowns by channel (phone, SMS, web, DMs) and by source where the data exists, therefore giving leadership real operational insight instead of just call counts.
+	•	Strategic partnership layer
+Dedicated point of contact, quarterly strategy and roadmap sessions, and joint experiments (new flows, campaigns, or offers) with clear success criteria.
+	•	Designed for complexity
+Support for multi-location routing, rules, and reporting where needed, plus more complex service menus or case types without everything becoming a one-off project.
+
+Outcome box:
+Command turns SimpleSequence into your AI operations partner — a system that knows your rules, organizes daily actions, and helps your team coordinate complex, high-value work, therefore justifying premium, ROI-first pricing and long-term collaboration.
+
+CTA button:
+Apply for Command
+
+(Indicate limited spots / “by application” visually if possible.)
+
+⸻
+
+3. Short band under the pricing grid – Launch Build & Ongoing Optimization
+
+Immediately under the three cards, add a slim band explaining what the Launch Build includes and that ongoing optimization is built-in (not a separate SKU).
+
+Heading:
+What the Launch Build Includes
+
+Body (1–2 short paragraphs or bullets):
+	•	Every plan starts with the SimpleSequence Launch Build — a focused project that maps where leads leak, where follow-up breaks, and how your tools currently fit together.
+	•	You receive an AI Clarity Diagnostic with an Operational Clarity Score (0–100) and a prioritized fix list, then we implement according to the plan you chose. Ongoing optimization is included in every tier so your system keeps improving instead of decaying.
+
+(Do not turn this into another card; keep it simple and horizontal.)
+
+⸻
+
+4. 90-Day Expectations + Assurance Section
+
+Next, add a full-width section (similar styling to your “Ongoing Optimization Partner” block) that combines expectations and guarantee.
+
+Heading:
+Why We Design Around a 90-Day Launch Window
+
+Body paragraph:
+
+We’re not installing a widget. We’re changing how your front desk, intake, and follow-up behave every day. In most serious service businesses, it takes about 60–90 days to route most calls, texts, and forms through the new system, tune messaging to your services and tone, and see stable numbers on response time, bookings, no-shows, and reactivations. Therefore, every Launch Build is scoped for a 90-day window: install → stabilize → then optimize based on real data — not guesswork.
+
+Under that, add a sub-heading and short block:
+
+Sub-heading:
+90-Day Performance Assurance
+
+Body:
+
+Billing is month-to-month from day one, but we treat the first 90 days as the Launch Window. If, after 90 days live, we’re not seeing the movement we both expected in key metrics like responsiveness and show-rate — and your team has actually been using the system and showing up to optimization calls — we’ll extend your subscription by 30 days at no additional subscription cost while we adjust it together. We’d rather prove our value than argue about it.
+
+Add one short line at the bottom in muted text:
+If you’re only looking to “test a bot for a couple weeks,” SimpleSequence is probably not the right fit.
+
+⸻
+
+5. AI Clarity Assessment – Lead Magnet Section (below pricing & 90-day block)
+
+Now re-introduce the AI Clarity Assessment™ section, but below the pricing and 90-day block, as a lead magnet for people who aren’t ready to pick a plan.
+
+Reuse the current layout (left text, right graphic card with score), but update the framing.
+
+Small label (top):
+START HERE IF YOU’RE UNSURE
+
+Title:
+The AI Clarity Assessment™
+
+Body:
+
+If you’re not sure which plan fits, take the free AI Clarity Assessment™. In a few minutes, we’ll map where lead flow breaks, where follow-up slows down, and where operations rely too heavily on manual effort. You’ll receive an Operational Clarity Score (0–100), a simple breakdown of where you’re losing revenue, and a recommendation for which SimpleSequence plan will give you the fastest win.
+
+CTA button:
+Take the Free Assessment
+
+Keep the visual card showing an “Operational Score 72/100” or similar; it reinforces the scoring concept.
+
+⸻
+
+6. Final CTA Section (bottom of page)
+
+Keep a simple final CTA band similar to your current “Not Sure Where to Start?” but align it with the updated messaging.
+
+Heading:
+Not Sure Where to Start?
+
+Body:
+Start with the free AI Clarity Assessment and we’ll help you identify where you’re leaking revenue and which plan will create the fastest lift.
+
+Button:
+Take the Free Assessment
+
+This button can anchor-link to the Assessment section above or open the assessment flow.
+
+⸻
+
+This completes the updated Offers page:
+	•	3 clear subscription tiers with 2× build fees and month-to-month pricing.
+	•	A unified Launch Build explanation with embedded AI Clarity Diagnostic.
+	•	A realistic 90-day expectations + assurance section.
+	•	The AI Clarity Assessment preserved as a strong lead magnet, but positioned after pricing.
