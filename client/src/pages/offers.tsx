@@ -246,6 +246,75 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
   );
 }
 
+function AssuranceBox() {
+  const [finePrintExpanded, setFinePrintExpanded] = useState(false);
+  
+  return (
+    <div className="p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
+      <h3 className="text-xl font-display font-semibold mb-4 text-primary flex items-center gap-3">
+        <Zap className="w-5 h-5" />
+        90-Day Optimization Assurance
+      </h3>
+      <p className="text-slate-300 leading-relaxed mb-6">
+        The first 90 days after go-live are your optimization window. We're in this with you, not just turning on a bot and hoping for the best.
+      </p>
+      <p className="text-slate-300 leading-relaxed mb-6">
+        If, after that period, we're still not seeing the movement we both expected in key metrics like responsiveness and show-rate — and your team has actually been using the system, routing leads through it, and implementing the agreed changes — we will:
+      </p>
+      <ol className="list-decimal list-inside space-y-2 text-slate-300 mb-6 pl-2">
+        <li>Extend your subscription by 30 days at no additional subscription cost while we adjust it together, and</li>
+        <li>If you're still not satisfied after that extension, refund 100% of the subscription fees you paid during that period. Your Launch Build fee is not refundable.</li>
+      </ol>
+      <p className="text-slate-400 text-sm mb-4">
+        This assurance applies to Frontline, Specialist, and Command plans. It does not apply to fully custom builds.
+      </p>
+      <p className="text-sm text-slate-500 italic mb-6">
+        If you're only looking to "test a bot for a couple weeks," SimpleSequence is probably not the right fit.
+      </p>
+      
+      {/* Collapsible Fine Print */}
+      <div className="border-t border-white/10 pt-4">
+        <button
+          onClick={() => setFinePrintExpanded(!finePrintExpanded)}
+          className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-400 transition-colors"
+          data-testid="toggle-fine-print"
+        >
+          <motion.div animate={{ rotate: finePrintExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+            <ChevronDown className="w-3 h-3" />
+          </motion.div>
+          {finePrintExpanded ? "Hide Guarantee Conditions" : "View Guarantee Conditions (Fine Print)"}
+        </button>
+        
+        <AnimatePresence>
+          {finePrintExpanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="mt-4 text-xs text-slate-500 leading-relaxed space-y-3">
+                <p>To qualify for the 90-Day Optimization Assurance and subscription refund:</p>
+                <ul className="space-y-2 pl-4">
+                  <li><span className="text-slate-400">Coverage period.</span> The assurance covers subscription fees paid in the first 90 days after go-live, plus the 30-day optimization extension we add if results are not on track. It does not cover the Launch Build fee, usage-based fees, or any third-party tool costs.</li>
+                  <li><span className="text-slate-400">Plans included.</span> The assurance applies to Frontline, Specialist, and Command plans only. It does not apply to fully custom builds or one-off custom projects where scope is jointly designed outside the standard offers.</li>
+                  <li><span className="text-slate-400">Go-live definition.</span> "Go-live" means SimpleSequence is actively handling inbound calls/messages for at least one primary phone number or channel, and you've approved the initial flows/scripts in writing (email is sufficient).</li>
+                  <li><span className="text-slate-400">Minimum usage.</span> During the 90-day window, you agree to route at least 75% of relevant inbound leads/calls/messages through SimpleSequence on the agreed channels, and maintain a minimum inbound lead volume that makes evaluation meaningful (at least 30 new leads per month across all channels).</li>
+                  <li><span className="text-slate-400">Participation.</span> You or a delegated team member must complete onboarding tasks within the agreed timelines, attend at least 2 out of 3 scheduled optimization calls (or reschedule in good faith), and implement reasonable changes we agree on (routing changes, script updates, or offer tweaks).</li>
+                  <li><span className="text-slate-400">Request process.</span> To invoke the assurance, you must request it in writing within 120 days of go-live, allow us to review the metrics and usage together, and participate in the 30-day optimization extension where we attempt fixes.</li>
+                  <li><span className="text-slate-400">Refund scope.</span> If, after the 30-day extension, we mutually agree that there has not been meaningful improvement in the agreed metrics, we will refund 100% of subscription fees paid during the 90-day window (and the extension if applicable). The Launch Build fee remains non-refundable.</li>
+                  <li><span className="text-slate-400">One-time use.</span> This assurance may be used once per client organization.</li>
+                </ul>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
 function PricingGridSection() {
   const [entryCardsHovered, setEntryCardsHovered] = useState(false);
   const [entryCardsExpanded, setEntryCardsExpanded] = useState(false);
@@ -848,47 +917,8 @@ export default function Offers() {
               Therefore, we treat the first 90 days after go-live as your optimization runway — the period where quick wins harden into reliable, repeatable performance.
             </p>
             
-            {/* 90-Day Optimization Assurance Box */}
-            <div className="p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent mb-8">
-              <h3 className="text-xl font-display font-semibold mb-4 text-primary flex items-center gap-3">
-                <Zap className="w-5 h-5" />
-                90-Day Optimization Assurance
-              </h3>
-              <p className="text-slate-300 leading-relaxed mb-6">
-                The first 90 days after go-live are your optimization window. We're in this with you, not just turning on a bot and hoping for the best.
-              </p>
-              <p className="text-slate-300 leading-relaxed mb-6">
-                If, after that period, we're still not seeing the movement we both expected in key metrics like responsiveness and show-rate — and your team has actually been using the system, routing leads through it, and implementing the agreed changes — we will:
-              </p>
-              <ol className="list-decimal list-inside space-y-2 text-slate-300 mb-6 pl-2">
-                <li>Extend your subscription by 30 days at no additional subscription cost while we adjust it together, and</li>
-                <li>If you're still not satisfied after that extension, refund 100% of the subscription fees you paid during that period. Your Launch Build fee is not refundable.</li>
-              </ol>
-              <p className="text-slate-400 text-sm mb-4">
-                This assurance applies to Frontline, Specialist, and Command plans. It does not apply to fully custom builds.
-              </p>
-              <p className="text-sm text-slate-500 italic">
-                If you're only looking to "test a bot for a couple weeks," SimpleSequence is probably not the right fit.
-              </p>
-            </div>
-            
-            {/* Guarantee Conditions Fine Print */}
-            <div className="p-6 rounded-xl border border-white/5 bg-white/[0.01]">
-              <h4 className="text-xs font-mono text-slate-500 mb-4">GUARANTEE CONDITIONS (FINE PRINT)</h4>
-              <div className="text-xs text-slate-500 leading-relaxed space-y-3">
-                <p>To qualify for the 90-Day Optimization Assurance and subscription refund:</p>
-                <ul className="space-y-2 pl-4">
-                  <li><span className="text-slate-400">Coverage period.</span> The assurance covers subscription fees paid in the first 90 days after go-live, plus the 30-day optimization extension we add if results are not on track. It does not cover the Launch Build fee, usage-based fees, or any third-party tool costs.</li>
-                  <li><span className="text-slate-400">Plans included.</span> The assurance applies to Frontline, Specialist, and Command plans only. It does not apply to fully custom builds or one-off custom projects where scope is jointly designed outside the standard offers.</li>
-                  <li><span className="text-slate-400">Go-live definition.</span> "Go-live" means SimpleSequence is actively handling inbound calls/messages for at least one primary phone number or channel, and you've approved the initial flows/scripts in writing (email is sufficient).</li>
-                  <li><span className="text-slate-400">Minimum usage.</span> During the 90-day window, you agree to route at least 75% of relevant inbound leads/calls/messages through SimpleSequence on the agreed channels, and maintain a minimum inbound lead volume that makes evaluation meaningful (at least 30 new leads per month across all channels).</li>
-                  <li><span className="text-slate-400">Participation.</span> You or a delegated team member must complete onboarding tasks within the agreed timelines, attend at least 2 out of 3 scheduled optimization calls (or reschedule in good faith), and implement reasonable changes we agree on (routing changes, script updates, or offer tweaks).</li>
-                  <li><span className="text-slate-400">Request process.</span> To invoke the assurance, you must request it in writing within 120 days of go-live, allow us to review the metrics and usage together, and participate in the 30-day optimization extension where we attempt fixes.</li>
-                  <li><span className="text-slate-400">Refund scope.</span> If, after the 30-day extension, we mutually agree that there has not been meaningful improvement in the agreed metrics, we will refund 100% of subscription fees paid during the 90-day window (and the extension if applicable). The Launch Build fee remains non-refundable.</li>
-                  <li><span className="text-slate-400">One-time use.</span> This assurance may be used once per client organization.</li>
-                </ul>
-              </div>
-            </div>
+            {/* 90-Day Optimization Assurance Box with Collapsible Fine Print */}
+            <AssuranceBox />
           </motion.div>
         </div>
       </section>
@@ -994,34 +1024,6 @@ export default function Offers() {
                </div>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Bottom CTA */}
-      <section className="py-36 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
-        <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
-          <motion.div
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-          >
-            <h2 className="text-4xl md:text-6xl font-display font-medium mb-10">
-              Not Sure Where to <span className="text-primary">Start</span>?
-            </h2>
-            <a 
-              href="#ai-clarity-assessment"
-              data-testid="button-offers-bottom-cta"
-            >
-              <Button 
-                size="lg"
-                className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
-              >
-                Take the Free Assessment
-              </Button>
-            </a>
-          </motion.div>
         </div>
       </section>
 
