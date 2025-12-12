@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, ChevronUp, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Sparkles } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, ChevronUp, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -19,6 +19,10 @@ import { Footer } from "@/components/footer";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 import architectFlowDiagram from "@assets/Architect_the_Flow_-_Corrected_Text_Same_Style_1765574499518.png";
+import triageRoutingDiagram from "@assets/generated_images/intelligent_triage_routing_workflow_diagram.png";
+import followUpDiagram from "@assets/generated_images/follow-up_automation_sequence_diagram.png";
+import educationFaqDiagram from "@assets/generated_images/education_faq_knowledge_base_diagram.png";
+import integrationRoiDiagram from "@assets/generated_images/integration_roi_dashboard_diagram.png";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -45,6 +49,7 @@ const revenueFeatures = [
   {
     icon: Route,
     title: "Intelligent Triage & Routing",
+    image: triageRoutingDiagram,
     frontDescription: "Automatically classifies every inbound touchpoint—from phone calls and texts to web forms, funnels, and social DMs—and routes urgency so humans only handle high-value conversations.",
     impact: "Every lead and call triaged before it hits your team",
     backIntro: "Simple Sequence listens first, then decides what should happen next. Every call, message, or form fill is classified and routed through rules tuned to your business.",
@@ -60,6 +65,7 @@ const revenueFeatures = [
   {
     icon: RefreshCw,
     title: "Follow-Up & Show-Rate Engine",
+    image: followUpDiagram,
     frontDescription: "Runs multi-step SMS and email sequences on leads from any channel—calls, chats, forms, or DMs—with win-back campaigns for \"never booked\" and no-show leads tuned to your workflow.",
     impact: "Built to increase show rates and reduce no-shows",
     backIntro: "Most systems stop after one reply. Simple Sequence keeps going—politely, automatically, and on your behalf.",
@@ -75,6 +81,7 @@ const revenueFeatures = [
   {
     icon: BookOpen,
     title: "Education & FAQ Flows",
+    image: educationFaqDiagram,
     frontDescription: "Uses your own content and policies to answer routine questions before they reach your team—sending explainers, pricing ranges, and pre-visit prep automatically across SMS, email, and chat.",
     impact: "Designed to cut routine FAQs by up to 80%",
     backIntro: "Your team repeats the same explanations all day. Simple Sequence says it for them—consistently, accurately, and on-brand.",
@@ -90,6 +97,7 @@ const revenueFeatures = [
   {
     icon: Handshake,
     title: "White-Glove Integration & ROI",
+    image: integrationRoiDiagram,
     frontDescription: "We handle the plumbing—phones, calendars, CRM/EMR, inboxes, and GHL automation—then review performance monthly to tune scripts and flows around what actually drives revenue.",
     impact: "Real-time visibility into calls, leads, and booked revenue",
     backIntro: "You don't need another disconnected tool. You need a front-desk system wired into how your business already runs.",
@@ -104,230 +112,54 @@ const revenueFeatures = [
   }
 ];
 
-function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; index: number }) {
+function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures[0]; index: number }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const isReversed = index % 2 === 1;
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, rotateX: -15, scale: 0.9 }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-50px" }}
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
       transition={{ 
-        delay: index * 0.2, 
+        delay: index * 0.15, 
         duration: 0.8,
         type: "spring",
-        stiffness: 100
+        stiffness: 80
       }}
-      className="group relative"
-      style={{ perspective: "1200px" }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="w-full"
     >
-      {/* ========== PULSING BORDER BEAMS - Desktop (desynchronized per card) ========== */}
-      <div className="hidden md:block absolute -inset-[1px] rounded-2xl overflow-hidden z-0">
-        {/* Base border */}
-        <div className="absolute inset-0 rounded-2xl border border-white/10" />
-        
-        {/* Traveling beam - Top edge */}
-        <motion.div
-          className="absolute top-0 left-0 h-[2px] w-24 rounded-full"
-          style={{
-            background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.8), rgba(103,232,249,1), rgba(103,232,249,0.8), transparent)",
-            boxShadow: "0 0 20px rgba(103,232,249,0.6), 0 0 40px rgba(103,232,249,0.4)"
-          }}
-          animate={{
-            x: ["-100%", "calc(100vw)"],
-            opacity: [0, 1, 1, 0]
-          }}
-          transition={{ duration: 2.8 + index * 0.3, repeat: Infinity, ease: "linear", repeatDelay: 1.2 + index * 0.4, delay: index * 0.7 }}
-        />
-        
-        {/* Traveling beam - Right edge */}
-        <motion.div
-          className="absolute top-0 right-0 w-[2px] h-24 rounded-full"
-          style={{
-            background: "linear-gradient(180deg, transparent, rgba(103,232,249,0.8), rgba(103,232,249,1), rgba(103,232,249,0.8), transparent)",
-            boxShadow: "0 0 20px rgba(103,232,249,0.6), 0 0 40px rgba(103,232,249,0.4)"
-          }}
-          animate={{
-            y: ["-100%", "500%"],
-            opacity: [0, 1, 1, 0]
-          }}
-          transition={{ duration: 2.3 + index * 0.25, repeat: Infinity, ease: "linear", repeatDelay: 1.8 + index * 0.3, delay: 0.5 + index * 0.9 }}
-        />
-        
-        {/* Traveling beam - Bottom edge */}
-        <motion.div
-          className="absolute bottom-0 right-0 h-[2px] w-24 rounded-full"
-          style={{
-            background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.8), rgba(103,232,249,1), rgba(103,232,249,0.8), transparent)",
-            boxShadow: "0 0 20px rgba(103,232,249,0.6), 0 0 40px rgba(103,232,249,0.4)"
-          }}
-          animate={{
-            x: ["100%", "-500%"],
-            opacity: [0, 1, 1, 0]
-          }}
-          transition={{ duration: 3.2 + index * 0.2, repeat: Infinity, ease: "linear", repeatDelay: 0.8 + index * 0.5, delay: 1.2 + index * 0.6 }}
-        />
-        
-        {/* Traveling beam - Left edge */}
-        <motion.div
-          className="absolute bottom-0 left-0 w-[2px] h-24 rounded-full"
-          style={{
-            background: "linear-gradient(180deg, transparent, rgba(103,232,249,0.8), rgba(103,232,249,1), rgba(103,232,249,0.8), transparent)",
-            boxShadow: "0 0 20px rgba(103,232,249,0.6), 0 0 40px rgba(103,232,249,0.4)"
-          }}
-          animate={{
-            y: ["100%", "-500%"],
-            opacity: [0, 1, 1, 0]
-          }}
-          transition={{ duration: 2.6 + index * 0.35, repeat: Infinity, ease: "linear", repeatDelay: 1.4 + index * 0.45, delay: 1.8 + index * 0.8 }}
-        />
-        
-        {/* Corner glows */}
-        <motion.div
-          className="absolute top-0 left-0 w-16 h-16 rounded-tl-2xl"
-          style={{ background: "radial-gradient(circle at top left, rgba(103,232,249,0.15), transparent 70%)" }}
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 2.2 + index * 0.3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
-        />
-        <motion.div
-          className="absolute bottom-0 right-0 w-16 h-16 rounded-br-2xl"
-          style={{ background: "radial-gradient(circle at bottom right, rgba(103,232,249,0.15), transparent 70%)" }}
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 1.8 + index * 0.4, repeat: Infinity, ease: "easeInOut", delay: 0.8 + index * 0.6 }}
-        />
-      </div>
-      
-      {/* ========== DESKTOP: Curtain Reveal Card ========== */}
-      <div className="hidden md:block relative w-full min-h-[520px] rounded-2xl overflow-hidden">
-        {/* Back Content Layer (Always visible, revealed by curtain) */}
-        <div className="absolute inset-0 w-full h-full px-8 py-8 lg:px-10 lg:py-10 rounded-2xl border border-primary/30 bg-gradient-to-br from-zinc-900 via-zinc-900/95 to-zinc-950 flex flex-col overflow-y-auto">
-          {/* Subtle Corner Glow (reduced) */}
-          <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 blur-[60px] rounded-full pointer-events-none" />
-          
-          {/* Back Content with Staggered Fade-in */}
-          <div className="relative z-10">
+      {/* Desktop: Full-width alternating row */}
+      <div className={`hidden md:flex items-center gap-12 lg:gap-20 ${isReversed ? 'flex-row-reverse' : ''}`}>
+        {/* Text Content Side */}
+        <div className="flex-1 space-y-6">
+          <div className="flex items-center gap-4">
             <motion.div 
-              className="flex items-center gap-3 mb-4"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
+              animate={{ 
+                boxShadow: [
+                  "0 0 20px rgba(103,232,249,0.2)",
+                  "0 0 35px rgba(103,232,249,0.4)",
+                  "0 0 20px rgba(103,232,249,0.2)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(103,232,249,0.3)]">
-                <feature.icon className="w-5 h-5 text-primary" />
-              </div>
-              <h4 className="text-lg font-display font-semibold text-primary">{feature.title}</h4>
+              <feature.icon className="w-7 h-7 text-primary" />
             </motion.div>
-            
-            <motion.p 
-              className="text-muted-foreground text-sm leading-relaxed mb-4"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              {feature.backIntro}
-            </motion.p>
-            
-            <ul className="space-y-2 mb-4">
-              {feature.backBullets.map((bullet, i) => (
-                <motion.li 
-                  key={i} 
-                  className="flex items-start gap-2 text-sm text-slate-300"
-                  initial={{ opacity: 0, x: -15 }}
-                  animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -15 }}
-                  transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
-                >
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
-                  <span>{bullet}</span>
-                </motion.li>
-              ))}
-            </ul>
-            
-            <motion.div 
-              className="pt-3 border-t border-primary/20"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-              transition={{ duration: 0.5, delay: 0.9 }}
-            >
-              <p className="text-sm text-primary/90 font-medium leading-relaxed">
-                <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
-              </p>
-            </motion.div>
+            <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
+              {feature.title}
+            </h3>
           </div>
-        </div>
-        
-        {/* Front Content Layer (Curtain that slides away) */}
-        <motion.div 
-          className="absolute inset-0 w-full h-full px-8 py-8 lg:px-10 lg:py-10 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/98 via-zinc-900/95 to-zinc-950/98 overflow-hidden"
-          initial={false}
-          animate={{ 
-            x: isHovered ? "102%" : "0%",
-            opacity: isHovered ? 0.95 : 1
-          }}
-          transition={{ 
-            duration: 0.9,
-            ease: [0.25, 0.1, 0.25, 1]
-          }}
-        >
-          {/* Glowing Edge (right side of curtain) */}
-          <motion.div 
-            className="absolute right-0 top-0 bottom-0 w-20 pointer-events-none"
-            style={{
-              background: "linear-gradient(to right, transparent, rgba(103,232,249,0.1) 30%, rgba(103,232,249,0.3) 70%, rgba(103,232,249,0.5) 90%, rgba(103,232,249,0.7))"
-            }}
-            animate={{
-              opacity: isHovered ? 1 : 0
-            }}
-            transition={{ duration: 0.4 }}
-          />
           
-          {/* Animated Corner Sparkles */}
-          <motion.div
-            className="absolute top-4 right-4"
-            animate={{ 
-              opacity: [0.3, 0.8, 0.3],
-              scale: [0.9, 1.1, 0.9],
-              rotate: [0, 180, 360]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Sparkles className="w-5 h-5 text-primary/40" />
-          </motion.div>
-          
-          {/* Subtle Corner Glow (reduced) */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-primary/[0.04] blur-[60px] rounded-full pointer-events-none" />
-          
-          {/* Icon with Floating Animation */}
-          <motion.div 
-            className="w-14 h-14 mb-6 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30 relative z-10"
-            animate={{ 
-              y: [-2, 2, -2],
-              boxShadow: [
-                "0 0 20px rgba(103,232,249,0.2)",
-                "0 0 35px rgba(103,232,249,0.4)",
-                "0 0 20px rgba(103,232,249,0.2)"
-              ]
-            }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <feature.icon className="w-7 h-7 text-primary" />
-          </motion.div>
-          
-          {/* Content */}
-          <h3 className="text-xl lg:text-2xl font-display font-semibold mb-4 text-white relative z-10">
-            {feature.title}
-          </h3>
-          <p className="text-muted-foreground leading-relaxed mb-6 relative z-10 text-sm lg:text-base">
+          <p className="text-lg text-muted-foreground leading-relaxed">
             {feature.frontDescription}
           </p>
           
-          {/* Impact Metric */}
-          <div className="pt-4 border-t border-white/10 relative z-10">
-            <div className="flex items-center gap-2 mb-1">
+          <div className="pt-4 border-t border-white/10">
+            <div className="flex items-center gap-2 mb-2">
               <motion.div 
-                className="w-2 h-2 rounded-full bg-primary"
+                className="w-2.5 h-2.5 rounded-full bg-primary"
                 animate={{ 
                   scale: [1, 1.5, 1],
                   boxShadow: [
@@ -340,32 +172,107 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
               />
               <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
             </div>
-            <p className="text-primary font-medium text-sm lg:text-base">{feature.impact}</p>
+            <p className="text-primary font-medium text-lg">{feature.impact}</p>
           </div>
           
-          {/* Desktop Hover Hint */}
-          <div className="flex items-center gap-2 mt-6 text-xs text-muted-foreground/60">
-            <motion.span 
-              animate={{ opacity: [0.4, 1, 0.4] }}
-              transition={{ duration: 2, repeat: Infinity }}
+          {/* Expandable Details */}
+          <div>
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
+              data-testid={`expand-details-${index}`}
             >
-              Hover to explore
-            </motion.span>
-            <motion.div
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              →
-            </motion.div>
+              <span>{isExpanded ? "Show Less" : "Show Details"}</span>
+              <motion.div
+                animate={{ rotate: isExpanded ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ChevronDown className="w-4 h-4 group-hover:text-primary transition-colors" />
+              </motion.div>
+            </button>
+            
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-5 space-y-4">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      {feature.backIntro}
+                    </p>
+                    
+                    <ul className="space-y-2">
+                      {feature.backBullets.map((bullet, i) => (
+                        <motion.li 
+                          key={i} 
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.05 }}
+                          className="flex items-start gap-2 text-sm text-slate-300"
+                        >
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
+                          <span>{bullet}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                    
+                    <div className="pt-3 border-t border-primary/20">
+                      <p className="text-sm text-primary/90 font-medium leading-relaxed">
+                        <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+        
+        {/* Image Side with Scale+Fade Animation */}
+        <motion.div 
+          className="flex-1 relative"
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ delay: index * 0.15 + 0.2, duration: 0.8, type: "spring", stiffness: 80 }}
+        >
+          <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50">
+            {/* Glow effect behind image */}
+            <motion.div 
+              className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full"
+              animate={{ 
+                opacity: [0.3, 0.6, 0.3],
+                scale: [0.9, 1.05, 0.9]
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <img 
+              src={feature.image} 
+              alt={feature.title}
+              className="relative z-10 w-full h-auto object-cover"
+            />
           </div>
         </motion.div>
       </div>
       
-      {/* ========== MOBILE: Expandable Card ========== */}
+      {/* Mobile: Expandable Card */}
       <div className="md:hidden">
         <div className="w-full p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-900/70 to-zinc-950/90 relative overflow-hidden">
           {/* Background Glow */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 blur-[60px] rounded-full pointer-events-none" />
+          
+          {/* Image */}
+          <div className="relative mb-5 rounded-xl overflow-hidden border border-white/10">
+            <img 
+              src={feature.image} 
+              alt={feature.title}
+              className="w-full h-auto"
+            />
+          </div>
           
           {/* Icon */}
           <div className="w-12 h-12 mb-4 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30">
@@ -393,7 +300,7 @@ function FlipCard({ feature, index }: { feature: typeof revenueFeatures[0]; inde
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="mt-5 w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-primary/30 bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 active:scale-[0.98] transition-all"
-            data-testid={`learn-more-${index}`}
+            data-testid={`learn-more-mobile-${index}`}
           >
             {isExpanded ? "Show Less" : "Learn More"}
             <motion.div
@@ -726,10 +633,10 @@ function RevenueSystemSection() {
           </motion.p>
         </motion.div>
 
-        {/* 4-Feature Flip Card Grid */}
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
+        {/* Revenue Feature Rows - Full Width Alternating Layout */}
+        <div className="space-y-16 lg:space-y-24">
           {revenueFeatures.map((feature, index) => (
-            <FlipCard key={index} feature={feature} index={index} />
+            <RevenueFeatureRow key={index} feature={feature} index={index} />
           ))}
         </div>
       </motion.div>
