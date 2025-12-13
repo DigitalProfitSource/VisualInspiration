@@ -9,9 +9,9 @@ const stages = [
 ];
 
 const lanes = [
-  { label: "Marketing", y: 60, color: "rgba(147,197,253,0.6)" },
-  { label: "Sales", y: 130, color: "rgba(103,232,249,0.6)" },
-  { label: "Operations", y: 200, color: "rgba(167,139,250,0.6)" },
+  { label: "Marketing", y: 60, color: "rgba(163,230,53,0.6)" },
+  { label: "Sales", y: 130, color: "rgba(163,230,53,0.5)" },
+  { label: "Operations", y: 200, color: "rgba(163,230,53,0.4)" },
 ];
 
 const flowPaths = [
@@ -26,7 +26,7 @@ export function MapSequencesDiagram() {
       <svg
         viewBox="0 0 420 260"
         className="w-full h-full"
-        style={{ filter: "drop-shadow(0 0 15px rgba(103,232,249,0.1))" }}
+        style={{ filter: "drop-shadow(0 0 15px rgba(163,230,53,0.1))" }}
       >
         <defs>
           <marker
@@ -37,7 +37,7 @@ export function MapSequencesDiagram() {
             refY="3"
             orient="auto"
           >
-            <polygon points="0 0, 8 3, 0 6" fill="rgba(103,232,249,0.6)" />
+            <polygon points="0 0, 8 3, 0 6" fill="rgba(163,230,53,0.6)" />
           </marker>
         </defs>
 
@@ -48,7 +48,7 @@ export function MapSequencesDiagram() {
               y1="30"
               x2={stage.x}
               y2="230"
-              stroke="rgba(103,232,249,0.1)"
+              stroke="rgba(163,230,53,0.1)"
               strokeWidth="1"
               strokeDasharray="4 4"
               initial={{ pathLength: 0 }}
@@ -59,7 +59,7 @@ export function MapSequencesDiagram() {
               x={stage.x}
               y="20"
               textAnchor="middle"
-              className="fill-primary text-[9px] font-semibold uppercase tracking-wider"
+              className="fill-lime-400 text-[9px] font-semibold uppercase tracking-wider"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: i * 0.1 }}
@@ -166,7 +166,7 @@ export function MapSequencesDiagram() {
             width="400"
             height="3"
             rx="1.5"
-            fill="rgba(103,232,249,0.2)"
+            fill="rgba(163,230,53,0.2)"
           />
           <motion.rect
             x="10"
@@ -174,7 +174,7 @@ export function MapSequencesDiagram() {
             width="0"
             height="3"
             rx="1.5"
-            fill="rgba(103,232,249,0.8)"
+            fill="rgba(163,230,53,0.8)"
             animate={{ width: [0, 400, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
