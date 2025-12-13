@@ -441,148 +441,141 @@ function JourneyCard({ icon: Icon, title, frontDescription, backIntro, backBulle
 }
 
 function StickyFeatureCard({ feature, index }: { feature: typeof revenueFeatures[0]; index: number }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-  
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
-  const titleY = useTransform(scrollYProgress, [0, 0.1], [30, 0]);
-  
-  const descOpacity = useTransform(scrollYProgress, [0.1, 0.2], [0, 1]);
-  const descY = useTransform(scrollYProgress, [0.1, 0.2], [20, 0]);
-  
-  const impactOpacity = useTransform(scrollYProgress, [0.2, 0.3], [0, 1]);
-  const impactY = useTransform(scrollYProgress, [0.2, 0.3], [20, 0]);
-  
-  const introOpacity = useTransform(scrollYProgress, [0.3, 0.4], [0, 1]);
-  const introY = useTransform(scrollYProgress, [0.3, 0.4], [20, 0]);
-  
-  const bulletsOpacity = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
-  
-  const outcomeOpacity = useTransform(scrollYProgress, [0.6, 0.7], [0, 1]);
-  const outcomeY = useTransform(scrollYProgress, [0.6, 0.7], [20, 0]);
-  
-  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 1.02]);
-  const imageGlow = useTransform(scrollYProgress, [0, 0.5], [0.3, 0.8]);
+  const isReversed = index % 2 === 1;
   
   return (
     <div 
-      ref={containerRef}
-      className="relative"
-      style={{ height: '300vh' }}
+      className="relative py-8"
       data-testid={`sticky-feature-${index}`}
     >
-      <div className="sticky top-0 h-screen flex items-center">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex items-center gap-12 lg:gap-20">
-            {/* Text Column - Content reveals progressively */}
-            <div className="flex-1 max-w-xl">
-              <div className="space-y-6">
-                {/* Title */}
-                <motion.div 
-                  style={{ opacity: titleOpacity, y: titleY }}
-                  className="flex items-center gap-4"
-                >
-                  <motion.div 
-                    className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
-                    animate={{ 
-                      boxShadow: [
-                        "0 0 20px rgba(103,232,249,0.2)",
-                        "0 0 35px rgba(103,232,249,0.4)",
-                        "0 0 20px rgba(103,232,249,0.2)"
-                      ]
-                    }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <feature.icon className="w-7 h-7 text-primary" />
-                  </motion.div>
-                  <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
-                    {feature.title}
-                  </h3>
-                </motion.div>
-                
-                {/* Front Description */}
-                <motion.p 
-                  style={{ opacity: descOpacity, y: descY }}
-                  className="text-lg text-muted-foreground leading-relaxed"
-                >
-                  {feature.frontDescription}
-                </motion.p>
-                
-                {/* Impact */}
-                <motion.div 
-                  style={{ opacity: impactOpacity, y: impactY }}
-                  className="pt-4 border-t border-white/10"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <motion.div 
-                      className="w-2.5 h-2.5 rounded-full bg-primary"
-                      animate={{ 
-                        scale: [1, 1.5, 1],
-                        boxShadow: [
-                          "0 0 5px rgba(103,232,249,0.5)",
-                          "0 0 15px rgba(103,232,249,1)",
-                          "0 0 5px rgba(103,232,249,0.5)"
-                        ]
-                      }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    />
-                    <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
-                  </div>
-                  <p className="text-primary font-medium text-lg">{feature.impact}</p>
-                </motion.div>
-                
-                {/* Back Intro */}
-                <motion.p 
-                  style={{ opacity: introOpacity, y: introY }}
-                  className="text-muted-foreground text-sm leading-relaxed"
-                >
-                  {feature.backIntro}
-                </motion.p>
-                
-                {/* Bullet Points */}
-                <motion.ul 
-                  style={{ opacity: bulletsOpacity }}
-                  className="space-y-2"
-                >
-                  {feature.backBullets.map((bullet, i) => (
-                    <motion.li 
-                      key={i} 
-                      className="flex items-start gap-2 text-sm text-slate-300"
-                      initial={{ opacity: 0, x: -15 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1, duration: 0.4 }}
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
-                      <span>{bullet}</span>
-                    </motion.li>
-                  ))}
-                </motion.ul>
-                
-                {/* Outcome */}
-                <motion.div 
-                  style={{ opacity: outcomeOpacity, y: outcomeY }}
-                  className="pt-3 border-t border-primary/20"
-                >
-                  <p className="text-sm text-primary/90 font-medium leading-relaxed">
-                    <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
-                  </p>
-                </motion.div>
-              </div>
-            </div>
-            
-            {/* Image Column - Stays fixed with this card */}
-            <div className="flex-1 flex items-center justify-center">
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className={`flex gap-8 lg:gap-16 ${isReversed ? 'flex-row-reverse' : ''}`}>
+          {/* Text Column - scrolls naturally, content always visible */}
+          <div className="flex-1 py-12">
+            <div className="max-w-xl space-y-6">
+              {/* Title */}
               <motion.div 
-                style={{ scale: imageScale }}
-                className="relative w-full max-w-xl"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5 }}
+                className="flex items-center gap-4"
               >
                 <motion.div 
-                  style={{ opacity: imageGlow }}
+                  className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
+                  animate={{ 
+                    boxShadow: [
+                      "0 0 20px rgba(103,232,249,0.2)",
+                      "0 0 35px rgba(103,232,249,0.4)",
+                      "0 0 20px rgba(103,232,249,0.2)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <feature.icon className="w-7 h-7 text-primary" />
+                </motion.div>
+                <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
+                  {feature.title}
+                </h3>
+              </motion.div>
+              
+              {/* Front Description */}
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-lg text-muted-foreground leading-relaxed"
+              >
+                {feature.frontDescription}
+              </motion.p>
+              
+              {/* Impact */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="pt-4 border-t border-white/10"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <motion.div 
+                    className="w-2.5 h-2.5 rounded-full bg-primary"
+                    animate={{ 
+                      scale: [1, 1.5, 1],
+                      boxShadow: [
+                        "0 0 5px rgba(103,232,249,0.5)",
+                        "0 0 15px rgba(103,232,249,1)",
+                        "0 0 5px rgba(103,232,249,0.5)"
+                      ]
+                    }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
+                  <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+                </div>
+                <p className="text-primary font-medium text-lg">{feature.impact}</p>
+              </motion.div>
+              
+              {/* Back Intro */}
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-muted-foreground text-sm leading-relaxed"
+              >
+                {feature.backIntro}
+              </motion.p>
+              
+              {/* Bullet Points */}
+              <ul className="space-y-2">
+                {feature.backBullets.map((bullet, i) => (
+                  <motion.li 
+                    key={i} 
+                    className="flex items-start gap-2 text-sm text-slate-300"
+                    initial={{ opacity: 0, x: -15 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-30px" }}
+                    transition={{ delay: 0.25 + i * 0.08, duration: 0.4 }}
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
+                    <span>{bullet}</span>
+                  </motion.li>
+                ))}
+              </ul>
+              
+              {/* Outcome */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="pt-3 border-t border-primary/20"
+              >
+                <p className="text-sm text-primary/90 font-medium leading-relaxed">
+                  <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+                </p>
+              </motion.div>
+            </div>
+          </div>
+          
+          {/* Image Column - STICKY: stays fixed while text scrolls */}
+          <div className="flex-1 relative">
+            <div className="sticky top-24">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6 }}
+                className="relative"
+              >
+                <motion.div 
                   className="absolute inset-0 bg-primary/20 blur-[60px] rounded-full"
+                  animate={{ 
+                    opacity: [0.3, 0.6, 0.3],
+                    scale: [0.95, 1.05, 0.95]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50">
                   <img 
@@ -601,13 +594,12 @@ function StickyFeatureCard({ feature, index }: { feature: typeof revenueFeatures
 }
 
 function RevenueSystemSection() {
-  const { scrollYProgress } = useScroll();
   const sectionRef = useRef<HTMLElement>(null);
   
   return (
-    <section ref={sectionRef} className="relative">
+    <section ref={sectionRef} className="relative py-20 lg:py-32">
       {/* Background Effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 opacity-[0.04]">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.4)_1px,transparent_1px)] bg-[size:24px_24px]" />
         </div>
@@ -619,9 +611,9 @@ function RevenueSystemSection() {
       </div>
       
       {/* Desktop: Section Header + Sticky Feature Cards */}
-      <div className="hidden md:block">
+      <div className="hidden md:block relative z-10">
         {/* Section Header */}
-        <div className="min-h-screen flex items-center justify-center py-32">
+        <div className="py-20 lg:py-32">
           <motion.div 
             initial={{ opacity: 0, y: 60, scale: 0.95 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
