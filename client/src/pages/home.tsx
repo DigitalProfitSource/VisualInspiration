@@ -1,6 +1,6 @@
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, ChevronUp, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -114,156 +114,143 @@ const revenueFeatures = [
 ];
 
 function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures[0]; index: number }) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const isReversed = index % 2 === 1;
   
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ 
-        delay: index * 0.15, 
-        duration: 0.8,
-        type: "spring",
-        stiffness: 80
-      }}
+    <section 
       className="w-full"
+      data-testid={`feature-section-${index}`}
     >
-      {/* Desktop: Full-width alternating row */}
-      <div className={`hidden md:flex items-center gap-12 lg:gap-20 ${isReversed ? 'flex-row-reverse' : ''}`}>
-        {/* Text Content Side */}
-        <div className="flex-1 space-y-6">
-          <div className="flex items-center gap-4">
-            <motion.div 
-              className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
-              animate={{ 
-                boxShadow: [
-                  "0 0 20px rgba(103,232,249,0.2)",
-                  "0 0 35px rgba(103,232,249,0.4)",
-                  "0 0 20px rgba(103,232,249,0.2)"
-                ]
-              }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <feature.icon className="w-7 h-7 text-primary" />
-            </motion.div>
-            <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
-              {feature.title}
-            </h3>
-          </div>
-          
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            {feature.frontDescription}
-          </p>
-          
-          <div className="pt-4 border-t border-white/10">
-            <div className="flex items-center gap-2 mb-2">
+      {/* Desktop: Sticky scroll layout - image stays fixed while text scrolls */}
+      <div className={`hidden md:grid grid-cols-2 gap-12 lg:gap-20 min-h-[80vh] ${isReversed ? 'direction-rtl' : ''}`} style={{ direction: isReversed ? 'rtl' : 'ltr' }}>
+        {/* Text Content Column - scrolls normally */}
+        <div className="space-y-8 py-12" style={{ direction: 'ltr' }}>
+          {/* Header Block */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+            className="space-y-6"
+          >
+            <div className="flex items-center gap-4">
               <motion.div 
-                className="w-2.5 h-2.5 rounded-full bg-primary"
+                className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
                 animate={{ 
-                  scale: [1, 1.5, 1],
                   boxShadow: [
-                    "0 0 5px rgba(103,232,249,0.5)",
-                    "0 0 15px rgba(103,232,249,1)",
-                    "0 0 5px rgba(103,232,249,0.5)"
+                    "0 0 20px rgba(103,232,249,0.2)",
+                    "0 0 35px rgba(103,232,249,0.4)",
+                    "0 0 20px rgba(103,232,249,0.2)"
                   ]
                 }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
-              <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
-            </div>
-            <p className="text-primary font-medium text-lg">{feature.impact}</p>
-          </div>
-          
-          {/* Expandable Details */}
-          <div>
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
-              data-testid={`expand-details-${index}`}
-            >
-              <span>{isExpanded ? "Show Less" : "Show Details"}</span>
-              <motion.div
-                animate={{ rotate: isExpanded ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
-                <ChevronDown className="w-4 h-4 group-hover:text-primary transition-colors" />
+                <feature.icon className="w-7 h-7 text-primary" />
               </motion.div>
-            </button>
+              <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
+                {feature.title}
+              </h3>
+            </div>
             
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.4, ease: "easeInOut" }}
-                  className="overflow-hidden"
-                >
-                  <div className="pt-5 space-y-4">
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {feature.backIntro}
-                    </p>
-                    
-                    <ul className="space-y-2">
-                      {feature.backBullets.map((bullet, i) => (
-                        <motion.li 
-                          key={i} 
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.05 }}
-                          className="flex items-start gap-2 text-sm text-slate-300"
-                        >
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
-                          <span>{bullet}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-                    
-                    <div className="pt-3 border-t border-primary/20">
-                      <p className="text-sm text-primary/90 font-medium leading-relaxed">
-                        <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {feature.frontDescription}
+            </p>
+            
+            <div className="pt-4 border-t border-white/10">
+              <div className="flex items-center gap-2 mb-2">
+                <motion.div 
+                  className="w-2.5 h-2.5 rounded-full bg-primary"
+                  animate={{ 
+                    scale: [1, 1.5, 1],
+                    boxShadow: [
+                      "0 0 5px rgba(103,232,249,0.5)",
+                      "0 0 15px rgba(103,232,249,1)",
+                      "0 0 5px rgba(103,232,249,0.5)"
+                    ]
+                  }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
+                <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+              </div>
+              <p className="text-primary font-medium text-lg">{feature.impact}</p>
+            </div>
+          </motion.div>
+          
+          {/* Intro Block */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="p-6 rounded-xl bg-zinc-900/50 border border-white/5"
+          >
+            <p className="text-muted-foreground leading-relaxed">
+              {feature.backIntro}
+            </p>
+          </motion.div>
+          
+          {/* Bullet Points - Each as separate scroll block */}
+          {feature.backBullets.map((bullet, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.5, delay: i * 0.05 }}
+              className="flex items-start gap-4 p-5 rounded-xl bg-zinc-900/30 border border-white/5 hover:border-primary/20 transition-colors"
+            >
+              <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_8px_rgba(103,232,249,0.6)]" />
+              <p className="text-slate-300 leading-relaxed">{bullet}</p>
+            </motion.div>
+          ))}
+          
+          {/* Outcome Block */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+            className="p-6 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20"
+          >
+            <p className="text-primary/90 font-medium leading-relaxed">
+              <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+            </p>
+          </motion.div>
         </div>
         
-        {/* Image Side with Scale+Fade Animation */}
-        <motion.div 
-          className="flex-1 relative"
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ delay: index * 0.15 + 0.2, duration: 0.8, type: "spring", stiffness: 80 }}
-        >
-          <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50">
-            {/* Glow effect behind image */}
+        {/* Image Column - sticky */}
+        <div className="relative py-12" style={{ direction: 'ltr' }}>
+          <div className="sticky top-24">
             <motion.div 
-              className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full"
-              animate={{ 
-                opacity: [0.3, 0.6, 0.3],
-                scale: [0.9, 1.05, 0.9]
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <img 
-              src={feature.image} 
-              alt={feature.title}
-              className="relative z-10 w-full h-auto object-cover"
-            />
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, type: "spring", stiffness: 80 }}
+              className="relative"
+            >
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50">
+                <motion.div 
+                  className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full"
+                  animate={{ 
+                    opacity: [0.3, 0.6, 0.3],
+                    scale: [0.9, 1.05, 0.9]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <img 
+                  src={feature.image} 
+                  alt={feature.title}
+                  className="relative z-10 w-full h-auto object-cover"
+                />
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
       </div>
       
-      {/* Mobile: Expandable Card */}
+      {/* Mobile: Simple vertical stack - no sticky, all content visible */}
       <div className="md:hidden">
         <div className="w-full p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-900/70 to-zinc-950/90 relative overflow-hidden">
-          {/* Background Glow */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 blur-[60px] rounded-full pointer-events-none" />
           
           {/* Image */}
@@ -280,7 +267,7 @@ function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures
             <feature.icon className="w-6 h-6 text-primary" />
           </div>
           
-          {/* Content */}
+          {/* Title & Front Description */}
           <h3 className="text-lg font-display font-semibold mb-3 text-white relative z-10">
             {feature.title}
           </h3>
@@ -289,7 +276,7 @@ function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures
           </p>
           
           {/* Impact Metric */}
-          <div className="pt-3 border-t border-white/10 relative z-10">
+          <div className="pt-3 border-t border-white/10 relative z-10 mb-5">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(103,232,249,0.8)]" />
               <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
@@ -297,63 +284,33 @@ function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures
             <p className="text-primary font-medium text-sm">{feature.impact}</p>
           </div>
           
-          {/* Learn More Button */}
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="mt-5 w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-primary/30 bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 active:scale-[0.98] transition-all"
-            data-testid={`learn-more-mobile-${index}`}
-          >
-            {isExpanded ? "Show Less" : "Learn More"}
-            <motion.div
-              animate={{ rotate: isExpanded ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ChevronDown className="w-4 h-4" />
-            </motion.div>
-          </button>
+          {/* Back Intro */}
+          <p className="text-muted-foreground text-sm leading-relaxed mb-4 relative z-10">
+            {feature.backIntro}
+          </p>
+          
+          {/* Bullet Points */}
+          <ul className="space-y-2 mb-4 relative z-10">
+            {feature.backBullets.map((bullet, i) => (
+              <li 
+                key={i} 
+                className="flex items-start gap-2 text-sm text-slate-300"
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+          
+          {/* Outcome */}
+          <div className="pt-3 border-t border-primary/20 relative z-10">
+            <p className="text-sm text-primary/90 font-medium leading-relaxed">
+              <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+            </p>
+          </div>
         </div>
-        
-        {/* Mobile Expanded Content */}
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div className="p-5 -mt-2 pt-6 rounded-b-2xl border border-t-0 border-white/10 bg-zinc-900/70">
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  {feature.backIntro}
-                </p>
-                
-                <ul className="space-y-2 mb-4">
-                  {feature.backBullets.map((bullet, i) => (
-                    <motion.li 
-                      key={i} 
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.08 }}
-                      className="flex items-start gap-2 text-sm text-slate-300"
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                      <span>{bullet}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-                
-                <div className="pt-3 border-t border-primary/20">
-                  <p className="text-sm text-primary/90 font-medium leading-relaxed">
-                    <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
-    </motion.div>
+    </section>
   );
 }
 
