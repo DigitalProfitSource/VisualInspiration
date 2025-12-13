@@ -19,7 +19,7 @@ import { SEO, organizationSchema, softwareApplicationSchema } from "@/components
 import { Layout } from "@/components/layout";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
-import architectFlowDiagram from "@assets/Architect_the_Flow_-_Corrected_Text_Same_Style_1765574499518.png";
+import { ArchitectFlowDiagram } from "@/components/ui/architect-flow-diagram";
 import triageRoutingDiagram from "@assets/generated_images/intelligent_triage_routing_workflow_diagram.png";
 import followUpDiagram from "@assets/generated_images/follow-up_automation_sequence_diagram.png";
 import educationFaqDiagram from "@assets/generated_images/education_faq_knowledge_base_diagram.png";
@@ -1038,12 +1038,14 @@ export default function Home() {
                 { step: "01", title: "Diagnose Friction", desc: "We find exactly where things break down — the hidden drag you've been feeling but couldn't name.", icon: Stethoscope },
                 { step: "02", title: "Map Sequences", desc: "We document the workflows that actually drive revenue and expose what's unclear or broken.", icon: Map },
                 { step: "03", title: "Locate Leverage", desc: "We identify where AI creates real lift — triage, routing, and follow-up — and where your team's judgment still matters most, not shiny distractions.", icon: Target },
-                { step: "04", title: "Architect the Flow", desc: "We document the real workflows from first contact to repeat business, therefore exposing what actually drives revenue and what's unclear or broken.", icon: Blocks, image: architectFlowDiagram }
+                { step: "04", title: "Architect the Flow", desc: "We document the real workflows from first contact to repeat business, therefore exposing what actually drives revenue and what's unclear or broken.", icon: Blocks, component: ArchitectFlowDiagram }
               ].map((item, i) => {
                 const hasImage = 'image' in item && item.image;
+                const hasComponent = 'component' in item && item.component;
                 
-                // Special layout for items with images - text left, image right
-                if (hasImage) {
+                // Special layout for items with images or components - text left, visual right
+                if (hasImage || hasComponent) {
+                  const VisualComponent = hasComponent ? item.component : null;
                   return (
                     <motion.div 
                       key={i}
@@ -1069,7 +1071,7 @@ export default function Home() {
                         <item.icon className="w-6 h-6 text-primary" />
                       </div>
                       
-                      {/* Image - Right */}
+                      {/* Visual - Right (Image or Component) */}
                       <motion.div 
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
@@ -1078,12 +1080,18 @@ export default function Home() {
                         className="flex-1 relative pl-20 md:pl-0"
                       >
                         <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-cyan-500/10 rounded-2xl blur-xl opacity-50 animate-pulse" style={{ animationDuration: '3s' }} />
-                        <img 
-                          src={item.image} 
-                          alt={item.title}
-                          className="relative w-full max-w-md rounded-xl border border-white/10 shadow-2xl"
-                          data-testid={`img-step-${item.step}`}
-                        />
+                        {VisualComponent ? (
+                          <div className="relative w-full max-w-md" data-testid={`component-step-${item.step}`}>
+                            <VisualComponent />
+                          </div>
+                        ) : hasImage ? (
+                          <img 
+                            src={(item as { image: string }).image} 
+                            alt={item.title}
+                            className="relative w-full max-w-md rounded-xl border border-white/10 shadow-2xl"
+                            data-testid={`img-step-${item.step}`}
+                          />
+                        ) : null}
                       </motion.div>
                     </motion.div>
                   );
