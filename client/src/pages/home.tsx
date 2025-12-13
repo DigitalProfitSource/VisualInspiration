@@ -440,304 +440,267 @@ function JourneyCard({ icon: Icon, title, frontDescription, backIntro, backBulle
   );
 }
 
-function RevenueSystemSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const textColumnRef = useRef<HTMLDivElement>(null);
-  const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
-  const [isLocked, setIsLocked] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+function StickyFeatureCard({ feature, index }: { feature: typeof revenueFeatures[0]; index: number }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
   
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+  const titleY = useTransform(scrollYProgress, [0, 0.1], [30, 0]);
   
-  useEffect(() => {
-    if (isMobile) return;
-    
-    const section = sectionRef.current;
-    if (!section) return;
-    
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
-          document.body.style.overflow = 'hidden';
-          setIsLocked(true);
-          textColumnRef.current?.scrollTo({ top: 0 });
-        }
-      },
-      { threshold: 0.8 }
-    );
-    
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, [isMobile]);
+  const descOpacity = useTransform(scrollYProgress, [0.1, 0.2], [0, 1]);
+  const descY = useTransform(scrollYProgress, [0.1, 0.2], [20, 0]);
   
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    if (!isLocked || !textColumnRef.current || isMobile) return;
-    
-    const el = textColumnRef.current;
-    const atBottom = el.scrollHeight - el.scrollTop <= el.clientHeight + 20;
-    const atTop = el.scrollTop <= 10;
-    
-    if ((e.deltaY > 0 && atBottom) || (e.deltaY < 0 && atTop)) {
-      document.body.style.overflow = '';
-      setIsLocked(false);
-      return;
-    }
-    
-    e.preventDefault();
-    el.scrollTop += e.deltaY;
-    
-    const viewportHeight = el.clientHeight;
-    const introHeight = viewportHeight;
-    const contentAfterIntro = el.scrollTop - introHeight;
-    
-    if (contentAfterIntro <= 0) {
-      setActiveFeatureIndex(0);
-    } else {
-      const featureHeight = viewportHeight;
-      const newIndex = Math.min(Math.floor(contentAfterIntro / featureHeight), revenueFeatures.length - 1);
-      setActiveFeatureIndex(newIndex);
-    }
-  }, [isLocked, isMobile]);
+  const impactOpacity = useTransform(scrollYProgress, [0.2, 0.3], [0, 1]);
+  const impactY = useTransform(scrollYProgress, [0.2, 0.3], [20, 0]);
   
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, []);
+  const introOpacity = useTransform(scrollYProgress, [0.3, 0.4], [0, 1]);
+  const introY = useTransform(scrollYProgress, [0.3, 0.4], [20, 0]);
   
-  const activeFeature = revenueFeatures[activeFeatureIndex];
+  const bulletsOpacity = useTransform(scrollYProgress, [0.4, 0.6], [0, 1]);
+  
+  const outcomeOpacity = useTransform(scrollYProgress, [0.6, 0.7], [0, 1]);
+  const outcomeY = useTransform(scrollYProgress, [0.6, 0.7], [20, 0]);
+  
+  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 1.02]);
+  const imageGlow = useTransform(scrollYProgress, [0, 0.5], [0.3, 0.8]);
   
   return (
-    <section 
-      ref={sectionRef} 
+    <div 
+      ref={containerRef}
       className="relative"
-      onWheel={handleWheel}
+      style={{ height: '300vh' }}
+      data-testid={`sticky-feature-${index}`}
     >
-      {/* Desktop: Scroll-locked 100vh section */}
-      <div className="hidden md:block h-screen relative">
-        {/* Background Effects */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 opacity-[0.04]">
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.4)_1px,transparent_1px)] bg-[size:24px_24px]" />
-          </div>
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.04),transparent_50%)]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px]">
-            <div className="w-full h-full bg-primary/[0.03] blur-[150px] rounded-full" />
-          </div>
-          <CircuitBeams className="opacity-20" />
-          <motion.div 
-            className="absolute top-0 left-0 right-0 h-px overflow-hidden"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <motion.div
-              className="h-full bg-gradient-to-r from-transparent via-primary to-transparent"
-              animate={{ x: ["-100%", "100%"] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            />
-          </motion.div>
-        </div>
-
-        <div className="h-full flex">
-          {/* Text Column - Scrolls internally */}
-          <div 
-            ref={textColumnRef}
-            className="w-1/2 h-full overflow-y-auto scroll-smooth scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {/* Section Header */}
-            <div className="min-h-screen flex flex-col justify-center px-8 lg:px-16">
-              <motion.div 
-                initial={{ opacity: 0, y: 60, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, type: "spring", stiffness: 80 }}
-                className="max-w-xl"
-              >
+      <div className="sticky top-0 h-screen flex items-center">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="flex items-center gap-12 lg:gap-20">
+            {/* Text Column - Content reveals progressively */}
+            <div className="flex-1 max-w-xl">
+              <div className="space-y-6">
+                {/* Title */}
                 <motion.div 
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/30 bg-primary/10 text-xs font-mono text-primary mb-8"
-                  animate={{ 
-                    boxShadow: [
-                      "0 0 20px rgba(103,232,249,0.2)",
-                      "0 0 40px rgba(103,232,249,0.4)",
-                      "0 0 20px rgba(103,232,249,0.2)"
-                    ]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  style={{ opacity: titleOpacity, y: titleY }}
+                  className="flex items-center gap-4"
                 >
-                  <motion.span 
-                    className="w-2 h-2 rounded-full bg-primary"
-                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  />
-                  Beyond Basic Automation
+                  <motion.div 
+                    className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
+                    animate={{ 
+                      boxShadow: [
+                        "0 0 20px rgba(103,232,249,0.2)",
+                        "0 0 35px rgba(103,232,249,0.4)",
+                        "0 0 20px rgba(103,232,249,0.2)"
+                      ]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <feature.icon className="w-7 h-7 text-primary" />
+                  </motion.div>
+                  <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
+                    {feature.title}
+                  </h3>
                 </motion.div>
                 
-                <h2 className="text-4xl lg:text-5xl font-display font-semibold tracking-tight mb-6 leading-[1.1]">
-                  Not Just an AI Receptionist.
-                  <br />
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-300 to-cyan-300">
-                    A Revenue-Focused System.
-                  </span>
-                </h2>
+                {/* Front Description */}
+                <motion.p 
+                  style={{ opacity: descOpacity, y: descY }}
+                  className="text-lg text-muted-foreground leading-relaxed"
+                >
+                  {feature.frontDescription}
+                </motion.p>
                 
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  Most tools just "pick up." Simple Sequence decides what to do with every interaction—therefore maximizing booking value and protecting your front-desk time.
-                </p>
+                {/* Impact */}
+                <motion.div 
+                  style={{ opacity: impactOpacity, y: impactY }}
+                  className="pt-4 border-t border-white/10"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <motion.div 
+                      className="w-2.5 h-2.5 rounded-full bg-primary"
+                      animate={{ 
+                        scale: [1, 1.5, 1],
+                        boxShadow: [
+                          "0 0 5px rgba(103,232,249,0.5)",
+                          "0 0 15px rgba(103,232,249,1)",
+                          "0 0 5px rgba(103,232,249,0.5)"
+                        ]
+                      }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    />
+                    <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+                  </div>
+                  <p className="text-primary font-medium text-lg">{feature.impact}</p>
+                </motion.div>
                 
-                <div className="mt-8 flex items-center gap-2 text-sm text-primary/70">
-                  <ChevronDown className="w-4 h-4 animate-bounce" />
-                  <span>Scroll to explore features</span>
+                {/* Back Intro */}
+                <motion.p 
+                  style={{ opacity: introOpacity, y: introY }}
+                  className="text-muted-foreground text-sm leading-relaxed"
+                >
+                  {feature.backIntro}
+                </motion.p>
+                
+                {/* Bullet Points */}
+                <motion.ul 
+                  style={{ opacity: bulletsOpacity }}
+                  className="space-y-2"
+                >
+                  {feature.backBullets.map((bullet, i) => (
+                    <motion.li 
+                      key={i} 
+                      className="flex items-start gap-2 text-sm text-slate-300"
+                      initial={{ opacity: 0, x: -15 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1, duration: 0.4 }}
+                    >
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
+                      <span>{bullet}</span>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+                
+                {/* Outcome */}
+                <motion.div 
+                  style={{ opacity: outcomeOpacity, y: outcomeY }}
+                  className="pt-3 border-t border-primary/20"
+                >
+                  <p className="text-sm text-primary/90 font-medium leading-relaxed">
+                    <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+                  </p>
+                </motion.div>
+              </div>
+            </div>
+            
+            {/* Image Column - Stays fixed with this card */}
+            <div className="flex-1 flex items-center justify-center">
+              <motion.div 
+                style={{ scale: imageScale }}
+                className="relative w-full max-w-xl"
+              >
+                <motion.div 
+                  style={{ opacity: imageGlow }}
+                  className="absolute inset-0 bg-primary/20 blur-[60px] rounded-full"
+                />
+                <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50">
+                  <img 
+                    src={feature.image} 
+                    alt={feature.title}
+                    className="relative z-10 w-full h-auto object-cover"
+                  />
                 </div>
               </motion.div>
             </div>
-            
-            {/* Feature Cards */}
-            {revenueFeatures.map((feature, index) => (
-              <div 
-                key={index}
-                className="min-h-screen flex flex-col justify-center px-8 lg:px-16 py-12"
-                data-testid={`scroll-feature-${index}`}
-              >
-                <div className="max-w-xl space-y-6">
-                  <div className="flex items-center gap-4">
-                    <motion.div 
-                      className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
-                      animate={{ 
-                        boxShadow: activeFeatureIndex === index ? [
-                          "0 0 20px rgba(103,232,249,0.3)",
-                          "0 0 40px rgba(103,232,249,0.5)",
-                          "0 0 20px rgba(103,232,249,0.3)"
-                        ] : "none"
-                      }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      <feature.icon className="w-7 h-7 text-primary" />
-                    </motion.div>
-                    <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
-                      {feature.title}
-                    </h3>
-                  </div>
-                  
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    {feature.frontDescription}
-                  </p>
-                  
-                  <div className="pt-4 border-t border-white/10">
-                    <div className="flex items-center gap-2 mb-2">
-                      <motion.div 
-                        className="w-2.5 h-2.5 rounded-full bg-primary"
-                        animate={{ 
-                          scale: [1, 1.5, 1],
-                          boxShadow: [
-                            "0 0 5px rgba(103,232,249,0.5)",
-                            "0 0 15px rgba(103,232,249,1)",
-                            "0 0 5px rgba(103,232,249,0.5)"
-                          ]
-                        }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      />
-                      <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
-                    </div>
-                    <p className="text-primary font-medium text-lg">{feature.impact}</p>
-                  </div>
-                  
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {feature.backIntro}
-                  </p>
-                  
-                  <ul className="space-y-2">
-                    {feature.backBullets.map((bullet, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="pt-3 border-t border-primary/20">
-                    <p className="text-sm text-primary/90 font-medium leading-relaxed">
-                      <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          {/* Image Column - Fixed */}
-          <div className="w-1/2 h-full flex items-center justify-center p-8 lg:p-16">
-            <div className="relative w-full max-w-2xl">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeFeatureIndex}
-                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50"
-                >
-                  <motion.div 
-                    className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full"
-                    animate={{ 
-                      opacity: [0.3, 0.6, 0.3],
-                      scale: [0.9, 1.05, 0.9]
-                    }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                  <img 
-                    src={activeFeature.image} 
-                    alt={activeFeature.title}
-                    className="relative z-10 w-full h-auto object-cover"
-                  />
-                </motion.div>
-              </AnimatePresence>
-              
-              {/* Feature Progress Indicators */}
-              <div className="absolute -left-8 top-1/2 -translate-y-1/2 flex flex-col gap-3">
-                {revenueFeatures.map((_, index) => (
-                  <motion.div
-                    key={index}
-                    className={`w-2 h-8 rounded-full transition-all duration-300 ${
-                      index === activeFeatureIndex 
-                        ? 'bg-primary shadow-[0_0_10px_rgba(103,232,249,0.8)]' 
-                        : 'bg-white/20'
-                    }`}
-                    animate={index === activeFeatureIndex ? {
-                      boxShadow: [
-                        "0 0 5px rgba(103,232,249,0.5)",
-                        "0 0 15px rgba(103,232,249,1)",
-                        "0 0 5px rgba(103,232,249,0.5)"
-                      ]
-                    } : {}}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  />
-                ))}
-              </div>
-            </div>
           </div>
         </div>
-        
-        {/* Lock indicator */}
-        {isLocked && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 text-xs text-primary/60"
-          >
-            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            <span>Scroll to explore • {activeFeatureIndex + 1}/{revenueFeatures.length}</span>
-          </motion.div>
-        )}
+      </div>
+    </div>
+  );
+}
+
+function RevenueSystemSection() {
+  const { scrollYProgress } = useScroll();
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  return (
+    <section ref={sectionRef} className="relative">
+      {/* Background Effects */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute inset-0 opacity-[0.04]">
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.4)_1px,transparent_1px)] bg-[size:24px_24px]" />
+        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.04),transparent_50%)]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px]">
+          <div className="w-full h-full bg-primary/[0.03] blur-[150px] rounded-full" />
+        </div>
+        <CircuitBeams className="opacity-20" />
       </div>
       
-      {/* Mobile: Simple stacked layout without scroll hijacking */}
+      {/* Desktop: Section Header + Sticky Feature Cards */}
+      <div className="hidden md:block">
+        {/* Section Header */}
+        <div className="min-h-screen flex items-center justify-center py-32">
+          <motion.div 
+            initial={{ opacity: 0, y: 60, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, type: "spring", stiffness: 80 }}
+            className="text-center max-w-5xl mx-auto px-6"
+          >
+            <motion.div 
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/30 bg-primary/10 text-xs font-mono text-primary mb-10"
+              animate={{ 
+                boxShadow: [
+                  "0 0 20px rgba(103,232,249,0.2)",
+                  "0 0 40px rgba(103,232,249,0.4)",
+                  "0 0 20px rgba(103,232,249,0.2)"
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <motion.span 
+                className="w-2 h-2 rounded-full bg-primary"
+                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+              Beyond Basic Automation
+            </motion.div>
+            
+            <h2 className="text-4xl md:text-5xl lg:text-7xl font-display font-semibold tracking-tight mb-8 leading-[1.05]">
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                Not Just an AI Receptionist.
+              </motion.span>
+              <br />
+              <motion.span 
+                className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-300 to-cyan-300 bg-[length:200%_auto]"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                animate={{ backgroundPosition: ["0% center", "200% center"] }}
+                style={{ backgroundSize: "200% auto" }}
+              >
+                A Revenue-Focused System.
+              </motion.span>
+            </h2>
+            
+            <motion.p 
+              className="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+            >
+              Most tools just "pick up." Simple Sequence decides what to do with every interaction—whether it starts as a call, text, web form, chat, or DM—therefore maximizing booking value and protecting your front-desk time.
+            </motion.p>
+            
+            <motion.div 
+              className="mt-12 flex items-center justify-center gap-2 text-sm text-primary/70"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.8 }}
+            >
+              <ChevronDown className="w-5 h-5 animate-bounce" />
+              <span>Scroll to explore our four core capabilities</span>
+            </motion.div>
+          </motion.div>
+        </div>
+        
+        {/* Sticky Feature Cards - Each with its own sticky section */}
+        {revenueFeatures.map((feature, index) => (
+          <StickyFeatureCard key={index} feature={feature} index={index} />
+        ))}
+      </div>
+      
+      {/* Mobile: Simple stacked layout without scroll effects */}
       <div className="md:hidden py-20 px-6">
         <motion.div 
           initial={{ opacity: 0, y: 40 }}
