@@ -1,204 +1,157 @@
 import { motion } from "framer-motion";
 
-const outerNodes = [
-  { label: "First Contact", angle: 0 },
-  { label: "Identify Revenue Drivers", angle: 51.4 },
-  { label: "Uncover System Gaps", angle: 102.8 },
-  { label: "Clarify Bottlenecks", angle: 154.2 },
-  { label: "Map Current Processes", angle: 205.6 },
-  { label: "Optimize Workflows", angle: 257 },
-  { label: "Achieve Repeat Business", angle: 308.4 },
+const layers = [
+  { id: 1, label: "Channels", y: 40, width: 340, items: ["Phone", "Email", "Chat", "Forms"] },
+  { id: 2, label: "Intake Layer", y: 100, width: 300, items: ["Triage", "Classify", "Route"] },
+  { id: 3, label: "Processing", y: 160, width: 260, items: ["Automate", "Escalate"] },
+  { id: 4, label: "Output", y: 220, width: 220, items: ["CRM", "Calendar", "Notify"] },
 ];
 
-function polarToCartesian(angle: number, radius: number, cx: number, cy: number) {
-  const rad = (angle - 90) * (Math.PI / 180);
-  return {
-    x: cx + radius * Math.cos(rad),
-    y: cy + radius * Math.sin(rad),
-  };
-}
-
 export function ArchitectFlowDiagram() {
-  const size = 400;
-  const cx = size / 2;
-  const cy = size / 2;
-  const outerRadius = 160;
-  const nodeRadius = 45;
-  const centerRadius = 55;
-
-  const nodePositions = outerNodes.map((node) => ({
-    ...node,
-    ...polarToCartesian(node.angle, outerRadius, cx, cy),
-  }));
+  const centerX = 200;
 
   return (
-    <div className="relative w-full max-w-md aspect-square" data-testid="architect-flow-diagram">
+    <div className="relative w-full max-w-md aspect-[4/3]" data-testid="architect-flow-diagram">
       <svg
-        viewBox={`0 0 ${size} ${size}`}
+        viewBox="0 0 400 280"
         className="w-full h-full"
-        style={{ filter: "drop-shadow(0 0 20px rgba(103,232,249,0.15))" }}
+        style={{ filter: "drop-shadow(0 0 15px rgba(103,232,249,0.1))" }}
       >
         <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="rgba(103,232,249,0.3)" />
-            <stop offset="50%" stopColor="rgba(103,232,249,0.8)" />
-            <stop offset="100%" stopColor="rgba(103,232,249,0.3)" />
+          <linearGradient id="blueprintGrid" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(103,232,249,0.05)" />
+            <stop offset="100%" stopColor="rgba(103,232,249,0.02)" />
           </linearGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
+          <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(103,232,249,0.08)" strokeWidth="0.5" />
+          </pattern>
         </defs>
 
-        {nodePositions.map((node, i) => {
-          const nextNode = nodePositions[(i + 1) % nodePositions.length];
+        <rect x="0" y="0" width="400" height="280" fill="url(#gridPattern)" />
+
+        {layers.map((layer, i) => {
+          const x = centerX - layer.width / 2;
           return (
-            <g key={`connection-${i}`}>
+            <motion.g key={layer.id}>
               <motion.line
-                x1={node.x}
-                y1={node.y}
-                x2={nextNode.x}
-                y2={nextNode.y}
-                stroke="rgba(103,232,249,0.2)"
-                strokeWidth="1"
-              />
-              <motion.line
-                x1={node.x}
-                y1={node.y}
-                x2={nextNode.x}
-                y2={nextNode.y}
-                stroke="url(#lineGradient)"
+                x1={centerX}
+                y1={i === 0 ? 0 : layers[i - 1].y + 30}
+                x2={centerX}
+                y2={layer.y - 5}
+                stroke="rgba(103,232,249,0.3)"
                 strokeWidth="2"
-                strokeDasharray="8 4"
-                filter="url(#glow)"
-                initial={{ strokeDashoffset: 0 }}
-                animate={{ strokeDashoffset: -24 }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "linear",
-                  delay: i * 0.2,
-                }}
+                strokeDasharray="4 4"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.4, delay: i * 0.2 }}
               />
-            </g>
+
+              <motion.rect
+                x={x}
+                y={layer.y}
+                width={layer.width}
+                height="50"
+                rx="6"
+                fill="rgba(24,24,27,0.9)"
+                stroke="rgba(103,232,249,0.4)"
+                strokeWidth="1.5"
+                initial={{ opacity: 0, scaleX: 0.8 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.5, delay: 0.1 + i * 0.15 }}
+              />
+
+              <motion.text
+                x={x + 10}
+                y={layer.y + 18}
+                className="fill-primary text-[9px] font-mono uppercase tracking-wider"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 + i * 0.15 }}
+              >
+                {layer.label}
+              </motion.text>
+
+              <motion.g
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 + i * 0.15 }}
+              >
+                {layer.items.map((item, j) => {
+                  const itemWidth = (layer.width - 30) / layer.items.length;
+                  const itemX = x + 15 + j * itemWidth;
+                  return (
+                    <motion.g key={`${layer.id}-${j}`}>
+                      <rect
+                        x={itemX}
+                        y={layer.y + 28}
+                        width={itemWidth - 8}
+                        height="16"
+                        rx="3"
+                        fill="rgba(103,232,249,0.1)"
+                        stroke="rgba(103,232,249,0.3)"
+                        strokeWidth="0.5"
+                      />
+                      <text
+                        x={itemX + (itemWidth - 8) / 2}
+                        y={layer.y + 39}
+                        textAnchor="middle"
+                        className="fill-white/80 text-[7px] font-medium"
+                      >
+                        {item}
+                      </text>
+                    </motion.g>
+                  );
+                })}
+              </motion.g>
+
+              <motion.circle
+                cx={x - 8}
+                cy={layer.y + 25}
+                r="4"
+                fill="rgba(103,232,249,0.8)"
+                initial={{ scale: 0 }}
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+              />
+            </motion.g>
           );
         })}
 
-        {nodePositions.map((node, i) => (
-          <motion.line
-            key={`center-line-${i}`}
-            x1={cx}
-            y1={cy}
-            x2={node.x}
-            y2={node.y}
-            stroke="rgba(103,232,249,0.15)"
-            strokeWidth="1"
-            strokeDasharray="4 4"
-            initial={{ opacity: 0.3 }}
-            animate={{ opacity: [0.3, 0.6, 0.3] }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              delay: i * 0.3,
-            }}
-          />
-        ))}
-
-        <motion.circle
-          cx={cx}
-          cy={cy}
-          r={centerRadius}
-          fill="rgba(24,24,27,0.95)"
-          stroke="rgba(103,232,249,0.5)"
-          strokeWidth="2"
-          initial={{ scale: 1 }}
-          animate={{
-            scale: [1, 1.03, 1],
-            filter: [
-              "drop-shadow(0 0 8px rgba(103,232,249,0.3))",
-              "drop-shadow(0 0 15px rgba(103,232,249,0.6))",
-              "drop-shadow(0 0 8px rgba(103,232,249,0.3))",
-            ],
-          }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <text
-          x={cx}
-          y={cy - 8}
-          textAnchor="middle"
-          className="fill-primary text-[9px] font-semibold"
+        <motion.g
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
         >
-          Document Real
-        </text>
-        <text
-          x={cx}
-          y={cy + 8}
-          textAnchor="middle"
-          className="fill-primary text-[9px] font-semibold"
-        >
-          Workflows
-        </text>
-
-        {nodePositions.map((node, i) => (
-          <motion.g
-            key={`node-${i}`}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-          >
+          {[0, 1, 2].map((i) => (
             <motion.circle
-              cx={node.x}
-              cy={node.y}
-              r={nodeRadius}
-              fill="rgba(24,24,27,0.9)"
-              stroke="rgba(103,232,249,0.4)"
-              strokeWidth="1.5"
-              animate={{
-                stroke: [
-                  "rgba(103,232,249,0.3)",
-                  "rgba(103,232,249,0.7)",
-                  "rgba(103,232,249,0.3)",
-                ],
-              }}
+              key={`flow-${i}`}
+              cx={centerX}
+              cy={0}
+              r="4"
+              fill="rgba(103,232,249,0.9)"
+              initial={{ cy: 20 }}
+              animate={{ cy: [20, 260, 20] }}
               transition={{
-                duration: 2.5,
+                duration: 3,
                 repeat: Infinity,
-                delay: i * 0.35,
+                delay: i * 1,
+                ease: "easeInOut",
               }}
             />
-            <text
-              x={node.x}
-              y={node.y}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="fill-white text-[7px] font-medium"
-            >
-              {node.label.split(" ").map((word, wi, arr) => (
-                <tspan
-                  key={wi}
-                  x={node.x}
-                  dy={wi === 0 ? `-${(arr.length - 1) * 4}px` : "10px"}
-                >
-                  {word}
-                </tspan>
-              ))}
-            </text>
-          </motion.g>
-        ))}
-      </svg>
+          ))}
+        </motion.g>
 
-      <motion.div
-        className="absolute inset-0 rounded-full pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle at center, rgba(103,232,249,0.08) 0%, transparent 70%)",
-        }}
-        animate={{ opacity: [0.5, 0.8, 0.5] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
+        <motion.text
+          x="10"
+          y="270"
+          className="fill-primary/50 text-[8px] font-mono"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2 }}
+        >
+          SYSTEM ARCHITECTURE v1.0
+        </motion.text>
+      </svg>
     </div>
   );
 }
