@@ -118,132 +118,102 @@ function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures
   
   return (
     <section 
-      className="w-full"
+      className="w-full relative"
       data-testid={`feature-section-${index}`}
     >
       {/* Desktop: Sticky scroll layout - image stays fixed while text scrolls */}
-      <div className={`hidden md:grid grid-cols-2 gap-12 lg:gap-20 min-h-[80vh] ${isReversed ? 'direction-rtl' : ''}`} style={{ direction: isReversed ? 'rtl' : 'ltr' }}>
+      <div className={`hidden md:flex items-start gap-12 lg:gap-20 ${isReversed ? 'flex-row-reverse' : ''}`}>
         {/* Text Content Column - scrolls normally */}
-        <div className="space-y-8 py-12" style={{ direction: 'ltr' }}>
-          {/* Header Block */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
-          >
-            <div className="flex items-center gap-4">
+        <div className="flex-1 space-y-6">
+          {/* Header */}
+          <div className="flex items-center gap-4">
+            <motion.div 
+              className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
+              animate={{ 
+                boxShadow: [
+                  "0 0 20px rgba(103,232,249,0.2)",
+                  "0 0 35px rgba(103,232,249,0.4)",
+                  "0 0 20px rgba(103,232,249,0.2)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <feature.icon className="w-7 h-7 text-primary" />
+            </motion.div>
+            <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
+              {feature.title}
+            </h3>
+          </div>
+          
+          {/* Front Description */}
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            {feature.frontDescription}
+          </p>
+          
+          {/* Impact */}
+          <div className="pt-4 border-t border-white/10">
+            <div className="flex items-center gap-2 mb-2">
               <motion.div 
-                className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
+                className="w-2.5 h-2.5 rounded-full bg-primary"
                 animate={{ 
+                  scale: [1, 1.5, 1],
                   boxShadow: [
-                    "0 0 20px rgba(103,232,249,0.2)",
-                    "0 0 35px rgba(103,232,249,0.4)",
-                    "0 0 20px rgba(103,232,249,0.2)"
+                    "0 0 5px rgba(103,232,249,0.5)",
+                    "0 0 15px rgba(103,232,249,1)",
+                    "0 0 5px rgba(103,232,249,0.5)"
                   ]
                 }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+              <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+            </div>
+            <p className="text-primary font-medium text-lg">{feature.impact}</p>
+          </div>
+          
+          {/* Back Intro */}
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            {feature.backIntro}
+          </p>
+          
+          {/* Compact Bullet List */}
+          <ul className="space-y-2">
+            {feature.backBullets.map((bullet, i) => (
+              <li 
+                key={i} 
+                className="flex items-start gap-2 text-sm text-slate-300"
               >
-                <feature.icon className="w-7 h-7 text-primary" />
-              </motion.div>
-              <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
-                {feature.title}
-              </h3>
-            </div>
-            
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              {feature.frontDescription}
-            </p>
-            
-            <div className="pt-4 border-t border-white/10">
-              <div className="flex items-center gap-2 mb-2">
-                <motion.div 
-                  className="w-2.5 h-2.5 rounded-full bg-primary"
-                  animate={{ 
-                    scale: [1, 1.5, 1],
-                    boxShadow: [
-                      "0 0 5px rgba(103,232,249,0.5)",
-                      "0 0 15px rgba(103,232,249,1)",
-                      "0 0 5px rgba(103,232,249,0.5)"
-                    ]
-                  }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                />
-                <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
-              </div>
-              <p className="text-primary font-medium text-lg">{feature.impact}</p>
-            </div>
-          </motion.div>
+                <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
           
-          {/* Intro Block */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="p-6 rounded-xl bg-zinc-900/50 border border-white/5"
-          >
-            <p className="text-muted-foreground leading-relaxed">
-              {feature.backIntro}
-            </p>
-          </motion.div>
-          
-          {/* Bullet Points - Each as separate scroll block */}
-          {feature.backBullets.map((bullet, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="flex items-start gap-4 p-5 rounded-xl bg-zinc-900/30 border border-white/5 hover:border-primary/20 transition-colors"
-            >
-              <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_8px_rgba(103,232,249,0.6)]" />
-              <p className="text-slate-300 leading-relaxed">{bullet}</p>
-            </motion.div>
-          ))}
-          
-          {/* Outcome Block */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6 }}
-            className="p-6 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20"
-          >
-            <p className="text-primary/90 font-medium leading-relaxed">
+          {/* Outcome */}
+          <div className="pt-3 border-t border-primary/20">
+            <p className="text-sm text-primary/90 font-medium leading-relaxed">
               <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
             </p>
-          </motion.div>
+          </div>
         </div>
         
         {/* Image Column - sticky */}
-        <div className="relative py-12" style={{ direction: 'ltr' }}>
+        <div className="flex-1 relative">
           <div className="sticky top-24">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, type: "spring", stiffness: 80 }}
-              className="relative"
-            >
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50">
-                <motion.div 
-                  className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full"
-                  animate={{ 
-                    opacity: [0.3, 0.6, 0.3],
-                    scale: [0.9, 1.05, 0.9]
-                  }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <img 
-                  src={feature.image} 
-                  alt={feature.title}
-                  className="relative z-10 w-full h-auto object-cover"
-                />
-              </div>
-            </motion.div>
+            <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50">
+              <motion.div 
+                className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full"
+                animate={{ 
+                  opacity: [0.3, 0.6, 0.3],
+                  scale: [0.9, 1.05, 0.9]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <img 
+                src={feature.image} 
+                alt={feature.title}
+                className="relative z-10 w-full h-auto object-cover"
+              />
+            </div>
           </div>
         </div>
       </div>
