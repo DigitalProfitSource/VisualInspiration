@@ -454,73 +454,76 @@ function RevenueSystemSection() {
   const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [10, 0, -10]);
   
   return (
-    <section ref={sectionRef} className="py-32 lg:py-40 relative overflow-hidden">
-      {/* Section Grid Pattern Background */}
-      <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.4)_1px,transparent_1px)] bg-[size:24px_24px]" />
+    <section ref={sectionRef} className="py-32 lg:py-40 relative">
+      {/* Background container with overflow-hidden to contain effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Section Grid Pattern Background */}
+        <div className="absolute inset-0 opacity-[0.04]">
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.4)_1px,transparent_1px)] bg-[size:24px_24px]" />
+        </div>
+        
+        {/* Subtle Parallax Background Layers (dimmed) */}
+        <motion.div 
+          style={{ y: backgroundY }}
+          className="absolute inset-0"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.04),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(59,130,246,0.02),transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(103,232,249,0.02),transparent_50%)]" />
+        </motion.div>
+        
+        {/* Subtle Central Glow (significantly dimmed) */}
+        <motion.div
+          style={{ scale: glowScale, opacity: glowOpacity }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px]"
+        >
+          <div className="w-full h-full bg-primary/[0.03] blur-[150px] rounded-full" />
+        </motion.div>
+        
+        {/* Secondary Floating Orbs (dimmed) */}
+        <motion.div
+          style={{ y: circuitY }}
+          className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-500/[0.02] blur-[100px] rounded-full"
+        />
+        <motion.div
+          style={{ y: useTransform(scrollYProgress, [0, 1], ["20%", "-40%"]) }}
+          className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-400/[0.02] blur-[120px] rounded-full"
+        />
+        
+        {/* Circuit Beams with Enhanced Parallax */}
+        <motion.div
+          style={{ y: circuitY }}
+          className="absolute inset-0"
+        >
+          <CircuitBeams className="opacity-20" />
+        </motion.div>
+        
+        {/* Animated Border Lines */}
+        <motion.div 
+          className="absolute top-0 left-0 right-0 h-px overflow-hidden"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <motion.div
+            className="h-full bg-gradient-to-r from-transparent via-primary to-transparent"
+            animate={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          />
+        </motion.div>
+        <motion.div 
+          className="absolute bottom-0 left-0 right-0 h-px overflow-hidden"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <motion.div
+            className="h-full bg-gradient-to-r from-transparent via-primary to-transparent"
+            animate={{ x: ["100%", "-100%"] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          />
+        </motion.div>
       </div>
-      
-      {/* Subtle Parallax Background Layers (dimmed) */}
-      <motion.div 
-        style={{ y: backgroundY }}
-        className="absolute inset-0 pointer-events-none"
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.04),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(59,130,246,0.02),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(103,232,249,0.02),transparent_50%)]" />
-      </motion.div>
-      
-      {/* Subtle Central Glow (significantly dimmed) */}
-      <motion.div
-        style={{ scale: glowScale, opacity: glowOpacity }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none"
-      >
-        <div className="w-full h-full bg-primary/[0.03] blur-[150px] rounded-full" />
-      </motion.div>
-      
-      {/* Secondary Floating Orbs (dimmed) */}
-      <motion.div
-        style={{ y: circuitY }}
-        className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-blue-500/[0.02] blur-[100px] rounded-full pointer-events-none"
-      />
-      <motion.div
-        style={{ y: useTransform(scrollYProgress, [0, 1], ["20%", "-40%"]) }}
-        className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-400/[0.02] blur-[120px] rounded-full pointer-events-none"
-      />
-      
-      {/* Circuit Beams with Enhanced Parallax */}
-      <motion.div
-        style={{ y: circuitY }}
-        className="absolute inset-0 pointer-events-none"
-      >
-        <CircuitBeams className="opacity-20" />
-      </motion.div>
-      
-      {/* Animated Border Lines */}
-      <motion.div 
-        className="absolute top-0 left-0 right-0 h-px overflow-hidden"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
-        <motion.div
-          className="h-full bg-gradient-to-r from-transparent via-primary to-transparent"
-          animate={{ x: ["-100%", "100%"] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        />
-      </motion.div>
-      <motion.div 
-        className="absolute bottom-0 left-0 right-0 h-px overflow-hidden"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
-        <motion.div
-          className="h-full bg-gradient-to-r from-transparent via-primary to-transparent"
-          animate={{ x: ["100%", "-100%"] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        />
-      </motion.div>
       
       <motion.div 
         style={{ rotateX }}
