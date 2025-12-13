@@ -157,20 +157,20 @@ function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures
           <div className="pt-4 border-t border-white/10">
             <div className="flex items-center gap-2 mb-2">
               <motion.div 
-                className="w-2.5 h-2.5 rounded-full bg-lime-400"
+                className="w-2.5 h-2.5 rounded-full bg-primary"
                 animate={{ 
                   scale: [1, 1.5, 1],
                   boxShadow: [
-                    "0 0 5px rgba(163,230,53,0.5)",
-                    "0 0 15px rgba(163,230,53,1)",
-                    "0 0 5px rgba(163,230,53,0.5)"
+                    "0 0 5px rgba(103,232,249,0.5)",
+                    "0 0 15px rgba(103,232,249,1)",
+                    "0 0 5px rgba(103,232,249,0.5)"
                   ]
                 }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               />
-              <span className="text-xs font-mono text-lime-400 uppercase tracking-wider">Impact</span>
+              <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
             </div>
-            <p className="text-lime-400 font-medium text-lg">{feature.impact}</p>
+            <p className="text-primary font-medium text-lg">{feature.impact}</p>
           </div>
           
           {/* Stage 4: Back Intro - reveals on scroll */}
@@ -277,10 +277,10 @@ function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures
           {/* Impact Metric */}
           <div className="pt-3 border-t border-white/10 relative z-10 mb-5">
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-2 h-2 rounded-full bg-lime-400 animate-pulse shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
-              <span className="text-xs font-mono text-lime-400 uppercase tracking-wider">Impact</span>
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(103,232,249,0.8)]" />
+              <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
             </div>
-            <p className="text-lime-400 font-medium text-sm">{feature.impact}</p>
+            <p className="text-primary font-medium text-sm">{feature.impact}</p>
           </div>
           
           {/* Back Intro */}
@@ -1095,9 +1095,9 @@ export default function Home() {
                       
                       {/* Center Column - Timeline with Step Indicator */}
                       <div className="order-2 flex flex-col items-center justify-center relative">
-                        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-[#5A7F26]/10 via-[#A3E635]/30 to-[#5A7F26]/10" />
-                        <div className="relative z-10 w-14 h-14 rounded-full bg-zinc-900 border-2 border-[#A3E635]/60 flex items-center justify-center shadow-[0_0_25px_rgba(163,230,53,0.4)]">
-                          <span className="text-base font-bold text-[#D6FF60]">{item.step}</span>
+                        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-primary/10 via-primary/30 to-primary/10" />
+                        <div className="relative z-10 w-14 h-14 rounded-full bg-zinc-900 border-2 border-primary/50 flex items-center justify-center shadow-[0_0_25px_rgba(103,232,249,0.4)]">
+                          <span className="text-base font-bold text-primary">{item.step}</span>
                         </div>
                       </div>
                       
@@ -1173,7 +1173,7 @@ export default function Home() {
               transition={fadeInUpViewport.transition}
               className="max-w-2xl"
             >
-              <div className="inline-block px-4 py-1.5 rounded-full bg-lime-500/10 border border-lime-500/30 text-lime-400 text-xs font-bold mb-8 tracking-wide">
+              <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
                 START HERE
               </div>
               <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight">The AI Clarity Assessment™</h2>

@@ -26,7 +26,7 @@ export function DiagnoseFrictionDiagram() {
       <svg
         viewBox="0 0 400 280"
         className="w-full h-full"
-        style={{ filter: "drop-shadow(0 0 15px rgba(163,230,53,0.1))" }}
+        style={{ filter: "drop-shadow(0 0 15px rgba(103,232,249,0.1))" }}
       >
         <defs>
           <filter id="scanGlow">
@@ -37,9 +37,9 @@ export function DiagnoseFrictionDiagram() {
             </feMerge>
           </filter>
           <linearGradient id="scanLine" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="rgba(214,255,96,0)" />
-            <stop offset="50%" stopColor="rgba(214,255,96,0.8)" />
-            <stop offset="100%" stopColor="rgba(214,255,96,0)" />
+            <stop offset="0%" stopColor="rgba(103,232,249,0)" />
+            <stop offset="50%" stopColor="rgba(103,232,249,0.8)" />
+            <stop offset="100%" stopColor="rgba(103,232,249,0)" />
           </linearGradient>
         </defs>
 
@@ -53,7 +53,7 @@ export function DiagnoseFrictionDiagram() {
               y1={from.y}
               x2={to.x}
               y2={to.y}
-              stroke="rgba(163,230,53,0.3)"
+              stroke="rgba(103,232,249,0.25)"
               strokeWidth="1.5"
               strokeDasharray="4 4"
               initial={{ pathLength: 0 }}
@@ -93,14 +93,14 @@ export function DiagnoseFrictionDiagram() {
               height="36"
               rx="6"
               fill="rgba(24,24,27,0.95)"
-              stroke={node.hasFriction ? "rgba(214,255,96,0.9)" : "rgba(90,127,38,0.5)"}
+              stroke={node.hasFriction ? "rgba(103,232,249,0.9)" : "rgba(103,232,249,0.35)"}
               strokeWidth="1.5"
               animate={node.hasFriction ? {
-                stroke: ["rgba(214,255,96,0.7)", "rgba(214,255,96,1)", "rgba(214,255,96,0.7)"],
+                stroke: ["rgba(103,232,249,0.7)", "rgba(103,232,249,1)", "rgba(103,232,249,0.7)"],
                 filter: [
-                  "drop-shadow(0 0 4px rgba(214,255,96,0.3))",
-                  "drop-shadow(0 0 12px rgba(214,255,96,0.8))",
-                  "drop-shadow(0 0 4px rgba(214,255,96,0.3))",
+                  "drop-shadow(0 0 4px rgba(103,232,249,0.3))",
+                  "drop-shadow(0 0 12px rgba(103,232,249,0.8))",
+                  "drop-shadow(0 0 4px rgba(103,232,249,0.3))",
                 ],
               } : {}}
               transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
@@ -123,7 +123,7 @@ export function DiagnoseFrictionDiagram() {
                   cx={node.x + 30}
                   cy={node.y - 12}
                   r="8"
-                  fill="rgba(214,255,96,0.95)"
+                  fill="rgba(103,232,249,0.95)"
                 />
                 <text
                   x={node.x + 30}
@@ -142,7 +142,7 @@ export function DiagnoseFrictionDiagram() {
           x="200"
           y="260"
           textAnchor="middle"
-          fill="rgba(163,230,53,0.7)"
+          fill="rgba(103,232,249,0.7)"
           className="text-[9px] font-mono uppercase tracking-wider"
           initial={{ opacity: 0 }}
           animate={{ opacity: [0.5, 1, 0.5] }}

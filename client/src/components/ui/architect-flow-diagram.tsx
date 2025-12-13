@@ -15,15 +15,15 @@ export function ArchitectFlowDiagram() {
       <svg
         viewBox="0 0 400 280"
         className="w-full h-full"
-        style={{ filter: "drop-shadow(0 0 15px rgba(163,230,53,0.1))" }}
+        style={{ filter: "drop-shadow(0 0 15px rgba(103,232,249,0.1))" }}
       >
         <defs>
           <linearGradient id="blueprintGrid" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(90,127,38,0.05)" />
-            <stop offset="100%" stopColor="rgba(90,127,38,0.02)" />
+            <stop offset="0%" stopColor="rgba(103,232,249,0.05)" />
+            <stop offset="100%" stopColor="rgba(103,232,249,0.02)" />
           </linearGradient>
           <pattern id="gridPattern" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(90,127,38,0.15)" strokeWidth="0.5" />
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(103,232,249,0.08)" strokeWidth="0.5" />
           </pattern>
         </defs>
 
@@ -38,7 +38,7 @@ export function ArchitectFlowDiagram() {
                 y1={i === 0 ? 0 : layers[i - 1].y + 30}
                 x2={centerX}
                 y2={layer.y - 5}
-                stroke="rgba(163,230,53,0.4)"
+                stroke="rgba(103,232,249,0.3)"
                 strokeWidth="2"
                 strokeDasharray="4 4"
                 initial={{ pathLength: 0 }}
@@ -53,7 +53,7 @@ export function ArchitectFlowDiagram() {
                 height="50"
                 rx="6"
                 fill="rgba(24,24,27,0.9)"
-                stroke="rgba(163,230,53,0.5)"
+                stroke="rgba(103,232,249,0.4)"
                 strokeWidth="1.5"
                 initial={{ opacity: 0, scaleX: 0.8 }}
                 animate={{ opacity: 1, scaleX: 1 }}
@@ -63,7 +63,7 @@ export function ArchitectFlowDiagram() {
               <motion.text
                 x={x + 10}
                 y={layer.y + 18}
-                fill="rgba(214,255,96,0.9)"
+                fill="rgba(103,232,249,0.9)"
                 className="text-[9px] font-mono uppercase tracking-wider"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -88,8 +88,8 @@ export function ArchitectFlowDiagram() {
                         width={itemWidth - 8}
                         height="16"
                         rx="3"
-                        fill="rgba(90,127,38,0.2)"
-                        stroke="rgba(90,127,38,0.4)"
+                        fill="rgba(103,232,249,0.1)"
+                        stroke="rgba(103,232,249,0.25)"
                         strokeWidth="0.5"
                       />
                       <text
@@ -109,7 +109,7 @@ export function ArchitectFlowDiagram() {
                 cx={x - 8}
                 cy={layer.y + 25}
                 r="4"
-                fill="rgba(214,255,96,0.9)"
+                fill="rgba(103,232,249,0.9)"
                 initial={{ scale: 0 }}
                 animate={{ scale: [1, 1.3, 1] }}
                 transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
@@ -129,7 +129,7 @@ export function ArchitectFlowDiagram() {
               cx={centerX}
               cy={0}
               r="4"
-              fill="rgba(214,255,96,0.95)"
+              fill="rgba(103,232,249,0.95)"
               initial={{ cy: 20 }}
               animate={{ cy: [20, 260, 20] }}
               transition={{
@@ -145,7 +145,7 @@ export function ArchitectFlowDiagram() {
         <motion.text
           x="10"
           y="270"
-          fill="rgba(90,127,38,0.7)"
+          fill="rgba(103,232,249,0.5)"
           className="text-[8px] font-mono"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
