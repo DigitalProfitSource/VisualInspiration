@@ -19,12 +19,12 @@ export function LocateLeverageDiagram() {
       >
         <defs>
           <radialGradient id="aiGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(163,230,53,0.3)" />
-            <stop offset="100%" stopColor="rgba(163,230,53,0)" />
+            <stop offset="0%" stopColor="rgba(214,255,96,0.3)" />
+            <stop offset="100%" stopColor="rgba(214,255,96,0)" />
           </radialGradient>
           <radialGradient id="humanGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(163,230,53,0.15)" />
-            <stop offset="100%" stopColor="rgba(163,230,53,0)" />
+            <stop offset="0%" stopColor="rgba(90,127,38,0.2)" />
+            <stop offset="100%" stopColor="rgba(90,127,38,0)" />
           </radialGradient>
         </defs>
 
@@ -34,8 +34,8 @@ export function LocateLeverageDiagram() {
           width="320"
           height="90"
           rx="8"
-          fill="rgba(163,230,53,0.05)"
-          stroke="rgba(163,230,53,0.3)"
+          fill="rgba(214,255,96,0.03)"
+          stroke="rgba(214,255,96,0.4)"
           strokeWidth="1"
           strokeDasharray="6 3"
           initial={{ opacity: 0, scale: 0.95 }}
@@ -45,7 +45,8 @@ export function LocateLeverageDiagram() {
         <motion.text
           x="55"
           y="48"
-          className="fill-lime-400 text-[9px] font-mono uppercase tracking-wider"
+          fill="rgba(214,255,96,0.9)"
+          className="text-[9px] font-mono uppercase tracking-wider"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
@@ -59,8 +60,8 @@ export function LocateLeverageDiagram() {
           width="320"
           height="90"
           rx="8"
-          fill="rgba(163,230,53,0.03)"
-          stroke="rgba(163,230,53,0.2)"
+          fill="rgba(90,127,38,0.05)"
+          stroke="rgba(90,127,38,0.4)"
           strokeWidth="1"
           strokeDasharray="6 3"
           initial={{ opacity: 0, scale: 0.95 }}
@@ -70,7 +71,8 @@ export function LocateLeverageDiagram() {
         <motion.text
           x="55"
           y="148"
-          className="fill-lime-400/70 text-[9px] font-mono uppercase tracking-wider"
+          fill="rgba(90,127,38,0.9)"
+          className="text-[9px] font-mono uppercase tracking-wider"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -102,10 +104,10 @@ export function LocateLeverageDiagram() {
               cy={opp.y}
               r="28"
               fill="rgba(24,24,27,0.95)"
-              stroke={opp.isAI ? "rgba(163,230,53,0.7)" : "rgba(163,230,53,0.3)"}
+              stroke={opp.isAI ? "rgba(214,255,96,0.7)" : "rgba(90,127,38,0.5)"}
               strokeWidth="2"
               animate={opp.isAI ? {
-                stroke: ["rgba(163,230,53,0.5)", "rgba(163,230,53,1)", "rgba(163,230,53,0.5)"],
+                stroke: ["rgba(214,255,96,0.5)", "rgba(214,255,96,1)", "rgba(214,255,96,0.5)"],
               } : {}}
               transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
             />
@@ -131,7 +133,7 @@ export function LocateLeverageDiagram() {
                   width="24"
                   height="12"
                   rx="2"
-                  fill="rgba(163,230,53,0.9)"
+                  fill="rgba(163,230,53,0.95)"
                 />
                 <text
                   x={opp.x}
@@ -155,7 +157,7 @@ export function LocateLeverageDiagram() {
             cx="200"
             cy="235"
             r="3"
-            fill="rgba(163,230,53,0.8)"
+            fill="rgba(214,255,96,0.9)"
             animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           />

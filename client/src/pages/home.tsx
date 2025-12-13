@@ -1095,9 +1095,9 @@ export default function Home() {
                       
                       {/* Center Column - Timeline with Step Indicator */}
                       <div className="order-2 flex flex-col items-center justify-center relative">
-                        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-lime-500/10 via-lime-500/30 to-lime-500/10" />
-                        <div className="relative z-10 w-14 h-14 rounded-full bg-zinc-900 border-2 border-lime-500/50 flex items-center justify-center shadow-[0_0_25px_rgba(163,230,53,0.4)]">
-                          <span className="text-base font-bold text-lime-400">{item.step}</span>
+                        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-[#5A7F26]/10 via-[#A3E635]/30 to-[#5A7F26]/10" />
+                        <div className="relative z-10 w-14 h-14 rounded-full bg-zinc-900 border-2 border-[#A3E635]/60 flex items-center justify-center shadow-[0_0_25px_rgba(163,230,53,0.4)]">
+                          <span className="text-base font-bold text-[#D6FF60]">{item.step}</span>
                         </div>
                       </div>
                       
