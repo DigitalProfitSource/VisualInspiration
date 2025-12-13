@@ -445,13 +445,13 @@ function StickyFeatureCard({ feature, index }: { feature: typeof revenueFeatures
   
   return (
     <div 
-      className="relative py-8"
+      className="relative py-16 lg:py-24"
       data-testid={`sticky-feature-${index}`}
     >
       <div className="container mx-auto px-6 lg:px-12">
-        <div className={`flex gap-8 lg:gap-16 ${isReversed ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex gap-8 lg:gap-16 items-start ${isReversed ? 'flex-row-reverse' : ''}`}>
           {/* Text Column - scrolls naturally, content always visible */}
-          <div className="flex-1 py-12">
+          <div className="flex-1 py-8">
             <div className="max-w-xl space-y-6">
               {/* Title */}
               <motion.div 
@@ -561,7 +561,7 @@ function StickyFeatureCard({ feature, index }: { feature: typeof revenueFeatures
           
           {/* Image Column - STICKY: stays fixed while text scrolls */}
           <div className="flex-1 relative">
-            <div className="sticky top-24">
+            <div className="sticky top-32 pt-8">
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
