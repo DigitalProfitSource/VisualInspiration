@@ -1,0 +1,60 @@
+Here is a prompt you can paste into Replit Agent and then tweak as needed. It tells the agent to audit and fix your site for SSR/static HTML, semantic structure, headings, and schema while preserving your current “vibe.”
+
+***
+
+### Prompt for Replit Agent
+
+> I have a mostly finished marketing website for my SaaS built in this Replit project.  
+>  
+> Your job is to **audit the entire codebase for SEO and crawlability**, then **propose and implement changes** without breaking the existing visual design or UX.  
+>  
+> Please do the following, step by step:  
+> 1. **Scan the project** and explain briefly how pages are currently rendered (pure client-side, any server-side rendering, or static HTML).  
+> 2. Wherever possible, **serve the main marketing pages as server-rendered or static HTML**, so that all core text content is present in the HTML without needing client-side JavaScript. If my current stack makes SSR hard, prioritize generating static HTML (or pre-rendered templates) for key routes like home, pricing, features, about, and contact.  
+> 3. Refactor the HTML on all public-facing pages to use **clean, semantic HTML**:  
+>    - Use `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`, etc., instead of unnecessary `<div>`s.  
+>    - Remove obviously redundant wrappers and fix any invalid or duplicate IDs.  
+> 4. Fix and standardize **headings (H1–H3)** for SEO and readability:  
+>    - Exactly one `<h1>` per page that clearly describes the main topic.  
+>    - Use `<h2>` for main sections and `<h3>` for subsections, in order, with descriptive text.  
+> 5. Add **basic SEO metadata** to each main page: `<title>`, `<meta name="description">`, and sensible `<meta>` tags for social sharing (Open Graph / Twitter) where relevant.  
+> 6. Add **JSON-LD schema markup** using `script type="application/ld+json"` for:  
+>    - The overall SaaS as an `Organization` or `SoftwareApplication` (on the homepage).  
+>    - Any pricing or plan page as appropriate (e.g., `Product` or `Offer` entities).  
+>    - Contact/location info as `LocalBusiness` or `Organization` if that fits the content.  
+> 7. Ensure that the schema follows current Google and schema.org best practices and validates in Google’s Rich Results test.  
+> 8. Once you’re done, **summarize the changes file-by-file**, including:  
+>    - How rendering changed (SSR/static vs before).  
+>    - Which semantic tags and heading changes you made.  
+>    - Which schema types you added on which pages.  
+>  
+> Very important constraints:  
+> - Do **not** change the visual design, layout, or core copywriting beyond what is necessary for headings and structure.  
+> - Keep class names and component props compatible so existing styles still work.  
+> - If you are unsure between multiple approaches, choose the one that is simplest, most stable, and easiest to maintain.  
+
+***
+
+If this feels too long, you can start with it as-is, then in the next message say: “Great, now implement your plan,” and let it run.[1][2][4][5]
+
+Sources
+[1] Efficient prompting with Replit AI https://docs.replit.com/tutorials/effective-prompting
+[2] Replit Agent Prompting: How to Build in Replit - OPTIWEB https://optiwebdesign.com/2025/08/28/replit-agent-prompting-how-to-build-in-replit/
+[3] Prompts that have improved agent code quality and reduced errors. https://www.reddit.com/r/replit/comments/1j5jjod/prompts_that_have_improved_agent_code_quality_and/
+[4] Replit Agent: Your AI Coding Assistant - BakingAI Blog https://bakingai.com/blog/ai-assisted-coding-replit-agent/
+[5] Create with AI - Replit Docs https://docs.replit.com/getting-started/quickstarts/ask-ai
+[6] Replit Agent https://docs.replit.com/replitai/agent
+[7] Level up your prompts: 5 prompt examples & explanations for tools like Replit Agent and Assistant. | Matt Palmer https://www.linkedin.com/posts/matt-palmer_level-up-your-prompts-5-prompt-examples-activity-7323104048709013505-kKP2
+[8] Replit Agent Tutorial: Step-by-Step Setup and Advanced Tips for Developers - BakingAI Blog https://bakingai.com/blog/replit-agent-ai-coding-revolution/
+[9] How to Prompt Replit's AI Video Coding Agent for Perfect ... - YouTube https://www.youtube.com/watch?v=5h-_I4tdZaU
+[10] Automate Schema Markup: AI SEO for SMBs - Agents24x7 https://agents24x7.com/blog/automate-schema-markup-ai-seo
+[11] Re-factoring with Replit AI agent is a dream - Tips & Tricks https://replit.discourse.group/t/re-factoring-with-replit-ai-agent-is-a-dream/6233
+[12] Content Strategy: Empowering... https://www.schemaapp.com/schema-markup/unlocking-the-value-of-schema-markup-seo-content-and-ai/
+[13] How to prompt Replit from initial screen? (my example prompt here) https://www.reddit.com/r/replit/comments/1ko3fjy/how_to_prompt_replit_from_initial_screen_my/
+[14] How I Rank #1 using AI SEO Agents (Schema Markup) 🤯 https://www.youtube.com/watch?v=nHc--mo16Jo
+[15] Replit Agent: A Guide With Practical Examples https://www.datacamp.com/tutorial/replit-agent-ai-code-editor
+[16] Replit AI Agent - AI Web App Builder - Refine dev https://refine.dev/blog/replit-ai-agent/
+[17] The Role of Schema Markup in AI-Ready Websites https://www.npgroup.net/blog/role-of-schema-markup-in-ai-friendly-websites/
+[18] Fast Mode - Replit Docs https://docs.replit.com/replitai/fast-mode
+[19] Schema Markup: How to Help AI Understand Your Site https://www.composite.global/news/schema-markup-101
+[20] Prompting the Replit Agent: Tips & Tricks https://www.youtube.com/watch?v=IIFb08rLpOg

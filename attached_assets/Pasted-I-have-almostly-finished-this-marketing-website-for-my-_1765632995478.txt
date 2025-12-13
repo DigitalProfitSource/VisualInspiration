@@ -1,0 +1,28 @@
+I have almostly finished this marketing website for my SaaS built in this project.  
+>  
+> Your job is to **audit the entire codebase for SEO and crawlability**, then **propose and implement changes** without breaking the existing visual design or UX.  
+>  
+> Please do the following, step by step:  
+> 1. **Scan the project** and explain briefly how pages are currently rendered (pure client-side, any server-side rendering, or static HTML).  
+> 2. Wherever possible, **serve the main marketing pages as server-rendered or static HTML**, so that all core text content is present in the HTML without needing client-side JavaScript. If my current stack makes SSR hard, prioritize generating static HTML (or pre-rendered templates) for key routes like home, pricing, features, about, and contact.  
+> 3. Refactor the HTML on all public-facing pages to use **clean, semantic HTML**:  
+>    - Use `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`, etc., instead of unnecessary `<div>`s.  
+>    - Remove obviously redundant wrappers and fix any invalid or duplicate IDs.  
+> 4. Fix and standardize **headings (H1–H3)** for SEO and readability:  
+>    - Exactly one `<h1>` per page that clearly describes the main topic.  
+>    - Use `<h2>` for main sections and `<h3>` for subsections, in order, with descriptive text.  
+> 5. Add **basic SEO metadata** to each main page: `<title>`, `<meta name="description">`, and sensible `<meta>` tags for social sharing (Open Graph / Twitter) where relevant.  
+> 6. Add **JSON-LD schema markup** using `script type="application/ld+json"` for:  
+>    - The overall SaaS as an `Organization` or `SoftwareApplication` (on the homepage).  
+>    - Any pricing or plan page as appropriate (e.g., `Product` or `Offer` entities).  
+>    - Contact/location info as `LocalBusiness` or `Organization` if that fits the content.  
+> 7. Ensure that the schema follows current Google and schema.org best practices and validates in Google’s Rich Results test.  
+> 8. Once you’re done, **summarize the changes file-by-file**, including:  
+>    - How rendering changed (SSR/static vs before).  
+>    - Which semantic tags and heading changes you made.  
+>    - Which schema types you added on which pages.  
+>  
+> Very important constraints:  
+> - Do **not** change the visual design, layout, or core copywriting beyond what is necessary for headings and structure.  
+> - Keep class names and component props compatible so existing styles still work.  
+> - If you are unsure between multiple approaches, choose the one that is simplest, most stable, and easiest to maintain.  
