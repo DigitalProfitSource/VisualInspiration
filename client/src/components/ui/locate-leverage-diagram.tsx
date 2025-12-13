@@ -19,8 +19,8 @@ export function LocateLeverageDiagram() {
       >
         <defs>
           <radialGradient id="aiGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgba(103,232,249,0.4)" />
-            <stop offset="100%" stopColor="rgba(103,232,249,0)" />
+            <stop offset="0%" stopColor="rgba(52,211,153,0.3)" />
+            <stop offset="100%" stopColor="rgba(52,211,153,0)" />
           </radialGradient>
           <radialGradient id="humanGlow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="rgba(167,139,250,0.3)" />
@@ -34,8 +34,8 @@ export function LocateLeverageDiagram() {
           width="320"
           height="90"
           rx="8"
-          fill="rgba(103,232,249,0.05)"
-          stroke="rgba(103,232,249,0.3)"
+          fill="rgba(52,211,153,0.05)"
+          stroke="rgba(52,211,153,0.3)"
           strokeWidth="1"
           strokeDasharray="6 3"
           initial={{ opacity: 0, scale: 0.95 }}
@@ -45,7 +45,7 @@ export function LocateLeverageDiagram() {
         <motion.text
           x="55"
           y="48"
-          className="fill-primary text-[9px] font-mono uppercase tracking-wider"
+          className="fill-emerald-400 text-[9px] font-mono uppercase tracking-wider"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
@@ -102,10 +102,10 @@ export function LocateLeverageDiagram() {
               cy={opp.y}
               r="28"
               fill="rgba(24,24,27,0.95)"
-              stroke={opp.isAI ? "rgba(103,232,249,0.6)" : "rgba(167,139,250,0.6)"}
+              stroke={opp.isAI ? "rgba(52,211,153,0.6)" : "rgba(167,139,250,0.6)"}
               strokeWidth="2"
               animate={opp.isAI ? {
-                stroke: ["rgba(103,232,249,0.4)", "rgba(103,232,249,1)", "rgba(103,232,249,0.4)"],
+                stroke: ["rgba(52,211,153,0.4)", "rgba(52,211,153,1)", "rgba(52,211,153,0.4)"],
               } : {}}
               transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
             />
@@ -131,7 +131,7 @@ export function LocateLeverageDiagram() {
                   width="24"
                   height="12"
                   rx="2"
-                  fill="rgba(103,232,249,0.9)"
+                  fill="rgba(52,211,153,0.9)"
                 />
                 <text
                   x={opp.x}
