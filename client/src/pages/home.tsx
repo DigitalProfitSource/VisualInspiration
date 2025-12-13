@@ -121,11 +121,11 @@ function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures
       className="w-full relative"
       data-testid={`feature-section-${index}`}
     >
-      {/* Desktop: Sticky scroll layout - image stays fixed while text scrolls */}
+      {/* Desktop: Sticky scroll layout with progressive reveal */}
       <div className={`hidden md:flex items-start gap-12 lg:gap-20 ${isReversed ? 'flex-row-reverse' : ''}`}>
-        {/* Text Content Column - scrolls normally */}
+        {/* Text Content Column - scrolls with progressive reveal */}
         <div className="flex-1 space-y-6">
-          {/* Header */}
+          {/* Stage 1: Header - Always visible first */}
           <div className="flex items-center gap-4">
             <motion.div 
               className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
@@ -145,12 +145,12 @@ function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures
             </h3>
           </div>
           
-          {/* Front Description */}
+          {/* Stage 2: Front Description - visible early */}
           <p className="text-lg text-muted-foreground leading-relaxed">
             {feature.frontDescription}
           </p>
           
-          {/* Impact */}
+          {/* Stage 3: Impact - visible early */}
           <div className="pt-4 border-t border-white/10">
             <div className="flex items-center gap-2 mb-2">
               <motion.div 
@@ -170,30 +170,56 @@ function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures
             <p className="text-primary font-medium text-lg">{feature.impact}</p>
           </div>
           
-          {/* Back Intro */}
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            {feature.backIntro}
-          </p>
+          {/* Stage 4: Back Intro - reveals on scroll */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              {feature.backIntro}
+            </p>
+          </motion.div>
           
-          {/* Compact Bullet List */}
-          <ul className="space-y-2">
+          {/* Stage 5: Bullet List - each bullet reveals progressively */}
+          <motion.ul 
+            className="space-y-2"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
             {feature.backBullets.map((bullet, i) => (
-              <li 
+              <motion.li 
                 key={i} 
                 className="flex items-start gap-2 text-sm text-slate-300"
+                variants={{
+                  hidden: { opacity: 0, x: -15 },
+                  visible: { 
+                    opacity: 1, 
+                    x: 0,
+                    transition: { delay: i * 0.1, duration: 0.4 }
+                  }
+                }}
               >
                 <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
                 <span>{bullet}</span>
-              </li>
+              </motion.li>
             ))}
-          </ul>
+          </motion.ul>
           
-          {/* Outcome */}
-          <div className="pt-3 border-t border-primary/20">
+          {/* Stage 6: Outcome - reveals last */}
+          <motion.div 
+            className="pt-3 border-t border-primary/20"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <p className="text-sm text-primary/90 font-medium leading-relaxed">
               <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
             </p>
-          </div>
+          </motion.div>
         </div>
         
         {/* Image Column - sticky */}
