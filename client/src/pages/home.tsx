@@ -15,7 +15,8 @@ import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { AnimatedMetric } from "@/components/ui/slot-counter";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
-import { Footer } from "@/components/footer";
+import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
+import { Layout } from "@/components/layout";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 import architectFlowDiagram from "@assets/Architect_the_Flow_-_Corrected_Text_Same_Style_1765574499518.png";
@@ -650,27 +651,15 @@ export default function Home() {
   const heroY = useTransform(scrollY, [0, 500], [0, 100]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans overflow-x-hidden">
-      {/* Navigation */}
-      <motion.nav 
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="fixed top-0 w-full z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl"
-      >
-        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="font-mono font-bold text-lg tracking-tighter flex items-center gap-2">
-            <div className="w-3 h-3 bg-primary rounded-sm shadow-[0_0_10px_var(--color-primary)]" />
-            SimpleSequence
-          </div>
-          <div className="hidden md:flex gap-10 text-sm font-medium text-muted-foreground">
-            <a href="/solutions" className="hover:text-primary transition-colors duration-300">Solutions</a>
-            <a href="/industries" className="hover:text-primary transition-colors duration-300">Industries</a>
-            <a href="/process" className="hover:text-primary transition-colors duration-300">Process</a>
-            <a href="/offers" className="hover:text-primary transition-colors duration-300">Offers</a>
-          </div>
-        </div>
-      </motion.nav>
+    <Layout>
+      <SEO 
+        title="Practical AI for Service Businesses | SimpleSequence"
+        description="Operational AI Advisor helping service businesses adopt AI with clarity, precision, and real-world leverage. AI-powered front desk and follow-up systems."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@graph": [organizationSchema, softwareApplicationSchema]
+        }}
+      />
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
         {/* Background Elements */}
@@ -1445,8 +1434,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-      {/* Footer */}
-      <Footer />
-    </div>
+    </Layout>
   );
 }

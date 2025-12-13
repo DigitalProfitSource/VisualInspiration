@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { GridBeam } from "@/components/ui/grid-beam";
-import { Footer } from "@/components/footer";
+import { SEO } from "@/components/seo";
+import { Layout } from "@/components/layout";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -187,35 +188,31 @@ const solutions = [
 ];
 
 export default function Solutions() {
-  return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="/" className="text-xl font-display font-semibold tracking-tight text-white hover:text-primary transition-colors">
-            SimpleSequence
-          </a>
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="/" className="text-sm text-muted-foreground hover:text-white transition-colors">Home</a>
-            <a href="/solutions" className="text-sm text-white">Solutions</a>
-            <a href="/industries" className="text-sm text-muted-foreground hover:text-white transition-colors">Industries</a>
-            <a href="/process" className="text-sm text-muted-foreground hover:text-white transition-colors">Process</a>
-            <a href="/offers" className="text-sm text-muted-foreground hover:text-white transition-colors">Offers</a>
-          </nav>
-          <ContactFormDialog
-            source="solutions-header"
-            title="Get Started"
-            description="Tell us about your business and we'll help you find the right solution."
-            trigger={
-              <Button variant="outline" className="h-9 border-white/10 hover:bg-white/5 hover:text-white text-xs font-medium rounded-full px-6 transition-all duration-300 hover:border-primary/50">
-                Get Started
-              </Button>
-            }
-          />
-        </div>
-      </header>
+  const solutionsSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "SimpleSequence Operational Stack",
+    description: "Eight interconnected clarity frameworks for service businesses",
+    itemListElement: solutions.map((solution, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Service",
+        name: solution.title,
+        description: solution.subtitle
+      }
+    }))
+  };
 
-      {/* Hero Section */}
+  return (
+    <Layout>
+      <SEO 
+        title="AI Operational Solutions | SimpleSequence"
+        description="Eight operational stack frameworks for service businesses: Website Architecture, CRM Pipelines, AI-Assisted Intake, Follow-Up Protocols, Lead Reactivation, and more."
+        jsonLd={solutionsSchema}
+      />
+
+      {/* Hero Section - starts after header which is now in Layout */}
       <section className="pt-40 pb-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary),0.08),transparent_50%)]" />
         <CircuitBeams className="opacity-50" />
@@ -361,9 +358,6 @@ export default function Solutions() {
           </motion.div>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer />
-    </div>
+    </Layout>
   );
 }

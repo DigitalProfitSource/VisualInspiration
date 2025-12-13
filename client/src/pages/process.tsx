@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { GridBeam } from "@/components/ui/grid-beam";
-import { Footer } from "@/components/footer";
+import { SEO, createFAQSchema } from "@/components/seo";
+import { Layout } from "@/components/layout";
 import {
   Accordion,
   AccordionContent,
@@ -289,33 +290,15 @@ function PhaseCard({ phase, index }: { phase: Phase; index: number }) {
 }
 
 export default function Process() {
+  const faqSchema = createFAQSchema(faqs);
+
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="/" className="text-xl font-display font-semibold tracking-tight text-white hover:text-primary transition-colors">
-            SimpleSequence
-          </a>
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="/" className="text-sm text-muted-foreground hover:text-white transition-colors">Home</a>
-            <a href="/solutions" className="text-sm text-muted-foreground hover:text-white transition-colors">Solutions</a>
-            <a href="/industries" className="text-sm text-muted-foreground hover:text-white transition-colors">Industries</a>
-            <a href="/process" className="text-sm text-white">Process</a>
-            <a href="/offers" className="text-sm text-muted-foreground hover:text-white transition-colors">Offers</a>
-          </nav>
-          <ContactFormDialog
-            source="process-header"
-            title="Get Started"
-            description="Tell us about your business and we'll help you find the right solution."
-            trigger={
-              <Button variant="outline" className="h-9 border-white/10 hover:bg-white/5 hover:text-white text-xs font-medium rounded-full px-6 transition-all duration-300 hover:border-primary/50">
-                Get Started
-              </Button>
-            }
-          />
-        </div>
-      </header>
+    <Layout>
+      <SEO 
+        title="Our Process - Diagnostic, Build, Optimize | SimpleSequence"
+        description="Three-phase methodology: Diagnostic & Audit, Build & Deploy, and Optimize & Scale. Transparent process with clear timelines and deliverables."
+        jsonLd={faqSchema}
+      />
 
       {/* Hero Section */}
       <section className="pt-44 pb-24 relative overflow-hidden">
@@ -500,8 +483,6 @@ export default function Process() {
         </div>
       </section>
 
-      {/* Footer */}
-      <Footer />
-    </div>
+    </Layout>
   );
 }

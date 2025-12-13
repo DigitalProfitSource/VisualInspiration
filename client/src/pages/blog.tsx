@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar } from "lucide-react";
-import { Footer } from "@/components/footer";
+import { SEO } from "@/components/seo";
+import { Layout } from "@/components/layout";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 
 export interface BlogPost {
@@ -113,24 +114,30 @@ function getExcerpt(content: string[]): string {
 }
 
 export default function Blog() {
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "SimpleSequence Blog",
+    description: "Practical guidance for applying AI to everyday operations",
+    blogPost: blogPosts.map(post => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.subtitle,
+      datePublished: post.date,
+      author: {
+        "@type": "Organization",
+        name: "SimpleSequence"
+      }
+    }))
+  };
+
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="/" className="text-xl font-display font-semibold tracking-tight text-white hover:text-primary transition-colors">
-            SimpleSequence
-          </a>
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="/" className="text-sm text-muted-foreground hover:text-white transition-colors">Home</a>
-            <a href="/solutions" className="text-sm text-muted-foreground hover:text-white transition-colors">Solutions</a>
-            <a href="/industries" className="text-sm text-muted-foreground hover:text-white transition-colors">Industries</a>
-            <a href="/process" className="text-sm text-muted-foreground hover:text-white transition-colors">Process</a>
-            <a href="/offers" className="text-sm text-muted-foreground hover:text-white transition-colors">Offers</a>
-            <a href="/blog" className="text-sm text-white">Blog</a>
-          </nav>
-        </div>
-      </header>
+    <Layout>
+      <SEO 
+        title="Blog - Insights & How-To Guides | SimpleSequence"
+        description="Practical guidance for applying AI to everyday operations. Insights on front desk automation, follow-up systems, and operational clarity."
+        jsonLd={blogSchema}
+      />
 
       {/* Hero Section */}
       <section className="pt-44 pb-24 relative overflow-hidden">
@@ -205,8 +212,6 @@ export default function Blog() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 }

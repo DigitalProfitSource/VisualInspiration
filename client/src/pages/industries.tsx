@@ -10,7 +10,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
-import { Footer } from "@/components/footer";
+import { SEO } from "@/components/seo";
+import { Layout } from "@/components/layout";
 import { useRef, useEffect, useState } from "react";
 
 function AnimatedCounter({ value, className }: { value: string; className?: string }) {
@@ -330,33 +331,26 @@ function IndustrySection({ industry, index }: { industry: Industry; index: numbe
 }
 
 export default function Industries() {
+  const industriesSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Industries We Serve",
+    description: "AI-powered front desk and follow-up solutions for service businesses",
+    hasPart: industries.map(industry => ({
+      "@type": "Service",
+      name: `${industry.title} AI Solutions`,
+      description: industry.description,
+      serviceType: "AI Front Desk & Follow-Up"
+    }))
+  };
+
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="/" className="text-xl font-display font-semibold tracking-tight text-white hover:text-primary transition-colors">
-            SimpleSequence
-          </a>
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="/" className="text-sm text-muted-foreground hover:text-white transition-colors">Home</a>
-            <a href="/solutions" className="text-sm text-muted-foreground hover:text-white transition-colors">Solutions</a>
-            <a href="/industries" className="text-sm text-white">Industries</a>
-            <a href="/process" className="text-sm text-muted-foreground hover:text-white transition-colors">Process</a>
-            <a href="/offers" className="text-sm text-muted-foreground hover:text-white transition-colors">Offers</a>
-          </nav>
-          <ContactFormDialog
-            source="industries-header"
-            title="Get Started"
-            description="Tell us about your business and we'll help you find the right solution."
-            trigger={
-              <Button variant="outline" className="h-9 border-white/10 hover:bg-white/5 hover:text-white text-xs font-medium rounded-full px-6 transition-all duration-300 hover:border-primary/50">
-                Get Started
-              </Button>
-            }
-          />
-        </div>
-      </header>
+    <Layout>
+      <SEO 
+        title="Industries We Serve | SimpleSequence"
+        description="AI-powered front desk and follow-up solutions for Home Services, Law Firms, Med Spas, Property Management, and Dental practices. Real results with measurable ROI."
+        jsonLd={industriesSchema}
+      />
 
       {/* Hero Section */}
       <section className="pt-44 pb-20 relative overflow-hidden">
@@ -421,9 +415,6 @@ export default function Industries() {
           </motion.div>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer />
-    </div>
+    </Layout>
   );
 }

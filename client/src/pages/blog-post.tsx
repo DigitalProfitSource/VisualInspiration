@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, CheckCircle2 } from "lucide-react";
-import { Footer } from "@/components/footer";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { useParams } from "wouter";
 import { blogPosts } from "./blog";
+import { SEO } from "@/components/seo";
+import { Layout } from "@/components/layout";
 
 const categoryColors: Record<string, string> = {
   "Operations": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
@@ -26,35 +27,41 @@ export default function BlogPostPage() {
   
   if (!post) {
     return (
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-display font-medium text-white mb-4">Post Not Found</h1>
-          <a href="/blog" className="text-primary hover:text-cyan-300 transition-colors">
-            ← Back to Blog
-          </a>
+      <Layout>
+        <SEO 
+          title="Post Not Found | SimpleSequence Blog"
+          description="The blog post you're looking for could not be found."
+        />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-4xl font-display font-medium text-white mb-4">Post Not Found</h1>
+            <a href="/blog" className="text-primary hover:text-cyan-300 transition-colors">
+              ← Back to Blog
+            </a>
+          </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="/" className="text-xl font-display font-semibold tracking-tight text-white hover:text-primary transition-colors">
-            SimpleSequence
-          </a>
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="/" className="text-sm text-muted-foreground hover:text-white transition-colors">Home</a>
-            <a href="/solutions" className="text-sm text-muted-foreground hover:text-white transition-colors">Solutions</a>
-            <a href="/industries" className="text-sm text-muted-foreground hover:text-white transition-colors">Industries</a>
-            <a href="/process" className="text-sm text-muted-foreground hover:text-white transition-colors">Process</a>
-            <a href="/offers" className="text-sm text-muted-foreground hover:text-white transition-colors">Offers</a>
-            <a href="/blog" className="text-sm text-white">Blog</a>
-          </nav>
-        </div>
-      </header>
+    <Layout>
+      <SEO 
+        title={`${post.title} | SimpleSequence Blog`}
+        description={post.subtitle}
+        ogType="article"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: post.title,
+          description: post.subtitle,
+          datePublished: post.date,
+          author: {
+            "@type": "Organization",
+            name: "SimpleSequence"
+          }
+        }}
+      />
 
       {/* Article Header */}
       <section className="pt-44 pb-16 relative overflow-hidden">
@@ -164,8 +171,6 @@ export default function BlogPostPage() {
           </motion.article>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 }

@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
-import { Footer } from "@/components/footer";
+import { SEO, createOfferSchema } from "@/components/seo";
+import { Layout } from "@/components/layout";
 import { useState } from "react";
 
 const fadeInUpViewport = {
@@ -717,33 +718,28 @@ function PricingGridSection() {
 }
 
 export default function Offers() {
+  const offerSchemas = pricingTiers.map(tier => createOfferSchema({
+    name: tier.name,
+    description: tier.descriptor,
+    price: tier.monthlyFee.replace(/[^0-9]/g, ''),
+    buildFee: tier.buildFee
+  }));
+
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-cyan-500/30 selection:text-cyan-100 font-sans">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="/" className="text-xl font-display font-semibold tracking-tight text-white hover:text-primary transition-colors">
-            SimpleSequence
-          </a>
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="/" className="text-sm text-muted-foreground hover:text-white transition-colors">Home</a>
-            <a href="/solutions" className="text-sm text-muted-foreground hover:text-white transition-colors">Solutions</a>
-            <a href="/industries" className="text-sm text-muted-foreground hover:text-white transition-colors">Industries</a>
-            <a href="/process" className="text-sm text-muted-foreground hover:text-white transition-colors">Process</a>
-            <a href="/offers" className="text-sm text-white">Offers</a>
-          </nav>
-          <ContactFormDialog
-            source="offers-header"
-            title="Get Started"
-            description="Tell us about your business and we'll help you find the right solution."
-            trigger={
-              <Button variant="outline" className="h-9 border-white/10 hover:bg-white/5 hover:text-white text-xs font-medium rounded-full px-6 transition-all duration-300 hover:border-primary/50">
-                Get Started
-              </Button>
-            }
-          />
-        </div>
-      </header>
+    <Layout>
+      <SEO 
+        title="Pricing & Offers | SimpleSequence"
+        description="Three tiers: Frontline ($297/mo), Specialist ($497/mo), and Command (from $997/mo). AI front desk, follow-up automation, and operational systems."
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListElement: offerSchemas.map((schema, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: schema
+          }))
+        }}
+      />
 
       {/* Hero Section */}
       <section className="pt-44 pb-24 relative overflow-hidden">
@@ -1038,8 +1034,6 @@ export default function Offers() {
         </div>
       </section>
 
-      {/* Footer */}
-      <Footer />
-    </div>
+    </Layout>
   );
 }
