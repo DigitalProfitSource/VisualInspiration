@@ -50,7 +50,9 @@ const pricingTiers: PricingTier[] = [
       { title: "Core follow-up flows", description: "New lead → consult / call / estimate booking, plus confirmations, reminders, simple reschedule flows, and a short \"win-back\" touch for recent no-shows or cancellations." },
       { title: "Single intake & simple stages", description: "One consistent way leads come in instead of scattered forms and sticky notes, with standard stages like: New → Qualified → Scheduled → Completed → Follow-up." },
       { title: "Daily visibility for your team", description: "A central list or view of new leads and today's appointments so your staff sees what's on deck without hunting across tools; therefore your team spends more time doing and less time searching." },
-      { title: "Monthly optimization", description: "One focused review each month to tune scripts, routing, and timing based on what's actually happening in your business." }
+      { title: "Monthly optimization", description: "One focused review each month to tune scripts, routing, and timing based on what's actually happening in your business." },
+      { title: "Channels & availability", description: "Channels depend on your stack (GHL baseline). We confirm phone/SMS/email/forms/calendar at kickoff; other channels are added where supported." },
+      { title: "Scope boundary", description: "Outbound calling and proactive outreach are not included in this tier (available in Specialist and Command)." }
     ],
     outcome: "Your front desk stops leaking obvious money. New leads are captured, responded to, and moved forward consistently, therefore taking basic front-desk chaos off your plate without another hire.",
     ctaText: "Start Frontline",
@@ -66,15 +68,20 @@ const pricingTiers: PricingTier[] = [
     focusBullets: [
       "Increasing show-rates to booked appointments",
       "Winning back leads who went cold",
-      "Systematic review generation and complaint routing"
+      "Systematic review generation and complaint routing",
+      "Selective proactive outreach for recovery (where supported)"
     ],
     expandedBullets: [
       { title: "Industry-shaped pipelines", description: "We model the real stages of your world (Med-spa: New lead → Consult booked → Show/no-show → Procedure → Post-op → Review | Law: New inquiry → Conflict check → Consult → Retainer signed → Active case | Home services: New request → Visit → Quote sent → Job scheduled → Completion → Warranty follow-up)" },
       { title: "Show-Rate Engine", description: "Multi-step reminder and nudge sequences tuned to high-value appointments; different messaging for consults vs low-stakes visits; smart reschedule prompts instead of \"sorry we missed you\" and silence." },
+      { title: "Signals-of-intent recovery", description: "Missed calls, site visits without conversion, form partials/submissions, and dormant leads (where tracked/available) trigger targeted recovery flows." },
+      { title: "Selective proactive outreach", description: "AI Voice or human-led outreach (where supported) for no-show recovery, missed-call recovery, and reactivation attempts. Outbound is not used for mass blasting; it's a controlled operational lever." },
+      { title: "Consent & script guardrails", description: "Outbound is deployed only with approved scripts and appropriate consent posture. We coordinate and route, not replace your team." },
       { title: "Reactivation campaigns", description: "Flows for never-booked inquiries who went quiet, no-shows and last-minute cancellations, and past clients/patients who haven't booked in a while." },
       { title: "Reputation & review flows", description: "Asks happy clients/patients for reviews at the right moment; routes unhappy ones into an internal resolution path; prioritizes platforms that matter most for your niche, therefore protecting your reputation while you grow it." },
       { title: "Targeted education & FAQs", description: "Pre-visit and post-visit instructions sent automatically, plus \"what to expect\" flows for key services or procedures, using your approved content so the system never gives legal/medical advice or goes off-script." },
-      { title: "Stronger ongoing tuning", description: "A deeper monthly performance review focused on show-rate, reactivation, and review trends, with clear next-step recommendations so the system keeps getting sharper instead of going stale." }
+      { title: "Stronger ongoing tuning", description: "A deeper monthly performance review focused on show-rate, reactivation, and review trends, with clear next-step recommendations so the system keeps getting sharper instead of going stale." },
+      { title: "Channels & availability", description: "Channels depend on your stack (GHL baseline). We confirm phone/SMS/email/forms/calendar at kickoff; other channels are added where supported." }
     ],
     outcome: "You don't just respond — you drive revenue behavior. More people show up, more old leads return, and more happy clients talk about you publicly, therefore lifting the ROI of your marketing and front-desk time without adding more staff.",
     ctaText: "Start Specialist",
@@ -96,10 +103,11 @@ const pricingTiers: PricingTier[] = [
     expandedBullets: [
       { title: "AI over your playbooks (within your rules)", description: "We load your SOPs, policies, consent forms, pricing guides, and key checklists so the system can follow your rules, not invent its own; both the AI front desk and your staff can lean on the same source of truth." },
       { title: "Ops co-pilot for your staff", description: "Team members can ask operational questions like: \"What's our process if a patient calls with concerns 10 days after treatment?\" \"What do we do if a tenant reports a leak after hours?\" The co-pilot responds with steps based on your playbooks and can create tasks or tickets in your existing tools where supported." },
-      { title: "Daily next-best-actions", description: "A prioritized list of who should be contacted today — hot leads, stalled cases, aging quotes, at-risk clients — so your team focuses on the handful of actions that matter most instead of staring at an overwhelming list." },
+      { title: "Daily next-best-actions", description: "A prioritized list of who should be contacted today — hot leads, stalled cases, aging quotes, at-risk clients — so your team focuses on the handful of actions that matter most instead of staring at an overwhelming list. Can recommend and trigger outreach tasks/calls when rules allow (execution depends on enabled channels such as SMS/email/AI Voice where supported)." },
       { title: "Advanced visibility & patterns", description: "Trends across response times, show-rates, conversion, reactivation, and reviews; breakdowns by channel (phone, SMS, web, DMs) and by source where the data exists, therefore giving leadership real operational insight instead of just call counts." },
       { title: "Strategic partnership layer", description: "Dedicated point of contact, quarterly strategy and roadmap sessions, and joint experiments (new flows, campaigns, or offers) with clear success criteria." },
-      { title: "Designed for complexity", description: "Support for multi-location routing, rules, and reporting where needed, plus more complex service menus or case types without everything becoming a one-off project." }
+      { title: "Designed for complexity", description: "Support for multi-location routing, rules, and reporting where needed, plus more complex service menus or case types without everything becoming a one-off project." },
+      { title: "Channels & availability", description: "Channels depend on your stack (GHL baseline). We confirm phone/SMS/email/forms/calendar at kickoff; other channels are added where supported. Outreach execution is stack-dependent." }
     ],
     outcome: "Command turns SimpleSequence into your AI operations partner — a system that knows your rules, organizes daily actions, and helps your team coordinate complex, high-value work, therefore justifying premium, ROI-first pricing and long-term collaboration.",
     ctaText: "Apply for Command",
