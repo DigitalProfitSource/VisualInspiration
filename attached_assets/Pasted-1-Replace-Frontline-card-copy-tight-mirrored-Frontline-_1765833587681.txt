@@ -1,0 +1,107 @@
+1) Replace Frontline card copy (tight + mirrored)
+
+Frontline (Card Subhead / Tagline)
+
+Coverage tier — stop missed leads and slow follow-up.
+
+Frontline (1-liner under name)
+
+If you want inbound calls, texts, and forms handled consistently without adding staff.
+
+THIS PLAN FOCUSES ON (3 bullets)
+
+24/7 inbound handling (phone/SMS/web)
+
+Standard capture + basic routing
+
+Confirmations, reminders + basic nurture
+
+WHAT YOU REALLY GET (keep short, 4 bullets max)
+
+AI front desk coverage across key channels
+
+Lead capture + simple stages so nothing gets lost
+
+Core follow-up (confirmations, reminders, reschedules)
+
+Monthly performance review (what’s working + what to tune)
+
+Outcome box
+
+Your inbound stops leaking obvious opportunities. Leads get captured, responded to, and moved forward consistently.
+
+CTA
+Keep: Start Frontline
+
+2) Replace Specialist card copy (mirrors “Growth Engine”)
+
+Specialist (Card Subhead / Tagline)
+
+Growth tier — increase show-rate, win back leads, protect reputation.
+
+Specialist (1-liner under name)
+
+If you want fewer no-shows, more rebooks, and systematic follow-up that drives revenue behavior.
+
+THIS PLAN FOCUSES ON (3 bullets)
+
+Smart routing + conditional logic
+
+Show-rate + reactivation sequences
+
+Review generation + complaint routing
+
+WHAT YOU REALLY GET (keep short, 5 bullets max)
+
+Smart routing (conditional logic + clean handoffs)
+
+Show-rate engine (confirmations + no-show prevention)
+
+Reactivation campaigns (dormant + no-show recovery)
+
+Reputation workflows (reviews + complaint routing)
+
+Trend analysis + optimization (monthly tuning)
+
+Outcome box
+
+You don’t just respond — you drive follow-through. More people show up, more old leads return, and your reputation strengthens over time.
+
+CTA
+Keep: Start Specialist
+
+3) Command card (one small but important tweak)
+
+At the top of Command, add a single line to make inheritance explicit without a wall of text:
+
+Includes Specialist foundations, then adds an Ops Brain layer (by application).
+
+Then keep your Command “by application” posture.
+
+4) Other “do it once” changes I’d include in the same builder pass
+A) Kill the remaining text walls (without losing value)
+
+Rule: No paragraph bullets in “What you really get.”
+Each bullet must be Benefit lead-in (bold) + 6–10 words max.
+
+B) Fix Launch Build clarity (no checkout surprise)
+
+On each plan card, near the CTA, display:
+
+Frontline: Launch Build: $600 (one-time)
+
+Specialist: Launch Build: $1,000 (one-time)
+
+Command: Launch Build: from $2,000 (scoped at kickoff)
+
+(If you don’t want this near CTA, it must be equally obvious somewhere else. Hidden = refund risk.)
+
+C) Replace “where supported” everywhere
+
+Use one term globally:
+
+Stack-dependent (confirmed during Launch Build)
+
+And add the same microcopy under the compare table:
+
+Stack-dependent = depends on your current tools and permissions. Confirmed during Launch Build.

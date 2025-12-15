@@ -767,37 +767,52 @@ function PricingGridSection() {
   );
 }
 
-type ComparisonValue = 'Included' | 'Advanced' | 'By application' | 'Optional';
-
 interface ComparisonRow {
   label: string;
-  frontline: ComparisonValue;
-  specialist: ComparisonValue;
-  command: ComparisonValue;
+  frontline: string;
+  specialist: string;
+  command: string;
+  isCategory?: boolean;
 }
 
 const comparisonRows: ComparisonRow[] = [
-  { label: "AI Front Desk Coverage (Phone/SMS/Web forms)", frontline: "Included", specialist: "Included", command: "Included" },
-  { label: "Lead Capture + Routing + Pipelines", frontline: "Included", specialist: "Advanced", command: "Advanced" },
-  { label: "Follow-Up Engine (reminders + reschedules + basic nurture)", frontline: "Included", specialist: "Advanced", command: "Advanced" },
-  { label: "Show-Rate + Reactivation Campaigns", frontline: "Optional", specialist: "Included", command: "Included" },
-  { label: "Reputation + Review + Complaint Routing", frontline: "Optional", specialist: "Included", command: "Included" },
-  { label: "Outbound Calling (human dialer / AI voice)", frontline: "Optional", specialist: "Optional", command: "By application" },
-  { label: "Ops Brain Layer (SOPs + Staff Co-pilot)", frontline: "Optional", specialist: "Optional", command: "By application" },
-  { label: "Reporting + Optimization Cadence", frontline: "Included", specialist: "Advanced", command: "Advanced" },
+  // CORE COVERAGE
+  { label: "CORE COVERAGE", frontline: "", specialist: "", command: "", isCategory: true },
+  { label: "AI Front Desk (Phone / SMS / Web)", frontline: "24/7 inbound handling", specialist: "24/7 inbound handling", command: "24/7 inbound handling" },
+  { label: "Lead Capture + Routing", frontline: "Standard forms + basic routing", specialist: "Smart routing + conditional logic", command: "Multi-location / enterprise routing" },
+  { label: "Follow-Up Engine", frontline: "Confirmations + reminders + basic nurture", specialist: "Show-rate + reactivation sequences", command: "Custom follow-up strategy" },
+  // GROWTH ENGINE
+  { label: "GROWTH ENGINE", frontline: "", specialist: "", command: "", isCategory: true },
+  { label: "Reactivation Campaigns", frontline: "—", specialist: "Dormant + no-show recovery", command: "Custom reactivation strategy" },
+  { label: "Reputation + Review Flows", frontline: "—", specialist: "Review generation + complaint routing", command: "Custom reputation workflows" },
+  // ADVANCED OPERATIONS
+  { label: "ADVANCED OPERATIONS", frontline: "", specialist: "", command: "", isCategory: true },
+  { label: "Outbound Calling (Human / AI Voice)", frontline: "Stack-dependent", specialist: "Stack-dependent", command: "By application" },
+  { label: "Ops Brain Layer (SOPs + Staff Co-Pilot)", frontline: "—", specialist: "—", command: "By application" },
+  // PERFORMANCE
+  { label: "PERFORMANCE", frontline: "", specialist: "", command: "", isCategory: true },
+  { label: "Reporting + Optimization", frontline: "Monthly performance review", specialist: "Trend analysis + optimization", command: "Deep-dive ops + ROI analysis" },
 ];
 
-function ComparisonValueCell({ value }: { value: ComparisonValue }) {
-  const styles: Record<ComparisonValue, string> = {
-    'Included': 'text-primary font-medium',
-    'Advanced': 'text-cyan-300 font-medium',
-    'By application': 'text-white/70',
-    'Optional': 'text-slate-500',
-  };
-
-  return (
-    <span className={`text-xs md:text-sm ${styles[value]}`}>{value}</span>
-  );
+function ComparisonCell({ value, isSpecialist = false }: { value: string; isSpecialist?: boolean }) {
+  const isEmpty = value === "—" || value === "";
+  const isStackDependent = value === "Stack-dependent";
+  const isByApplication = value === "By application";
+  
+  let className = "text-xs md:text-sm ";
+  if (isEmpty) {
+    className += "text-slate-600";
+  } else if (isStackDependent) {
+    className += "text-slate-400 italic";
+  } else if (isByApplication) {
+    className += "text-white/70 italic";
+  } else if (isSpecialist) {
+    className += "text-primary/90";
+  } else {
+    className += "text-slate-300";
+  }
+  
+  return <span className={className}>{value}</span>;
 }
 
 function ComparePlansSection() {
@@ -829,53 +844,65 @@ function ComparePlansSection() {
                 <tr className="border-b border-white/10">
                   <th className="text-left py-4 pr-6 text-xs font-mono text-slate-500 uppercase tracking-wider w-1/3"></th>
                   <th className="py-4 px-4 text-center text-sm font-semibold text-white">Frontline</th>
-                  <th className="py-4 px-4 text-center text-sm font-semibold text-primary">Specialist</th>
-                  <th className="py-4 px-4 text-center text-sm font-semibold text-white">Command</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-primary bg-primary/[0.03]">Specialist</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-white/80">Command</th>
                 </tr>
               </thead>
               <tbody>
                 {comparisonRows.map((row, i) => (
-                  <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                    <td className="py-4 pr-6 text-sm text-slate-300">{row.label}</td>
-                    <td className="py-4 px-4 text-center"><ComparisonValueCell value={row.frontline} /></td>
-                    <td className="py-4 px-4 text-center bg-primary/5"><ComparisonValueCell value={row.specialist} /></td>
-                    <td className="py-4 px-4 text-center"><ComparisonValueCell value={row.command} /></td>
-                  </tr>
+                  row.isCategory ? (
+                    <tr key={i} className="border-b border-white/5">
+                      <td colSpan={4} className="py-3 pt-6 text-xs font-mono text-slate-500 tracking-wider">{row.label}</td>
+                    </tr>
+                  ) : (
+                    <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                      <td className="py-4 pr-6 text-sm text-slate-300 text-left">{row.label}</td>
+                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.frontline} /></td>
+                      <td className="py-4 px-4 text-center bg-primary/[0.03]"><ComparisonCell value={row.specialist} isSpecialist /></td>
+                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.command} /></td>
+                    </tr>
+                  )
                 ))}
               </tbody>
             </table>
           </div>
 
           {/* Mobile Stacked View */}
-          <div className="md:hidden space-y-6">
+          <div className="md:hidden space-y-4">
             {comparisonRows.map((row, i) => (
-              <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
-                <p className="text-sm text-slate-300 font-medium mb-4">{row.label}</p>
-                <div className="grid grid-cols-3 gap-2 text-center">
-                  <div>
-                    <p className="text-[10px] text-slate-500 mb-1">Frontline</p>
-                    <ComparisonValueCell value={row.frontline} />
-                  </div>
-                  <div className="bg-primary/5 rounded-lg py-1">
-                    <p className="text-[10px] text-primary mb-1">Specialist</p>
-                    <ComparisonValueCell value={row.specialist} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-slate-500 mb-1">Command</p>
-                    <ComparisonValueCell value={row.command} />
+              row.isCategory ? (
+                <div key={i} className="pt-4 pb-2">
+                  <p className="text-xs font-mono text-slate-500 tracking-wider">{row.label}</p>
+                </div>
+              ) : (
+                <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
+                  <p className="text-sm text-slate-300 font-medium mb-4 text-left">{row.label}</p>
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div>
+                      <p className="text-[10px] text-slate-500 mb-1">Frontline</p>
+                      <ComparisonCell value={row.frontline} />
+                    </div>
+                    <div className="bg-primary/[0.03] rounded-lg py-1">
+                      <p className="text-[10px] text-primary mb-1">Specialist</p>
+                      <ComparisonCell value={row.specialist} isSpecialist />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-slate-500 mb-1">Command</p>
+                      <ComparisonCell value={row.command} />
+                    </div>
                   </div>
                 </div>
-              </div>
+              )
             ))}
           </div>
 
-          {/* Legend + Footnote */}
-          <div className="mt-8 text-center space-y-2">
+          {/* Micro-copy */}
+          <div className="mt-8 text-left space-y-2">
             <p className="text-xs text-slate-400">
-              <span className="font-semibold text-slate-300">Legend:</span> Optional = confirmed during Launch Build (based on your tools + permissions).
+              Stack-dependent = depends on your current tools and permissions. Confirmed during Launch Build.
             </p>
-            <p className="text-xs text-slate-500 italic">
-              <span className="font-semibold text-slate-400">Note:</span> We never claim compliance certification.
+            <p className="text-xs text-slate-500">
+              Note: We do not claim compliance certification.
             </p>
           </div>
 
