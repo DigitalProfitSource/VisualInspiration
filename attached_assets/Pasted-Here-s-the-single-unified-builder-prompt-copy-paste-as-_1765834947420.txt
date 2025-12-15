@@ -1,0 +1,152 @@
+Here’s the **single unified builder prompt** (copy/paste as-is):
+
+---
+
+**BUILDER PROMPT — Update Offers Section (Cards + Compare Table + Legend)**
+
+Goal: tighten clarity, remove uncertainty, and align tier language across the **plan cards** and the **Compare Plans** table. Do **not** add new capabilities, do **not** change pricing, and do **not** change guarantees.
+
+### A) Global rules (must follow)
+
+1. Remove the phrase **“stack-dependent”** everywhere on the Offers page (cards, table, legend, footnotes).
+2. Do not use vague tier adjectives like “Advanced” or “Optional” unless the cell explains *what* it means. Prefer concrete labels or “—”.
+3. Keep Specialist as the most attractive tier (Most Popular remains).
+4. Keep Command gated (CTA stays “Apply” / “By application”).
+
+---
+
+## B) Plan cards updates
+
+### 1) Frontline card (keep existing structure, tighten copy)
+
+**Add ONE short clarity line** under the current subheading/value line so it’s unmistakable what Frontline is and isn’t.
+
+Add this line (exact):
+**“Inbound coverage + follow-up execution. No outbound campaigns or ops brain layer.”**
+
+Do not mention “stack-dependent” or “available” anywhere in Frontline.
+
+Also tighten any “What you really get” bullets to avoid walls of text:
+
+* Keep each bullet to **one line** where possible.
+* Bold the first 2–4 words of each bullet (benefit-first skim format).
+  Example format: **Industry-shaped pipelines:** … / **Smart triage:** … / **Core follow-up:** …
+
+### 2) Specialist card (mirror language + reduce walls)
+
+Add ONE line near the top (directly under the current Specialist value statement) that clearly communicates inclusion.
+
+Add this line (exact):
+**“Includes everything in Frontline — plus reactivation, reputation systems, and outbound calling (when appropriate).”**
+
+Again: shorten “What you really get” bullets using the same skim format (bold lead-in, one line).
+
+### 3) Command card (keep gated, clarify without promising)
+
+Do NOT claim “everything in Specialist” as a blanket statement. Use a softer scope-safe phrasing.
+
+Add this line (exact) near the top of Command’s description:
+**“Built on Specialist foundations when applicable — expanded into an ops brain layer and deeper governance.”**
+
+Keep “By application” positioning and CTA.
+
+---
+
+## C) Compare Plans table overhaul (replace vague cells)
+
+### Table Title + Subhead (keep style, tighten subhead)
+
+Keep: “Compare Plans”
+Replace the subhead line with (exact):
+**“Clear tiers without overpromising. Final scope confirmed during Launch Build.”**
+
+### Replace the table cells with this exact matrix (no “stack-dependent” anywhere)
+
+Rows (left column labels) MUST be exactly:
+
+1. **AI Front Desk Coverage (Phone/SMS/Web forms)**
+
+* Frontline: **Included**
+* Specialist: **Included**
+* Command: **Included**
+
+2. **Lead Capture + Routing + Pipelines**
+
+* Frontline: **Included**
+* Specialist: **Smart routing + logic**
+* Command: **Multi-location / complex routing (by application)**
+
+3. **Follow-Up Engine (reminders + reschedules + basic nurture)**
+
+* Frontline: **Included**
+* Specialist: **Long-term + reactivation**
+* Command: **Custom strategy (by application)**
+
+4. **Show-Rate + Reactivation Campaigns**
+
+* Frontline: **—**
+* Specialist: **Included**
+* Command: **Included (by application)**
+
+5. **Reputation + Review + Complaint Routing**
+
+* Frontline: **—**
+* Specialist: **Included**
+* Command: **Included (by application)**
+
+6. **Outbound Calling (Human dialer / AI voice)**
+
+* Frontline: **—**
+* Specialist: **Available**
+* Command: **By application**
+
+7. **Ops Brain Layer (SOPs + Staff Co-Pilot)**
+
+* Frontline: **—**
+* Specialist: **Available**
+* Command: **By application**
+
+8. **Reporting + Optimization Cadence**
+
+* Frontline: **Monthly optimization**
+* Specialist: **Performance + iteration**
+* Command: **Executive cadence (by application)**
+
+Design notes for the table:
+
+* Keep Specialist column visually highlighted.
+* Make the table highly scannable on mobile (increase row spacing, avoid paragraph text inside cells).
+* Use “—” (em dash) for not included.
+* Do not add extra rows unless necessary.
+
+---
+
+## D) Legend / footnote (single place only, below the table)
+
+Replace the existing legend/notes with ONLY these two lines (exact):
+
+**Legend: Available = enabled when appropriate based on your workflows + permissions. Confirmed during Launch Build.**
+**Note: We do not claim compliance certification.**
+
+Do not include “stack-dependent” anywhere.
+
+---
+
+## E) Custom / Enterprise card (keep, slight tighten)
+
+Keep the Custom/Enterprise card, but ensure it does not introduce new promises. Keep CTA “Talk to Us”.
+Optional microcopy under button (exact):
+**“We’ll map your stack, risks, and required audit trail before quoting.”**
+
+---
+
+## F) Final QA checklist (builder must verify before marking done)
+
+* No “stack-dependent” text remains anywhere.
+* Frontline never mentions outbound or ops brain as included/available.
+* Specialist clearly communicates it includes Frontline foundations.
+* Table uses concrete differentiators (no “Advanced/Optional” placeholders).
+* Legend exists once only and matches exact copy above.
+* Mobile scan test: table + bullets are readable without long paragraphs.
+
+---
