@@ -491,7 +491,8 @@ function PricingGridSection() {
               <h3 className="text-2xl font-display font-medium mb-2 text-white">
                 {specialist.name}
               </h3>
-              <p className="text-sm text-slate-400 mb-4">{specialist.descriptor}</p>
+              <p className="text-sm text-slate-400 mb-2">{specialist.descriptor}</p>
+              <p className="text-xs font-semibold text-white/80 mb-4">Includes everything in Frontline, plus:</p>
               
               <p className="text-primary text-sm font-medium mb-4">
                 {specialist.ifYouWant}
@@ -609,7 +610,8 @@ function PricingGridSection() {
                   </div>
                 </div>
                 <h3 className="text-3xl font-display font-semibold mb-2 text-white">{command.name}</h3>
-                <p className="text-sm text-slate-400 mb-4">{command.descriptor}</p>
+                <p className="text-sm text-slate-400 mb-2">{command.descriptor}</p>
+                <p className="text-xs font-semibold text-white/80 mb-4">Includes Specialist foundation, plus: (by application)</p>
                 <p className="text-primary/80 text-base mb-4 font-medium">{command.ifYouWant}</p>
                 
                 <div className="mb-6">
@@ -725,6 +727,149 @@ function PricingGridSection() {
   );
 }
 
+type ComparisonValue = 'Included' | 'Advanced' | 'By application' | 'Add-on / Where supported';
+
+interface ComparisonRow {
+  label: string;
+  frontline: ComparisonValue;
+  specialist: ComparisonValue;
+  command: ComparisonValue;
+}
+
+const comparisonRows: ComparisonRow[] = [
+  { label: "AI Front Desk Coverage (Phone/SMS/Web forms)", frontline: "Included", specialist: "Included", command: "Included" },
+  { label: "Lead Capture + Routing + Pipelines", frontline: "Included", specialist: "Advanced", command: "Advanced" },
+  { label: "Follow-Up Engine (reminders + reschedules + basic nurture)", frontline: "Included", specialist: "Advanced", command: "Advanced" },
+  { label: "Show-Rate + Reactivation Campaigns", frontline: "Add-on / Where supported", specialist: "Included", command: "Included" },
+  { label: "Reputation + Review + Complaint Routing", frontline: "Add-on / Where supported", specialist: "Included", command: "Included" },
+  { label: "Outbound Calling (human dialer / AI voice where supported)", frontline: "Add-on / Where supported", specialist: "Add-on / Where supported", command: "By application" },
+  { label: "Ops Brain Layer (SOPs / playbooks / staff copilot)", frontline: "Add-on / Where supported", specialist: "Add-on / Where supported", command: "By application" },
+  { label: "Reporting + Optimization Cadence", frontline: "Included", specialist: "Advanced", command: "Advanced" },
+];
+
+function ComparisonValueCell({ value }: { value: ComparisonValue }) {
+  const styles: Record<ComparisonValue, string> = {
+    'Included': 'text-primary font-medium',
+    'Advanced': 'text-cyan-300 font-medium',
+    'By application': 'text-white/70',
+    'Add-on / Where supported': 'text-slate-500',
+  };
+
+  return (
+    <span className={`text-xs md:text-sm ${styles[value]}`}>{value}</span>
+  );
+}
+
+function ComparePlansSection() {
+  return (
+    <section className="py-24 border-t border-white/5">
+      <div className="container mx-auto px-6">
+        <motion.div 
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
+          viewport={fadeInUpViewport.viewport}
+          transition={fadeInUpViewport.transition}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">Compare Plans</h2>
+          <p className="text-slate-400">Built to be clear without overpromising. Final scope confirmed at kickoff.</p>
+        </motion.div>
+
+        <motion.div
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
+          viewport={fadeInUpViewport.viewport}
+          transition={fadeInUpViewport.transition}
+          className="max-w-5xl mx-auto"
+        >
+          {/* Desktop Table */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="text-left py-4 pr-6 text-xs font-mono text-slate-500 uppercase tracking-wider w-1/3"></th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-white">Frontline</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-primary">Specialist</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-white">Command</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonRows.map((row, i) => (
+                  <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                    <td className="py-4 pr-6 text-sm text-slate-300">{row.label}</td>
+                    <td className="py-4 px-4 text-center"><ComparisonValueCell value={row.frontline} /></td>
+                    <td className="py-4 px-4 text-center bg-primary/5"><ComparisonValueCell value={row.specialist} /></td>
+                    <td className="py-4 px-4 text-center"><ComparisonValueCell value={row.command} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile Stacked View */}
+          <div className="md:hidden space-y-6">
+            {comparisonRows.map((row, i) => (
+              <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
+                <p className="text-sm text-slate-300 font-medium mb-4">{row.label}</p>
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div>
+                    <p className="text-[10px] text-slate-500 mb-1">Frontline</p>
+                    <ComparisonValueCell value={row.frontline} />
+                  </div>
+                  <div className="bg-primary/5 rounded-lg py-1">
+                    <p className="text-[10px] text-primary mb-1">Specialist</p>
+                    <ComparisonValueCell value={row.specialist} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-500 mb-1">Command</p>
+                    <ComparisonValueCell value={row.command} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Footnote */}
+          <p className="text-xs text-slate-500 text-center mt-8 italic">
+            Channels and integrations vary by stack. We confirm what's supported during Launch Build. We never claim compliance certification.
+          </p>
+
+          {/* Custom / Enterprise Card */}
+          <motion.div
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={{ ...fadeInUpViewport.transition, delay: 0.2 }}
+            className="mt-12 p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent max-w-md mx-auto text-center"
+            data-testid="card-offers-custom-enterprise"
+          >
+            <h3 className="text-2xl font-display font-medium mb-3 text-white">Custom / Enterprise</h3>
+            <p className="text-slate-400 mb-6">
+              Multi-location, unusual workflows, strict compliance, or non-standard tools.
+            </p>
+            <ContactFormDialog
+              source="custom-enterprise"
+              title="Talk to Us"
+              description="Tell us about your unique requirements and we'll map out what's possible."
+              trigger={
+                <Button 
+                  data-testid="button-offers-custom-enterprise"
+                  className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-primary/30 h-12 rounded-lg font-medium transition-all"
+                >
+                  Talk to Us <span className="ml-2">→</span>
+                </Button>
+              }
+            />
+            <p className="text-xs text-slate-500 mt-4">
+              We'll map your stack, risks, and required audit trail before quoting.
+            </p>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 export default function Offers() {
   const offerSchemas = pricingTiers.map(tier => createOfferSchema({
     name: tier.name,
@@ -773,6 +918,9 @@ export default function Offers() {
 
       {/* Pricing Grid - Find Your Fit */}
       <PricingGridSection />
+
+      {/* Compare Plans Section */}
+      <ComparePlansSection />
 
       {/* Not Sure Where to Start? + AI Clarity Assessment */}
       <section id="ai-clarity-assessment" className="py-24 relative overflow-hidden">
