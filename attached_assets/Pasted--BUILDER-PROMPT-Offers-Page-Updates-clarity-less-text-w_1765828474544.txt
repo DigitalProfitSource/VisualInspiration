@@ -1,0 +1,147 @@
+**BUILDER PROMPT — Offers Page Updates (clarity + less text walls + cleaner comparison table)**
+
+Update ONLY the Offers section (Frontline / Specialist / Command pricing cards + comparison table area). Keep the existing layout style (dark/glass), spacing, and CTA structure. Do not mention internal tooling (e.g., GHL). Do not add new tiers beyond any existing “Custom/Enterprise” element already present.
+
+---
+
+## 1) Fix Launch Build pricing clarity (must be unmissable)
+
+On EACH plan card (Frontline, Specialist, Command), place a clear pricing block directly adjacent to or directly below the primary CTA button:
+
+**Format (exact):**
+
+* **Launch Build (one-time): $[AMOUNT]**
+* **Monthly: $[AMOUNT]/mo**
+
+Add a tooltip icon next to “Launch Build (one-time)” with tooltip text:
+“Launch Build = setup, configuration, testing, and go-live.”
+
+If a plan has a waiver/discount (only if real), display it explicitly with strike-through:
+~~$[AMOUNT] Launch Build~~ **Waived**
+
+---
+
+## 2) Keep tier inclusion clarity (additive language)
+
+Add the following micro-lines near the top of the card content (visible without expanding):
+
+**Specialist:**
+**“Includes everything in Frontline, plus:”**
+
+**Command:**
+**“Includes Specialist foundation, plus: (by application)”**
+
+Do NOT say “Everything included” anywhere.
+
+---
+
+## 3) Simplify the comparison table to reduce confusion
+
+### 3.1 Table structure
+
+Keep the comparison table with 3 columns: **Frontline / Specialist / Command** and the same 8 row labels (keep order):
+
+1. AI Front Desk Coverage (Phone/SMS/Web forms)
+2. Lead Capture + Routing + Pipelines
+3. Follow-Up Engine (reminders + reschedules + basic nurture)
+4. Show-Rate + Reactivation Campaigns
+5. Reputation + Review + Complaint Routing
+6. Outbound Calling (human dialer / AI voice)
+7. Ops Brain Layer (SOPs + Staff Co-pilot)
+8. Reporting + Optimization Cadence
+
+### 3.2 Cell states (reduce “stack-dependent” text repetition)
+
+Replace repeated “Available (stack-dependent)” style language with a single word:
+
+Use ONLY these 4 cell values:
+
+* **Included**
+* **Advanced**
+* **Optional**
+* **By application**
+
+### 3.3 Fill values (exact)
+
+**Frontline**
+1 Included
+2 Included
+3 Included
+4 Optional
+5 Optional
+6 Optional
+7 Optional
+8 Included
+
+**Specialist**
+1 Included
+2 Advanced
+3 Advanced
+4 Included
+5 Included
+6 Optional
+7 Optional
+8 Advanced
+
+**Command**
+1 Included
+2 Advanced
+3 Advanced
+4 Included
+5 Included
+6 By application
+7 By application
+8 Advanced
+
+### 3.4 Legend + footnote (required)
+
+Under the table, add these lines (exact):
+
+**Legend:** Optional = confirmed during Launch Build (based on your tools + permissions).
+**Note:** We never claim compliance certification.
+
+---
+
+## 4) Reduce “text walls” in “What You Really Get” (keep depth but collapse by default)
+
+For each tier’s expanded details area (“What You Really Get”):
+
+### 4.1 Default collapsed view
+
+* Show only **7 bullets max** by default.
+* Each bullet must be **Label + one sentence** for skimmability:
+
+  * Example: **Routing & escalation:** Urgent issues go to the right person fast.
+
+### 4.2 Expand / collapse control
+
+Add a toggle at the bottom of the visible bullets:
+
+* **“Show full deliverables”** (expands the full list)
+* **“Hide details”** (collapses back to 7 bullets)
+
+Do NOT delete the deeper content; simply collapse it.
+
+### 4.3 Skimmability formatting (applies in both collapsed + expanded)
+
+* Bold the first 2–5 words of each bullet as a label.
+
+---
+
+## 5) Tier boundary accuracy (important guardrails)
+
+* **Frontline:** inbound-first. Do not imply proactive outbound calling is included.
+* **Specialist:** may reference selective proactive outreach only as “Optional” unless already explicitly included elsewhere.
+* **Command:** keep “By application” framing for advanced capabilities; avoid promising universal integrations or channels.
+
+---
+
+## 6) Deliverable
+
+After implementing, return:
+
+* Updated copy blocks for the pricing/CTA area on each tier card
+* The updated comparison table (labels + cell values + legend/note)
+* Confirmation that each “What You Really Get” section defaults to 7 bullets with expand/collapse behavior
+
+Implement these changes now.
