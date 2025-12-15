@@ -1,0 +1,111 @@
+BUILDER PROMPT (USE THIS EXACTLY)
+
+Scope:
+Modify ONLY the “Compare Plans” section on the Offers page.
+Do NOT change pricing, CTAs, tier names, guarantees, or add new capabilities.
+
+1) Replace the comparison table content (structure stays)
+
+Keep the 3 columns:
+Frontline | Specialist | Command
+
+Replace the rows with the following exact wording.
+
+CORE COVERAGE
+
+AI Front Desk (Phone / SMS / Web)
+
+Frontline: 24/7 inbound handling
+
+Specialist: 24/7 inbound handling
+
+Command: 24/7 inbound handling
+
+Lead Capture & Routing
+
+Frontline: Standard forms + basic routing
+
+Specialist: Smart routing + conditional logic
+
+Command: Multi-location / enterprise routing
+
+Follow-Up Engine
+
+Frontline: Confirmations + reminders + basic nurture
+
+Specialist: Show-rate + reactivation sequences
+
+Command: Custom follow-up strategy
+
+GROWTH ENGINE
+
+Reactivation Campaigns
+
+Frontline: —
+
+Specialist: Dormant & no-show recovery
+
+Command: Custom reactivation strategy
+
+Reputation & Review Flows
+
+Frontline: —
+
+Specialist: Review generation + complaint routing
+
+Command: Custom reputation workflows
+
+ADVANCED OPERATIONS
+
+Outbound Calling (Human / AI Voice)
+
+Frontline: Stack-dependent
+
+Specialist: Stack-dependent
+
+Command: By application
+
+Ops Brain Layer (SOPs + Staff Co-Pilot)
+
+Frontline: —
+
+Specialist: —
+
+Command: By application
+
+PERFORMANCE
+
+Reporting & Optimization
+
+Frontline: Monthly performance review
+
+Specialist: Trend analysis + optimization
+
+Command: Deep-dive ops & ROI analysis
+
+2) Required micro-copy (place directly under table)
+
+Add this exact text, no rewording:
+
+Stack-dependent = depends on your current tools and permissions. Confirmed during Launch Build.
+Note: We do not claim compliance certification.
+
+3) Visual emphasis rules
+
+Subtly highlight the Specialist column background
+
+Keep Command visually gated (no glow)
+
+Ensure row labels are left-aligned and scannable
+
+Do NOT add legends, icons, or footnotes beyond the text above
+
+4) Do NOT do the following
+
+Do not use the words: Advanced, Optional, Included
+
+Do not imply outbound calling is guaranteed
+
+Do not mention platforms or vendors
+
+Do not add new rows or features
