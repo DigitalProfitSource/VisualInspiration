@@ -1,0 +1,124 @@
+Update Offers Section (Frontline / Specialist / Command) to align with SS KB v1.0 + outbound calling tiering
+
+You are updating ONLY the Offers section shown in the screenshots (Frontline, Specialist, Command cards and their expanded “What you really get” areas). Keep the current layout, styling, buttons, and pricing display. Edit copy only, add only minimal micro-lines where required. Do not add new sections or new tiers.
+
+Global rules (apply to all tiers)
+
+Maintain the positioning: SimpleSequence is an AI Operations Layer (not “AI receptionist 2.0”).
+
+Do NOT promise specific revenue/ROI numbers, bookings, or “guaranteed HIPAA compliance.”
+
+Do NOT claim channels/integrations are included unless stated as “where supported / confirmed at kickoff.”
+
+Use clear scope boundaries: outbound calling is tiered; proactive outreach is selective; execution depends on enabled channels and approved scripts.
+
+Add a small “Channels & Availability” line inside each expanded tier:
+
+“Channels depend on your stack (GHL baseline). We confirm phone/SMS/email/forms/calendar at kickoff; other channels are added where supported.”
+
+Tier 01 — Frontline ($297/mo)
+
+Goal: inbound-first stability. Do NOT include outbound calling or proactive outreach.
+
+Keep
+
+Headline “Frontline”
+
+The general promise: phones/texts/forms handled automatically, faster responses, basic follow-up.
+
+Update / Add (in expanded “What you really get” bullets)
+
+Keep existing bullets but add ONE new boundary line (either as a bullet or small note near the bottom):
+
+“Outbound calling / proactive outreach: not included (available in higher tiers).”
+
+Tighten language to reflect operations (not marketing hype). Keep the outcome, but avoid “lead machine” type phrasing.
+
+Tier 02 — Specialist ($497/mo) (Most Popular)
+
+Goal: show-rate + reactivation + reputation, and this is where outbound becomes legitimate (selective + controlled).
+
+Update the focus bullets (top of card)
+
+Keep “Increasing show-rates,” “Winning back leads,” “Review generation + complaint routing.”
+
+Add one short clause implying proactive outreach without overselling:
+
+“Selective proactive outreach for recovery (where supported).”
+
+Update / Add (expanded “What you really get” bullets)
+
+Add these bullets (or rewrite existing ones to include these ideas):
+
+“Signals-of-intent recovery: missed calls + site visits without conversion + form partials/submissions + dormant leads (where tracked/available).”
+
+“Selective proactive outreach (AI Voice or human-led, where supported): no-show recovery, missed-call recovery, reactivation attempts.”
+
+“Consent + script guardrails: outbound is deployed only with approved scripts and appropriate consent posture.”
+
+Keep existing strengths:
+
+Industry-shaped pipelines
+
+Show-Rate Engine
+
+Reactivation campaigns
+
+Reputation/review flows
+
+Education/FAQs (RAG-style, within approved content)
+
+Stronger ongoing tuning
+
+Ensure language states that outbound is a lever, not constant blasting:
+
+Add a final note line: “Outbound is not used for mass blasting; it’s a controlled operational lever.”
+
+Tier 03 — Command (From $997/mo) — By application
+
+Goal: Ops brain + staff co-pilot + next-best-actions across leads/cases/jobs; outbound is optional execution, not the headline.
+
+Keep
+
+“AI ops brain & strategic partner”
+
+“Playbooks within your rules”
+
+“Ops co-pilot for your staff”
+
+“Daily next-best-actions”
+
+“Advanced visibility & patterns”
+
+“Strategic partnership layer”
+
+“Designed for complexity”
+
+Update / Add (expanded bullets)
+
+Add one precise capability line under Ops co-pilot / next-best-actions:
+
+“Can recommend and trigger outreach tasks/calls when rules allow (execution depends on enabled channels such as SMS/email/AI Voice where supported).”
+
+Do NOT make Command sound like “we do unlimited outbound.”
+Do NOT claim every integration exists; keep it stack-dependent.
+
+Micro-copy consistency edits
+
+Replace any implication of “we replace your team” with “we coordinate and route.”
+
+Wherever “missed calls” appears as the only example of leakage, expand it to:
+
+“missed calls and untapped opportunities (e.g., site visits, form partials, dormant leads)”
+but ONLY in Specialist/Command, not Frontline.
+
+Output requirement
+
+Return the revised copy blocks for:
+
+Frontline card (collapsed + expanded)
+
+Specialist card (collapsed + expanded)
+
+Command card (collapsed + expanded)
+Preserve the same structure and approximate length per area. No extra sections.
