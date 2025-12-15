@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, Check, ChevronDown, Phone, Users, Brain, Shield, Zap, BarChart3 } from "lucide-react";
+import { Activity, Check, ChevronDown, Phone, Users, Brain, Shield, Zap, BarChart3, Info } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
@@ -51,7 +52,7 @@ const pricingTiers: PricingTier[] = [
       { title: "Single intake & simple stages", description: "One consistent way leads come in instead of scattered forms and sticky notes, with standard stages like: New → Qualified → Scheduled → Completed → Follow-up." },
       { title: "Daily visibility for your team", description: "A central list or view of new leads and today's appointments so your staff sees what's on deck without hunting across tools; therefore your team spends more time doing and less time searching." },
       { title: "Monthly optimization", description: "One focused review each month to tune scripts, routing, and timing based on what's actually happening in your business." },
-      { title: "Channels & availability", description: "Channels depend on your stack (GHL baseline). We confirm phone/SMS/email/forms/calendar at kickoff; other channels are added where supported." },
+      { title: "Channels & availability", description: "Channels confirmed at kickoff. Standard phone/SMS/email/forms/calendar; other channels added where supported." },
       { title: "Scope boundary", description: "Outbound calling and proactive outreach are not included in this tier (available in Specialist and Command)." }
     ],
     outcome: "Your front desk stops leaking obvious money. New leads are captured, responded to, and moved forward consistently, therefore taking basic front-desk chaos off your plate without another hire.",
@@ -81,7 +82,7 @@ const pricingTiers: PricingTier[] = [
       { title: "Reputation & review flows", description: "Asks happy clients/patients for reviews at the right moment; routes unhappy ones into an internal resolution path; prioritizes platforms that matter most for your niche, therefore protecting your reputation while you grow it." },
       { title: "Targeted education & FAQs", description: "Pre-visit and post-visit instructions sent automatically, plus \"what to expect\" flows for key services or procedures, using your approved content so the system never gives legal/medical advice or goes off-script." },
       { title: "Stronger ongoing tuning", description: "A deeper monthly performance review focused on show-rate, reactivation, and review trends, with clear next-step recommendations so the system keeps getting sharper instead of going stale." },
-      { title: "Channels & availability", description: "Channels depend on your stack (GHL baseline). We confirm phone/SMS/email/forms/calendar at kickoff; other channels are added where supported." }
+      { title: "Channels & availability", description: "Channels confirmed at kickoff. Standard phone/SMS/email/forms/calendar; other channels added where supported." }
     ],
     outcome: "You don't just respond — you drive revenue behavior. More people show up, more old leads return, and more happy clients talk about you publicly, therefore lifting the ROI of your marketing and front-desk time without adding more staff.",
     ctaText: "Start Specialist",
@@ -107,7 +108,7 @@ const pricingTiers: PricingTier[] = [
       { title: "Advanced visibility & patterns", description: "Trends across response times, show-rates, conversion, reactivation, and reviews; breakdowns by channel (phone, SMS, web, DMs) and by source where the data exists, therefore giving leadership real operational insight instead of just call counts." },
       { title: "Strategic partnership layer", description: "Dedicated point of contact, quarterly strategy and roadmap sessions, and joint experiments (new flows, campaigns, or offers) with clear success criteria." },
       { title: "Designed for complexity", description: "Support for multi-location routing, rules, and reporting where needed, plus more complex service menus or case types without everything becoming a one-off project." },
-      { title: "Channels & availability", description: "Channels depend on your stack (GHL baseline). We confirm phone/SMS/email/forms/calendar at kickoff; other channels are added where supported. Outreach execution is stack-dependent." }
+      { title: "Channels & availability", description: "Channels confirmed at kickoff. Standard phone/SMS/email/forms/calendar; other channels added where supported. Outreach execution depends on your tools and permissions." }
     ],
     outcome: "Command turns SimpleSequence into your AI operations partner — a system that knows your rules, organizes daily actions, and helps your team coordinate complex, high-value work, therefore justifying premium, ROI-first pricing and long-term collaboration.",
     ctaText: "Apply for Command",
@@ -364,12 +365,8 @@ function PricingGridSection() {
             }`}
             data-testid="card-offers-frontline"
           >
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-mono text-primary">{frontline.number}</span>
-              <div className="text-right">
-                <span className="text-sm text-slate-500 block">{frontline.buildFee}</span>
-                <span className="text-2xl font-display font-bold text-white">{frontline.monthlyFee}</span>
-              </div>
             </div>
             
             <h3 className="text-2xl font-display font-medium mb-2 text-white">
@@ -402,34 +399,34 @@ function PricingGridSection() {
                     </ul>
                   </div>
                   
-                  <AnimatePresence>
-                    {entryCardsExpanded && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="overflow-hidden"
+                  <div className="mb-6 pt-4 border-t border-white/10">
+                    <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
+                    <ul className="space-y-3">
+                      {(entryCardsExpanded ? frontline.expandedBullets : frontline.expandedBullets.slice(0, 7)).map((bullet, i) => (
+                        <li key={i} className="text-sm">
+                          <div className="flex items-start gap-3">
+                            <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                            <div>
+                              <span className="text-white font-medium">{bullet.title}:</span>
+                              <span className="text-slate-400 ml-1">{entryCardsExpanded ? bullet.description : `${bullet.description.split('.')[0]}.`}</span>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                    {frontline.expandedBullets.length > 7 && (
+                      <button
+                        onClick={() => setEntryCardsExpanded(!entryCardsExpanded)}
+                        className="w-full flex items-center justify-center gap-2 py-2 mt-4 text-sm text-slate-400 hover:text-primary transition-colors"
+                        data-testid="toggle-expand-frontline"
                       >
-                        <div className="mb-6 pt-4 border-t border-white/10">
-                          <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
-                          <ul className="space-y-3">
-                            {frontline.expandedBullets.map((bullet, i) => (
-                              <li key={i} className="text-sm">
-                                <div className="flex items-start gap-3">
-                                  <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                                  <div>
-                                    <span className="text-white font-medium">{bullet.title}</span>
-                                    <p className="text-slate-400 mt-1 text-xs">{bullet.description}</p>
-                                  </div>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </motion.div>
+                        {entryCardsExpanded ? "Hide details" : "Show full deliverables"}
+                        <motion.div animate={{ rotate: entryCardsExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                          <ChevronDown className="w-4 h-4" />
+                        </motion.div>
+                      </button>
                     )}
-                  </AnimatePresence>
+                  </div>
                   
                   <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
                     <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
@@ -437,17 +434,6 @@ function PricingGridSection() {
                       {frontline.outcome}
                     </p>
                   </div>
-                  
-                  <button
-                    onClick={() => setEntryCardsExpanded(!entryCardsExpanded)}
-                    className="w-full flex items-center justify-center gap-2 py-2 mb-4 text-sm text-slate-400 hover:text-primary transition-colors"
-                    data-testid="toggle-expand-frontline"
-                  >
-                    {entryCardsExpanded ? "Show Less" : "See Full Details"}
-                    <motion.div animate={{ rotate: entryCardsExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                      <ChevronDown className="w-4 h-4" />
-                    </motion.div>
-                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -465,6 +451,30 @@ function PricingGridSection() {
                 </Button>
               }
             />
+            
+            {/* Pricing Block */}
+            <div className="mt-4 p-3 rounded-lg bg-white/[0.02] border border-white/5">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-1">
+                  <span className="font-semibold text-white">Launch Build (one-time):</span>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info className="w-3 h-3 text-slate-500 cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="text-xs">Launch Build = setup, configuration, testing, and go-live.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                <span className="text-primary font-bold">$600</span>
+              </div>
+              <div className="flex items-center justify-between text-sm mt-2">
+                <span className="font-semibold text-white">Monthly:</span>
+                <span className="text-primary font-bold">$297/mo</span>
+              </div>
+            </div>
           </div>
 
           {/* Specialist Card (Most Popular) */}
@@ -480,12 +490,8 @@ function PricingGridSection() {
             </div>
             
             <div className="relative z-10">
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-4">
                 <span className="text-xs font-mono text-primary">{specialist.number}</span>
-                <div className="text-right">
-                  <span className="text-sm text-slate-500 block">{specialist.buildFee}</span>
-                  <span className="text-2xl font-display font-bold text-white">{specialist.monthlyFee}</span>
-                </div>
               </div>
               
               <h3 className="text-2xl font-display font-medium mb-2 text-white">
@@ -519,34 +525,34 @@ function PricingGridSection() {
                       </ul>
                     </div>
                     
-                    <AnimatePresence>
-                      {entryCardsExpanded && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3, ease: "easeInOut" }}
-                          className="overflow-hidden"
+                    <div className="mb-6 pt-4 border-t border-white/10">
+                      <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
+                      <ul className="space-y-3">
+                        {(entryCardsExpanded ? specialist.expandedBullets : specialist.expandedBullets.slice(0, 7)).map((bullet, i) => (
+                          <li key={i} className="text-sm">
+                            <div className="flex items-start gap-3">
+                              <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                              <div>
+                                <span className="text-white font-medium">{bullet.title}:</span>
+                                <span className="text-slate-400 ml-1">{entryCardsExpanded ? bullet.description : `${bullet.description.split('.')[0]}.`}</span>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                      {specialist.expandedBullets.length > 7 && (
+                        <button
+                          onClick={() => setEntryCardsExpanded(!entryCardsExpanded)}
+                          className="w-full flex items-center justify-center gap-2 py-2 mt-4 text-sm text-slate-400 hover:text-primary transition-colors"
+                          data-testid="toggle-expand-specialist"
                         >
-                          <div className="mb-6 pt-4 border-t border-white/10">
-                            <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
-                            <ul className="space-y-3">
-                              {specialist.expandedBullets.map((bullet, i) => (
-                                <li key={i} className="text-sm">
-                                  <div className="flex items-start gap-3">
-                                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                                    <div>
-                                      <span className="text-white font-medium">{bullet.title}</span>
-                                      <p className="text-slate-400 mt-1 text-xs">{bullet.description}</p>
-                                    </div>
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </motion.div>
+                          {entryCardsExpanded ? "Hide details" : "Show full deliverables"}
+                          <motion.div animate={{ rotate: entryCardsExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                            <ChevronDown className="w-4 h-4" />
+                          </motion.div>
+                        </button>
                       )}
-                    </AnimatePresence>
+                    </div>
                     
                     <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
                       <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
@@ -554,17 +560,6 @@ function PricingGridSection() {
                         {specialist.outcome}
                       </p>
                     </div>
-                    
-                    <button
-                      onClick={() => setEntryCardsExpanded(!entryCardsExpanded)}
-                      className="w-full flex items-center justify-center gap-2 py-2 mb-4 text-sm text-slate-400 hover:text-primary transition-colors"
-                      data-testid="toggle-expand-specialist"
-                    >
-                      {entryCardsExpanded ? "Show Less" : "See Full Details"}
-                      <motion.div animate={{ rotate: entryCardsExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                        <ChevronDown className="w-4 h-4" />
-                      </motion.div>
-                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -582,6 +577,30 @@ function PricingGridSection() {
                   </Button>
                 }
               />
+              
+              {/* Pricing Block */}
+              <div className="mt-4 p-3 rounded-lg bg-white/[0.02] border border-white/5">
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-1">
+                    <span className="font-semibold text-white">Launch Build (one-time):</span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="w-3 h-3 text-slate-500 cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-xs">Launch Build = setup, configuration, testing, and go-live.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <span className="text-primary font-bold">$1,000</span>
+                </div>
+                <div className="flex items-center justify-between text-sm mt-2">
+                  <span className="font-semibold text-white">Monthly:</span>
+                  <span className="text-primary font-bold">$497/mo</span>
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -601,13 +620,8 @@ function PricingGridSection() {
             
             <div className="grid lg:grid-cols-2 gap-10">
               <div>
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-3 mb-4">
                   <span className="text-xs font-mono text-primary/70">{command.number}</span>
-                  <div>
-                    <span className="text-sm text-slate-500 mr-2">{command.buildFee}</span>
-                    <span className="text-slate-600">•</span>
-                    <span className="text-2xl font-display font-bold text-white ml-2">{command.monthlyFee}</span>
-                  </div>
                 </div>
                 <h3 className="text-3xl font-display font-semibold mb-2 text-white">{command.name}</h3>
                 <p className="text-sm text-slate-400 mb-2">{command.descriptor}</p>
@@ -639,6 +653,30 @@ function PricingGridSection() {
                     </Button>
                   }
                 />
+                
+                {/* Pricing Block */}
+                <div className="mt-4 p-3 rounded-lg bg-white/[0.02] border border-white/5">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-1">
+                      <span className="font-semibold text-white">Launch Build (one-time):</span>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info className="w-3 h-3 text-slate-500 cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-xs">Launch Build = setup, configuration, testing, and go-live.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    <span className="text-primary font-bold">From $2,000</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm mt-2">
+                    <span className="font-semibold text-white">Monthly:</span>
+                    <span className="text-primary font-bold">From $997/mo</span>
+                  </div>
+                </div>
               </div>
               
               <div className="space-y-6">
@@ -670,13 +708,15 @@ function PricingGridSection() {
                     <div>
                       <h4 className="text-xs font-mono text-primary/70 mb-4">WHAT YOU REALLY GET</h4>
                       <ul className="space-y-2 text-sm text-slate-400">
-                        {command.expandedBullets.slice(0, 3).map((bullet, i) => (
+                        {command.expandedBullets.slice(0, 7).map((bullet, i) => (
                           <li key={i} className="flex items-start gap-3">
                             <Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" />
-                            <span className="text-white font-medium">{bullet.title}</span>
+                            <div>
+                              <span className="text-white font-medium">{bullet.title}:</span>
+                              <span className="text-slate-400 ml-1">{bullet.description.split('.')[0]}.</span>
+                            </div>
                           </li>
                         ))}
-                        <li className="text-slate-500 text-sm pl-6">+ {command.expandedBullets.length - 3} more...</li>
                       </ul>
                     </div>
                   )}
@@ -687,7 +727,7 @@ function PricingGridSection() {
                   className="flex items-center gap-2 text-sm text-slate-400 hover:text-primary transition-colors"
                   data-testid="toggle-expand-command"
                 >
-                  {commandExpanded ? "Show Less" : "See Full Details"}
+                  {commandExpanded ? "Hide details" : "Show full deliverables"}
                   <motion.div animate={{ rotate: commandExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
                     <ChevronDown className="w-4 h-4" />
                   </motion.div>
@@ -727,7 +767,7 @@ function PricingGridSection() {
   );
 }
 
-type ComparisonValue = 'Included' | 'Advanced' | 'By application' | 'Add-on / Where supported';
+type ComparisonValue = 'Included' | 'Advanced' | 'By application' | 'Optional';
 
 interface ComparisonRow {
   label: string;
@@ -740,10 +780,10 @@ const comparisonRows: ComparisonRow[] = [
   { label: "AI Front Desk Coverage (Phone/SMS/Web forms)", frontline: "Included", specialist: "Included", command: "Included" },
   { label: "Lead Capture + Routing + Pipelines", frontline: "Included", specialist: "Advanced", command: "Advanced" },
   { label: "Follow-Up Engine (reminders + reschedules + basic nurture)", frontline: "Included", specialist: "Advanced", command: "Advanced" },
-  { label: "Show-Rate + Reactivation Campaigns", frontline: "Add-on / Where supported", specialist: "Included", command: "Included" },
-  { label: "Reputation + Review + Complaint Routing", frontline: "Add-on / Where supported", specialist: "Included", command: "Included" },
-  { label: "Outbound Calling (human dialer / AI voice where supported)", frontline: "Add-on / Where supported", specialist: "Add-on / Where supported", command: "By application" },
-  { label: "Ops Brain Layer (SOPs / playbooks / staff copilot)", frontline: "Add-on / Where supported", specialist: "Add-on / Where supported", command: "By application" },
+  { label: "Show-Rate + Reactivation Campaigns", frontline: "Optional", specialist: "Included", command: "Included" },
+  { label: "Reputation + Review + Complaint Routing", frontline: "Optional", specialist: "Included", command: "Included" },
+  { label: "Outbound Calling (human dialer / AI voice)", frontline: "Optional", specialist: "Optional", command: "By application" },
+  { label: "Ops Brain Layer (SOPs + Staff Co-pilot)", frontline: "Optional", specialist: "Optional", command: "By application" },
   { label: "Reporting + Optimization Cadence", frontline: "Included", specialist: "Advanced", command: "Advanced" },
 ];
 
@@ -752,7 +792,7 @@ function ComparisonValueCell({ value }: { value: ComparisonValue }) {
     'Included': 'text-primary font-medium',
     'Advanced': 'text-cyan-300 font-medium',
     'By application': 'text-white/70',
-    'Add-on / Where supported': 'text-slate-500',
+    'Optional': 'text-slate-500',
   };
 
   return (
@@ -829,10 +869,15 @@ function ComparePlansSection() {
             ))}
           </div>
 
-          {/* Footnote */}
-          <p className="text-xs text-slate-500 text-center mt-8 italic">
-            Channels and integrations vary by stack. We confirm what's supported during Launch Build. We never claim compliance certification.
-          </p>
+          {/* Legend + Footnote */}
+          <div className="mt-8 text-center space-y-2">
+            <p className="text-xs text-slate-400">
+              <span className="font-semibold text-slate-300">Legend:</span> Optional = confirmed during Launch Build (based on your tools + permissions).
+            </p>
+            <p className="text-xs text-slate-500 italic">
+              <span className="font-semibold text-slate-400">Note:</span> We never claim compliance certification.
+            </p>
+          </div>
 
           {/* Custom / Enterprise Card */}
           <motion.div
