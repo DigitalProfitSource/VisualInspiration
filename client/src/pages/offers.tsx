@@ -23,6 +23,7 @@ interface PricingTier {
   buildFee: string;
   monthlyFee: string;
   ifYouWant: string;
+  clarityLine?: string;
   focusBullets: string[];
   expandedBullets: { title: string; description: string }[];
   outcome: string;
@@ -40,22 +41,21 @@ const pricingTiers: PricingTier[] = [
     buildFee: "$600 Launch Build",
     monthlyFee: "$297/mo",
     ifYouWant: "If you want the phones, texts, and forms handled automatically without hiring another front-desk person.",
+    clarityLine: "Inbound coverage + follow-up execution. No outbound campaigns or ops brain layer.",
     focusBullets: [
       "Always-on front desk coverage",
       "Faster responses to new leads",
       "Basic, consistent follow-up that actually happens"
     ],
     expandedBullets: [
-      { title: "24/7 AI front desk across key channels", description: "Answers phone, SMS, website chat, and lead forms so fewer people hit voicemail or get ignored." },
-      { title: "Smart triage & routing", description: "Detects new leads vs existing clients/patients vs vendors vs spam, and flags urgent issues so real emergencies get priority." },
-      { title: "Core follow-up flows", description: "New lead → consult / call / estimate booking, plus confirmations, reminders, simple reschedule flows, and a short \"win-back\" touch for recent no-shows or cancellations." },
-      { title: "Single intake & simple stages", description: "One consistent way leads come in instead of scattered forms and sticky notes, with standard stages like: New → Qualified → Scheduled → Completed → Follow-up." },
-      { title: "Daily visibility for your team", description: "A central list or view of new leads and today's appointments so your staff sees what's on deck without hunting across tools; therefore your team spends more time doing and less time searching." },
-      { title: "Monthly optimization", description: "One focused review each month to tune scripts, routing, and timing based on what's actually happening in your business." },
-      { title: "Channels & availability", description: "Channels confirmed at kickoff. Standard phone/SMS/email/forms/calendar; other channels added where supported." },
-      { title: "Scope boundary", description: "Outbound calling and proactive outreach are not included in this tier (available in Specialist and Command)." }
+      { title: "24/7 AI front desk", description: "Answers phone, SMS, chat, and forms so fewer leads hit voicemail." },
+      { title: "Smart triage & routing", description: "Detects new leads vs existing clients vs spam; flags urgent issues." },
+      { title: "Core follow-up flows", description: "Confirmations, reminders, reschedule prompts, and short win-back touches." },
+      { title: "Single intake & stages", description: "One consistent way leads come in with standard pipeline stages." },
+      { title: "Daily visibility", description: "Central view of new leads and today's appointments for your team." },
+      { title: "Monthly optimization", description: "One focused review each month to tune scripts, routing, and timing." }
     ],
-    outcome: "Your front desk stops leaking obvious money. New leads are captured, responded to, and moved forward consistently, therefore taking basic front-desk chaos off your plate without another hire.",
+    outcome: "Your front desk stops leaking obvious money. New leads are captured, responded to, and moved forward consistently.",
     ctaText: "Start Frontline",
     ctaSource: "frontline"
   },
@@ -66,25 +66,23 @@ const pricingTiers: PricingTier[] = [
     buildFee: "$1,000 Launch Build",
     monthlyFee: "$497/mo",
     ifYouWant: "If you want more people showing up, old leads coming back, and reviews growing without burning out your team.",
+    clarityLine: "Includes everything in Frontline — plus reactivation, reputation systems, and outbound calling (when appropriate).",
     focusBullets: [
       "Increasing show-rates to booked appointments",
       "Winning back leads who went cold",
       "Systematic review generation and complaint routing",
-      "Selective proactive outreach for recovery (where supported)"
+      "Selective proactive outreach for recovery"
     ],
     expandedBullets: [
-      { title: "Industry-shaped pipelines", description: "We model the real stages of your world (Med-spa: New lead → Consult booked → Show/no-show → Procedure → Post-op → Review | Law: New inquiry → Conflict check → Consult → Retainer signed → Active case | Home services: New request → Visit → Quote sent → Job scheduled → Completion → Warranty follow-up)" },
-      { title: "Show-Rate Engine", description: "Multi-step reminder and nudge sequences tuned to high-value appointments; different messaging for consults vs low-stakes visits; smart reschedule prompts instead of \"sorry we missed you\" and silence." },
-      { title: "Signals-of-intent recovery", description: "Missed calls, site visits without conversion, form partials/submissions, and dormant leads (where tracked/available) trigger targeted recovery flows." },
-      { title: "Selective proactive outreach", description: "AI Voice or human-led outreach (where supported) for no-show recovery, missed-call recovery, and reactivation attempts. Outbound is not used for mass blasting; it's a controlled operational lever." },
-      { title: "Consent & script guardrails", description: "Outbound is deployed only with approved scripts and appropriate consent posture. We coordinate and route, not replace your team." },
-      { title: "Reactivation campaigns", description: "Flows for never-booked inquiries who went quiet, no-shows and last-minute cancellations, and past clients/patients who haven't booked in a while." },
-      { title: "Reputation & review flows", description: "Asks happy clients/patients for reviews at the right moment; routes unhappy ones into an internal resolution path; prioritizes platforms that matter most for your niche, therefore protecting your reputation while you grow it." },
-      { title: "Targeted education & FAQs", description: "Pre-visit and post-visit instructions sent automatically, plus \"what to expect\" flows for key services or procedures, using your approved content so the system never gives legal/medical advice or goes off-script." },
-      { title: "Stronger ongoing tuning", description: "A deeper monthly performance review focused on show-rate, reactivation, and review trends, with clear next-step recommendations so the system keeps getting sharper instead of going stale." },
-      { title: "Channels & availability", description: "Channels confirmed at kickoff. Standard phone/SMS/email/forms/calendar; other channels added where supported." }
+      { title: "Industry-shaped pipelines", description: "Pipeline stages modeled to your vertical (med-spa, law, home services, etc.)." },
+      { title: "Show-Rate Engine", description: "Multi-step nudges tuned to high-value appointments; smart reschedule prompts." },
+      { title: "Signals-of-intent recovery", description: "Missed calls, form partials, and dormant leads trigger targeted recovery." },
+      { title: "Selective outbound", description: "AI Voice or human outreach for no-show and reactivation attempts." },
+      { title: "Reactivation campaigns", description: "Flows for old inquiries, no-shows, and past clients who haven't returned." },
+      { title: "Reputation & reviews", description: "Review requests at the right moment; unhappy clients routed internally." },
+      { title: "Monthly performance review", description: "Deeper review focused on show-rate, reactivation, and review trends." }
     ],
-    outcome: "You don't just respond — you drive revenue behavior. More people show up, more old leads return, and more happy clients talk about you publicly, therefore lifting the ROI of your marketing and front-desk time without adding more staff.",
+    outcome: "You don't just respond — you drive revenue behavior. More people show up, more old leads return, and more happy clients talk about you publicly.",
     ctaText: "Start Specialist",
     ctaSource: "specialist",
     isPopular: true
@@ -96,21 +94,21 @@ const pricingTiers: PricingTier[] = [
     buildFee: "From $2,000 Launch Build",
     monthlyFee: "From $997/mo",
     ifYouWant: "If you want an AI-driven operations layer that helps your team know what to do next across leads, cases, jobs, and locations.",
+    clarityLine: "Built on Specialist foundations when applicable — expanded into an ops brain layer and deeper governance.",
     focusBullets: [
       "Turning your SOPs and policies into an AI-aware \"ops brain\"",
       "Giving your team clear next-best-actions each day",
       "Coordinating more complex, multi-location or multi-service operations"
     ],
     expandedBullets: [
-      { title: "AI over your playbooks (within your rules)", description: "We load your SOPs, policies, consent forms, pricing guides, and key checklists so the system can follow your rules, not invent its own; both the AI front desk and your staff can lean on the same source of truth." },
-      { title: "Ops co-pilot for your staff", description: "Team members can ask operational questions like: \"What's our process if a patient calls with concerns 10 days after treatment?\" \"What do we do if a tenant reports a leak after hours?\" The co-pilot responds with steps based on your playbooks and can create tasks or tickets in your existing tools where supported." },
-      { title: "Daily next-best-actions", description: "A prioritized list of who should be contacted today — hot leads, stalled cases, aging quotes, at-risk clients — so your team focuses on the handful of actions that matter most instead of staring at an overwhelming list. Can recommend and trigger outreach tasks/calls when rules allow (execution depends on enabled channels such as SMS/email/AI Voice where supported)." },
-      { title: "Advanced visibility & patterns", description: "Trends across response times, show-rates, conversion, reactivation, and reviews; breakdowns by channel (phone, SMS, web, DMs) and by source where the data exists, therefore giving leadership real operational insight instead of just call counts." },
-      { title: "Strategic partnership layer", description: "Dedicated point of contact, quarterly strategy and roadmap sessions, and joint experiments (new flows, campaigns, or offers) with clear success criteria." },
-      { title: "Designed for complexity", description: "Support for multi-location routing, rules, and reporting where needed, plus more complex service menus or case types without everything becoming a one-off project." },
-      { title: "Channels & availability", description: "Channels confirmed at kickoff. Standard phone/SMS/email/forms/calendar; other channels added where supported. Outreach execution depends on your tools and permissions." }
+      { title: "AI over your playbooks", description: "SOPs, policies, and checklists loaded so the system follows your rules." },
+      { title: "Ops co-pilot for staff", description: "Team members ask operational questions and get playbook-based answers." },
+      { title: "Daily next-best-actions", description: "Prioritized list of who to contact today — hot leads, stalled cases, at-risk clients." },
+      { title: "Advanced visibility", description: "Trends across response times, show-rates, conversion, and reviews by channel." },
+      { title: "Strategic partnership", description: "Dedicated contact, quarterly strategy sessions, and joint experiments." },
+      { title: "Multi-location support", description: "Routing, rules, and reporting designed for complex operations." }
     ],
-    outcome: "Command turns SimpleSequence into your AI operations partner — a system that knows your rules, organizes daily actions, and helps your team coordinate complex, high-value work, therefore justifying premium, ROI-first pricing and long-term collaboration.",
+    outcome: "Command turns SimpleSequence into your AI operations partner — a system that knows your rules, organizes daily actions, and helps your team coordinate complex, high-value work.",
     ctaText: "Apply for Command",
     ctaSource: "command",
     isApplication: true
@@ -157,9 +155,12 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
           {tier.name}
         </h3>
         
-        <p className="text-sm text-slate-400 mb-4">
+        <p className="text-sm text-slate-400 mb-2">
           {tier.descriptor}
         </p>
+        {tier.clarityLine && (
+          <p className="text-xs text-white/70 mb-4 font-medium">{tier.clarityLine}</p>
+        )}
         
         <div className="flex items-baseline gap-2 mb-6">
           <span className="text-sm text-slate-500">{tier.buildFee}</span>
@@ -372,7 +373,10 @@ function PricingGridSection() {
             <h3 className="text-2xl font-display font-medium mb-2 text-white">
               {frontline.name}
             </h3>
-            <p className="text-sm text-slate-400 mb-4">{frontline.descriptor}</p>
+            <p className="text-sm text-slate-400 mb-2">{frontline.descriptor}</p>
+            {frontline.clarityLine && (
+              <p className="text-xs text-white/70 mb-4 font-medium">{frontline.clarityLine}</p>
+            )}
             
             <p className="text-primary text-sm font-medium mb-4">
               {frontline.ifYouWant}
@@ -498,7 +502,9 @@ function PricingGridSection() {
                 {specialist.name}
               </h3>
               <p className="text-sm text-slate-400 mb-2">{specialist.descriptor}</p>
-              <p className="text-xs font-semibold text-white/80 mb-4">Includes everything in Frontline, plus:</p>
+              {specialist.clarityLine && (
+                <p className="text-xs text-white/70 mb-4 font-medium">{specialist.clarityLine}</p>
+              )}
               
               <p className="text-primary text-sm font-medium mb-4">
                 {specialist.ifYouWant}
@@ -625,7 +631,9 @@ function PricingGridSection() {
                 </div>
                 <h3 className="text-3xl font-display font-semibold mb-2 text-white">{command.name}</h3>
                 <p className="text-sm text-slate-400 mb-2">{command.descriptor}</p>
-                <p className="text-xs font-semibold text-white/80 mb-4">Includes Specialist foundation, plus: (by application)</p>
+                {command.clarityLine && (
+                  <p className="text-xs text-white/70 mb-4 font-medium">{command.clarityLine}</p>
+                )}
                 <p className="text-primary/80 text-base mb-4 font-medium">{command.ifYouWant}</p>
                 
                 <div className="mb-6">
@@ -776,36 +784,33 @@ interface ComparisonRow {
 }
 
 const comparisonRows: ComparisonRow[] = [
-  // CORE COVERAGE
-  { label: "CORE COVERAGE", frontline: "", specialist: "", command: "", isCategory: true },
-  { label: "AI Front Desk (Phone / SMS / Web)", frontline: "24/7 inbound handling", specialist: "24/7 inbound handling", command: "24/7 inbound handling" },
-  { label: "Lead Capture + Routing", frontline: "Standard forms + basic routing", specialist: "Smart routing + conditional logic", command: "Multi-location / enterprise routing" },
-  { label: "Follow-Up Engine", frontline: "Confirmations + reminders + basic nurture", specialist: "Show-rate + reactivation sequences", command: "Custom follow-up strategy" },
-  // GROWTH ENGINE
-  { label: "GROWTH ENGINE", frontline: "", specialist: "", command: "", isCategory: true },
-  { label: "Reactivation Campaigns", frontline: "—", specialist: "Dormant + no-show recovery", command: "Custom reactivation strategy" },
-  { label: "Reputation + Review Flows", frontline: "—", specialist: "Review generation + complaint routing", command: "Custom reputation workflows" },
-  // ADVANCED OPERATIONS
-  { label: "ADVANCED OPERATIONS", frontline: "", specialist: "", command: "", isCategory: true },
-  { label: "Outbound Calling (Human / AI Voice)", frontline: "Stack-dependent", specialist: "Stack-dependent", command: "By application" },
-  { label: "Ops Brain Layer (SOPs + Staff Co-Pilot)", frontline: "—", specialist: "—", command: "By application" },
-  // PERFORMANCE
-  { label: "PERFORMANCE", frontline: "", specialist: "", command: "", isCategory: true },
-  { label: "Reporting + Optimization", frontline: "Monthly performance review", specialist: "Trend analysis + optimization", command: "Deep-dive ops + ROI analysis" },
+  { label: "AI Front Desk Coverage (Phone/SMS/Web forms)", frontline: "Included", specialist: "Included", command: "Included" },
+  { label: "Lead Capture + Routing + Pipelines", frontline: "Included", specialist: "Smart routing + logic", command: "Multi-location / complex routing (by application)" },
+  { label: "Follow-Up Engine (reminders + reschedules + basic nurture)", frontline: "Included", specialist: "Long-term + reactivation", command: "Custom strategy (by application)" },
+  { label: "Show-Rate + Reactivation Campaigns", frontline: "—", specialist: "Included", command: "Included (by application)" },
+  { label: "Reputation + Review + Complaint Routing", frontline: "—", specialist: "Included", command: "Included (by application)" },
+  { label: "Outbound Calling (Human dialer / AI voice)", frontline: "—", specialist: "Available", command: "By application" },
+  { label: "Ops Brain Layer (SOPs + Staff Co-Pilot)", frontline: "—", specialist: "Available", command: "By application" },
+  { label: "Reporting + Optimization Cadence", frontline: "Monthly optimization", specialist: "Performance + iteration", command: "Executive cadence (by application)" },
 ];
 
 function ComparisonCell({ value, isSpecialist = false }: { value: string; isSpecialist?: boolean }) {
   const isEmpty = value === "—" || value === "";
-  const isStackDependent = value === "Stack-dependent";
-  const isByApplication = value === "By application";
+  const isAvailable = value === "Available";
+  const isByApplication = value.includes("by application") || value === "By application";
+  const isIncluded = value === "Included" || value.startsWith("Included");
   
   let className = "text-xs md:text-sm ";
   if (isEmpty) {
     className += "text-slate-600";
-  } else if (isStackDependent) {
-    className += "text-slate-400 italic";
+  } else if (isAvailable) {
+    className += "text-primary/80 font-medium";
   } else if (isByApplication) {
     className += "text-white/70 italic";
+  } else if (isIncluded && isSpecialist) {
+    className += "text-primary font-medium";
+  } else if (isIncluded) {
+    className += "text-slate-300 font-medium";
   } else if (isSpecialist) {
     className += "text-primary/90";
   } else {
@@ -827,7 +832,7 @@ function ComparePlansSection() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">Compare Plans</h2>
-          <p className="text-slate-400">Built to be clear without overpromising. Final scope confirmed at kickoff.</p>
+          <p className="text-slate-400">Clear tiers without overpromising. Final scope confirmed during Launch Build.</p>
         </motion.div>
 
         <motion.div
@@ -850,18 +855,12 @@ function ComparePlansSection() {
               </thead>
               <tbody>
                 {comparisonRows.map((row, i) => (
-                  row.isCategory ? (
-                    <tr key={i} className="border-b border-white/5">
-                      <td colSpan={4} className="py-3 pt-6 text-xs font-mono text-slate-500 tracking-wider">{row.label}</td>
-                    </tr>
-                  ) : (
-                    <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                      <td className="py-4 pr-6 text-sm text-slate-300 text-left">{row.label}</td>
-                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.frontline} /></td>
-                      <td className="py-4 px-4 text-center bg-primary/[0.03]"><ComparisonCell value={row.specialist} isSpecialist /></td>
-                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.command} /></td>
-                    </tr>
-                  )
+                  <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                    <td className="py-4 pr-6 text-sm text-slate-300 text-left">{row.label}</td>
+                    <td className="py-4 px-4 text-center"><ComparisonCell value={row.frontline} /></td>
+                    <td className="py-4 px-4 text-center bg-primary/[0.03]"><ComparisonCell value={row.specialist} isSpecialist /></td>
+                    <td className="py-4 px-4 text-center"><ComparisonCell value={row.command} /></td>
+                  </tr>
                 ))}
               </tbody>
             </table>
@@ -870,39 +869,33 @@ function ComparePlansSection() {
           {/* Mobile Stacked View */}
           <div className="md:hidden space-y-4">
             {comparisonRows.map((row, i) => (
-              row.isCategory ? (
-                <div key={i} className="pt-4 pb-2">
-                  <p className="text-xs font-mono text-slate-500 tracking-wider">{row.label}</p>
-                </div>
-              ) : (
-                <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
-                  <p className="text-sm text-slate-300 font-medium mb-4 text-left">{row.label}</p>
-                  <div className="grid grid-cols-3 gap-2 text-center">
-                    <div>
-                      <p className="text-[10px] text-slate-500 mb-1">Frontline</p>
-                      <ComparisonCell value={row.frontline} />
-                    </div>
-                    <div className="bg-primary/[0.03] rounded-lg py-1">
-                      <p className="text-[10px] text-primary mb-1">Specialist</p>
-                      <ComparisonCell value={row.specialist} isSpecialist />
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-slate-500 mb-1">Command</p>
-                      <ComparisonCell value={row.command} />
-                    </div>
+              <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
+                <p className="text-sm text-slate-300 font-medium mb-4 text-left">{row.label}</p>
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div>
+                    <p className="text-[10px] text-slate-500 mb-1">Frontline</p>
+                    <ComparisonCell value={row.frontline} />
+                  </div>
+                  <div className="bg-primary/[0.03] rounded-lg py-1 px-1">
+                    <p className="text-[10px] text-primary mb-1">Specialist</p>
+                    <ComparisonCell value={row.specialist} isSpecialist />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-500 mb-1">Command</p>
+                    <ComparisonCell value={row.command} />
                   </div>
                 </div>
-              )
+              </div>
             ))}
           </div>
 
-          {/* Micro-copy */}
+          {/* Legend + Note */}
           <div className="mt-8 text-left space-y-2">
             <p className="text-xs text-slate-400">
-              Stack-dependent = depends on your current tools and permissions. Confirmed during Launch Build.
+              <span className="font-semibold text-slate-300">Legend:</span> Available = enabled when appropriate based on your workflows + permissions. Confirmed during Launch Build.
             </p>
             <p className="text-xs text-slate-500">
-              Note: We do not claim compliance certification.
+              <span className="font-semibold text-slate-400">Note:</span> We do not claim compliance certification.
             </p>
           </div>
 
