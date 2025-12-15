@@ -1,0 +1,172 @@
+Update “Offers” Page (Pricing Cards + Comparison Section + Custom/Enterprise)
+
+You are updating the Offers page for SimpleSequence. Keep the existing dark/glass UI style, spacing, and typography consistent with the current design. Implement changes ONLY for this Offers section (pricing cards + new comparison section). Do not change global nav/footer.
+
+1) Update the 3 Plan Cards (Frontline / Specialist / Command)
+1.1 Add “Includes…” clarity lines (must be visible without expanding)
+
+Frontline card:
+
+No “includes…” line needed.
+
+Specialist card (place directly under the Specialist subtitle / short descriptor, above bullets):
+
+Add a bold micro-line:
+“Includes everything in Frontline, plus:”
+
+Command card (place directly under the Command subtitle / short descriptor, above bullets):
+
+Add a bold micro-line:
+“Includes Specialist foundation, plus: (by application)”
+
+Important: Do not say “Everything included” anywhere. Do not imply all integrations/channels are guaranteed.
+
+2) Add a “Compare Plans” section under the 3 cards
+2.1 Placement
+
+Insert a new section immediately below the 3 plan cards area (Frontline, Specialist, Command) and above any later content on the Offers page.
+
+2.2 Section header copy (exact)
+
+Title: Compare Plans
+Subtext: Built to be clear without overpromising. Final scope confirmed at kickoff.
+
+2.3 Comparison table format
+
+Use a clean, modern 3-column comparison table (Frontline / Specialist / Command).
+
+Keep it short and scannable (no more than the 8 rows below).
+
+Use only these 4 states as cell values (exact wording + consistent styling):
+
+Included
+
+Advanced
+
+By application
+
+Add-on / Where supported
+
+2.4 Table rows (exact row labels)
+
+Create these 8 rows in this exact order:
+
+AI Front Desk Coverage (Phone/SMS/Web forms)
+
+Lead Capture + Routing + Pipelines
+
+Follow-Up Engine (reminders + reschedules + basic nurture)
+
+Show-Rate + Reactivation Campaigns
+
+Reputation + Review + Complaint Routing
+
+Outbound Calling (human dialer / AI voice where supported)
+
+Ops Brain Layer (SOPs / playbooks / staff copilot)
+
+Reporting + Optimization Cadence
+
+2.5 Table values (fill each cell using ONLY the 4 states)
+
+Set cells to the following:
+
+Frontline
+
+Included
+
+Included
+
+Included
+
+Add-on / Where supported
+
+Add-on / Where supported
+
+Add-on / Where supported
+
+Add-on / Where supported
+
+Included
+
+Specialist
+
+Included
+
+Advanced
+
+Advanced
+
+Included
+
+Included
+
+Add-on / Where supported
+
+Add-on / Where supported
+
+Advanced
+
+Command
+
+Included
+
+Advanced
+
+Advanced
+
+Included
+
+Included
+
+By application
+
+By application
+
+Advanced
+
+2.6 Required footnote (must appear under the table)
+
+Add a small footnote line under the table (exact copy):
+
+“Channels and integrations vary by stack. We confirm what’s supported during Launch Build. We never claim compliance certification.”
+
+3) Add “Custom / Enterprise” card within the same Compare section
+3.1 Placement
+
+Place a 4th card aligned with the Compare section (either to the right of the table on desktop or directly beneath it on mobile). It must clearly read as an option alongside the 3 plans.
+
+3.2 Custom/Enterprise card copy (exact)
+
+Title: Custom / Enterprise
+Body: Multi-location, unusual workflows, strict compliance, or non-standard tools.
+CTA button: Talk to Us
+Micro-copy (small line under CTA): We’ll map your stack, risks, and required audit trail before quoting.
+
+CTA should route to the same “Get Started / Apply / Contact” flow used for Command (or your existing contact form), but labeled “Talk to Us.”
+
+4) UX rules (important)
+
+Keep the table from becoming overwhelming: no extra rows, no long paragraphs inside cells.
+
+Do not list specific tool names (Zenoti, Clio, ServiceTitan, etc.) inside the table as “included.” Keep it generic per the states above.
+
+Ensure mobile responsiveness: table should stack cleanly (row label + plan values) and remain readable.
+
+Maintain the same visual language as the current cards (glass panels, subtle borders, consistent spacing).
+
+5) Final QA checklist (must self-verify before finishing)
+
+Specialist card includes: “Includes everything in Frontline, plus:”
+
+Command card includes: “Includes Specialist foundation, plus: (by application)”
+
+Compare Plans section exists below the cards with 8 rows exactly.
+
+Table uses ONLY: Included / Advanced / By application / Add-on / Where supported
+
+Footnote under table matches exactly.
+
+Custom / Enterprise card exists with correct copy + CTA.
+
+Implement these changes now.
