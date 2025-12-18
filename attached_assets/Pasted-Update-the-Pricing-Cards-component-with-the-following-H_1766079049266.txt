@@ -1,0 +1,38 @@
+Update the Pricing Cards component with the following "Human-First" copy and tier structure:
+
+1. Card 01 (Frontline):
+   - Headline: Frontline
+   - Subheadline: The "Human-First" Safety Net
+   - Outcome Text: "Your front desk is now fail-safe. Stop leaking leads to competitors and ensure every caller gets a professional response—even when your team is busy or the office is closed."
+   - Features: 
+     * AI Voice Backup Receptionist (Answers when your team is busy)
+     * 24/7 Website AI Chatbot (Engage & Book)
+     * Instant SMS Text-Back (The Digital Safety Net)
+     * Speed-to-Lead Engine (Sub-60s response)
+     * Single Intake Pipeline Management
+   - Price: $600 Launch Build / $297 Monthly
+
+2. Card 02 (Specialist):
+   - Headline: Specialist
+   - Subheadline: The "Revenue & Reputation" Accelerator
+   - Outcome Text: "Turn your lead list into a revenue engine. You don't just capture data—you drive behavior by dominating every social channel, ranking higher on Google, and winning back 'lost' revenue on autopilot."
+   - Features (Include: "Everything in Frontline, PLUS"):
+     * Omni-Channel AI (Instagram, FB, & WhatsApp)
+     * Smart Lead Triage (AI Spam & Priority Filtering)
+     * The Database Reactivator (Old Lead Campaigns)
+     * Auto-Reputation & Review Engine
+     * Show-Rate Maximizer (Precision Nudge Sequences)
+   - Price: $1,000 Launch Build / $497 Monthly
+
+3. Card 03 (Command):
+   - Headline: Command
+   - Subheadline: The AI-Powered "COO" & Ops Brain
+   - Outcome Text: "Step out of the day-to-day 'weeds' and into the CEO role. Transform your institutional knowledge into a self-governing AI operating system that manages your team, your data, and your growth."
+   - Features (Include: "Everything in Specialist, PLUS"):
+     * The Company Brain (Searchable AI Knowledge Base)
+     * Cross-Platform Automation (N8N/Make Integration)
+     * Daily "Next-Best-Action" Dashboard
+     * Staff Training & Compliance Engine
+     * Institutional Memory Vault (Staff Turnover Protection)
+     * White-Glove Strategic Partnership
+   - Price: "Starting at $2,000" Launch Build / "Starting at $997" Monthly
