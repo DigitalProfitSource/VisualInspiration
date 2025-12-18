@@ -1,0 +1,35 @@
+Update the Pricing Page UI for all three cards:
+
+1. Structural Change:
+   - Merge "This plan focuses on" and "What you really get" into one single list titled "Core Capabilities."
+   - Move the "Outcome" box to be directly underneath the Subheadline but ABOVE the feature list. This leads with the 'Why' before the 'How'.
+
+2. Pricing Hierarchy:
+   - Make the Monthly price (e.g., $297/mo) the largest text in the pricing section.
+   - Move the Launch Build fee below the monthly price in a smaller, muted font (e.g., "One-time setup: $600").
+
+3. Card 01 (Frontline):
+   - Features List: 
+     * **AI Voice Backup Receptionist:** Answers only when your team is busy or the office is closed.
+     * **24/7 Website AI Chatbot:** Engages and books visitors directly from your landing page.
+     * **Instant SMS Text-Back:** A digital safety net that keeps the conversation alive via text if a call is missed.
+     * **Speed-to-Lead Engine:** Ensures new inquiries get a response in under 60 seconds.
+     * **Single Intake Pipeline:** One unified view for all phone, text, and form leads.
+
+4. Card 02 (Specialist):
+   - Headline: **Everything in Frontline, PLUS:** (Make this stand out visually)
+   - Features List:
+     * **Omni-Channel AI:** Unified messaging for Instagram, Facebook, and WhatsApp.
+     * **Smart Lead Triage:** AI-powered spam filtering and priority lead scoring.
+     * **The Database Reactivator:** Automated campaigns to win back old or cold leads.
+     * **Auto-Reputation Engine:** Captures 5-star reviews and routes negative feedback internally.
+     * **Show-Rate Maximizer:** Precision sequences to ensure booked appointments show up.
+
+5. Card 03 (Command):
+   - Headline: **Everything in Specialist, PLUS:**
+   - Features List:
+     * **The Company Brain:** A searchable AI knowledge base of your specific SOPs and playbooks.
+     * **Cross-Platform Automation:** Deep integration via N8N/Make to bridge your entire software stack.
+     * **Next-Best-Action Dashboard:** A daily prioritized list of high-value tasks for your team.
+     * **Staff Training Engine:** AI-guided onboarding to get new hires up to speed faster.
+     * **Institutional Memory Vault:** Protects your company intelligence from staff turnover.

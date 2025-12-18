@@ -38,22 +38,16 @@ const pricingTiers: PricingTier[] = [
     number: "01",
     name: "Frontline",
     descriptor: "The \"Human-First\" Safety Net",
-    buildFee: "$600 Launch Build",
+    buildFee: "$600",
     monthlyFee: "$297/mo",
     ifYouWant: "Your front desk is now fail-safe. Stop leaking leads to competitors and ensure every caller gets a professional response—even when your team is busy or the office is closed.",
-    focusBullets: [
-      "AI Voice Backup Receptionist (Answers when your team is busy)",
-      "24/7 Website AI Chatbot (Engage & Book)",
-      "Instant SMS Text-Back (The Digital Safety Net)",
-      "Speed-to-Lead Engine (Sub-60s response)",
-      "Single Intake Pipeline Management"
-    ],
+    focusBullets: [],
     expandedBullets: [
-      { title: "AI Voice Backup Receptionist", description: "Answers when your team is busy so no caller hits voicemail." },
-      { title: "24/7 Website AI Chatbot", description: "Engages visitors and books appointments around the clock." },
-      { title: "Instant SMS Text-Back", description: "The digital safety net that responds in seconds." },
-      { title: "Speed-to-Lead Engine", description: "Sub-60 second response to new inquiries." },
-      { title: "Single Intake Pipeline", description: "One consistent way leads come in with standard pipeline stages." }
+      { title: "AI Voice Backup Receptionist", description: "Answers only when your team is busy or the office is closed." },
+      { title: "24/7 Website AI Chatbot", description: "Engages and books visitors directly from your landing page." },
+      { title: "Instant SMS Text-Back", description: "A digital safety net that keeps the conversation alive via text if a call is missed." },
+      { title: "Speed-to-Lead Engine", description: "Ensures new inquiries get a response in under 60 seconds." },
+      { title: "Single Intake Pipeline", description: "One unified view for all phone, text, and form leads." }
     ],
     outcome: "Your front desk is now fail-safe. Stop leaking leads to competitors and ensure every caller gets a professional response—even when your team is busy or the office is closed.",
     ctaText: "Start Frontline",
@@ -63,23 +57,17 @@ const pricingTiers: PricingTier[] = [
     number: "02",
     name: "Specialist",
     descriptor: "The \"Revenue & Reputation\" Accelerator",
-    buildFee: "$1,000 Launch Build",
+    buildFee: "$1,000",
     monthlyFee: "$497/mo",
     ifYouWant: "Turn your lead list into a revenue engine. You don't just capture data—you drive behavior by dominating every social channel, ranking higher on Google, and winning back 'lost' revenue on autopilot.",
     clarityLine: "Everything in Frontline, PLUS:",
-    focusBullets: [
-      "Omni-Channel AI (Instagram, FB, & WhatsApp)",
-      "Smart Lead Triage (AI Spam & Priority Filtering)",
-      "The Database Reactivator (Old Lead Campaigns)",
-      "Auto-Reputation & Review Engine",
-      "Show-Rate Maximizer (Precision Nudge Sequences)"
-    ],
+    focusBullets: [],
     expandedBullets: [
-      { title: "Omni-Channel AI", description: "Instagram, Facebook, and WhatsApp messaging unified." },
-      { title: "Smart Lead Triage", description: "AI-powered spam filtering and priority scoring." },
-      { title: "The Database Reactivator", description: "Automated campaigns to win back old leads." },
-      { title: "Auto-Reputation & Review Engine", description: "Review requests at the right moment; unhappy clients routed internally." },
-      { title: "Show-Rate Maximizer", description: "Precision nudge sequences to get more people to show up." }
+      { title: "Omni-Channel AI", description: "Unified messaging for Instagram, Facebook, and WhatsApp." },
+      { title: "Smart Lead Triage", description: "AI-powered spam filtering and priority lead scoring." },
+      { title: "The Database Reactivator", description: "Automated campaigns to win back old or cold leads." },
+      { title: "Auto-Reputation Engine", description: "Captures 5-star reviews and routes negative feedback internally." },
+      { title: "Show-Rate Maximizer", description: "Precision sequences to ensure booked appointments show up." }
     ],
     outcome: "Turn your lead list into a revenue engine. You don't just capture data—you drive behavior by dominating every social channel, ranking higher on Google, and winning back 'lost' revenue on autopilot.",
     ctaText: "Start Specialist",
@@ -90,25 +78,17 @@ const pricingTiers: PricingTier[] = [
     number: "03",
     name: "Command",
     descriptor: "The AI-Powered \"COO\" & Ops Brain",
-    buildFee: "Starting at $2,000 Launch Build",
-    monthlyFee: "Starting at $997/mo",
+    buildFee: "$2,000",
+    monthlyFee: "$997/mo",
     ifYouWant: "Step out of the day-to-day 'weeds' and into the CEO role. Transform your institutional knowledge into a self-governing AI operating system that manages your team, your data, and your growth.",
     clarityLine: "Everything in Specialist, PLUS:",
-    focusBullets: [
-      "The Company Brain (Searchable AI Knowledge Base)",
-      "Cross-Platform Automation (N8N/Make Integration)",
-      "Daily \"Next-Best-Action\" Dashboard",
-      "Staff Training & Compliance Engine",
-      "Institutional Memory Vault (Staff Turnover Protection)",
-      "White-Glove Strategic Partnership"
-    ],
+    focusBullets: [],
     expandedBullets: [
-      { title: "The Company Brain", description: "Searchable AI knowledge base with your SOPs, policies, and playbooks." },
-      { title: "Cross-Platform Automation", description: "N8N/Make integration for complex multi-system workflows." },
-      { title: "Daily Next-Best-Action Dashboard", description: "Prioritized list of who to contact today — hot leads, stalled cases, at-risk clients." },
-      { title: "Staff Training & Compliance Engine", description: "Onboard new team members faster with AI-guided training." },
-      { title: "Institutional Memory Vault", description: "Staff turnover protection — your knowledge stays even when people leave." },
-      { title: "White-Glove Strategic Partnership", description: "Dedicated contact, quarterly strategy sessions, and joint experiments." }
+      { title: "The Company Brain", description: "A searchable AI knowledge base of your specific SOPs and playbooks." },
+      { title: "Cross-Platform Automation", description: "Deep integration via N8N/Make to bridge your entire software stack." },
+      { title: "Next-Best-Action Dashboard", description: "A daily prioritized list of high-value tasks for your team." },
+      { title: "Staff Training Engine", description: "AI-guided onboarding to get new hires up to speed faster." },
+      { title: "Institutional Memory Vault", description: "Protects your company intelligence from staff turnover." }
     ],
     outcome: "Step out of the day-to-day 'weeds' and into the CEO role. Transform your institutional knowledge into a self-governing AI operating system that manages your team, your data, and your growth.",
     ctaText: "Apply for Command",
@@ -118,8 +98,6 @@ const pricingTiers: PricingTier[] = [
 ];
 
 function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -157,85 +135,43 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
           {tier.name}
         </h3>
         
-        <p className="text-sm text-slate-400 mb-2">
+        <p className="text-sm text-slate-400 mb-4">
           {tier.descriptor}
         </p>
-        {tier.clarityLine && (
-          <p className="text-xs text-white/70 mb-4 font-medium">{tier.clarityLine}</p>
-        )}
         
-        <div className="flex items-baseline gap-2 mb-6">
-          <span className="text-sm text-slate-500">{tier.buildFee}</span>
-          <span className="text-slate-600">•</span>
-          <span className="text-2xl font-display font-bold text-white">{tier.monthlyFee}</span>
-          <span className="text-sm text-slate-500">(month-to-month)</span>
-        </div>
-        
-        <p className="text-primary text-sm font-medium mb-6">
-          {tier.ifYouWant}
-        </p>
-        
-        <div className="mb-6">
-          <h4 className="text-xs font-mono text-slate-400 mb-3">THIS PLAN FOCUSES ON:</h4>
-          <ul className="space-y-2">
-            {tier.focusBullets.map((bullet, i) => (
-              <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
-                <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                <span>{bullet}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div className="mb-6 pt-4 border-t border-white/10">
-                <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
-                <ul className="space-y-4">
-                  {tier.expandedBullets.map((bullet, i) => (
-                    <li key={i} className="text-sm">
-                      <div className="flex items-start gap-3">
-                        <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                        <div>
-                          <span className="text-white font-medium">{bullet.title}</span>
-                          <p className="text-slate-400 mt-1">{bullet.description}</p>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        
+        {/* Outcome Box - Now above features */}
         <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
-          <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
           <p className="text-slate-300 text-sm leading-relaxed">
             {tier.outcome}
           </p>
         </div>
         
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full flex items-center justify-center gap-2 py-2 mb-4 text-sm text-slate-400 hover:text-primary transition-colors"
-          data-testid={`toggle-expand-${tier.ctaSource}`}
-        >
-          {isExpanded ? "Show Less" : "See Full Details"}
-          <motion.div
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <ChevronDown className="w-4 h-4" />
-          </motion.div>
-        </button>
+        {/* Pricing - Monthly largest, Launch Build below */}
+        <div className="mb-6">
+          <div className="text-3xl font-display font-bold text-white mb-1">{tier.monthlyFee}</div>
+          <div className="text-sm text-slate-500">One-time setup: {tier.buildFee}</div>
+        </div>
+        
+        {/* Core Capabilities */}
+        <div className="mb-6">
+          {tier.clarityLine && (
+            <p className="text-sm text-primary font-semibold mb-4">{tier.clarityLine}</p>
+          )}
+          <h4 className="text-xs font-mono text-slate-400 mb-3">CORE CAPABILITIES</h4>
+          <ul className="space-y-3">
+            {tier.expandedBullets.map((bullet, i) => (
+              <li key={i} className="text-sm">
+                <div className="flex items-start gap-3">
+                  <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                  <div>
+                    <span className="text-white font-medium">{bullet.title}:</span>
+                    <span className="text-slate-400 ml-1">{bullet.description}</span>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
         
         <ContactFormDialog
           source={tier.ctaSource}
@@ -330,8 +266,6 @@ function AssuranceBox() {
 
 function PricingGridSection() {
   const [entryCardsHovered, setEntryCardsHovered] = useState(false);
-  const [entryCardsExpanded, setEntryCardsExpanded] = useState(false);
-  const [commandExpanded, setCommandExpanded] = useState(false);
 
   const frontline = pricingTiers[0];
   const specialist = pricingTiers[1];
@@ -375,14 +309,20 @@ function PricingGridSection() {
             <h3 className="text-2xl font-display font-medium mb-2 text-white">
               {frontline.name}
             </h3>
-            <p className="text-sm text-slate-400 mb-2">{frontline.descriptor}</p>
-            {frontline.clarityLine && (
-              <p className="text-xs text-white/70 mb-4 font-medium">{frontline.clarityLine}</p>
-            )}
+            <p className="text-sm text-slate-400 mb-4">{frontline.descriptor}</p>
             
-            <p className="text-primary text-sm font-medium mb-4">
-              {frontline.ifYouWant}
-            </p>
+            {/* Outcome Box - Above features */}
+            <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
+              <p className="text-slate-300 text-sm">
+                {frontline.outcome}
+              </p>
+            </div>
+            
+            {/* Pricing - Monthly largest */}
+            <div className="mb-6">
+              <div className="text-3xl font-display font-bold text-white mb-1">{frontline.monthlyFee}</div>
+              <div className="text-sm text-slate-500">One-time setup: {frontline.buildFee}</div>
+            </div>
 
             <AnimatePresence>
               {entryCardsHovered && (
@@ -394,51 +334,20 @@ function PricingGridSection() {
                   className="overflow-hidden"
                 >
                   <div className="mb-6">
-                    <h4 className="text-xs font-mono text-slate-400 mb-3">THIS PLAN FOCUSES ON:</h4>
-                    <ul className="space-y-2 text-sm text-slate-300">
-                      {frontline.focusBullets.map((bullet, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="mb-6 pt-4 border-t border-white/10">
-                    <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
+                    <h4 className="text-xs font-mono text-slate-400 mb-3">CORE CAPABILITIES</h4>
                     <ul className="space-y-3">
-                      {(entryCardsExpanded ? frontline.expandedBullets : frontline.expandedBullets.slice(0, 7)).map((bullet, i) => (
+                      {frontline.expandedBullets.map((bullet, i) => (
                         <li key={i} className="text-sm">
                           <div className="flex items-start gap-3">
                             <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                             <div>
                               <span className="text-white font-medium">{bullet.title}:</span>
-                              <span className="text-slate-400 ml-1">{entryCardsExpanded ? bullet.description : `${bullet.description.split('.')[0]}.`}</span>
+                              <span className="text-slate-400 ml-1">{bullet.description}</span>
                             </div>
                           </div>
                         </li>
                       ))}
                     </ul>
-                    {frontline.expandedBullets.length > 7 && (
-                      <button
-                        onClick={() => setEntryCardsExpanded(!entryCardsExpanded)}
-                        className="w-full flex items-center justify-center gap-2 py-2 mt-4 text-sm text-slate-400 hover:text-primary transition-colors"
-                        data-testid="toggle-expand-frontline"
-                      >
-                        {entryCardsExpanded ? "Hide details" : "Show full deliverables"}
-                        <motion.div animate={{ rotate: entryCardsExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                          <ChevronDown className="w-4 h-4" />
-                        </motion.div>
-                      </button>
-                    )}
-                  </div>
-                  
-                  <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
-                    <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
-                    <p className="text-slate-300 text-sm">
-                      {frontline.outcome}
-                    </p>
                   </div>
                 </motion.div>
               )}
@@ -457,30 +366,6 @@ function PricingGridSection() {
                 </Button>
               }
             />
-            
-            {/* Pricing Block */}
-            <div className="mt-4 p-3 rounded-lg bg-white/[0.02] border border-white/5">
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-1">
-                  <span className="font-semibold text-white">Launch Build (one-time):</span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Info className="w-3 h-3 text-slate-500 cursor-help" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="text-xs">Launch Build = setup, configuration, testing, and go-live.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <span className="text-primary font-bold">$600</span>
-              </div>
-              <div className="flex items-center justify-between text-sm mt-2">
-                <span className="font-semibold text-white">Monthly:</span>
-                <span className="text-primary font-bold">$297/mo</span>
-              </div>
-            </div>
           </div>
 
           {/* Specialist Card (Most Popular) */}
@@ -503,14 +388,20 @@ function PricingGridSection() {
               <h3 className="text-2xl font-display font-medium mb-2 text-white">
                 {specialist.name}
               </h3>
-              <p className="text-sm text-slate-400 mb-2">{specialist.descriptor}</p>
-              {specialist.clarityLine && (
-                <p className="text-xs text-white/70 mb-4 font-medium">{specialist.clarityLine}</p>
-              )}
+              <p className="text-sm text-slate-400 mb-4">{specialist.descriptor}</p>
               
-              <p className="text-primary text-sm font-medium mb-4">
-                {specialist.ifYouWant}
-              </p>
+              {/* Outcome Box - Above features */}
+              <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
+                <p className="text-slate-300 text-sm">
+                  {specialist.outcome}
+                </p>
+              </div>
+              
+              {/* Pricing - Monthly largest */}
+              <div className="mb-6">
+                <div className="text-3xl font-display font-bold text-white mb-1">{specialist.monthlyFee}</div>
+                <div className="text-sm text-slate-500">One-time setup: {specialist.buildFee}</div>
+              </div>
 
               <AnimatePresence>
                 {entryCardsHovered && (
@@ -522,51 +413,23 @@ function PricingGridSection() {
                     className="overflow-hidden"
                   >
                     <div className="mb-6">
-                      <h4 className="text-xs font-mono text-slate-400 mb-3">THIS PLAN FOCUSES ON:</h4>
-                      <ul className="space-y-2 text-sm text-slate-300">
-                        {specialist.focusBullets.map((bullet, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                            <span>{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div className="mb-6 pt-4 border-t border-white/10">
-                      <h4 className="text-xs font-mono text-primary mb-4">WHAT YOU REALLY GET</h4>
+                      {specialist.clarityLine && (
+                        <p className="text-sm text-primary font-semibold mb-4">{specialist.clarityLine}</p>
+                      )}
+                      <h4 className="text-xs font-mono text-slate-400 mb-3">CORE CAPABILITIES</h4>
                       <ul className="space-y-3">
-                        {(entryCardsExpanded ? specialist.expandedBullets : specialist.expandedBullets.slice(0, 7)).map((bullet, i) => (
+                        {specialist.expandedBullets.map((bullet, i) => (
                           <li key={i} className="text-sm">
                             <div className="flex items-start gap-3">
                               <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                               <div>
                                 <span className="text-white font-medium">{bullet.title}:</span>
-                                <span className="text-slate-400 ml-1">{entryCardsExpanded ? bullet.description : `${bullet.description.split('.')[0]}.`}</span>
+                                <span className="text-slate-400 ml-1">{bullet.description}</span>
                               </div>
                             </div>
                           </li>
                         ))}
                       </ul>
-                      {specialist.expandedBullets.length > 7 && (
-                        <button
-                          onClick={() => setEntryCardsExpanded(!entryCardsExpanded)}
-                          className="w-full flex items-center justify-center gap-2 py-2 mt-4 text-sm text-slate-400 hover:text-primary transition-colors"
-                          data-testid="toggle-expand-specialist"
-                        >
-                          {entryCardsExpanded ? "Hide details" : "Show full deliverables"}
-                          <motion.div animate={{ rotate: entryCardsExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                            <ChevronDown className="w-4 h-4" />
-                          </motion.div>
-                        </button>
-                      )}
-                    </div>
-                    
-                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
-                      <h4 className="text-xs font-mono text-primary mb-2">OUTCOME</h4>
-                      <p className="text-slate-300 text-sm">
-                        {specialist.outcome}
-                      </p>
                     </div>
                   </motion.div>
                 )}
@@ -585,30 +448,6 @@ function PricingGridSection() {
                   </Button>
                 }
               />
-              
-              {/* Pricing Block */}
-              <div className="mt-4 p-3 rounded-lg bg-white/[0.02] border border-white/5">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-1">
-                    <span className="font-semibold text-white">Launch Build (one-time):</span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Info className="w-3 h-3 text-slate-500 cursor-help" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-xs">Launch Build = setup, configuration, testing, and go-live.</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                  <span className="text-primary font-bold">$1,000</span>
-                </div>
-                <div className="flex items-center justify-between text-sm mt-2">
-                  <span className="font-semibold text-white">Monthly:</span>
-                  <span className="text-primary font-bold">$497/mo</span>
-                </div>
-              </div>
             </div>
           </div>
         </motion.div>
@@ -632,22 +471,19 @@ function PricingGridSection() {
                   <span className="text-xs font-mono text-primary/70">{command.number}</span>
                 </div>
                 <h3 className="text-3xl font-display font-semibold mb-2 text-white">{command.name}</h3>
-                <p className="text-sm text-slate-400 mb-2">{command.descriptor}</p>
-                {command.clarityLine && (
-                  <p className="text-xs text-white/70 mb-4 font-medium">{command.clarityLine}</p>
-                )}
-                <p className="text-primary/80 text-base mb-4 font-medium">{command.ifYouWant}</p>
+                <p className="text-sm text-slate-400 mb-4">{command.descriptor}</p>
                 
+                {/* Outcome Box - Above features */}
+                <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
+                  <p className="text-slate-300 text-sm">
+                    {command.outcome}
+                  </p>
+                </div>
+                
+                {/* Pricing - Monthly largest */}
                 <div className="mb-6">
-                  <h4 className="text-xs font-mono text-slate-400 mb-3">THIS PLAN FOCUSES ON:</h4>
-                  <ul className="space-y-2 text-sm text-slate-300">
-                    {command.focusBullets.map((bullet, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="text-3xl font-display font-bold text-white mb-1">{command.monthlyFee}</div>
+                  <div className="text-sm text-slate-500">One-time setup: {command.buildFee}</div>
                 </div>
                 
                 <ContactFormDialog
@@ -663,113 +499,28 @@ function PricingGridSection() {
                     </Button>
                   }
                 />
-                
-                {/* Pricing Block */}
-                <div className="mt-4 p-3 rounded-lg bg-white/[0.02] border border-white/5">
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-1">
-                      <span className="font-semibold text-white">Launch Build (one-time):</span>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Info className="w-3 h-3 text-slate-500 cursor-help" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="text-xs">Launch Build = setup, configuration, testing, and go-live.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                    <span className="text-primary font-bold">Starting at $2,000</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm mt-2">
-                    <span className="font-semibold text-white">Monthly:</span>
-                    <span className="text-primary font-bold">Starting at $997/mo</span>
-                  </div>
-                </div>
               </div>
               
               <div className="space-y-6">
-                <AnimatePresence>
-                  {commandExpanded ? (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div>
-                        <h4 className="text-xs font-mono text-primary/70 mb-4">WHAT YOU REALLY GET</h4>
-                        <ul className="space-y-3 text-sm text-slate-400">
-                          {command.expandedBullets.map((bullet, i) => (
-                            <li key={i} className="flex items-start gap-3">
-                              <Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" />
-                              <div>
-                                <span className="text-white font-medium">{bullet.title}</span>
-                                <p className="text-slate-400 mt-1 text-xs">{bullet.description}</p>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <div>
-                      <h4 className="text-xs font-mono text-primary/70 mb-4">WHAT YOU REALLY GET</h4>
-                      <ul className="space-y-2 text-sm text-slate-400">
-                        {command.expandedBullets.slice(0, 7).map((bullet, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" />
-                            <div>
-                              <span className="text-white font-medium">{bullet.title}:</span>
-                              <span className="text-slate-400 ml-1">{bullet.description.split('.')[0]}.</span>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </AnimatePresence>
-                
-                <button
-                  onClick={() => setCommandExpanded(!commandExpanded)}
-                  className="flex items-center gap-2 text-sm text-slate-400 hover:text-primary transition-colors"
-                  data-testid="toggle-expand-command"
-                >
-                  {commandExpanded ? "Hide details" : "Show full deliverables"}
-                  <motion.div animate={{ rotate: commandExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                    <ChevronDown className="w-4 h-4" />
-                  </motion.div>
-                </button>
-                
-                {/* Outcome - in right column when collapsed */}
-                {!commandExpanded && (
-                  <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                    <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
-                    <p className="text-slate-400 text-sm">{command.outcome}</p>
-                  </div>
+                {command.clarityLine && (
+                  <p className="text-sm text-primary font-semibold">{command.clarityLine}</p>
                 )}
+                <div>
+                  <h4 className="text-xs font-mono text-slate-400 mb-3">CORE CAPABILITIES</h4>
+                  <ul className="space-y-3 text-sm">
+                    {command.expandedBullets.map((bullet, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <span className="text-white font-medium">{bullet.title}:</span>
+                          <span className="text-slate-400 ml-1">{bullet.description}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-            
-            {/* Outcome - Full width below grid only when expanded */}
-            <AnimatePresence>
-              {commandExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="overflow-hidden"
-                >
-                  <div className="mt-8 p-4 rounded-xl bg-white/[0.02] border border-white/5">
-                    <h4 className="text-xs font-mono text-slate-500 mb-2">OUTCOME</h4>
-                    <p className="text-slate-400 text-sm">{command.outcome}</p>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
         </motion.div>
       </div>
