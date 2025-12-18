@@ -27,6 +27,7 @@ interface PricingTier {
   focusBullets: string[];
   expandedBullets: { title: string; description: string }[];
   outcome: string;
+  infrastructureFooter: string;
   ctaText: string;
   ctaSource: string;
   isPopular?: boolean;
@@ -40,16 +41,17 @@ const pricingTiers: PricingTier[] = [
     descriptor: "The \"Human-First\" Safety Net",
     buildFee: "$600",
     monthlyFee: "$297/mo",
-    ifYouWant: "Your front desk is now fail-safe. Stop leaking leads to competitors and ensure every caller gets a professional response—even when your team is busy or the office is closed.",
+    ifYouWant: "",
     focusBullets: [],
     expandedBullets: [
-      { title: "AI Voice Backup Receptionist", description: "Answers only when your team is busy or the office is closed." },
+      { title: "AI Voice Backup Receptionist", description: "Answers only when your team is busy or after-hours." },
       { title: "24/7 Website AI Chatbot", description: "Engages and books visitors directly from your landing page." },
-      { title: "Instant SMS Text-Back", description: "A digital safety net that keeps the conversation alive via text if a call is missed." },
+      { title: "Instant SMS Text-Back", description: "A digital safety net that keeps the conversation alive if a call is missed." },
       { title: "Speed-to-Lead Engine", description: "Ensures new inquiries get a response in under 60 seconds." },
       { title: "Single Intake Pipeline", description: "One unified view for all phone, text, and form leads." }
     ],
     outcome: "Your front desk is now fail-safe. Stop leaking leads to competitors and ensure every caller gets a professional response—even when your team is busy or the office is closed.",
+    infrastructureFooter: "INCLUDES: 250 AI Voice Minutes/mo • 500 SMS Segments • Standard Security",
     ctaText: "Start Frontline",
     ctaSource: "frontline"
   },
@@ -59,17 +61,18 @@ const pricingTiers: PricingTier[] = [
     descriptor: "The \"Revenue & Reputation\" Accelerator",
     buildFee: "$1,000",
     monthlyFee: "$497/mo",
-    ifYouWant: "Turn your lead list into a revenue engine. You don't just capture data—you drive behavior by dominating every social channel, ranking higher on Google, and winning back 'lost' revenue on autopilot.",
+    ifYouWant: "",
     clarityLine: "Everything in Frontline, PLUS:",
     focusBullets: [],
     expandedBullets: [
-      { title: "Omni-Channel AI", description: "Unified messaging for Instagram, Facebook, and WhatsApp." },
-      { title: "Smart Lead Triage", description: "AI-powered spam filtering and priority lead scoring." },
+      { title: "Proactive Outbound Engine", description: "AI calls back \"No-Shows\" and dormant leads to rebook them." },
+      { title: "Omni-Channel AI Command", description: "Unified messaging for Instagram, Facebook, and WhatsApp." },
       { title: "The Database Reactivator", description: "Automated campaigns to win back old or cold leads." },
       { title: "Auto-Reputation Engine", description: "Captures 5-star reviews and routes negative feedback internally." },
-      { title: "Show-Rate Maximizer", description: "Precision sequences to ensure booked appointments show up." }
+      { title: "Smart Lead Triage", description: "AI filters spam and prioritizes \"Hot Leads\" for your team." }
     ],
     outcome: "Turn your lead list into a revenue engine. You don't just capture data—you drive behavior by dominating every social channel, ranking higher on Google, and winning back 'lost' revenue on autopilot.",
+    infrastructureFooter: "INCLUDES: 500 AI Voice Minutes/mo • 2,000 SMS Segments • Commercial Outbound Rights",
     ctaText: "Start Specialist",
     ctaSource: "specialist",
     isPopular: true
@@ -77,20 +80,21 @@ const pricingTiers: PricingTier[] = [
   {
     number: "03",
     name: "Command",
-    descriptor: "The AI-Powered \"COO\" & Ops Brain",
-    buildFee: "$2,000",
-    monthlyFee: "$997/mo",
-    ifYouWant: "Step out of the day-to-day 'weeds' and into the CEO role. Transform your institutional knowledge into a self-governing AI operating system that manages your team, your data, and your growth.",
+    descriptor: "The Autonomous Enterprise Brain",
+    buildFee: "Starting at $2,000",
+    monthlyFee: "Starting at $997/mo",
+    ifYouWant: "",
     clarityLine: "Everything in Specialist, PLUS:",
     focusBullets: [],
     expandedBullets: [
-      { title: "The Company Brain", description: "A searchable AI knowledge base of your specific SOPs and playbooks." },
-      { title: "Cross-Platform Automation", description: "Deep integration via N8N/Make to bridge your entire software stack." },
-      { title: "Next-Best-Action Dashboard", description: "A daily prioritized list of high-value tasks for your team." },
-      { title: "Staff Training Engine", description: "AI-guided onboarding to get new hires up to speed faster." },
-      { title: "Institutional Memory Vault", description: "Protects your company intelligence from staff turnover." }
+      { title: "The Company Brain OS", description: "A searchable AI knowledge base built from your specific SOPs and playbooks." },
+      { title: "Dedicated N8N Automation Fabric", description: "Deep, custom-built integrations to bridge your entire software stack." },
+      { title: "Autonomous Operations Logic", description: "AI handles complex routing, refunds, and scheduling decisions without human input." },
+      { title: "\"Digital Twin\" Staff Training", description: "AI-guided roleplay and onboarding to get new hires compliant fast." },
+      { title: "Monthly Strategic Ops Audit", description: "Human-led consulting to tune your AI brain and workflows." }
     ],
     outcome: "Step out of the day-to-day 'weeds' and into the CEO role. Transform your institutional knowledge into a self-governing AI operating system that manages your team, your data, and your growth.",
+    infrastructureFooter: "INCLUDES: 1,000 AI Voice Minutes • Enterprise Data Throughput • HIPAA-Ready (+$300/mo)",
     ctaText: "Apply for Command",
     ctaSource: "command",
     isApplication: true
@@ -171,6 +175,11 @@ function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
               </li>
             ))}
           </ul>
+        </div>
+        
+        {/* Infrastructure Footer */}
+        <div className="mb-6 pt-4 border-t border-white/10">
+          <p className="text-xs text-slate-500 font-mono">{tier.infrastructureFooter}</p>
         </div>
         
         <ContactFormDialog
@@ -349,6 +358,11 @@ function PricingGridSection() {
                       ))}
                     </ul>
                   </div>
+                  
+                  {/* Infrastructure Footer */}
+                  <div className="pt-4 border-t border-white/10">
+                    <p className="text-xs text-slate-500 font-mono">{frontline.infrastructureFooter}</p>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -430,6 +444,11 @@ function PricingGridSection() {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                    
+                    {/* Infrastructure Footer */}
+                    <div className="pt-4 border-t border-white/10">
+                      <p className="text-xs text-slate-500 font-mono">{specialist.infrastructureFooter}</p>
                     </div>
                   </motion.div>
                 )}
@@ -519,6 +538,11 @@ function PricingGridSection() {
                     ))}
                   </ul>
                 </div>
+                
+                {/* Infrastructure Footer */}
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs text-slate-500 font-mono">{command.infrastructureFooter}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -539,12 +563,15 @@ interface ComparisonRow {
 const comparisonRows: ComparisonRow[] = [
   { label: "AI Voice Backup Receptionist", frontline: "Included", specialist: "Included", command: "Included" },
   { label: "24/7 Website AI Chatbot", frontline: "Included", specialist: "Included", command: "Included" },
-  { label: "Instant SMS Text-Back + Speed-to-Lead", frontline: "Included", specialist: "Included", command: "Included" },
-  { label: "Omni-Channel AI (Instagram, FB, WhatsApp)", frontline: "—", specialist: "Included", command: "Included" },
-  { label: "Smart Lead Triage + Database Reactivator", frontline: "—", specialist: "Included", command: "Included" },
-  { label: "Auto-Reputation & Review Engine + Show-Rate Maximizer", frontline: "—", specialist: "Included", command: "Included" },
-  { label: "Company Brain + Cross-Platform Automation", frontline: "—", specialist: "—", command: "Included" },
-  { label: "Staff Training + Strategic Partnership", frontline: "—", specialist: "—", command: "White-Glove" },
+  { label: "Instant SMS Text-Back + Speed-to-Lead Engine", frontline: "Included", specialist: "Included", command: "Included" },
+  { label: "Single Intake Pipeline", frontline: "Included", specialist: "Included", command: "Included" },
+  { label: "Proactive Outbound Engine", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "Omni-Channel AI Command (Instagram, FB, WhatsApp)", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "Database Reactivator + Auto-Reputation Engine", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "Smart Lead Triage", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "Company Brain OS + N8N Automation Fabric", frontline: "—", specialist: "—", command: "Included" },
+  { label: "Autonomous Operations Logic", frontline: "—", specialist: "—", command: "Included" },
+  { label: "Digital Twin Staff Training + Monthly Strategic Ops Audit", frontline: "—", specialist: "—", command: "White-Glove" },
 ];
 
 function ComparisonCell({ value, isSpecialist = false }: { value: string; isSpecialist?: boolean }) {
