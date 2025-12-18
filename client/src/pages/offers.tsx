@@ -37,52 +37,51 @@ const pricingTiers: PricingTier[] = [
   {
     number: "01",
     name: "Frontline",
-    descriptor: "AI front desk & follow-up foundation",
+    descriptor: "The \"Human-First\" Safety Net",
     buildFee: "$600 Launch Build",
     monthlyFee: "$297/mo",
-    ifYouWant: "If you want the phones, texts, and forms handled automatically without hiring another front-desk person.",
-    clarityLine: "Inbound coverage + follow-up execution. No outbound campaigns or ops brain layer.",
+    ifYouWant: "Your front desk is now fail-safe. Stop leaking leads to competitors and ensure every caller gets a professional response—even when your team is busy or the office is closed.",
     focusBullets: [
-      "Always-on front desk coverage",
-      "Faster responses to new leads",
-      "Basic, consistent follow-up that actually happens"
+      "AI Voice Backup Receptionist (Answers when your team is busy)",
+      "24/7 Website AI Chatbot (Engage & Book)",
+      "Instant SMS Text-Back (The Digital Safety Net)",
+      "Speed-to-Lead Engine (Sub-60s response)",
+      "Single Intake Pipeline Management"
     ],
     expandedBullets: [
-      { title: "24/7 AI front desk", description: "Answers phone, SMS, chat, and forms so fewer leads hit voicemail." },
-      { title: "Smart triage & routing", description: "Detects new leads vs existing clients vs spam; flags urgent issues." },
-      { title: "Core follow-up flows", description: "Confirmations, reminders, reschedule prompts, and short win-back touches." },
-      { title: "Single intake & stages", description: "One consistent way leads come in with standard pipeline stages." },
-      { title: "Daily visibility", description: "Central view of new leads and today's appointments for your team." },
-      { title: "Monthly optimization", description: "One focused review each month to tune scripts, routing, and timing." }
+      { title: "AI Voice Backup Receptionist", description: "Answers when your team is busy so no caller hits voicemail." },
+      { title: "24/7 Website AI Chatbot", description: "Engages visitors and books appointments around the clock." },
+      { title: "Instant SMS Text-Back", description: "The digital safety net that responds in seconds." },
+      { title: "Speed-to-Lead Engine", description: "Sub-60 second response to new inquiries." },
+      { title: "Single Intake Pipeline", description: "One consistent way leads come in with standard pipeline stages." }
     ],
-    outcome: "Your front desk stops leaking obvious money. New leads are captured, responded to, and moved forward consistently.",
+    outcome: "Your front desk is now fail-safe. Stop leaking leads to competitors and ensure every caller gets a professional response—even when your team is busy or the office is closed.",
     ctaText: "Start Frontline",
     ctaSource: "frontline"
   },
   {
     number: "02",
     name: "Specialist",
-    descriptor: "Show-rate, reactivation, and reputation engine",
+    descriptor: "The \"Revenue & Reputation\" Accelerator",
     buildFee: "$1,000 Launch Build",
     monthlyFee: "$497/mo",
-    ifYouWant: "If you want more people showing up, old leads coming back, and reviews growing without burning out your team.",
-    clarityLine: "Includes everything in Frontline — plus reactivation, reputation systems, and outbound calling (when appropriate).",
+    ifYouWant: "Turn your lead list into a revenue engine. You don't just capture data—you drive behavior by dominating every social channel, ranking higher on Google, and winning back 'lost' revenue on autopilot.",
+    clarityLine: "Everything in Frontline, PLUS:",
     focusBullets: [
-      "Increasing show-rates to booked appointments",
-      "Winning back leads who went cold",
-      "Systematic review generation and complaint routing",
-      "Selective proactive outreach for recovery"
+      "Omni-Channel AI (Instagram, FB, & WhatsApp)",
+      "Smart Lead Triage (AI Spam & Priority Filtering)",
+      "The Database Reactivator (Old Lead Campaigns)",
+      "Auto-Reputation & Review Engine",
+      "Show-Rate Maximizer (Precision Nudge Sequences)"
     ],
     expandedBullets: [
-      { title: "Industry-shaped pipelines", description: "Pipeline stages modeled to your vertical (med-spa, law, home services, etc.)." },
-      { title: "Show-Rate Engine", description: "Multi-step nudges tuned to high-value appointments; smart reschedule prompts." },
-      { title: "Signals-of-intent recovery", description: "Missed calls, form partials, and dormant leads trigger targeted recovery." },
-      { title: "Selective outbound", description: "AI Voice or human outreach for no-show and reactivation attempts." },
-      { title: "Reactivation campaigns", description: "Flows for old inquiries, no-shows, and past clients who haven't returned." },
-      { title: "Reputation & reviews", description: "Review requests at the right moment; unhappy clients routed internally." },
-      { title: "Monthly performance review", description: "Deeper review focused on show-rate, reactivation, and review trends." }
+      { title: "Omni-Channel AI", description: "Instagram, Facebook, and WhatsApp messaging unified." },
+      { title: "Smart Lead Triage", description: "AI-powered spam filtering and priority scoring." },
+      { title: "The Database Reactivator", description: "Automated campaigns to win back old leads." },
+      { title: "Auto-Reputation & Review Engine", description: "Review requests at the right moment; unhappy clients routed internally." },
+      { title: "Show-Rate Maximizer", description: "Precision nudge sequences to get more people to show up." }
     ],
-    outcome: "You don't just respond — you drive revenue behavior. More people show up, more old leads return, and more happy clients talk about you publicly.",
+    outcome: "Turn your lead list into a revenue engine. You don't just capture data—you drive behavior by dominating every social channel, ranking higher on Google, and winning back 'lost' revenue on autopilot.",
     ctaText: "Start Specialist",
     ctaSource: "specialist",
     isPopular: true
@@ -90,25 +89,28 @@ const pricingTiers: PricingTier[] = [
   {
     number: "03",
     name: "Command",
-    descriptor: "AI ops brain & strategic partner",
-    buildFee: "From $2,000 Launch Build",
-    monthlyFee: "From $997/mo",
-    ifYouWant: "If you want an AI-driven operations layer that helps your team know what to do next across leads, cases, jobs, and locations.",
-    clarityLine: "Built on Specialist foundations when applicable — expanded into an ops brain layer and deeper governance.",
+    descriptor: "The AI-Powered \"COO\" & Ops Brain",
+    buildFee: "Starting at $2,000 Launch Build",
+    monthlyFee: "Starting at $997/mo",
+    ifYouWant: "Step out of the day-to-day 'weeds' and into the CEO role. Transform your institutional knowledge into a self-governing AI operating system that manages your team, your data, and your growth.",
+    clarityLine: "Everything in Specialist, PLUS:",
     focusBullets: [
-      "Turning your SOPs and policies into an AI-aware \"ops brain\"",
-      "Giving your team clear next-best-actions each day",
-      "Coordinating more complex, multi-location or multi-service operations"
+      "The Company Brain (Searchable AI Knowledge Base)",
+      "Cross-Platform Automation (N8N/Make Integration)",
+      "Daily \"Next-Best-Action\" Dashboard",
+      "Staff Training & Compliance Engine",
+      "Institutional Memory Vault (Staff Turnover Protection)",
+      "White-Glove Strategic Partnership"
     ],
     expandedBullets: [
-      { title: "AI over your playbooks", description: "SOPs, policies, and checklists loaded so the system follows your rules." },
-      { title: "Ops co-pilot for staff", description: "Team members ask operational questions and get playbook-based answers." },
-      { title: "Daily next-best-actions", description: "Prioritized list of who to contact today — hot leads, stalled cases, at-risk clients." },
-      { title: "Advanced visibility", description: "Trends across response times, show-rates, conversion, and reviews by channel." },
-      { title: "Strategic partnership", description: "Dedicated contact, quarterly strategy sessions, and joint experiments." },
-      { title: "Multi-location support", description: "Routing, rules, and reporting designed for complex operations." }
+      { title: "The Company Brain", description: "Searchable AI knowledge base with your SOPs, policies, and playbooks." },
+      { title: "Cross-Platform Automation", description: "N8N/Make integration for complex multi-system workflows." },
+      { title: "Daily Next-Best-Action Dashboard", description: "Prioritized list of who to contact today — hot leads, stalled cases, at-risk clients." },
+      { title: "Staff Training & Compliance Engine", description: "Onboard new team members faster with AI-guided training." },
+      { title: "Institutional Memory Vault", description: "Staff turnover protection — your knowledge stays even when people leave." },
+      { title: "White-Glove Strategic Partnership", description: "Dedicated contact, quarterly strategy sessions, and joint experiments." }
     ],
-    outcome: "Command turns SimpleSequence into your AI operations partner — a system that knows your rules, organizes daily actions, and helps your team coordinate complex, high-value work.",
+    outcome: "Step out of the day-to-day 'weeds' and into the CEO role. Transform your institutional knowledge into a self-governing AI operating system that manages your team, your data, and your growth.",
     ctaText: "Apply for Command",
     ctaSource: "command",
     isApplication: true
@@ -678,11 +680,11 @@ function PricingGridSection() {
                         </Tooltip>
                       </TooltipProvider>
                     </div>
-                    <span className="text-primary font-bold">From $2,000</span>
+                    <span className="text-primary font-bold">Starting at $2,000</span>
                   </div>
                   <div className="flex items-center justify-between text-sm mt-2">
                     <span className="font-semibold text-white">Monthly:</span>
-                    <span className="text-primary font-bold">From $997/mo</span>
+                    <span className="text-primary font-bold">Starting at $997/mo</span>
                   </div>
                 </div>
               </div>
@@ -784,14 +786,14 @@ interface ComparisonRow {
 }
 
 const comparisonRows: ComparisonRow[] = [
-  { label: "AI Front Desk Coverage (Phone/SMS/Web forms)", frontline: "Included", specialist: "Included", command: "Included" },
-  { label: "Lead Capture + Routing + Pipelines", frontline: "Included", specialist: "Smart routing + logic", command: "Multi-location / complex routing (by application)" },
-  { label: "Follow-Up Engine (reminders + reschedules + basic nurture)", frontline: "Included", specialist: "Long-term + reactivation", command: "Custom strategy (by application)" },
-  { label: "Show-Rate + Reactivation Campaigns", frontline: "—", specialist: "Included", command: "Included (by application)" },
-  { label: "Reputation + Review + Complaint Routing", frontline: "—", specialist: "Included", command: "Included (by application)" },
-  { label: "Outbound Calling (Human dialer / AI voice)", frontline: "—", specialist: "Available", command: "By application" },
-  { label: "Ops Brain Layer (SOPs + Staff Co-Pilot)", frontline: "—", specialist: "Available", command: "By application" },
-  { label: "Reporting + Optimization Cadence", frontline: "Monthly optimization", specialist: "Performance + iteration", command: "Executive cadence (by application)" },
+  { label: "AI Voice Backup Receptionist", frontline: "Included", specialist: "Included", command: "Included" },
+  { label: "24/7 Website AI Chatbot", frontline: "Included", specialist: "Included", command: "Included" },
+  { label: "Instant SMS Text-Back + Speed-to-Lead", frontline: "Included", specialist: "Included", command: "Included" },
+  { label: "Omni-Channel AI (Instagram, FB, WhatsApp)", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "Smart Lead Triage + Database Reactivator", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "Auto-Reputation & Review Engine + Show-Rate Maximizer", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "Company Brain + Cross-Platform Automation", frontline: "—", specialist: "—", command: "Included" },
+  { label: "Staff Training + Strategic Partnership", frontline: "—", specialist: "—", command: "White-Glove" },
 ];
 
 function ComparisonCell({ value, isSpecialist = false }: { value: string; isSpecialist?: boolean }) {
