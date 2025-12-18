@@ -1,0 +1,77 @@
+CRITICAL CONTENT UPDATE: COMPARE PLANS TABLE
+
+Please update the Comparison Table component with the exact row structure and values below.
+
+STRUCTURE RULES:
+1. Maintain the 3-column structure (Frontline / Specialist / Command).
+2. Add a new section header at the bottom called "Infrastructure & Limits" to clearly separate feature inclusion from usage limits.
+
+---
+
+SECTION 1: CORE CAPABILITIES (Frontline)
+Row 1: AI Voice Backup Receptionist
+   - Frontline: Included
+   - Specialist: Included
+   - Command: Included
+Row 2: 24/7 Website AI Chatbot
+   - Frontline: Included
+   - Specialist: Included
+   - Command: Included
+Row 3: Instant SMS Text-Back + Speed-to-Lead
+   - Frontline: Included
+   - Specialist: Included
+   - Command: Included
+Row 4: Single Intake Pipeline
+   - Frontline: Included
+   - Specialist: Included
+   - Command: Included
+
+SECTION 2: GROWTH & REVENUE (Specialist)
+Row 5: Proactive Outbound Engine (Rebooking)
+   - Frontline: —
+   - Specialist: Included
+   - Command: Included
+Row 6: Omni-Channel AI (IG, FB, WhatsApp)
+   - Frontline: —
+   - Specialist: Included
+   - Command: Included
+Row 7: Database Reactivation + Reputation Engine
+   - Frontline: —
+   - Specialist: Included
+   - Command: Included
+Row 8: Smart Lead Triage
+   - Frontline: —
+   - Specialist: Included
+   - Command: Included
+
+SECTION 3: OPS & AUTONOMY (Command)
+Row 9: Internal AI Knowledge Base (SOPs)
+   - Frontline: —
+   - Specialist: —
+   - Command: Included
+Row 10: Custom N8N Integration Layer
+   - Frontline: —
+   - Specialist: —
+   - Command: Included
+Row 11: Service Delivery Automation
+   - Frontline: —
+   - Specialist: —
+   - Command: Included
+Row 12: Monthly Strategic Ops Audit
+   - Frontline: —
+   - Specialist: —
+   - Command: Included
+
+SECTION 4: INFRASTRUCTURE & LIMITS (Critical Update)
+Row 13: Included AI Voice Minutes
+   - Frontline: 250 Minutes
+   - Specialist: 500 Minutes
+   - Command: 1,000 Minutes
+Row 14: Included SMS Segments
+   - Frontline: 500
+   - Specialist: 2,000
+   - Command: Enterprise Vol.
+Row 15: HIPAA Compliance Server Upgrade
+   - Frontline: Optional (+$300/mo)
+   - Specialist: Optional (+$300/mo)
+   - Command: Optional (+$300/mo)

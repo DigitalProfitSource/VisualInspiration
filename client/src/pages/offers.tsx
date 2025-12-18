@@ -558,20 +558,32 @@ interface ComparisonRow {
   specialist: string;
   command: string;
   isCategory?: boolean;
+  isSection?: boolean;
 }
 
 const comparisonRows: ComparisonRow[] = [
+  { label: "CORE CAPABILITIES (Frontline)", frontline: "", specialist: "", command: "", isSection: true },
   { label: "AI Voice Backup Receptionist", frontline: "Included", specialist: "Included", command: "Included" },
   { label: "24/7 Website AI Chatbot", frontline: "Included", specialist: "Included", command: "Included" },
-  { label: "Instant SMS Text-Back + Speed-to-Lead Engine", frontline: "Included", specialist: "Included", command: "Included" },
+  { label: "Instant SMS Text-Back + Speed-to-Lead", frontline: "Included", specialist: "Included", command: "Included" },
   { label: "Single Intake Pipeline", frontline: "Included", specialist: "Included", command: "Included" },
-  { label: "Proactive Outbound Engine", frontline: "—", specialist: "Included", command: "Included" },
-  { label: "Omni-Channel AI Command (Instagram, FB, WhatsApp)", frontline: "—", specialist: "Included", command: "Included" },
-  { label: "Database Reactivator + Auto-Reputation Engine", frontline: "—", specialist: "Included", command: "Included" },
+  
+  { label: "GROWTH & REVENUE (Specialist)", frontline: "", specialist: "", command: "", isSection: true },
+  { label: "Proactive Outbound Engine (Rebooking)", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "Omni-Channel AI (IG, FB, WhatsApp)", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "Database Reactivation + Reputation Engine", frontline: "—", specialist: "Included", command: "Included" },
   { label: "Smart Lead Triage", frontline: "—", specialist: "Included", command: "Included" },
-  { label: "Internal AI Knowledge Base + Custom N8N Integration", frontline: "—", specialist: "—", command: "Included" },
-  { label: "Service Delivery Automation + Priority Decision Logic", frontline: "—", specialist: "—", command: "Included" },
-  { label: "Monthly Strategic Ops Audit", frontline: "—", specialist: "—", command: "White-Glove" },
+  
+  { label: "OPS & AUTONOMY (Command)", frontline: "", specialist: "", command: "", isSection: true },
+  { label: "Internal AI Knowledge Base (SOPs)", frontline: "—", specialist: "—", command: "Included" },
+  { label: "Custom N8N Integration Layer", frontline: "—", specialist: "—", command: "Included" },
+  { label: "Service Delivery Automation", frontline: "—", specialist: "—", command: "Included" },
+  { label: "Monthly Strategic Ops Audit", frontline: "—", specialist: "—", command: "Included" },
+  
+  { label: "INFRASTRUCTURE & LIMITS", frontline: "", specialist: "", command: "", isSection: true },
+  { label: "Included AI Voice Minutes", frontline: "250 Minutes", specialist: "500 Minutes", command: "1,000 Minutes" },
+  { label: "Included SMS Segments", frontline: "500", specialist: "2,000", command: "Enterprise Vol." },
+  { label: "HIPAA Compliance Server Upgrade", frontline: "Optional (+$300/mo)", specialist: "Optional (+$300/mo)", command: "Optional (+$300/mo)" },
 ];
 
 function ComparisonCell({ value, isSpecialist = false }: { value: string; isSpecialist?: boolean }) {
@@ -579,6 +591,7 @@ function ComparisonCell({ value, isSpecialist = false }: { value: string; isSpec
   const isAvailable = value === "Available";
   const isByApplication = value.includes("by application") || value === "By application";
   const isIncluded = value === "Included" || value.startsWith("Included");
+  const isOptional = value.includes("Optional");
   
   let className = "text-xs md:text-sm ";
   if (isEmpty) {
@@ -587,6 +600,8 @@ function ComparisonCell({ value, isSpecialist = false }: { value: string; isSpec
     className += "text-primary/80 font-medium";
   } else if (isByApplication) {
     className += "text-white/70 italic";
+  } else if (isOptional) {
+    className += "text-slate-400";
   } else if (isIncluded && isSpecialist) {
     className += "text-primary font-medium";
   } else if (isIncluded) {
@@ -634,39 +649,59 @@ function ComparePlansSection() {
                 </tr>
               </thead>
               <tbody>
-                {comparisonRows.map((row, i) => (
-                  <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                    <td className="py-4 pr-6 text-sm text-slate-300 text-left">{row.label}</td>
-                    <td className="py-4 px-4 text-center"><ComparisonCell value={row.frontline} /></td>
-                    <td className="py-4 px-4 text-center bg-primary/[0.03]"><ComparisonCell value={row.specialist} isSpecialist /></td>
-                    <td className="py-4 px-4 text-center"><ComparisonCell value={row.command} /></td>
-                  </tr>
-                ))}
+                {comparisonRows.map((row, i) => {
+                  if (row.isSection) {
+                    return (
+                      <tr key={i} className="border-t border-white/10 bg-white/[0.02]">
+                        <td colSpan={4} className="py-3 pr-6 text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold text-left">
+                          {row.label}
+                        </td>
+                      </tr>
+                    );
+                  }
+                  return (
+                    <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                      <td className="py-4 pr-6 text-sm text-slate-300 text-left">{row.label}</td>
+                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.frontline} /></td>
+                      <td className="py-4 px-4 text-center bg-primary/[0.03]"><ComparisonCell value={row.specialist} isSpecialist /></td>
+                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.command} /></td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
 
           {/* Mobile Stacked View */}
           <div className="md:hidden space-y-4">
-            {comparisonRows.map((row, i) => (
-              <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
-                <p className="text-sm text-slate-300 font-medium mb-4 text-left">{row.label}</p>
-                <div className="grid grid-cols-3 gap-2 text-center">
-                  <div>
-                    <p className="text-[10px] text-slate-500 mb-1">Frontline</p>
-                    <ComparisonCell value={row.frontline} />
+            {comparisonRows.map((row, i) => {
+              if (row.isSection) {
+                return (
+                  <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02] mt-6">
+                    <p className="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold text-left">{row.label}</p>
                   </div>
-                  <div className="bg-primary/[0.03] rounded-lg py-1 px-1">
-                    <p className="text-[10px] text-primary mb-1">Specialist</p>
-                    <ComparisonCell value={row.specialist} isSpecialist />
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-slate-500 mb-1">Command</p>
-                    <ComparisonCell value={row.command} />
+                );
+              }
+              return (
+                <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
+                  <p className="text-sm text-slate-300 font-medium mb-4 text-left">{row.label}</p>
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div>
+                      <p className="text-[10px] text-slate-500 mb-1">Frontline</p>
+                      <ComparisonCell value={row.frontline} />
+                    </div>
+                    <div className="bg-primary/[0.03] rounded-lg py-1 px-1">
+                      <p className="text-[10px] text-primary mb-1">Specialist</p>
+                      <ComparisonCell value={row.specialist} isSpecialist />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-slate-500 mb-1">Command</p>
+                      <ComparisonCell value={row.command} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Legend + Note */}
