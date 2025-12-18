@@ -1,0 +1,68 @@
+CRITICAL UI & CONTENT UPDATE: PRICING CARDS (FINAL APPROVED REVISION)
+
+Please update the three pricing cards with the exact text and structural rules below.
+
+GLOBAL LAYOUT RULES:
+1. "Outcome" Box: Must be at the TOP, immediately under the Subheadline.
+2. Pricing: Monthly price is large/bold. Launch fee is small/secondary.
+3. Footer: Distinct "Infrastructure" line at the bottom of the card.
+
+---
+
+CARD 01: FRONTLINE
+Headline: Frontline
+Subheadline: The "Human-First" Safety Net
+Outcome Text: "Your front desk is now fail-safe. Stop leaking leads to competitors and ensure every caller gets a professional response—even when your team is busy or the office is closed."
+
+Monthly Price: $297/mo
+Launch Build: $600 one-time
+
+Feature List:
+- AI Voice Backup Receptionist: Answers only when your team is busy or after-hours.
+- 24/7 Website AI Chatbot: Engages and books visitors directly from your landing page.
+- Instant SMS Text-Back: A digital safety net that keeps the conversation alive if a call is missed.
+- Speed-to-Lead Engine: Ensures new inquiries get a response in under 60 seconds.
+- Single Intake Pipeline: One unified view for all phone, text, and form leads.
+
+Infrastructure Footer:
+"INCLUDES: 250 AI Voice Minutes/mo • Standard Security • Optional HIPAA Upgrade (+$300/mo)"
+
+---
+
+CARD 02: SPECIALIST
+Headline: Specialist
+Subheadline: The "Revenue & Reputation" Accelerator
+Outcome Text: "Turn your lead list into a revenue engine. You don't just capture data—you drive behavior by dominating every social channel, ranking higher on Google, and winning back 'lost' revenue on autopilot."
+
+Monthly Price: $497/mo
+Launch Build: $1,000 one-time
+
+Feature List (Everything in Frontline, PLUS):
+- Proactive Outbound Engine: AI calls back "No-Shows" and dormant leads to rebook them.
+- Omni-Channel AI Command: Unified messaging for Instagram, Facebook, and WhatsApp.
+- The Database Reactivator: Automated campaigns to win back old or cold leads.
+- Auto-Reputation Engine: Captures 5-star reviews and routes negative feedback internally.
+- Smart Lead Triage: AI filters spam and prioritizes "Hot Leads" for your team.
+
+Infrastructure Footer:
+"INCLUDES: 500 AI Voice Minutes/mo • Commercial Outbound Rights • Optional HIPAA Upgrade (+$300/mo)"
+
+---
+
+CARD 03: COMMAND
+Headline: Command
+Subheadline: The Autonomous Operations Engine
+Outcome Text: "Step out of the day-to-day 'weeds' and into the CEO role. We don't just capture leads; we automate your entire fulfillment process—contracts, invoices, and project setup—so your business runs itself."
+
+Monthly Price: Starting at $997/mo
+Launch Build: Starting at $2,000 one-time
+
+Feature List (Everything in Specialist, PLUS):
+- Internal AI Knowledge Base: Turn your SOPs and PDFs into an instant answer engine for your team.
+- Custom N8N Integration Layer: We bridge your CRM, PM, and billing tools to eliminate manual data entry.
+- Service Delivery Automation: Automatically generate contracts, send invoices, and create project files when a deal closes.
+- Priority Decision Logic: AI handles complex routing—like differentiating between support issues and new sales—without human input.
+- Monthly Strategic Ops Audit: Human-led consulting to maintain your workflows and identify new efficiencies.
+
+Infrastructure Footer:
+"INCLUDES: 1,000 AI Voice Minutes • Enterprise Speed • Optional HIPAA Upgrade (+$300/mo)"
