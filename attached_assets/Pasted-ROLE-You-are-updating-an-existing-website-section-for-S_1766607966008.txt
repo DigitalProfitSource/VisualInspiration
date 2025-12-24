@@ -1,0 +1,209 @@
+ROLE:
+You are updating an existing website section for Simple Sequence.
+Do NOT change the main hero section or tagline.
+Only update the section described below.
+
+GOAL:
+Transform the existing “Why things keep falling through the cracks” section into a single, scannable, side-by-side Pain vs Relief section using cards.
+
+The section must clearly show:
+• The cost of operating WITHOUT core systems (Pain)
+• The outcome when those systems ARE installed (Relief / Pillars)
+
+This is NOT a redesign request.
+Keep the existing card system, spacing, and visual language.
+Only update structure and copy.
+
+-----------------------------------
+SECTION STRUCTURE (ONE SECTION)
+-----------------------------------
+
+SECTION HEADLINE:
+What’s really costing you time, revenue, and sanity
+
+SECTION SUBHEAD:
+These aren’t isolated problems. They’re what happens when core operational systems are missing.
+
+-----------------------------------
+CARD LAYOUT RULES
+-----------------------------------
+
+• Use cards only
+• Cards must appear in ROWS of TWO
+• LEFT CARD = PAIN (Anti-Pillar)
+• RIGHT CARD = RELIEF (System / Pillar)
+• Each pair must align horizontally
+• All six pairs live in the SAME section
+• No separate “sections” for pain vs solution
+
+-----------------------------------
+CARD PAIRS (COPY REQUIRED)
+-----------------------------------
+
+PAIR 1
+
+LEFT CARD (PAIN)
+Title:
+Reactive Lead Handling
+
+Subtitle:
+(Missing Speed-to-Lead)
+
+Body:
+By the time your team responds, the lead is gone.
+Calls go unanswered. Chats sit idle. Texts come too late.
+
+What it costs you:
+• Lost deals you already paid for
+• Lower close rates
+• A constant feeling of being “behind”
+
+RIGHT CARD (RELIEF)
+Title:
+Speed-to-Lead Capture
+
+Body:
+Every inquiry gets an immediate response across calls, chat, and text—without relying on staff availability.
+
+-----------------------------------
+
+PAIR 2
+
+LEFT CARD (PAIN)
+Title:
+Revenue That Dies in Follow-Up
+
+Subtitle:
+(Missing Follow-Up & Rebooking Engine)
+
+Body:
+Your team means well—but follow-up depends on memory and mood.
+No-shows vanish. Estimates expire. Old leads rot.
+
+What it costs you:
+• Silent churn
+• Unpredictable cash flow
+• Pressure to “get more leads” instead of fixing leaks
+
+RIGHT CARD (RELIEF)
+Title:
+Follow-Up & Rebooking Engine
+
+Body:
+Automated persistence re-engages no-shows, revives stalled leads, and recovers revenue that would otherwise disappear.
+
+-----------------------------------
+
+PAIR 3
+
+LEFT CARD (PAIN)
+Title:
+A Database That Does Nothing
+
+Subtitle:
+(Missing Reactivation & LTV Systems)
+
+Body:
+You have a list—but it’s just sitting there.
+Past customers hear from you once… then never again.
+
+What it costs you:
+• Zero repeat revenue
+• Wasted historical data
+• Reliance on constant new acquisition
+
+RIGHT CARD (RELIEF)
+Title:
+Database Reactivation & LTV Expansion
+
+Body:
+Your existing contacts become an active revenue asset through systematic re-engagement and lifecycle follow-up.
+
+-----------------------------------
+
+PAIR 4
+
+LEFT CARD (PAIN)
+Title:
+Trust That Never Compounds
+
+Subtitle:
+(Missing Reputation Flywheel)
+
+Body:
+Happy customers don’t automatically leave reviews.
+Unhappy ones do.
+
+What it costs you:
+• Lower Google rankings
+• Fewer inbound calls
+• Sales teams forced to convince instead of confirm
+
+RIGHT CARD (RELIEF)
+Title:
+Reputation & Trust Flywheel
+
+Body:
+Positive experiences are consistently captured and converted into social proof that drives inbound demand.
+
+-----------------------------------
+
+PAIR 5
+
+LEFT CARD (PAIN)
+Title:
+A Website That Acts Like a Brochure
+
+Subtitle:
+(Missing AI-Ready Conversion Layer)
+
+Body:
+Your site looks fine—but it doesn’t respond, qualify, or convert.
+Visitors leave without ever raising their hand.
+
+What it costs you:
+• Invisible intent loss
+• Paid traffic leakage
+• Missed opportunities after hours
+
+RIGHT CARD (RELIEF)
+Title:
+AI-Ready Web Conversion Layer
+
+Body:
+Your web presence actively captures and qualifies demand instead of passively displaying information.
+
+-----------------------------------
+
+PAIR 6
+
+LEFT CARD (PAIN)
+Title:
+Operations Held Together by People
+
+Subtitle:
+(Missing Automation & Integration)
+
+Body:
+Your team is the glue.
+When they’re busy, sick, or gone—things break.
+
+What it costs you:
+• Burnout
+• Errors
+• A business that can’t scale without stress
+
+RIGHT CARD (RELIEF)
+Title:
+Ops Automation & System Integration
+
+Body:
+Critical workflows run consistently in the background, reducing manual load without replacing human judgment.
+
+-----------------------------------
+
+FINAL NOTES:
+• Do not add pricing, CTAs, or sales language
+• Do not mention “pillars” explicitly in headings
+• Tone should feel calm, confident, and operational—not hype-driven
+• This section should make the system feel necessary, not optional
