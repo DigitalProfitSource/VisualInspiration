@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -826,7 +826,7 @@ export default function Home() {
       </section>
       {/* Tech Stack Ticker */}
       <TechTicker />
-      {/* What We Solve - Friction Grid */}
+      {/* Pain vs Relief Section */}
       <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
         <GridBeam showCenterBeam={false} gridOpacity={0.2} />
         <div className="container mx-auto px-6 relative z-10">
@@ -837,38 +837,250 @@ export default function Home() {
             transition={fadeInUpViewport.transition}
             className="mb-20 text-center max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl md:text-5xl font-medium mb-6 text-[#f8fcfc]">Why things keep falling through the cracks.</h2>
-            <p className="text-muted-foreground text-lg">These are the operational patterns that drain your energy and kill your margins — usually invisible until you map them.</p>
+            <h2 className="text-3xl md:text-5xl font-medium mb-6 text-[#f8fcfc]">What's really costing you time, revenue, and sanity</h2>
+            <p className="text-muted-foreground text-lg">These aren't isolated problems. They're what happens when core operational systems are missing.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: "Slow Lead Response", desc: "By the time you call back, the lead is already talking to someone else.", icon: Snail },
-              { title: "Follow-Up That Forgets", desc: "Your team means well, but things slip. Leads go cold. Revenue disappears.", icon: TriangleAlert },
-              { title: "Systems That Don't Talk", desc: "Your tools are scattered. Your team fills the gaps manually. It's exhausting.", icon: Unplug },
-              { title: "Too Dependent on People", desc: "When key staff get busy or leave, the whole operation grinds down.", icon: FlagOff },
-              { title: "AI in the Wrong Places", desc: "You've tried tools — but nothing sticks because it wasn't built for your workflow.", icon: CloudOff },
-              { title: "Invisible Daily Drag", desc: "Small friction points compound into big problems: stress, churn, and shrinking margins.", icon: Frown }
-            ].map((item, i) => (
+          <div className="space-y-6">
+            {/* Pair 1: Reactive Lead Handling vs Speed-to-Lead Capture */}
+            <div className="grid md:grid-cols-2 gap-6">
               <motion.div 
-                key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className="group p-8 rounded-2xl border border-white/5 bg-gradient-to-b from-white/[0.08] to-transparent hover:from-white/[0.12] hover:to-white/[0.02] transition-all relative overflow-hidden shadow-lg"
+                transition={{ delay: 0, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
               >
-                {/* Hover Glow */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 border border-white/5 group-hover:border-primary/20">
-                  <item.icon className="w-5 h-5" />
+                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
+                  <Snail className="w-5 h-5" />
                 </div>
-                <h3 className="text-xl font-medium mb-3 relative z-10">{item.title}</h3>
-                <p className="text-muted-foreground leading-relaxed relative z-10 group-hover:text-zinc-300 transition-colors">{item.desc}</p>
+                <h3 className="text-xl font-medium mb-1 text-slate-300">Reactive Lead Handling</h3>
+                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Speed-to-Lead)</p>
+                <p className="text-muted-foreground leading-relaxed mb-4">By the time your team responds, the lead is gone. Calls go unanswered. Chats sit idle. Texts come too late.</p>
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Lost deals you already paid for</li>
+                    <li>• Lower close rates</li>
+                    <li>• A constant feeling of being "behind"</li>
+                  </ul>
+                </div>
               </motion.div>
-            ))}
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.1, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-4 text-primary/90">Speed-to-Lead Capture</h3>
+                <p className="text-muted-foreground leading-relaxed">Every inquiry gets an immediate response across calls, chat, and text—without relying on staff availability.</p>
+              </motion.div>
+            </div>
+
+            {/* Pair 2: Revenue That Dies in Follow-Up vs Follow-Up & Rebooking Engine */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
+                  <TriangleAlert className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-1 text-slate-300">Revenue That Dies in Follow-Up</h3>
+                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Follow-Up & Rebooking Engine)</p>
+                <p className="text-muted-foreground leading-relaxed mb-4">Your team means well—but follow-up depends on memory and mood. No-shows vanish. Estimates expire. Old leads rot.</p>
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Silent churn</li>
+                    <li>• Unpredictable cash flow</li>
+                    <li>• Pressure to "get more leads" instead of fixing leaks</li>
+                  </ul>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
+                  <RefreshCw className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-4 text-primary/90">Follow-Up & Rebooking Engine</h3>
+                <p className="text-muted-foreground leading-relaxed">Automated persistence re-engages no-shows, revives stalled leads, and recovers revenue that would otherwise disappear.</p>
+              </motion.div>
+            </div>
+
+            {/* Pair 3: A Database That Does Nothing vs Database Reactivation & LTV Expansion */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
+                  <Database className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-1 text-slate-300">A Database That Does Nothing</h3>
+                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Reactivation & LTV Systems)</p>
+                <p className="text-muted-foreground leading-relaxed mb-4">You have a list—but it's just sitting there. Past customers hear from you once… then never again.</p>
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Zero repeat revenue</li>
+                    <li>• Wasted historical data</li>
+                    <li>• Reliance on constant new acquisition</li>
+                  </ul>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
+                  <TrendingUp className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-4 text-primary/90">Database Reactivation & LTV Expansion</h3>
+                <p className="text-muted-foreground leading-relaxed">Your existing contacts become an active revenue asset through systematic re-engagement and lifecycle follow-up.</p>
+              </motion.div>
+            </div>
+
+            {/* Pair 4: Trust That Never Compounds vs Reputation & Trust Flywheel */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
+                  <Frown className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-1 text-slate-300">Trust That Never Compounds</h3>
+                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Reputation Flywheel)</p>
+                <p className="text-muted-foreground leading-relaxed mb-4">Happy customers don't automatically leave reviews. Unhappy ones do.</p>
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Lower Google rankings</li>
+                    <li>• Fewer inbound calls</li>
+                    <li>• Sales teams forced to convince instead of confirm</li>
+                  </ul>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
+                  <Star className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-4 text-primary/90">Reputation & Trust Flywheel</h3>
+                <p className="text-muted-foreground leading-relaxed">Positive experiences are consistently captured and converted into social proof that drives inbound demand.</p>
+              </motion.div>
+            </div>
+
+            {/* Pair 5: A Website That Acts Like a Brochure vs AI-Ready Web Conversion Layer */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-1 text-slate-300">A Website That Acts Like a Brochure</h3>
+                <p className="text-xs font-mono text-slate-500 mb-4">(Missing AI-Ready Conversion Layer)</p>
+                <p className="text-muted-foreground leading-relaxed mb-4">Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.</p>
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Invisible intent loss</li>
+                    <li>• Paid traffic leakage</li>
+                    <li>• Missed opportunities after hours</li>
+                  </ul>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.9, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
+                  <Globe className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-4 text-primary/90">AI-Ready Web Conversion Layer</h3>
+                <p className="text-muted-foreground leading-relaxed">Your web presence actively captures and qualifies demand instead of passively displaying information.</p>
+              </motion.div>
+            </div>
+
+            {/* Pair 6: Operations Held Together by People vs Ops Automation & System Integration */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 1.0, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
+                  <FlagOff className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-1 text-slate-300">Operations Held Together by People</h3>
+                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Automation & Integration)</p>
+                <p className="text-muted-foreground leading-relaxed mb-4">Your team is the glue. When they're busy, sick, or gone—things break.</p>
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• Burnout</li>
+                    <li>• Errors</li>
+                    <li>• A business that can't scale without stress</li>
+                  </ul>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 1.1, duration: 0.5 }}
+                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+              >
+                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
+                  <Cog className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-medium mb-4 text-primary/90">Ops Automation & System Integration</h3>
+                <p className="text-muted-foreground leading-relaxed">Critical workflows run consistently in the background, reducing manual load without replacing human judgment.</p>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
