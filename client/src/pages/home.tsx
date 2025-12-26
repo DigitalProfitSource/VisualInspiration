@@ -872,13 +872,20 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 0.1, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
               >
-                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
-                  <Zap className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-4 text-primary/90">Speed-to-Lead Capture</h3>
-                <p className="text-muted-foreground leading-relaxed">Every inquiry gets an immediate response across calls, chat, and text—without relying on staff availability.</p>
+                <picture>
+                  <source srcSet="/images/speed-to-lead-capture.webp" type="image/webp" />
+                  <img
+                    src="/images/speed-to-lead-capture.jpg"
+                    alt="AI-powered instant response system handling calls, chat, and text inquiries automatically"
+                    width="960"
+                    height="1200"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto object-cover rounded-2xl"
+                  />
+                </picture>
               </motion.div>
             </div>
 
@@ -912,13 +919,20 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
               >
-                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
-                  <RefreshCw className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-4 text-primary/90">Follow-Up & Rebooking Engine</h3>
-                <p className="text-muted-foreground leading-relaxed">Automated persistence re-engages no-shows, revives stalled leads, and recovers revenue that would otherwise disappear.</p>
+                <picture>
+                  <source srcSet="/images/follow-up-rebooking-engine-automation.webp" type="image/webp" />
+                  <img
+                    src="/images/follow-up-rebooking-engine-automation.jpg"
+                    alt="Automated follow-up system re-engaging no-shows and recovering missed revenue"
+                    width="960"
+                    height="1200"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto object-cover rounded-2xl"
+                  />
+                </picture>
               </motion.div>
             </div>
 
@@ -952,13 +966,20 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 0.5, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
               >
-                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
-                  <TrendingUp className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-4 text-primary/90">Database Reactivation & LTV Expansion</h3>
-                <p className="text-muted-foreground leading-relaxed">Your existing contacts become an active revenue asset through systematic re-engagement and lifecycle follow-up.</p>
+                <picture>
+                  <source srcSet="/images/database-reactivation-ltv.webp" type="image/webp" />
+                  <img
+                    src="/images/database-reactivation-ltv.jpg"
+                    alt="AI reactivating past customers and expanding lifetime value through automated outreach"
+                    width="960"
+                    height="1200"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto object-cover rounded-2xl"
+                  />
+                </picture>
               </motion.div>
             </div>
 
@@ -992,13 +1013,20 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 0.7, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
               >
-                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
-                  <Star className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-4 text-primary/90">Reputation & Trust Flywheel</h3>
-                <p className="text-muted-foreground leading-relaxed">Positive experiences are consistently captured and converted into social proof that drives inbound demand.</p>
+                <picture>
+                  <source srcSet="/images/reputation-trust-flywheel.webp" type="image/webp" />
+                  <img
+                    src="/images/reputation-trust-flywheel.jpg"
+                    alt="Automated review collection system building social proof and Google rankings"
+                    width="960"
+                    height="1200"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto object-cover rounded-2xl"
+                  />
+                </picture>
               </motion.div>
             </div>
 
@@ -1032,13 +1060,20 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 0.9, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
               >
-                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
-                  <Globe className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-4 text-primary/90">AI-Ready Web Conversion Layer</h3>
-                <p className="text-muted-foreground leading-relaxed">Your web presence actively captures and qualifies demand instead of passively displaying information.</p>
+                <picture>
+                  <source srcSet="/images/ai-web-conversion-layer.webp" type="image/webp" />
+                  <img
+                    src="/images/ai-web-conversion-layer.jpg"
+                    alt="AI-powered website converting visitors through intelligent chat and qualification"
+                    width="960"
+                    height="1200"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto object-cover rounded-2xl"
+                  />
+                </picture>
               </motion.div>
             </div>
 
@@ -1072,13 +1107,20 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: 1.1, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/[0.08] to-transparent relative overflow-hidden shadow-lg"
+                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
               >
-                <div className="w-10 h-10 mb-6 bg-primary/10 rounded-lg flex items-center justify-center text-primary border border-primary/20">
-                  <Cog className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-4 text-primary/90">Ops Automation & System Integration</h3>
-                <p className="text-muted-foreground leading-relaxed">Critical workflows run consistently in the background, reducing manual load without replacing human judgment.</p>
+                <picture>
+                  <source srcSet="/images/ops-automation-integration.webp" type="image/webp" />
+                  <img
+                    src="/images/ops-automation-integration.jpg"
+                    alt="Automated workflows running critical operations without manual intervention"
+                    width="960"
+                    height="1200"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto object-cover rounded-2xl"
+                  />
+                </picture>
               </motion.div>
             </div>
           </div>
