@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight } from "lucide-react";
 import {
@@ -18,7 +18,6 @@ import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
-import { useIsMobile } from "@/hooks/use-mobile";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 import { ArchitectFlowDiagram } from "@/components/ui/architect-flow-diagram";
 import { DiagnoseFrictionDiagram } from "@/components/ui/diagnose-friction-diagram";
@@ -843,100 +842,59 @@ const painReliefNarrativeData = [
   }
 ];
 
-function PainReliefSlide({ 
-  item, 
-  slideProgress,
-  isAlternate
-}: { 
-  item: typeof painReliefNarrativeData[0]; 
-  slideProgress: number;
-  isAlternate: boolean;
-}) {
+function PainReliefStackedCard({ item, index }: { item: typeof painReliefNarrativeData[0]; index: number }) {
   const Icon = item.icon;
-  
-  const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-  
-  const effectiveProgress = Math.max(slideProgress, 0.02);
-  
-  const introOpacity = clamp(effectiveProgress / 0.05, 0, 1);
-  const descOpacity = clamp((effectiveProgress - 0.02) / 0.08, 0, 1);
-  const impactOpacity = clamp((effectiveProgress - 0.1) / 0.1, 0, 1);
-  const bulletsOpacity = clamp((effectiveProgress - 0.25) / 0.15, 0, 1);
-  const outcomeOpacity = clamp((effectiveProgress - 0.45) / 0.15, 0, 1);
-  const imageOpacity = clamp(effectiveProgress / 0.1, 0, 1);
-  
-  const introY = (1 - introOpacity) * 20;
-  const descY = (1 - descOpacity) * 15;
-  const impactY = (1 - impactOpacity) * 15;
-  const bulletsY = (1 - bulletsOpacity) * 15;
-  const outcomeY = (1 - outcomeOpacity) * 15;
-  const imageScale = 0.96 + imageOpacity * 0.04;
+  const isAlternate = index % 2 === 1;
   
   return (
-    <div
-      data-testid={`slide-pain-${item.id}`}
-      className="grid md:grid-cols-2 gap-8 md:gap-16 items-center"
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, delay: 0.1 }}
+      className={`grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center py-16 md:py-24 border-b border-white/5 last:border-b-0`}
+      data-testid={`card-pain-relief-${item.id}`}
     >
       <div className={`space-y-6 ${isAlternate ? "md:order-2" : ""}`}>
-        <div 
-          style={{ opacity: introOpacity, transform: `translateY(${introY}px)` }}
-          className="flex items-center gap-4 transition-transform duration-100"
-        >
-          <div className="w-14 h-14 rounded-xl flex items-center justify-center border border-primary/30 bg-primary/10">
-            <Icon className="w-7 h-7 text-primary" />
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <Icon className="w-6 h-6 text-primary" />
           </div>
-          <h3 className="text-2xl md:text-3xl font-display font-medium text-white">
+          <h3 className="text-2xl md:text-3xl font-display font-medium text-[#f8fcfc]">
             {item.title}
           </h3>
         </div>
         
-        <p 
-          style={{ opacity: descOpacity, transform: `translateY(${descY}px)` }}
-          className="text-lg text-muted-foreground leading-relaxed transition-transform duration-100"
-        >
+        <p className="text-muted-foreground text-lg leading-relaxed">
           {item.description}
         </p>
         
-        <div 
-          style={{ opacity: impactOpacity, transform: `translateY(${impactY}px)` }}
-          className="pt-4 transition-transform duration-100"
-        >
-          <div className="flex items-center gap-2 mb-2">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
-          </div>
-          <p className="text-lg font-medium text-primary/90">
-            {item.impact}
-          </p>
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+          <span className="text-xs font-mono text-primary/70 uppercase tracking-wider">Impact</span>
         </div>
+        <p className="text-primary font-medium text-lg">
+          {item.impact}
+        </p>
         
-        <ul 
-          style={{ opacity: bulletsOpacity, transform: `translateY(${bulletsY}px)` }}
-          className="space-y-3 pt-4 transition-transform duration-100"
-        >
-          {item.detailBullets.map((bullet, i) => (
-            <li key={i} className="flex items-start gap-3 text-muted-foreground">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 shrink-0" />
-              <span>{bullet}</span>
+        <ul className="space-y-3 pt-2">
+          {item.detailBullets.map((bullet, bulletIndex) => (
+            <li key={bulletIndex} className="flex items-start gap-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2.5 flex-shrink-0" />
+              <span className="text-muted-foreground">{bullet}</span>
             </li>
           ))}
         </ul>
         
-        <div 
-          style={{ opacity: outcomeOpacity, transform: `translateY(${outcomeY}px)` }}
-          className="pt-6 border-t border-white/10 transition-transform duration-100"
-        >
-          <p className="text-sm font-mono text-slate-400 mb-2">Outcome:</p>
+        <div className="pt-4 border-l-2 border-primary/30 pl-4">
+          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider block mb-2">Outcome:</span>
           <p className="text-primary leading-relaxed font-medium">
             {item.outcome}
           </p>
         </div>
       </div>
       
-      <div 
-        style={{ opacity: imageOpacity, transform: `scale(${imageScale})` }}
-        className={`relative transition-transform duration-100 ${isAlternate ? "md:order-1" : ""}`}
-      >
+      <div className={`relative ${isAlternate ? "md:order-1" : ""}`}>
         <div className="rounded-2xl border border-primary/20 overflow-hidden shadow-2xl shadow-primary/10 bg-zinc-900/50">
           <picture>
             <source srcSet={item.imageWebp} type="image/webp" />
@@ -945,237 +903,43 @@ function PainReliefSlide({
               alt={item.imageAlt}
               width="960"
               height="1200"
-              loading="eager"
+              loading="lazy"
               decoding="async"
               className="w-full h-auto object-cover"
-              data-testid={`image-slide-${item.id}`}
+              data-testid={`image-pain-relief-${item.id}`}
             />
           </picture>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 function PainReliefNarrativeSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const totalSlides = painReliefNarrativeData.length;
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (latest) => {
-      setScrollProgress(latest);
-    });
-    return unsubscribe;
-  }, [scrollYProgress]);
-  
-  const activeIndex = Math.min(Math.floor(scrollProgress * totalSlides), totalSlides - 1);
-  
-  const getSlideProgress = (index: number) => {
-    const slideStart = index / totalSlides;
-    const slideEnd = (index + 1) / totalSlides;
-    const slideRange = slideEnd - slideStart;
-    if (slideRange === 0) return index === 0 ? 1 : 0;
-    const progress = (scrollProgress - slideStart) / slideRange;
-    const clampedProgress = Math.max(0, Math.min(1, progress));
-    return Number.isNaN(clampedProgress) ? (index === 0 ? 1 : 0) : clampedProgress;
-  };
-  
-  const smoothstep = (x: number, edge0: number, edge1: number) => {
-    const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
-    return t * t * (3 - 2 * t);
-  };
-
-  const getEnterValue = (slideIndex: number) => {
-    const slideSpan = 1 / totalSlides;
-    const slideStart = slideIndex * slideSpan;
-    const pRaw = (scrollProgress - slideStart) / slideSpan;
-    return smoothstep(pRaw, -0.2, 0.4);
-  };
-
-  const getSlideOpacity = (index: number) => {
-    const epsilon = 0.02;
-    
-    if (index === 0 && scrollProgress <= 0.02) return 1;
-    
-    const currentEnter = getEnterValue(index);
-    const nextEnter = index < totalSlides - 1 ? getEnterValue(index + 1) : 0;
-    
-    if (index === totalSlides - 1) {
-      return Math.max(currentEnter, epsilon);
-    }
-    
-    return Math.max(currentEnter * (1 - nextEnter), epsilon);
-  };
-
   return (
-    <section 
-      ref={containerRef}
-      className="relative border-t border-white/5 bg-zinc-950/30"
-      style={{ height: `${(totalSlides + 1) * 100}vh` }}
-    >
-      <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
-        <GridBeam showCenterBeam={false} gridOpacity={0.15} />
-        
-        <div className="container mx-auto px-6 pt-20 pb-8 relative z-10">
-          <motion.div 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={{ once: true }}
-            transition={fadeInUpViewport.transition}
-            className="text-center max-w-3xl mx-auto mb-4"
-          >
-            <h2 className="text-3xl md:text-5xl font-display font-medium mb-4 text-[#f8fcfc]">
-              What's really costing you time, revenue, and sanity
-            </h2>
-            <p className="text-muted-foreground text-lg mb-6">
-              These aren't isolated problems. They're what happens when core operational systems are missing.
-            </p>
-            <div className="flex items-center justify-center gap-2 text-sm text-primary/70">
-              <ChevronDown className="w-4 h-4 animate-bounce" />
-              <span>Scroll to explore our six core capabilities</span>
-            </div>
-          </motion.div>
-        </div>
-        
-        <div className="flex-1 container mx-auto px-6 relative z-10 flex items-center">
-          <div className="w-full relative">
-            {painReliefNarrativeData.map((item, index) => {
-              const slideProgress = getSlideProgress(index);
-              const slideOpacity = getSlideOpacity(index);
-              const isVisible = slideOpacity > 0.01 || (index === 0 && scrollProgress === 0);
-              const isActive = index === activeIndex;
-              
-              return (
-                <div 
-                  key={item.id}
-                  className={`${isActive ? 'relative' : 'absolute inset-0'}`}
-                  style={{ 
-                    opacity: slideOpacity,
-                    pointerEvents: isActive ? 'auto' : 'none',
-                    visibility: isVisible ? 'visible' : 'hidden',
-                    transition: 'opacity 0.15s ease-out'
-                  }}
-                >
-                  <PainReliefSlide 
-                    item={item} 
-                    slideProgress={slideProgress}
-                    isAlternate={index % 2 === 1}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        
-        <div className="container mx-auto px-6 pb-8 relative z-10">
-          <div className="flex justify-center gap-2">
-            {painReliefNarrativeData.map((item, index) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  if (containerRef.current) {
-                    const containerTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
-                    const scrollableHeight = containerRef.current.scrollHeight - window.innerHeight;
-                    const slideProgress = (index + 0.1) / totalSlides;
-                    const scrollTarget = containerTop + slideProgress * scrollableHeight;
-                    window.scrollTo({ top: scrollTarget, behavior: "smooth" });
-                  }
-                }}
-                data-testid={`nav-slide-${item.id}`}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === activeIndex 
-                    ? "bg-primary w-8" 
-                    : "bg-white/20 hover:bg-white/40"
-                }`}
-                aria-label={`Go to ${item.title}`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PainReliefMobileSection() {
-  return (
-    <section className="md:hidden py-20 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
+    <section className="relative border-t border-white/5 bg-zinc-950/30">
       <GridBeam showCenterBeam={false} gridOpacity={0.15} />
+      
       <div className="container mx-auto px-6 relative z-10">
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          transition={fadeInUpViewport.transition}
+          className="text-center max-w-3xl mx-auto pt-20 pb-12"
         >
-          <h2 className="text-3xl font-display font-medium mb-4 text-[#f8fcfc]">
+          <h2 className="text-3xl md:text-5xl font-display font-medium mb-4 text-[#f8fcfc]">
             What's really costing you time, revenue, and sanity
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-lg">
             These aren't isolated problems. They're what happens when core operational systems are missing.
           </p>
         </motion.div>
         
-        <div className="space-y-12">
-          {painReliefNarrativeData.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5 }}
-                data-testid={`card-mobile-${item.id}`}
-                className="rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent p-6 space-y-4"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center border border-primary/30 bg-primary/10">
-                    <Icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-display font-medium text-white">
-                    {item.title}
-                  </h3>
-                </div>
-                
-                <p className="text-muted-foreground">{item.description}</p>
-                
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                  <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
-                </div>
-                <p className="text-primary/90 font-medium">{item.impact}</p>
-                
-                <div className="rounded-xl border border-primary/20 overflow-hidden">
-                  <picture>
-                    <source srcSet={item.imageWebp} type="image/webp" />
-                    <img
-                      src={item.imageJpg}
-                      alt={item.imageAlt}
-                      width="960"
-                      height="1200"
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-auto object-cover"
-                    />
-                  </picture>
-                </div>
-                
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-sm font-mono text-slate-400 mb-2">Outcome:</p>
-                  <p className="text-primary text-sm leading-relaxed">
-                    {item.outcome}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
+        <div className="max-w-6xl mx-auto">
+          {painReliefNarrativeData.map((item, index) => (
+            <PainReliefStackedCard key={item.id} item={item} index={index} />
+          ))}
         </div>
       </div>
     </section>
@@ -1183,12 +947,6 @@ function PainReliefMobileSection() {
 }
 
 function PainReliefTabs() {
-  const isMobile = useIsMobile();
-  
-  if (isMobile) {
-    return <PainReliefMobileSection />;
-  }
-  
   return <PainReliefNarrativeSection />;
 }
 
