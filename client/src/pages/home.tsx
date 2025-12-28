@@ -731,6 +731,190 @@ function RevenueSystemSection() {
   );
 }
 
+const painReliefData = [
+  {
+    id: "speed-to-lead",
+    icon: Snail,
+    painTitle: "Reactive Lead Handling",
+    painSubtitle: "(Missing Speed-to-Lead)",
+    painDescription: "By the time your team responds, the lead is gone. Calls go unanswered. Chats sit idle. Texts come too late.",
+    painCosts: ["Lost deals you already paid for", "Lower close rates", "A constant feeling of being \"behind\""],
+    reliefTitle: "Speed-to-Lead Capture",
+    reliefImageWebp: "/images/speed-to-lead-capture.webp",
+    reliefImageJpg: "/images/speed-to-lead-capture.jpg",
+    reliefAlt: "AI-powered instant response system handling calls, chat, and text inquiries automatically"
+  },
+  {
+    id: "follow-up",
+    icon: TriangleAlert,
+    painTitle: "Revenue That Dies in Follow-Up",
+    painSubtitle: "(Missing Follow-Up & Rebooking Engine)",
+    painDescription: "Your team means well—but follow-up depends on memory and mood. No-shows vanish. Estimates expire. Old leads rot.",
+    painCosts: ["Silent churn", "Unpredictable cash flow", "Pressure to \"get more leads\" instead of fixing leaks"],
+    reliefTitle: "Follow-Up & Rebooking Engine",
+    reliefImageWebp: "/images/follow-up-rebooking-engine-automation.webp",
+    reliefImageJpg: "/images/follow-up-rebooking-engine-automation.jpg",
+    reliefAlt: "Automated follow-up system re-engaging no-shows and recovering missed revenue"
+  },
+  {
+    id: "database",
+    icon: Database,
+    painTitle: "A Database That Does Nothing",
+    painSubtitle: "(Missing Reactivation & LTV Systems)",
+    painDescription: "You have a list—but it's just sitting there. Past customers hear from you once… then never again.",
+    painCosts: ["Zero repeat revenue", "Wasted historical data", "Reliance on constant new acquisition"],
+    reliefTitle: "Database Reactivation & LTV Expansion",
+    reliefImageWebp: "/images/database-reactivation-ltv.webp",
+    reliefImageJpg: "/images/database-reactivation-ltv.jpg",
+    reliefAlt: "AI reactivating past customers and expanding lifetime value through automated outreach"
+  },
+  {
+    id: "reputation",
+    icon: Frown,
+    painTitle: "Trust That Never Compounds",
+    painSubtitle: "(Missing Reputation Flywheel)",
+    painDescription: "Happy customers don't automatically leave reviews. Unhappy ones do.",
+    painCosts: ["Lower Google rankings", "Fewer inbound calls", "Sales teams forced to convince instead of confirm"],
+    reliefTitle: "Reputation & Trust Flywheel",
+    reliefImageWebp: "/images/reputation-trust-flywheel.webp",
+    reliefImageJpg: "/images/reputation-trust-flywheel.jpg",
+    reliefAlt: "Automated review collection system building social proof and Google rankings"
+  },
+  {
+    id: "web-conversion",
+    icon: FileText,
+    painTitle: "A Website That Acts Like a Brochure",
+    painSubtitle: "(Missing AI-Ready Conversion Layer)",
+    painDescription: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
+    painCosts: ["Invisible intent loss", "Paid traffic leakage", "Missed opportunities after hours"],
+    reliefTitle: "AI-Ready Web Conversion Layer",
+    reliefImageWebp: "/images/ai-web-conversion-layer.webp",
+    reliefImageJpg: "/images/ai-web-conversion-layer.jpg",
+    reliefAlt: "AI-powered website converting visitors through intelligent chat and qualification"
+  },
+  {
+    id: "ops-automation",
+    icon: FlagOff,
+    painTitle: "Operations Held Together by People",
+    painSubtitle: "(Missing Automation & Integration)",
+    painDescription: "Your team is the glue. When they're busy, sick, or gone—things break.",
+    painCosts: ["Burnout", "Errors", "A business that can't scale without stress"],
+    reliefTitle: "Ops Automation & System Integration",
+    reliefImageWebp: "/images/ops-automation-integration.webp",
+    reliefImageJpg: "/images/ops-automation-integration.jpg",
+    reliefAlt: "Automated workflows running critical operations without manual intervention"
+  }
+];
+
+function PainReliefTabs() {
+  const [activeTab, setActiveTab] = useState(0);
+  const activeItem = painReliefData[activeTab];
+
+  return (
+    <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
+      <GridBeam showCenterBeam={false} gridOpacity={0.2} />
+      <div className="container mx-auto px-6 relative z-10">
+        <motion.div 
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
+          viewport={fadeInUpViewport.viewport}
+          transition={fadeInUpViewport.transition}
+          className="mb-16 text-center max-w-3xl mx-auto"
+        >
+          <h2 className="text-3xl md:text-5xl font-medium mb-6 text-[#f8fcfc]">What's really costing you time, revenue, and sanity</h2>
+          <p className="text-muted-foreground text-lg">These aren't isolated problems. They're what happens when core operational systems are missing.</p>
+        </motion.div>
+
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-5 space-y-3">
+            {painReliefData.map((item, index) => {
+              const Icon = item.icon;
+              const isActive = activeTab === index;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(index)}
+                  data-testid={`tab-pain-${item.id}`}
+                  className={`w-full text-left p-5 rounded-xl border transition-all duration-300 ${
+                    isActive 
+                      ? "border-primary/40 bg-gradient-to-r from-primary/10 to-transparent shadow-lg shadow-primary/5" 
+                      : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"
+                  }`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center border transition-colors ${
+                      isActive 
+                        ? "bg-primary/20 text-primary border-primary/30" 
+                        : "bg-white/5 text-slate-400 border-white/10"
+                    }`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className={`font-medium mb-1 transition-colors ${isActive ? "text-white" : "text-slate-300"}`}>
+                        {item.painTitle}
+                      </h3>
+                      <p className={`text-xs font-mono mb-2 ${isActive ? "text-primary/70" : "text-slate-500"}`}>
+                        {item.painSubtitle}
+                      </p>
+                      <AnimatePresence mode="wait">
+                        {isActive && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <p className="text-sm text-muted-foreground mb-3">{item.painDescription}</p>
+                            <div className="pt-3 border-t border-white/10">
+                              <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
+                              <ul className="text-sm text-muted-foreground space-y-1">
+                                {item.painCosts.map((cost, i) => (
+                                  <li key={i}>• {cost}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="lg:col-span-7 lg:sticky lg:top-24">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.3 }}
+                className="rounded-2xl border border-primary/20 overflow-hidden shadow-2xl shadow-primary/10"
+              >
+                <picture>
+                  <source srcSet={activeItem.reliefImageWebp} type="image/webp" />
+                  <img
+                    src={activeItem.reliefImageJpg}
+                    alt={activeItem.reliefAlt}
+                    width="960"
+                    height="1200"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-auto object-cover"
+                    data-testid={`image-relief-${activeItem.id}`}
+                  />
+                </picture>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const { scrollY } = useScroll();
   const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
@@ -826,306 +1010,8 @@ export default function Home() {
       </section>
       {/* Tech Stack Ticker */}
       <TechTicker />
-      {/* Pain vs Relief Section */}
-      <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
-        <GridBeam showCenterBeam={false} gridOpacity={0.2} />
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="mb-20 text-center max-w-3xl mx-auto"
-          >
-            <h2 className="text-3xl md:text-5xl font-medium mb-6 text-[#f8fcfc]">What's really costing you time, revenue, and sanity</h2>
-            <p className="text-muted-foreground text-lg">These aren't isolated problems. They're what happens when core operational systems are missing.</p>
-          </motion.div>
-
-          <div className="space-y-6">
-            {/* Pair 1: Reactive Lead Handling vs Speed-to-Lead Capture */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
-              >
-                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
-                  <Snail className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-1 text-slate-300">Reactive Lead Handling</h3>
-                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Speed-to-Lead)</p>
-                <p className="text-muted-foreground leading-relaxed mb-4">By the time your team responds, the lead is gone. Calls go unanswered. Chats sit idle. Texts come too late.</p>
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Lost deals you already paid for</li>
-                    <li>• Lower close rates</li>
-                    <li>• A constant feeling of being "behind"</li>
-                  </ul>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.1, duration: 0.5 }}
-                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
-              >
-                <picture>
-                  <source srcSet="/images/speed-to-lead-capture.webp" type="image/webp" />
-                  <img
-                    src="/images/speed-to-lead-capture.jpg"
-                    alt="AI-powered instant response system handling calls, chat, and text inquiries automatically"
-                    width="960"
-                    height="1200"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-auto object-cover rounded-2xl"
-                  />
-                </picture>
-              </motion.div>
-            </div>
-
-            {/* Pair 2: Revenue That Dies in Follow-Up vs Follow-Up & Rebooking Engine */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
-              >
-                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
-                  <TriangleAlert className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-1 text-slate-300">Revenue That Dies in Follow-Up</h3>
-                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Follow-Up & Rebooking Engine)</p>
-                <p className="text-muted-foreground leading-relaxed mb-4">Your team means well—but follow-up depends on memory and mood. No-shows vanish. Estimates expire. Old leads rot.</p>
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Silent churn</li>
-                    <li>• Unpredictable cash flow</li>
-                    <li>• Pressure to "get more leads" instead of fixing leaks</li>
-                  </ul>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
-              >
-                <picture>
-                  <source srcSet="/images/follow-up-rebooking-engine-automation.webp" type="image/webp" />
-                  <img
-                    src="/images/follow-up-rebooking-engine-automation.jpg"
-                    alt="Automated follow-up system re-engaging no-shows and recovering missed revenue"
-                    width="960"
-                    height="1200"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-auto object-cover rounded-2xl"
-                  />
-                </picture>
-              </motion.div>
-            </div>
-
-            {/* Pair 3: A Database That Does Nothing vs Database Reactivation & LTV Expansion */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
-              >
-                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
-                  <Database className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-1 text-slate-300">A Database That Does Nothing</h3>
-                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Reactivation & LTV Systems)</p>
-                <p className="text-muted-foreground leading-relaxed mb-4">You have a list—but it's just sitting there. Past customers hear from you once… then never again.</p>
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Zero repeat revenue</li>
-                    <li>• Wasted historical data</li>
-                    <li>• Reliance on constant new acquisition</li>
-                  </ul>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
-              >
-                <picture>
-                  <source srcSet="/images/database-reactivation-ltv.webp" type="image/webp" />
-                  <img
-                    src="/images/database-reactivation-ltv.jpg"
-                    alt="AI reactivating past customers and expanding lifetime value through automated outreach"
-                    width="960"
-                    height="1200"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-auto object-cover rounded-2xl"
-                  />
-                </picture>
-              </motion.div>
-            </div>
-
-            {/* Pair 4: Trust That Never Compounds vs Reputation & Trust Flywheel */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.6, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
-              >
-                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
-                  <Frown className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-1 text-slate-300">Trust That Never Compounds</h3>
-                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Reputation Flywheel)</p>
-                <p className="text-muted-foreground leading-relaxed mb-4">Happy customers don't automatically leave reviews. Unhappy ones do.</p>
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Lower Google rankings</li>
-                    <li>• Fewer inbound calls</li>
-                    <li>• Sales teams forced to convince instead of confirm</li>
-                  </ul>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.7, duration: 0.5 }}
-                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
-              >
-                <picture>
-                  <source srcSet="/images/reputation-trust-flywheel.webp" type="image/webp" />
-                  <img
-                    src="/images/reputation-trust-flywheel.jpg"
-                    alt="Automated review collection system building social proof and Google rankings"
-                    width="960"
-                    height="1200"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-auto object-cover rounded-2xl"
-                  />
-                </picture>
-              </motion.div>
-            </div>
-
-            {/* Pair 5: A Website That Acts Like a Brochure vs AI-Ready Web Conversion Layer */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
-              >
-                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
-                  <FileText className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-1 text-slate-300">A Website That Acts Like a Brochure</h3>
-                <p className="text-xs font-mono text-slate-500 mb-4">(Missing AI-Ready Conversion Layer)</p>
-                <p className="text-muted-foreground leading-relaxed mb-4">Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.</p>
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Invisible intent loss</li>
-                    <li>• Paid traffic leakage</li>
-                    <li>• Missed opportunities after hours</li>
-                  </ul>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 0.9, duration: 0.5 }}
-                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
-              >
-                <picture>
-                  <source srcSet="/images/ai-web-conversion-layer.webp" type="image/webp" />
-                  <img
-                    src="/images/ai-web-conversion-layer.jpg"
-                    alt="AI-powered website converting visitors through intelligent chat and qualification"
-                    width="960"
-                    height="1200"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-auto object-cover rounded-2xl"
-                  />
-                </picture>
-              </motion.div>
-            </div>
-
-            {/* Pair 6: Operations Held Together by People vs Ops Automation & System Integration */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 1.0, duration: 0.5 }}
-                className="group p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent relative overflow-hidden shadow-lg"
-              >
-                <div className="w-10 h-10 mb-6 bg-white/5 rounded-lg flex items-center justify-center text-slate-400 border border-white/10">
-                  <FlagOff className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-medium mb-1 text-slate-300">Operations Held Together by People</h3>
-                <p className="text-xs font-mono text-slate-500 mb-4">(Missing Automation & Integration)</p>
-                <p className="text-muted-foreground leading-relaxed mb-4">Your team is the glue. When they're busy, sick, or gone—things break.</p>
-                <div className="pt-4 border-t border-white/10">
-                  <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Burnout</li>
-                    <li>• Errors</li>
-                    <li>• A business that can't scale without stress</li>
-                  </ul>
-                </div>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: 1.1, duration: 0.5 }}
-                className="group rounded-2xl border border-primary/20 relative overflow-hidden shadow-lg"
-              >
-                <picture>
-                  <source srcSet="/images/ops-automation-integration.webp" type="image/webp" />
-                  <img
-                    src="/images/ops-automation-integration.jpg"
-                    alt="Automated workflows running critical operations without manual intervention"
-                    width="960"
-                    height="1200"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-auto object-cover rounded-2xl"
-                  />
-                </picture>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Pain vs Relief Section - Tabbed Layout */}
+      <PainReliefTabs />
       {/* Customer Journey Alignment Section */}
       <section className="py-32 relative">
         <div className="container mx-auto px-6">
