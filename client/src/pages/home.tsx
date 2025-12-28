@@ -806,59 +806,122 @@ const painReliefData = [
   }
 ];
 
-function PainReliefTabs() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [expandedMobile, setExpandedMobile] = useState<number | null>(0);
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const activeItem = painReliefData[activeTab];
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const sectionRef = useRef<HTMLDivElement>(null);
+function PainReliefCard({ item, index }: { item: typeof painReliefData[0]; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isExpanded, setIsExpanded] = useState(index === 0);
+  const Icon = item.icon;
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!hasScrolled && window.scrollY > 100) {
-        setHasScrolled(true);
+    const ref = cardRef.current;
+    if (!ref) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsExpanded(entry.isIntersecting && entry.intersectionRatio >= 0.4);
+        });
+      },
+      {
+        root: null,
+        rootMargin: "-25% 0px -35% 0px",
+        threshold: [0.4]
       }
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasScrolled]);
+    );
 
-  useEffect(() => {
-    if (!hasScrolled) return;
-    
-    const observers: IntersectionObserver[] = [];
-    
-    tabRefs.current.forEach((ref, index) => {
-      if (!ref) return;
-      
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-              setActiveTab(index);
-            }
-          });
-        },
-        {
-          root: null,
-          rootMargin: "-20% 0px -60% 0px",
-          threshold: [0.6]
-        }
-      );
-      
-      observer.observe(ref);
-      observers.push(observer);
-    });
-
-    return () => {
-      observers.forEach((observer) => observer.disconnect());
-    };
-  }, [hasScrolled]);
+    observer.observe(ref);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section ref={sectionRef} className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ delay: index * 0.08, duration: 0.5 }}
+      data-testid={`card-pain-${item.id}`}
+      className={`rounded-2xl border overflow-hidden transition-all duration-500 ${
+        isExpanded 
+          ? "border-primary/40 bg-gradient-to-b from-primary/5 to-transparent shadow-xl shadow-primary/10" 
+          : "border-white/10 bg-white/[0.02]"
+      }`}
+    >
+      <div className="p-6">
+        <div className="flex items-start gap-4">
+          <div className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center border transition-all duration-500 ${
+            isExpanded 
+              ? "bg-primary/20 text-primary border-primary/30 scale-110" 
+              : "bg-white/5 text-slate-400 border-white/10"
+          }`}>
+            <Icon className="w-6 h-6" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className={`text-lg md:text-xl font-medium mb-1 transition-colors duration-300 ${isExpanded ? "text-white" : "text-slate-300"}`}>
+              {item.painTitle}
+            </h3>
+            <p className={`text-xs font-mono transition-colors duration-300 ${isExpanded ? "text-primary/70" : "text-slate-500"}`}>
+              {item.painSubtitle}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="px-6 pb-6">
+              <div className="grid md:grid-cols-2 gap-6 items-start">
+                <div className="space-y-4">
+                  <p className="text-muted-foreground leading-relaxed">{item.painDescription}</p>
+                  <div className="pt-4 border-t border-white/10">
+                    <p className="text-xs font-mono text-slate-400 mb-3">What it costs you:</p>
+                    <ul className="text-sm text-muted-foreground space-y-2">
+                      {item.painCosts.map((cost, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="text-primary/60 mt-1">•</span>
+                          <span>{cost}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                
+                <div>
+                  <p className="text-xs font-mono text-primary mb-3">The Solution: {item.reliefTitle}</p>
+                  <div className="rounded-xl border border-primary/20 overflow-hidden shadow-lg shadow-primary/10">
+                    <picture>
+                      <source srcSet={item.reliefImageWebp} type="image/webp" />
+                      <img
+                        src={item.reliefImageJpg}
+                        alt={item.reliefAlt}
+                        width="960"
+                        height="1200"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto object-cover"
+                        data-testid={`image-relief-${item.id}`}
+                      />
+                    </picture>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+function PainReliefTabs() {
+  return (
+    <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
       <GridBeam showCenterBeam={false} gridOpacity={0.2} />
       <div className="container mx-auto px-6 relative z-10">
         <motion.div 
@@ -872,181 +935,10 @@ function PainReliefTabs() {
           <p className="text-muted-foreground text-lg">These aren't isolated problems. They're what happens when core operational systems are missing.</p>
         </motion.div>
 
-        {/* Desktop: Tabs with sticky image */}
-        <div className="hidden lg:grid lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-5 space-y-3">
-            {painReliefData.map((item, index) => {
-              const Icon = item.icon;
-              const isActive = activeTab === index;
-              return (
-                <button
-                  key={item.id}
-                  ref={(el) => { tabRefs.current[index] = el; }}
-                  onClick={() => setActiveTab(index)}
-                  data-testid={`tab-pain-${item.id}`}
-                  className={`w-full text-left p-5 rounded-xl border transition-all duration-300 ${
-                    isActive 
-                      ? "border-primary/40 bg-gradient-to-r from-primary/10 to-transparent shadow-lg shadow-primary/5" 
-                      : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"
-                  }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center border transition-colors ${
-                      isActive 
-                        ? "bg-primary/20 text-primary border-primary/30" 
-                        : "bg-white/5 text-slate-400 border-white/10"
-                    }`}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className={`font-medium mb-1 transition-colors ${isActive ? "text-white" : "text-slate-300"}`}>
-                        {item.painTitle}
-                      </h3>
-                      <p className={`text-xs font-mono mb-2 ${isActive ? "text-primary/70" : "text-slate-500"}`}>
-                        {item.painSubtitle}
-                      </p>
-                      <AnimatePresence mode="wait">
-                        {isActive && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <p className="text-sm text-muted-foreground mb-3">{item.painDescription}</p>
-                            <div className="pt-3 border-t border-white/10">
-                              <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
-                              <ul className="text-sm text-muted-foreground space-y-1">
-                                {item.painCosts.map((cost, i) => (
-                                  <li key={i}>• {cost}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="lg:col-span-7 lg:sticky lg:top-24">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.3 }}
-                className="rounded-2xl border border-primary/20 overflow-hidden shadow-2xl shadow-primary/10"
-              >
-                <picture>
-                  <source srcSet={activeItem.reliefImageWebp} type="image/webp" />
-                  <img
-                    src={activeItem.reliefImageJpg}
-                    alt={activeItem.reliefAlt}
-                    width="960"
-                    height="1200"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-auto object-cover"
-                    data-testid={`image-relief-${activeItem.id}`}
-                  />
-                </picture>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Mobile: Accordion with inline images */}
-        <div className="lg:hidden space-y-4">
-          {painReliefData.map((item, index) => {
-            const Icon = item.icon;
-            const isExpanded = expandedMobile === index;
-            return (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: index * 0.1, duration: 0.4 }}
-                className={`rounded-xl border overflow-hidden transition-all duration-300 ${
-                  isExpanded 
-                    ? "border-primary/40 bg-gradient-to-b from-primary/10 to-transparent shadow-lg shadow-primary/5" 
-                    : "border-white/10 bg-white/[0.02]"
-                }`}
-              >
-                <button
-                  onClick={() => setExpandedMobile(isExpanded ? null : index)}
-                  data-testid={`accordion-pain-${item.id}`}
-                  className="w-full text-left p-5"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center border transition-colors ${
-                      isExpanded 
-                        ? "bg-primary/20 text-primary border-primary/30" 
-                        : "bg-white/5 text-slate-400 border-white/10"
-                    }`}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className={`font-medium transition-colors ${isExpanded ? "text-white" : "text-slate-300"}`}>
-                        {item.painTitle}
-                      </h3>
-                      <p className={`text-xs font-mono ${isExpanded ? "text-primary/70" : "text-slate-500"}`}>
-                        {item.painSubtitle}
-                      </p>
-                    </div>
-                    <ChevronRight className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} />
-                  </div>
-                </button>
-                
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-5 pb-5 space-y-4">
-                        <p className="text-sm text-muted-foreground">{item.painDescription}</p>
-                        <div className="pt-3 border-t border-white/10">
-                          <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
-                          <ul className="text-sm text-muted-foreground space-y-1">
-                            {item.painCosts.map((cost, i) => (
-                              <li key={i}>• {cost}</li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="pt-4">
-                          <p className="text-xs font-mono text-primary/70 mb-3">The Solution: {item.reliefTitle}</p>
-                          <div className="rounded-xl border border-primary/20 overflow-hidden shadow-lg shadow-primary/10">
-                            <picture>
-                              <source srcSet={item.reliefImageWebp} type="image/webp" />
-                              <img
-                                src={item.reliefImageJpg}
-                                alt={item.reliefAlt}
-                                width="960"
-                                height="1200"
-                                loading="lazy"
-                                decoding="async"
-                                className="w-full h-auto object-cover"
-                                data-testid={`image-relief-mobile-${item.id}`}
-                              />
-                            </picture>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
+        <div className="space-y-4 max-w-5xl mx-auto">
+          {painReliefData.map((item, index) => (
+            <PainReliefCard key={item.id} item={item} index={index} />
+          ))}
         </div>
       </div>
     </section>
