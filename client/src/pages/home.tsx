@@ -992,22 +992,21 @@ function PainReliefNarrativeSection() {
   };
   
   const getSlideOpacity = (index: number) => {
-    const progress = getSlideProgress(index);
+    const rawProgress = getSlideProgress(index);
     const nextProgress = index < totalSlides - 1 ? getSlideProgress(index + 1) : 0;
     
     if (index === 0 && scrollProgress <= 0.02) return 1;
-    if (index === 0) {
-      if (nextProgress <= 0) return 1;
-      return 1 - smoothstep(nextProgress, 0, 0.4);
+    if (rawProgress <= 0) return 0;
+    
+    const entering = smoothstep(rawProgress, 0, 0.35);
+    
+    if (index === totalSlides - 1) {
+      return entering;
     }
     
-    if (progress <= 0) return 0;
+    const exiting = 1 - smoothstep(nextProgress, 0.15, 0.5);
     
-    if (nextProgress <= 0) {
-      return smoothstep(progress, 0, 0.3);
-    }
-    
-    return 1 - smoothstep(nextProgress, 0, 0.4);
+    return Math.max(entering, exiting);
   };
 
   return (
