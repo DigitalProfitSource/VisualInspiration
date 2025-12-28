@@ -809,6 +809,7 @@ const painReliefData = [
 function PainReliefCard({ item, index }: { item: typeof painReliefData[0]; index: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(index === 0);
+  const collapseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const Icon = item.icon;
 
   useEffect(() => {
@@ -818,18 +819,36 @@ function PainReliefCard({ item, index }: { item: typeof painReliefData[0]; index
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          setIsExpanded(entry.isIntersecting && entry.intersectionRatio >= 0.4);
+          const ratio = entry.intersectionRatio;
+          
+          if (collapseTimeoutRef.current) {
+            clearTimeout(collapseTimeoutRef.current);
+            collapseTimeoutRef.current = null;
+          }
+          
+          if (ratio >= 0.5) {
+            setIsExpanded(true);
+          } else if (ratio < 0.3) {
+            collapseTimeoutRef.current = setTimeout(() => {
+              setIsExpanded(false);
+            }, 150);
+          }
         });
       },
       {
         root: null,
-        rootMargin: "-25% 0px -35% 0px",
-        threshold: [0.4]
+        rootMargin: "-20% 0px -30% 0px",
+        threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
       }
     );
 
     observer.observe(ref);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (collapseTimeoutRef.current) {
+        clearTimeout(collapseTimeoutRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -840,7 +859,7 @@ function PainReliefCard({ item, index }: { item: typeof painReliefData[0]; index
       viewport={{ once: true, margin: "-50px" }}
       transition={{ delay: index * 0.08, duration: 0.5 }}
       data-testid={`card-pain-${item.id}`}
-      className={`rounded-2xl border overflow-hidden transition-all duration-500 ${
+      className={`rounded-2xl border overflow-hidden transition-all duration-700 ease-out ${
         isExpanded 
           ? "border-primary/40 bg-gradient-to-b from-primary/5 to-transparent shadow-xl shadow-primary/10" 
           : "border-white/10 bg-white/[0.02]"
@@ -848,7 +867,7 @@ function PainReliefCard({ item, index }: { item: typeof painReliefData[0]; index
     >
       <div className="p-6">
         <div className="flex items-start gap-4">
-          <div className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center border transition-all duration-500 ${
+          <div className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center border transition-all duration-700 ease-out ${
             isExpanded 
               ? "bg-primary/20 text-primary border-primary/30 scale-110" 
               : "bg-white/5 text-slate-400 border-white/10"
@@ -856,10 +875,10 @@ function PainReliefCard({ item, index }: { item: typeof painReliefData[0]; index
             <Icon className="w-6 h-6" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className={`text-lg md:text-xl font-medium mb-1 transition-colors duration-300 ${isExpanded ? "text-white" : "text-slate-300"}`}>
+            <h3 className={`text-lg md:text-xl font-medium mb-1 transition-colors duration-500 ease-out ${isExpanded ? "text-white" : "text-slate-300"}`}>
               {item.painTitle}
             </h3>
-            <p className={`text-xs font-mono transition-colors duration-300 ${isExpanded ? "text-primary/70" : "text-slate-500"}`}>
+            <p className={`text-xs font-mono transition-colors duration-500 ease-out ${isExpanded ? "text-primary/70" : "text-slate-500"}`}>
               {item.painSubtitle}
             </p>
           </div>
@@ -872,7 +891,7 @@ function PainReliefCard({ item, index }: { item: typeof painReliefData[0]; index
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
+            transition={{ duration: 0.65, ease: [0.4, 0, 0.2, 1] }}
             className="overflow-hidden"
           >
             <div className="px-6 pb-6">
