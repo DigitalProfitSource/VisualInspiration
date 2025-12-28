@@ -18,6 +18,7 @@ import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
+import { useIsMobile } from "@/hooks/use-mobile";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 import { ArchitectFlowDiagram } from "@/components/ui/architect-flow-diagram";
 import { DiagnoseFrictionDiagram } from "@/components/ui/diagnose-friction-diagram";
@@ -731,237 +732,461 @@ function RevenueSystemSection() {
   );
 }
 
-const painReliefData = [
+const painReliefNarrativeData = [
   {
     id: "speed-to-lead",
     icon: Clock,
-    painTitle: "Leads Slipping Away While You Sleep",
-    painSubtitle: "(Missing Speed-to-Lead)",
-    painDescription: "By the time your team responds, the lead is gone. Calls go unanswered. Chats sit idle. Texts come too late.",
-    painCosts: ["Lost deals you already paid for", "Lower close rates", "A constant feeling of being \"behind\""],
-    reliefTitle: "Speed-to-Lead Capture",
-    reliefImageWebp: "/images/speed-to-lead-capture.webp",
-    reliefImageJpg: "/images/speed-to-lead-capture.jpg",
-    reliefAlt: "AI-powered instant response system handling calls, chat, and text inquiries automatically"
+    title: "Speed-to-Lead Capture",
+    description: "By the time your team responds, the lead is gone. Calls go unanswered. Chats sit idle. Texts come too late.",
+    impact: "Every lead captured and responded to in under 60 seconds",
+    detailBullets: [
+      "Instant response via SMS, email, and chat—24/7",
+      "Auto-qualifies leads before they hit your team",
+      "Routes hot leads directly to sales, nurtures the rest",
+      "Syncs all touchpoints to your CRM automatically",
+      "Works while you sleep, on weekends, and during holidays"
+    ],
+    outcome: "Faster response times, higher close rates, and a team that starts each day with qualified opportunities—not a backlog.",
+    imageWebp: "/images/speed-to-lead-capture.webp",
+    imageJpg: "/images/speed-to-lead-capture.jpg",
+    imageAlt: "AI-powered instant response system handling calls, chat, and text inquiries automatically"
   },
   {
     id: "follow-up",
     icon: Skull,
-    painTitle: "Revenue That Dies in Follow-Up",
-    painSubtitle: "(Missing Follow-Up & Rebooking Engine)",
-    painDescription: "Your team means well—but follow-up depends on memory and mood. No-shows vanish. Estimates expire. Old leads rot.",
-    painCosts: ["Silent churn", "Unpredictable cash flow", "Pressure to \"get more leads\" instead of fixing leaks"],
-    reliefTitle: "Follow-Up & Rebooking Engine",
-    reliefImageWebp: "/images/follow-up-rebooking-engine-automation.webp",
-    reliefImageJpg: "/images/follow-up-rebooking-engine-automation.jpg",
-    reliefAlt: "Automated follow-up system re-engaging no-shows and recovering missed revenue"
+    title: "Follow-Up & Rebooking Engine",
+    description: "Your team means well—but follow-up depends on memory and mood. No-shows vanish. Estimates expire. Old leads rot.",
+    impact: "Every no-show, stale quote, and missed opportunity re-engaged automatically",
+    detailBullets: [
+      "Multi-step SMS and email sequences for every lead stage",
+      "Win-back campaigns for 'never booked' and no-show leads",
+      "Automatic estimate follow-up before they go cold",
+      "Personalized timing based on behavior and engagement",
+      "Logs every interaction back into your CRM"
+    ],
+    outcome: "Predictable cash flow, silent churn eliminated, and revenue recovered without adding headcount.",
+    imageWebp: "/images/follow-up-rebooking-engine-automation.webp",
+    imageJpg: "/images/follow-up-rebooking-engine-automation.jpg",
+    imageAlt: "Automated follow-up system re-engaging no-shows and recovering missed revenue"
   },
   {
     id: "database",
     icon: CircleOff,
-    painTitle: "A Database That Does Nothing",
-    painSubtitle: "(Missing Reactivation & LTV Systems)",
-    painDescription: "You have a list—but it's just sitting there. Past customers hear from you once… then never again.",
-    painCosts: ["Zero repeat revenue", "Wasted historical data", "Reliance on constant new acquisition"],
-    reliefTitle: "Database Reactivation & LTV Expansion",
-    reliefImageWebp: "/images/database-reactivation-ltv.webp",
-    reliefImageJpg: "/images/database-reactivation-ltv.jpg",
-    reliefAlt: "AI reactivating past customers and expanding lifetime value through automated outreach"
+    title: "Database Reactivation & LTV Expansion",
+    description: "You have a list—but it's just sitting there. Past customers hear from you once… then never again.",
+    impact: "Your customer database becomes a revenue-generating asset",
+    detailBullets: [
+      "Segments past customers by service history and value",
+      "Triggers personalized reactivation campaigns automatically",
+      "Cross-sells and upsells based on purchase patterns",
+      "Maintains relationships with value-driven touchpoints",
+      "Turns one-time buyers into lifetime customers"
+    ],
+    outcome: "Repeat revenue flows in without constant acquisition spend—your best customers come back on autopilot.",
+    imageWebp: "/images/database-reactivation-ltv.webp",
+    imageJpg: "/images/database-reactivation-ltv.jpg",
+    imageAlt: "AI reactivating past customers and expanding lifetime value through automated outreach"
   },
   {
     id: "reputation",
     icon: ThumbsDown,
-    painTitle: "Trust That Never Compounds",
-    painSubtitle: "(Missing Reputation Flywheel)",
-    painDescription: "Happy customers don't automatically leave reviews. Unhappy ones do.",
-    painCosts: ["Lower Google rankings", "Fewer inbound calls", "Sales teams forced to convince instead of confirm"],
-    reliefTitle: "Reputation & Trust Flywheel",
-    reliefImageWebp: "/images/reputation-trust-flywheel.webp",
-    reliefImageJpg: "/images/reputation-trust-flywheel.jpg",
-    reliefAlt: "Automated review collection system building social proof and Google rankings"
+    title: "Reputation & Trust Flywheel",
+    description: "Happy customers don't automatically leave reviews. Unhappy ones do.",
+    impact: "Every satisfied customer becomes a public advocate",
+    detailBullets: [
+      "Automated review requests at the perfect moment",
+      "Routes positive feedback to Google, Yelp, and Facebook",
+      "Intercepts unhappy customers before they go public",
+      "Builds social proof that compounds over time",
+      "Improves local SEO and inbound call volume"
+    ],
+    outcome: "Higher Google rankings, more inbound leads, and sales conversations that start with trust already established.",
+    imageWebp: "/images/reputation-trust-flywheel.webp",
+    imageJpg: "/images/reputation-trust-flywheel.jpg",
+    imageAlt: "Automated review collection system building social proof and Google rankings"
   },
   {
     id: "web-conversion",
     icon: MousePointerClick,
-    painTitle: "A Website That Acts Like a Brochure",
-    painSubtitle: "(Missing AI-Ready Conversion Layer)",
-    painDescription: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
-    painCosts: ["Invisible intent loss", "Paid traffic leakage", "Missed opportunities after hours"],
-    reliefTitle: "AI-Ready Web Conversion Layer",
-    reliefImageWebp: "/images/ai-web-conversion-layer.webp",
-    reliefImageJpg: "/images/ai-web-conversion-layer.jpg",
-    reliefAlt: "AI-powered website converting visitors through intelligent chat and qualification"
+    title: "AI-Ready Web Conversion Layer",
+    description: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
+    impact: "Your website becomes a 24/7 sales assistant",
+    detailBullets: [
+      "AI chat that qualifies and books appointments instantly",
+      "Captures intent from visitors who would otherwise bounce",
+      "Answers common questions without human involvement",
+      "Routes complex inquiries to the right team member",
+      "Works after hours when competitors are offline"
+    ],
+    outcome: "More conversions from existing traffic, paid ad ROI that actually compounds, and zero missed after-hours opportunities.",
+    imageWebp: "/images/ai-web-conversion-layer.webp",
+    imageJpg: "/images/ai-web-conversion-layer.jpg",
+    imageAlt: "AI-powered website converting visitors through intelligent chat and qualification"
   },
   {
     id: "ops-automation",
     icon: Flame,
-    painTitle: "Your Team Is Burning Out Holding It Together",
-    painSubtitle: "(Missing Automation & Integration)",
-    painDescription: "Your team is the glue. When they're busy, sick, or gone—things break.",
-    painCosts: ["Burnout", "Errors", "A business that can't scale without stress"],
-    reliefTitle: "Ops Automation & System Integration",
-    reliefImageWebp: "/images/ops-automation-integration.webp",
-    reliefImageJpg: "/images/ops-automation-integration.jpg",
-    reliefAlt: "Automated workflows running critical operations without manual intervention"
+    title: "Ops Automation & System Integration",
+    description: "Your team is the glue. When they're busy, sick, or gone—things break.",
+    impact: "Your operations run without human bottlenecks",
+    detailBullets: [
+      "Connects your CRM, calendar, and communication tools",
+      "Automates repetitive admin tasks end-to-end",
+      "Triggers workflows based on customer behavior",
+      "Eliminates manual data entry and copy-paste work",
+      "Scales operations without scaling headcount"
+    ],
+    outcome: "A business that runs smoothly whether your team is at full capacity or stretched thin—without burnout or errors.",
+    imageWebp: "/images/ops-automation-integration.webp",
+    imageJpg: "/images/ops-automation-integration.jpg",
+    imageAlt: "Automated workflows running critical operations without manual intervention"
   }
 ];
 
-function PainReliefCard({ item, index }: { item: typeof painReliefData[0]; index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isExpanded, setIsExpanded] = useState(index === 0);
-  const collapseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+function PainReliefSlide({ 
+  item, 
+  slideProgress,
+  isAlternate
+}: { 
+  item: typeof painReliefNarrativeData[0]; 
+  slideProgress: number;
+  isAlternate: boolean;
+}) {
   const Icon = item.icon;
-
-  useEffect(() => {
-    const ref = cardRef.current;
-    if (!ref) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const ratio = entry.intersectionRatio;
-          
-          if (collapseTimeoutRef.current) {
-            clearTimeout(collapseTimeoutRef.current);
-            collapseTimeoutRef.current = null;
-          }
-          
-          if (ratio >= 0.5) {
-            setIsExpanded(true);
-          } else if (ratio < 0.3) {
-            collapseTimeoutRef.current = setTimeout(() => {
-              setIsExpanded(false);
-            }, 150);
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: "-20% 0px -30% 0px",
-        threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
-      }
-    );
-
-    observer.observe(ref);
-    return () => {
-      observer.disconnect();
-      if (collapseTimeoutRef.current) {
-        clearTimeout(collapseTimeoutRef.current);
-      }
-    };
-  }, []);
-
+  
+  const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
+  
+  const effectiveProgress = Math.max(slideProgress, 0.02);
+  
+  const introOpacity = clamp(effectiveProgress / 0.05, 0, 1);
+  const descOpacity = clamp((effectiveProgress - 0.02) / 0.08, 0, 1);
+  const impactOpacity = clamp((effectiveProgress - 0.1) / 0.1, 0, 1);
+  const bulletsOpacity = clamp((effectiveProgress - 0.25) / 0.15, 0, 1);
+  const outcomeOpacity = clamp((effectiveProgress - 0.45) / 0.15, 0, 1);
+  const imageOpacity = clamp(effectiveProgress / 0.1, 0, 1);
+  
+  const introY = (1 - introOpacity) * 20;
+  const descY = (1 - descOpacity) * 15;
+  const impactY = (1 - impactOpacity) * 15;
+  const bulletsY = (1 - bulletsOpacity) * 15;
+  const outcomeY = (1 - outcomeOpacity) * 15;
+  const imageScale = 0.96 + imageOpacity * 0.04;
+  
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ delay: index * 0.08, duration: 0.5 }}
-      data-testid={`card-pain-${item.id}`}
-      className={`rounded-2xl border overflow-hidden transition-all duration-700 ease-out ${
-        isExpanded 
-          ? "border-primary/40 bg-gradient-to-b from-primary/5 to-transparent shadow-xl shadow-primary/10" 
-          : "border-white/10 bg-white/[0.02]"
-      }`}
+    <div
+      data-testid={`slide-pain-${item.id}`}
+      className="grid md:grid-cols-2 gap-8 md:gap-16 items-center"
     >
-      <div className="p-6">
-        <div className="flex items-start gap-4">
-          <div className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center border transition-all duration-700 ease-out ${
-            isExpanded 
-              ? "bg-primary/20 text-primary border-primary/30 scale-110" 
-              : "bg-white/5 text-slate-400 border-white/10"
-          }`}>
-            <Icon className="w-6 h-6" />
+      <div className={`space-y-6 ${isAlternate ? "md:order-2" : ""}`}>
+        <div 
+          style={{ opacity: introOpacity, transform: `translateY(${introY}px)` }}
+          className="flex items-center gap-4 transition-transform duration-100"
+        >
+          <div className="w-14 h-14 rounded-xl flex items-center justify-center border border-primary/30 bg-primary/10">
+            <Icon className="w-7 h-7 text-primary" />
           </div>
-          <div className="flex-1 min-w-0">
-            <h3 className={`text-lg md:text-xl font-medium mb-1 transition-colors duration-500 ease-out ${isExpanded ? "text-white" : "text-slate-300"}`}>
-              {item.painTitle}
-            </h3>
-            <p className={`text-xs font-mono transition-colors duration-500 ease-out ${isExpanded ? "text-primary/70" : "text-slate-500"}`}>
-              {item.painSubtitle}
-            </p>
+          <h3 className="text-2xl md:text-3xl font-display font-medium text-white">
+            {item.title}
+          </h3>
+        </div>
+        
+        <p 
+          style={{ opacity: descOpacity, transform: `translateY(${descY}px)` }}
+          className="text-lg text-muted-foreground leading-relaxed transition-transform duration-100"
+        >
+          {item.description}
+        </p>
+        
+        <div 
+          style={{ opacity: impactOpacity, transform: `translateY(${impactY}px)` }}
+          className="pt-4 transition-transform duration-100"
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
           </div>
+          <p className="text-lg font-medium text-primary/90">
+            {item.impact}
+          </p>
+        </div>
+        
+        <ul 
+          style={{ opacity: bulletsOpacity, transform: `translateY(${bulletsY}px)` }}
+          className="space-y-3 pt-4 transition-transform duration-100"
+        >
+          {item.detailBullets.map((bullet, i) => (
+            <li key={i} className="flex items-start gap-3 text-muted-foreground">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 shrink-0" />
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+        
+        <div 
+          style={{ opacity: outcomeOpacity, transform: `translateY(${outcomeY}px)` }}
+          className="pt-6 border-t border-white/10 transition-transform duration-100"
+        >
+          <p className="text-sm font-mono text-slate-400 mb-2">Outcome:</p>
+          <p className="text-primary leading-relaxed font-medium">
+            {item.outcome}
+          </p>
         </div>
       </div>
-
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.65, ease: [0.4, 0, 0.2, 1] }}
-            className="overflow-hidden"
-          >
-            <div className="px-6 pb-6">
-              <div className="grid md:grid-cols-2 gap-6 items-start">
-                <div className="space-y-4">
-                  <p className="text-muted-foreground leading-relaxed">{item.painDescription}</p>
-                  <div className="pt-4 border-t border-white/10">
-                    <p className="text-xs font-mono text-slate-400 mb-3">What it costs you:</p>
-                    <ul className="text-sm text-muted-foreground space-y-2">
-                      {item.painCosts.map((cost, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <span className="text-primary/60 mt-1">•</span>
-                          <span>{cost}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-                
-                <div>
-                  <p className="text-xs font-mono text-primary mb-3">The Solution: {item.reliefTitle}</p>
-                  <div className="rounded-xl border border-primary/20 overflow-hidden shadow-lg shadow-primary/10">
-                    <picture>
-                      <source srcSet={item.reliefImageWebp} type="image/webp" />
-                      <img
-                        src={item.reliefImageJpg}
-                        alt={item.reliefAlt}
-                        width="960"
-                        height="1200"
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-auto object-cover"
-                        data-testid={`image-relief-${item.id}`}
-                      />
-                    </picture>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+      
+      <div 
+        style={{ opacity: imageOpacity, transform: `scale(${imageScale})` }}
+        className={`relative transition-transform duration-100 ${isAlternate ? "md:order-1" : ""}`}
+      >
+        <div className="rounded-2xl border border-primary/20 overflow-hidden shadow-2xl shadow-primary/10 bg-zinc-900/50">
+          <picture>
+            <source srcSet={item.imageWebp} type="image/webp" />
+            <img
+              src={item.imageJpg}
+              alt={item.imageAlt}
+              width="960"
+              height="1200"
+              loading="eager"
+              decoding="async"
+              className="w-full h-auto object-cover"
+              data-testid={`image-slide-${item.id}`}
+            />
+          </picture>
+        </div>
+      </div>
+    </div>
   );
 }
 
-function PainReliefTabs() {
-  return (
-    <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
-      <GridBeam showCenterBeam={false} gridOpacity={0.2} />
-      <div className="container mx-auto px-6 relative z-10">
-        <motion.div 
-          initial={fadeInUpViewport.initial}
-          whileInView={fadeInUpViewport.whileInView}
-          viewport={fadeInUpViewport.viewport}
-          transition={fadeInUpViewport.transition}
-          className="mb-16 text-center max-w-3xl mx-auto"
-        >
-          <h2 className="text-3xl md:text-5xl font-medium mb-6 text-[#f8fcfc]">What's really costing you time, revenue, and sanity</h2>
-          <p className="text-muted-foreground text-lg">These aren't isolated problems. They're what happens when core operational systems are missing.</p>
-        </motion.div>
+function PainReliefNarrativeSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const totalSlides = painReliefNarrativeData.length;
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-        <div className="space-y-4 max-w-5xl mx-auto">
-          {painReliefData.map((item, index) => (
-            <PainReliefCard key={item.id} item={item} index={index} />
-          ))}
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      setScrollProgress(latest);
+    });
+    return unsubscribe;
+  }, [scrollYProgress]);
+  
+  const activeIndex = Math.min(Math.floor(scrollProgress * totalSlides), totalSlides - 1);
+  
+  const getSlideProgress = (index: number) => {
+    const slideStart = index / totalSlides;
+    const slideEnd = (index + 1) / totalSlides;
+    const slideRange = slideEnd - slideStart;
+    if (slideRange === 0) return index === 0 ? 1 : 0;
+    const progress = (scrollProgress - slideStart) / slideRange;
+    const clampedProgress = Math.max(0, Math.min(1, progress));
+    return Number.isNaN(clampedProgress) ? (index === 0 ? 1 : 0) : clampedProgress;
+  };
+  
+  const smoothstep = (x: number, edge0: number, edge1: number) => {
+    const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
+    return t * t * (3 - 2 * t);
+  };
+  
+  const getSlideOpacity = (index: number) => {
+    const progress = getSlideProgress(index);
+    const nextProgress = index < totalSlides - 1 ? getSlideProgress(index + 1) : 0;
+    
+    if (index === 0 && scrollProgress <= 0.02) return 1;
+    if (index === 0) {
+      if (nextProgress <= 0) return 1;
+      return 1 - smoothstep(nextProgress, 0, 0.4);
+    }
+    
+    if (progress <= 0) return 0;
+    
+    if (nextProgress <= 0) {
+      return smoothstep(progress, 0, 0.3);
+    }
+    
+    return 1 - smoothstep(nextProgress, 0, 0.4);
+  };
+
+  return (
+    <section 
+      ref={containerRef}
+      className="relative border-t border-white/5 bg-zinc-950/30"
+      style={{ height: `${(totalSlides + 1) * 100}vh` }}
+    >
+      <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+        <GridBeam showCenterBeam={false} gridOpacity={0.15} />
+        
+        <div className="container mx-auto px-6 pt-20 pb-8 relative z-10">
+          <motion.div 
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={{ once: true }}
+            transition={fadeInUpViewport.transition}
+            className="text-center max-w-3xl mx-auto mb-4"
+          >
+            <h2 className="text-3xl md:text-5xl font-display font-medium mb-4 text-[#f8fcfc]">
+              What's really costing you time, revenue, and sanity
+            </h2>
+            <p className="text-muted-foreground text-lg mb-6">
+              These aren't isolated problems. They're what happens when core operational systems are missing.
+            </p>
+            <div className="flex items-center justify-center gap-2 text-sm text-primary/70">
+              <ChevronDown className="w-4 h-4 animate-bounce" />
+              <span>Scroll to explore our six core capabilities</span>
+            </div>
+          </motion.div>
+        </div>
+        
+        <div className="flex-1 container mx-auto px-6 relative z-10 flex items-center">
+          <div className="w-full relative">
+            {painReliefNarrativeData.map((item, index) => {
+              const slideProgress = getSlideProgress(index);
+              const slideOpacity = getSlideOpacity(index);
+              const isVisible = slideOpacity > 0.01 || (index === 0 && scrollProgress === 0);
+              const isActive = index === activeIndex;
+              
+              return (
+                <div 
+                  key={item.id}
+                  className={`${isActive ? 'relative' : 'absolute inset-0'}`}
+                  style={{ 
+                    opacity: slideOpacity,
+                    pointerEvents: isActive ? 'auto' : 'none',
+                    visibility: isVisible ? 'visible' : 'hidden',
+                    transition: 'opacity 0.15s ease-out'
+                  }}
+                >
+                  <PainReliefSlide 
+                    item={item} 
+                    slideProgress={slideProgress}
+                    isAlternate={index % 2 === 1}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        
+        <div className="container mx-auto px-6 pb-8 relative z-10">
+          <div className="flex justify-center gap-2">
+            {painReliefNarrativeData.map((item, index) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  if (containerRef.current) {
+                    const containerTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+                    const scrollableHeight = containerRef.current.scrollHeight - window.innerHeight;
+                    const slideProgress = (index + 0.1) / totalSlides;
+                    const scrollTarget = containerTop + slideProgress * scrollableHeight;
+                    window.scrollTo({ top: scrollTarget, behavior: "smooth" });
+                  }
+                }}
+                data-testid={`nav-slide-${item.id}`}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === activeIndex 
+                    ? "bg-primary w-8" 
+                    : "bg-white/20 hover:bg-white/40"
+                }`}
+                aria-label={`Go to ${item.title}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
+}
+
+function PainReliefMobileSection() {
+  return (
+    <section className="md:hidden py-20 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
+      <GridBeam showCenterBeam={false} gridOpacity={0.15} />
+      <div className="container mx-auto px-6 relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl font-display font-medium mb-4 text-[#f8fcfc]">
+            What's really costing you time, revenue, and sanity
+          </h2>
+          <p className="text-muted-foreground">
+            These aren't isolated problems. They're what happens when core operational systems are missing.
+          </p>
+        </motion.div>
+        
+        <div className="space-y-12">
+          {painReliefNarrativeData.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5 }}
+                data-testid={`card-mobile-${item.id}`}
+                className="rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent p-6 space-y-4"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center border border-primary/30 bg-primary/10">
+                    <Icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-display font-medium text-white">
+                    {item.title}
+                  </h3>
+                </div>
+                
+                <p className="text-muted-foreground">{item.description}</p>
+                
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+                </div>
+                <p className="text-primary/90 font-medium">{item.impact}</p>
+                
+                <div className="rounded-xl border border-primary/20 overflow-hidden">
+                  <picture>
+                    <source srcSet={item.imageWebp} type="image/webp" />
+                    <img
+                      src={item.imageJpg}
+                      alt={item.imageAlt}
+                      width="960"
+                      height="1200"
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-auto object-cover"
+                    />
+                  </picture>
+                </div>
+                
+                <div className="pt-4 border-t border-white/10">
+                  <p className="text-sm font-mono text-slate-400 mb-2">Outcome:</p>
+                  <p className="text-primary text-sm leading-relaxed">
+                    {item.outcome}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PainReliefTabs() {
+  const isMobile = useIsMobile();
+  
+  if (isMobile) {
+    return <PainReliefMobileSection />;
+  }
+  
+  return <PainReliefNarrativeSection />;
 }
 
 export default function Home() {
