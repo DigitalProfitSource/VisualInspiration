@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -734,8 +734,8 @@ function RevenueSystemSection() {
 const painReliefData = [
   {
     id: "speed-to-lead",
-    icon: Snail,
-    painTitle: "Reactive Lead Handling",
+    icon: Clock,
+    painTitle: "Leads Slipping Away While You Sleep",
     painSubtitle: "(Missing Speed-to-Lead)",
     painDescription: "By the time your team responds, the lead is gone. Calls go unanswered. Chats sit idle. Texts come too late.",
     painCosts: ["Lost deals you already paid for", "Lower close rates", "A constant feeling of being \"behind\""],
@@ -746,7 +746,7 @@ const painReliefData = [
   },
   {
     id: "follow-up",
-    icon: TriangleAlert,
+    icon: Skull,
     painTitle: "Revenue That Dies in Follow-Up",
     painSubtitle: "(Missing Follow-Up & Rebooking Engine)",
     painDescription: "Your team means well—but follow-up depends on memory and mood. No-shows vanish. Estimates expire. Old leads rot.",
@@ -758,7 +758,7 @@ const painReliefData = [
   },
   {
     id: "database",
-    icon: Database,
+    icon: CircleOff,
     painTitle: "A Database That Does Nothing",
     painSubtitle: "(Missing Reactivation & LTV Systems)",
     painDescription: "You have a list—but it's just sitting there. Past customers hear from you once… then never again.",
@@ -770,7 +770,7 @@ const painReliefData = [
   },
   {
     id: "reputation",
-    icon: Frown,
+    icon: ThumbsDown,
     painTitle: "Trust That Never Compounds",
     painSubtitle: "(Missing Reputation Flywheel)",
     painDescription: "Happy customers don't automatically leave reviews. Unhappy ones do.",
@@ -782,7 +782,7 @@ const painReliefData = [
   },
   {
     id: "web-conversion",
-    icon: FileText,
+    icon: MousePointerClick,
     painTitle: "A Website That Acts Like a Brochure",
     painSubtitle: "(Missing AI-Ready Conversion Layer)",
     painDescription: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
@@ -794,8 +794,8 @@ const painReliefData = [
   },
   {
     id: "ops-automation",
-    icon: FlagOff,
-    painTitle: "Operations Held Together by People",
+    icon: Flame,
+    painTitle: "Your Team Is Burning Out Holding It Together",
     painSubtitle: "(Missing Automation & Integration)",
     painDescription: "Your team is the glue. When they're busy, sick, or gone—things break.",
     painCosts: ["Burnout", "Errors", "A business that can't scale without stress"],
@@ -808,10 +808,57 @@ const painReliefData = [
 
 function PainReliefTabs() {
   const [activeTab, setActiveTab] = useState(0);
+  const [expandedMobile, setExpandedMobile] = useState<number | null>(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const activeItem = painReliefData[activeTab];
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!hasScrolled && window.scrollY > 100) {
+        setHasScrolled(true);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasScrolled]);
+
+  useEffect(() => {
+    if (!hasScrolled) return;
+    
+    const observers: IntersectionObserver[] = [];
+    
+    tabRefs.current.forEach((ref, index) => {
+      if (!ref) return;
+      
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+              setActiveTab(index);
+            }
+          });
+        },
+        {
+          root: null,
+          rootMargin: "-20% 0px -60% 0px",
+          threshold: [0.6]
+        }
+      );
+      
+      observer.observe(ref);
+      observers.push(observer);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, [hasScrolled]);
 
   return (
-    <section className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
+    <section ref={sectionRef} className="py-32 border-t border-white/5 bg-zinc-950/30 relative overflow-hidden">
       <GridBeam showCenterBeam={false} gridOpacity={0.2} />
       <div className="container mx-auto px-6 relative z-10">
         <motion.div 
@@ -825,7 +872,8 @@ function PainReliefTabs() {
           <p className="text-muted-foreground text-lg">These aren't isolated problems. They're what happens when core operational systems are missing.</p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-12 gap-8 items-start">
+        {/* Desktop: Tabs with sticky image */}
+        <div className="hidden lg:grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-5 space-y-3">
             {painReliefData.map((item, index) => {
               const Icon = item.icon;
@@ -833,6 +881,7 @@ function PainReliefTabs() {
               return (
                 <button
                   key={item.id}
+                  ref={(el) => { tabRefs.current[index] = el; }}
                   onClick={() => setActiveTab(index)}
                   data-testid={`tab-pain-${item.id}`}
                   className={`w-full text-left p-5 rounded-xl border transition-all duration-300 ${
@@ -909,6 +958,95 @@ function PainReliefTabs() {
               </motion.div>
             </AnimatePresence>
           </div>
+        </div>
+
+        {/* Mobile: Accordion with inline images */}
+        <div className="lg:hidden space-y-4">
+          {painReliefData.map((item, index) => {
+            const Icon = item.icon;
+            const isExpanded = expandedMobile === index;
+            return (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: index * 0.1, duration: 0.4 }}
+                className={`rounded-xl border overflow-hidden transition-all duration-300 ${
+                  isExpanded 
+                    ? "border-primary/40 bg-gradient-to-b from-primary/10 to-transparent shadow-lg shadow-primary/5" 
+                    : "border-white/10 bg-white/[0.02]"
+                }`}
+              >
+                <button
+                  onClick={() => setExpandedMobile(isExpanded ? null : index)}
+                  data-testid={`accordion-pain-${item.id}`}
+                  className="w-full text-left p-5"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center border transition-colors ${
+                      isExpanded 
+                        ? "bg-primary/20 text-primary border-primary/30" 
+                        : "bg-white/5 text-slate-400 border-white/10"
+                    }`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className={`font-medium transition-colors ${isExpanded ? "text-white" : "text-slate-300"}`}>
+                        {item.painTitle}
+                      </h3>
+                      <p className={`text-xs font-mono ${isExpanded ? "text-primary/70" : "text-slate-500"}`}>
+                        {item.painSubtitle}
+                      </p>
+                    </div>
+                    <ChevronRight className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`} />
+                  </div>
+                </button>
+                
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 pb-5 space-y-4">
+                        <p className="text-sm text-muted-foreground">{item.painDescription}</p>
+                        <div className="pt-3 border-t border-white/10">
+                          <p className="text-xs font-mono text-slate-400 mb-2">What it costs you:</p>
+                          <ul className="text-sm text-muted-foreground space-y-1">
+                            {item.painCosts.map((cost, i) => (
+                              <li key={i}>• {cost}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="pt-4">
+                          <p className="text-xs font-mono text-primary/70 mb-3">The Solution: {item.reliefTitle}</p>
+                          <div className="rounded-xl border border-primary/20 overflow-hidden shadow-lg shadow-primary/10">
+                            <picture>
+                              <source srcSet={item.reliefImageWebp} type="image/webp" />
+                              <img
+                                src={item.reliefImageJpg}
+                                alt={item.reliefAlt}
+                                width="960"
+                                height="1200"
+                                loading="lazy"
+                                decoding="async"
+                                className="w-full h-auto object-cover"
+                                data-testid={`image-relief-mobile-${item.id}`}
+                              />
+                            </picture>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
