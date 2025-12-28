@@ -987,26 +987,30 @@ function PainReliefNarrativeSection() {
   };
   
   const smoothstep = (x: number, edge0: number, edge1: number) => {
-    const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
+    const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
     return t * t * (3 - 2 * t);
   };
-  
+
+  const getEnterValue = (slideIndex: number) => {
+    const slideSpan = 1 / totalSlides;
+    const slideStart = slideIndex * slideSpan;
+    const pRaw = (scrollProgress - slideStart) / slideSpan;
+    return smoothstep(pRaw, -0.2, 0.4);
+  };
+
   const getSlideOpacity = (index: number) => {
-    const rawProgress = getSlideProgress(index);
-    const nextProgress = index < totalSlides - 1 ? getSlideProgress(index + 1) : 0;
+    const epsilon = 0.02;
     
     if (index === 0 && scrollProgress <= 0.02) return 1;
-    if (rawProgress <= 0) return 0;
     
-    const entering = smoothstep(rawProgress, 0, 0.35);
+    const currentEnter = getEnterValue(index);
+    const nextEnter = index < totalSlides - 1 ? getEnterValue(index + 1) : 0;
     
     if (index === totalSlides - 1) {
-      return entering;
+      return Math.max(currentEnter, epsilon);
     }
     
-    const exiting = 1 - smoothstep(nextProgress, 0.15, 0.5);
-    
-    return Math.max(entering, exiting);
+    return Math.max(currentEnter * (1 - nextEnter), epsilon);
   };
 
   return (
