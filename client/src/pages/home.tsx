@@ -989,8 +989,8 @@ export default function Home() {
   return (
     <Layout>
       <SEO 
-        title="Empowering Human Teams with Intelligent Automation | SimpleSequence"
-        description="Seamlessly integrate AI to boost productivity, not replace your people. Experience the future of collaborative work."
+        title="Practical AI for Service Businesses | SimpleSequence"
+        description="Operational AI Advisor helping service businesses adopt AI with clarity, precision, and real-world leverage. AI-powered front desk and follow-up systems."
         jsonLd={{
           "@context": "https://schema.org",
           "@graph": [organizationSchema, softwareApplicationSchema]
@@ -1026,15 +1026,15 @@ export default function Home() {
             </motion.div>
             
             <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl lg:text-8xl font-display font-medium tracking-tight mb-6 leading-[1.1] text-balance max-w-5xl mx-auto">
-              Empowering Human Teams with <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Intelligent Automation</span>
+              Practical AI for <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Service Businesses</span>
             </motion.h1>
 
             <motion.p variants={fadeIn} className="text-lg text-primary/80 mb-6 font-medium">
-              Seamlessly integrate AI to boost productivity, not replace your people.
+              Empowering Human Teams with Intelligent Automation
             </motion.p>
             
             <motion.p variants={fadeIn} className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              Experience the future of collaborative work.
+              Seamlessly integrate AI to boost productivity, not replace your people. Experience the future of collaborative work.
             </motion.p>
             
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-5 items-center justify-center">
