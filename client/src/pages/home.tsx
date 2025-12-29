@@ -980,14 +980,17 @@ function PainReliefTabs() {
 
 export default function Home() {
   const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
-  const heroY = useTransform(scrollY, [0, 500], [0, 100]);
+  const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
+  const heroBgY = useTransform(scrollY, [0, 600], [0, 200]);
+  const heroBgScale = useTransform(scrollY, [0, 600], [1, 1.15]);
+  const circuitY = useTransform(scrollY, [0, 600], [0, 80]);
+  const contentY = useTransform(scrollY, [0, 600], [0, 50]);
 
   return (
     <Layout>
       <SEO 
-        title="Practical AI for Service Businesses | SimpleSequence"
-        description="Operational AI Advisor helping service businesses adopt AI with clarity, precision, and real-world leverage. AI-powered front desk and follow-up systems."
+        title="Empowering Human Teams with Intelligent Automation | SimpleSequence"
+        description="Seamlessly integrate AI to boost productivity, not replace your people. Experience the future of collaborative work."
         jsonLd={{
           "@context": "https://schema.org",
           "@graph": [organizationSchema, softwareApplicationSchema]
@@ -995,15 +998,22 @@ export default function Home() {
       />
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        {/* Background Elements */}
-        <motion.div style={{ opacity: heroOpacity, y: heroY }} className="absolute inset-0 z-0 pointer-events-none">
+        {/* Background Elements with enhanced parallax */}
+        <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background opacity-40" />
-          <img src={heroBg} alt="Background" className="w-full h-full object-cover opacity-30 mix-blend-screen" />
-          <CircuitBeams className="opacity-60" />
+          <motion.img 
+            style={{ y: heroBgY, scale: heroBgScale }} 
+            src={heroBg} 
+            alt="Background" 
+            className="w-full h-full object-cover opacity-30 mix-blend-screen" 
+          />
+          <motion.div style={{ y: circuitY }}>
+            <CircuitBeams className="opacity-60" />
+          </motion.div>
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
         </motion.div>
 
-        <div className="container mx-auto px-6 relative z-10">
+        <motion.div style={{ y: contentY }} className="container mx-auto px-6 relative z-10">
           <motion.div 
             initial="initial"
             animate="animate"
@@ -1016,15 +1026,15 @@ export default function Home() {
             </motion.div>
             
             <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl lg:text-8xl font-display font-medium tracking-tight mb-6 leading-[1.1] text-balance max-w-5xl mx-auto">
-              Practical AI for <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Service Businesses</span>
+              Empowering Human Teams with <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Intelligent Automation</span>
             </motion.h1>
 
             <motion.p variants={fadeIn} className="text-lg text-primary/80 mb-6 font-medium">
-              Operationally grounded. Revenue-relevant. No hype — just clarity and real-world leverage.
+              Seamlessly integrate AI to boost productivity, not replace your people.
             </motion.p>
             
             <motion.p variants={fadeIn} className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              If you're tired of leads slipping, follow-up failing, and guessing where AI actually fits — we bring the clarity you need to fix what's broken and grow without chaos.
+              Experience the future of collaborative work.
             </motion.p>
             
             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-5 items-center justify-center">
@@ -1060,7 +1070,7 @@ export default function Home() {
               </p>
             </motion.div>
           </motion.div>
-        </div>
+        </motion.div>
         
         <motion.div 
           initial={{ opacity: 0 }}
