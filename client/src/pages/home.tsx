@@ -846,55 +846,83 @@ function PainReliefStackedCard({ item, index }: { item: typeof painReliefNarrati
   const Icon = item.icon;
   const isAlternate = index % 2 === 1;
   
+  const textReveal = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-50px" } as const
+  };
+  
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, delay: 0.1 }}
+    <div
       className={`grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center py-16 md:py-24 border-b border-white/5 last:border-b-0`}
       data-testid={`card-pain-relief-${item.id}`}
     >
       <div className={`space-y-6 ${isAlternate ? "md:order-2" : ""}`}>
-        <div className="flex items-center gap-4">
+        <motion.div 
+          {...textReveal}
+          transition={{ duration: 0.5, delay: 0 }}
+          className="flex items-center gap-4"
+        >
           <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
             <Icon className="w-6 h-6 text-primary" />
           </div>
           <h3 className="text-2xl md:text-3xl font-display font-medium text-[#f8fcfc]">
             {item.title}
           </h3>
-        </div>
+        </motion.div>
         
-        <p className="text-muted-foreground text-lg leading-relaxed">
+        <motion.p 
+          {...textReveal}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="text-muted-foreground text-lg leading-relaxed"
+        >
           {item.description}
-        </p>
+        </motion.p>
         
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          <span className="text-xs font-mono text-primary/70 uppercase tracking-wider">Impact</span>
-        </div>
-        <p className="text-primary font-medium text-lg">
-          {item.impact}
-        </p>
+        <motion.div
+          {...textReveal}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-mono text-primary/70 uppercase tracking-wider">Impact</span>
+          </div>
+          <p className="text-primary font-medium text-lg mt-2">
+            {item.impact}
+          </p>
+        </motion.div>
         
         <ul className="space-y-3 pt-2">
           {item.detailBullets.map((bullet, bulletIndex) => (
-            <li key={bulletIndex} className="flex items-start gap-3">
+            <motion.li 
+              key={bulletIndex} 
+              {...textReveal}
+              transition={{ duration: 0.4, delay: 0.3 + bulletIndex * 0.08 }}
+              className="flex items-start gap-3"
+            >
               <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2.5 flex-shrink-0" />
               <span className="text-muted-foreground">{bullet}</span>
-            </li>
+            </motion.li>
           ))}
         </ul>
         
-        <div className="pt-4 border-l-2 border-primary/30 pl-4">
+        <motion.div 
+          {...textReveal}
+          transition={{ duration: 0.5, delay: 0.7 }}
+          className="pt-4 border-l-2 border-primary/30 pl-4"
+        >
           <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider block mb-2">Outcome:</span>
           <p className="text-primary leading-relaxed font-medium">
             {item.outcome}
           </p>
-        </div>
+        </motion.div>
       </div>
       
-      <div className={`relative ${isAlternate ? "md:order-1" : ""}`}>
+      <motion.div 
+        {...textReveal}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className={`relative ${isAlternate ? "md:order-1" : ""}`}
+      >
         <div className="rounded-2xl border border-primary/20 overflow-hidden shadow-2xl shadow-primary/10 bg-zinc-900/50">
           <picture>
             <source srcSet={item.imageWebp} type="image/webp" />
@@ -910,8 +938,8 @@ function PainReliefStackedCard({ item, index }: { item: typeof painReliefNarrati
             />
           </picture>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
