@@ -827,7 +827,7 @@ function ConsolidatedCard({ card, index }: { card: typeof consolidatedCardsData[
               key={capIndex}
               {...textReveal}
               transition={{ duration: 0.4, delay: 0.2 + capIndex * 0.1 }}
-              className="rounded-xl border border-primary/20 bg-primary/5 p-4"
+              className="rounded-xl border-l-2 border-l-primary/40 border border-white/10 bg-zinc-800/50 p-4"
             >
               <h4 className="text-primary font-medium mb-1">{capability.title}</h4>
               <p className="text-muted-foreground text-sm">{capability.description}</p>
