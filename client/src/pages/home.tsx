@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight } from "lucide-react";
 import {
   Accordion,
@@ -18,7 +17,6 @@ import { AnimatedMetric } from "@/components/ui/slot-counter";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
-import heroAiAssistant from "/images/hero-ai-assistant.webp";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 import { ArchitectFlowDiagram } from "@/components/ui/architect-flow-diagram";
 import { DiagnoseFrictionDiagram } from "@/components/ui/diagnose-friction-diagram";
@@ -911,13 +909,11 @@ function PainReliefTabs() {
 
 export default function Home() {
   const { scrollY } = useScroll();
-  const isMobile = useIsMobile();
   const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
   const heroBgY = useTransform(scrollY, [0, 600], [0, 150]);
   const heroBgScale = useTransform(scrollY, [0, 600], [1, 1.1]);
   const circuitY = useTransform(scrollY, [0, 600], [0, 80]);
   const contentY = useTransform(scrollY, [0, 600], [0, 50]);
-  const heroImagePosition = isMobile ? '50% 75%' : '70% 45%';
 
   return (
     <Layout>
@@ -933,13 +929,18 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
         {/* Full-width AI Assistant Background with Parallax */}
         <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
-          <motion.img 
-            style={{ y: heroBgY, scale: heroBgScale, objectPosition: heroImagePosition }} 
-            src={heroAiAssistant} 
-            alt="AI-powered assistant connecting phone, chat, email, and calendar" 
-            className="absolute inset-0 w-full h-full object-cover" 
-            data-testid="image-hero-background"
-          />
+          <motion.picture
+            style={{ y: heroBgY, scale: heroBgScale }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <source srcSet="/images/hero-ai-assistant.webp" type="image/webp" />
+            <img 
+              src="/images/hero-ai-assistant.jpg"
+              alt="AI-powered assistant connecting voice, chatbot, and scheduling" 
+              className="absolute inset-0 w-full h-full object-cover object-center" 
+              data-testid="image-hero-background"
+            />
+          </motion.picture>
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background" />
           <motion.div style={{ y: circuitY }} className="absolute inset-0">
