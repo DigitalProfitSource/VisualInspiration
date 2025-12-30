@@ -926,7 +926,7 @@ export default function Home() {
         }}
       />
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center md:items-center pt-16 md:pt-20 overflow-hidden">
+      <section className="relative min-h-screen flex items-start md:items-center pt-24 md:pt-20 overflow-hidden">
         {/* Art-directed Background with Mobile/Desktop Images */}
         <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
           <motion.picture
