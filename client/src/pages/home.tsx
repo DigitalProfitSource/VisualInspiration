@@ -731,120 +731,59 @@ function RevenueSystemSection() {
   );
 }
 
-const painReliefNarrativeData = [
+const consolidatedCardsData = [
   {
-    id: "speed-to-lead",
-    icon: Clock,
-    title: "Speed-to-Lead Capture",
-    description: "By the time your team responds, the lead is gone. Calls go unanswered. Chats sit idle. Texts come too late.",
-    impact: "Every lead captured and responded to in under 60 seconds",
-    detailBullets: [
-      "Instant response via SMS, email, and chat—24/7",
-      "Auto-qualifies leads before they hit your team",
-      "Routes hot leads directly to sales, nurtures the rest",
-      "Syncs all touchpoints to your CRM automatically",
-      "Works while you sleep, on weekends, and during holidays"
+    id: "growth-engine",
+    theme: "Speed, Acquisition, & Cash Flow",
+    headline: "Stop Losing Leads to Speed and Silence",
+    subhead: "Your marketing works, but your capture system is leaking. We install an \"Always-On\" sales layer that engages every opportunity instantly.",
+    capabilities: [
+      {
+        title: "Speed-to-Lead Capture",
+        description: "Instant SMS/Voice response in <60 seconds. No lead goes cold."
+      },
+      {
+        title: "AI Web Conversion",
+        description: "24/7 chat agents that qualify visitors and book appointments while you sleep."
+      },
+      {
+        title: "Database Mining",
+        description: "Automatically re-engages past lists to generate immediate cash flow."
+      }
     ],
-    outcome: "Faster response times, higher close rates, and a team that starts each day with qualified opportunities—not a backlog.",
-    imageWebp: "/images/speed-to-lead-capture.webp",
-    imageJpg: "/images/speed-to-lead-capture.jpg",
-    imageAlt: "AI-powered instant response system handling calls, chat, and text inquiries automatically"
+    outcome: "Maximum ROI on every ad dollar and a calendar full of qualified appointments—zero manual effort required.",
+    imageWebp: "/images/automated-growth-engine.webp",
+    imageJpg: "/images/automated-growth-engine.jpg",
+    imageAlt: "Automated growth engine capturing leads and converting opportunities"
   },
   {
-    id: "follow-up",
-    icon: Skull,
-    title: "Follow-Up & Rebooking Engine",
-    description: "Your team means well—but follow-up depends on memory and mood. No-shows vanish. Estimates expire. Old leads rot.",
-    impact: "Every no-show, stale quote, and missed opportunity re-engaged automatically",
-    detailBullets: [
-      "Multi-step SMS and email sequences for every lead stage",
-      "Win-back campaigns for 'never booked' and no-show leads",
-      "Automatic estimate follow-up before they go cold",
-      "Personalized timing based on behavior and engagement",
-      "Logs every interaction back into your CRM"
+    id: "operational-ecosystem",
+    theme: "Efficiency, Retention, & Stability",
+    headline: "Scale Your Operations, Not Your Headcount",
+    subhead: "Eliminate the manual busywork and \"human bottlenecks\" that cause burnout. We build the backend infrastructure that runs your business on autopilot.",
+    capabilities: [
+      {
+        title: "Ops & Workflow Automation",
+        description: "Connects your CRM and tools to eliminate data entry and admin chaos."
+      },
+      {
+        title: "The Follow-Up Engine",
+        description: "Relentlessly chases no-shows and stale quotes until they convert."
+      },
+      {
+        title: "Reputation Flywheel",
+        description: "Automates review requests and intercepts negative feedback to bulletproof your brand."
+      }
     ],
-    outcome: "Predictable cash flow, silent churn eliminated, and revenue recovered without adding headcount.",
-    imageWebp: "/images/follow-up-rebooking-engine-automation.webp",
-    imageJpg: "/images/follow-up-rebooking-engine-automation.jpg",
-    imageAlt: "Automated follow-up system re-engaging no-shows and recovering missed revenue"
-  },
-  {
-    id: "database",
-    icon: CircleOff,
-    title: "Database Reactivation & LTV Expansion",
-    description: "You have a list—but it's just sitting there. Past customers hear from you once… then never again.",
-    impact: "Your customer database becomes a revenue-generating asset",
-    detailBullets: [
-      "Segments past customers by service history and value",
-      "Triggers personalized reactivation campaigns automatically",
-      "Cross-sells and upsells based on purchase patterns",
-      "Maintains relationships with value-driven touchpoints",
-      "Turns one-time buyers into lifetime customers"
-    ],
-    outcome: "Repeat revenue flows in without constant acquisition spend—your best customers come back on autopilot.",
-    imageWebp: "/images/database-reactivation-ltv.webp",
-    imageJpg: "/images/database-reactivation-ltv.jpg",
-    imageAlt: "AI reactivating past customers and expanding lifetime value through automated outreach"
-  },
-  {
-    id: "reputation",
-    icon: ThumbsDown,
-    title: "Reputation & Trust Flywheel",
-    description: "Happy customers don't automatically leave reviews. Unhappy ones do.",
-    impact: "Every satisfied customer becomes a public advocate",
-    detailBullets: [
-      "Automated review requests at the perfect moment",
-      "Routes positive feedback to Google, Yelp, and Facebook",
-      "Intercepts unhappy customers before they go public",
-      "Builds social proof that compounds over time",
-      "Improves local SEO and inbound call volume"
-    ],
-    outcome: "Higher Google rankings, more inbound leads, and sales conversations that start with trust already established.",
-    imageWebp: "/images/reputation-trust-flywheel.webp",
-    imageJpg: "/images/reputation-trust-flywheel.jpg",
-    imageAlt: "Automated review collection system building social proof and Google rankings"
-  },
-  {
-    id: "web-conversion",
-    icon: MousePointerClick,
-    title: "AI-Ready Web Conversion Layer",
-    description: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
-    impact: "Your website becomes a 24/7 sales assistant",
-    detailBullets: [
-      "AI chat that qualifies and books appointments instantly",
-      "Captures intent from visitors who would otherwise bounce",
-      "Answers common questions without human involvement",
-      "Routes complex inquiries to the right team member",
-      "Works after hours when competitors are offline"
-    ],
-    outcome: "More conversions from existing traffic, paid ad ROI that actually compounds, and zero missed after-hours opportunities.",
-    imageWebp: "/images/ai-web-conversion-layer.webp",
-    imageJpg: "/images/ai-web-conversion-layer.jpg",
-    imageAlt: "AI-powered website converting visitors through intelligent chat and qualification"
-  },
-  {
-    id: "ops-automation",
-    icon: Flame,
-    title: "Ops Automation & System Integration",
-    description: "Your team is the glue. When they're busy, sick, or gone—things break.",
-    impact: "Your operations run without human bottlenecks",
-    detailBullets: [
-      "Connects your CRM, calendar, and communication tools",
-      "Automates repetitive admin tasks end-to-end",
-      "Triggers workflows based on customer behavior",
-      "Eliminates manual data entry and copy-paste work",
-      "Scales operations without scaling headcount"
-    ],
-    outcome: "A business that runs smoothly whether your team is at full capacity or stretched thin—without burnout or errors.",
-    imageWebp: "/images/ops-automation-integration.webp",
-    imageJpg: "/images/ops-automation-integration.jpg",
-    imageAlt: "Automated workflows running critical operations without manual intervention"
+    outcome: "A business that runs smoothly whether your team is at full capacity or on vacation. Reclaim your time and sanity.",
+    imageWebp: "/images/operational-ecosystem.webp",
+    imageJpg: "/images/operational-ecosystem.jpg",
+    imageAlt: "Operational ecosystem automating backend processes and workflows"
   }
 ];
 
-function PainReliefStackedCard({ item, index }: { item: typeof painReliefNarrativeData[0]; index: number }) {
-  const Icon = item.icon;
-  const isAlternate = index % 2 === 1;
+function ConsolidatedCard({ card, index }: { card: typeof consolidatedCardsData[0]; index: number }) {
+  const isFirstCard = index === 0;
   
   const textReveal = {
     initial: { opacity: 0, y: 20 },
@@ -854,87 +793,78 @@ function PainReliefStackedCard({ item, index }: { item: typeof painReliefNarrati
   
   return (
     <div
-      className={`grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center py-16 md:py-24 border-b border-white/5 last:border-b-0`}
-      data-testid={`card-pain-relief-${item.id}`}
+      className={`grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center py-20 md:py-28`}
+      data-testid={`card-consolidated-${card.id}`}
     >
-      <div className={`space-y-6 ${isAlternate ? "md:order-2" : ""}`}>
+      <div className={`space-y-6 ${isFirstCard ? "md:order-2" : ""}`}>
         <motion.div 
           {...textReveal}
           transition={{ duration: 0.5, delay: 0 }}
-          className="flex items-center gap-4"
         >
-          <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-            <Icon className="w-6 h-6 text-primary" />
-          </div>
-          <h3 className="text-2xl md:text-3xl font-display font-medium text-[#f8fcfc]">
-            {item.title}
+          <span className="text-xs font-mono text-primary/70 uppercase tracking-wider mb-3 block">
+            {card.theme}
+          </span>
+          <h3 className="text-3xl md:text-4xl font-display font-medium text-[#f8fcfc] mb-4">
+            {card.headline}
           </h3>
-        </motion.div>
-        
-        <motion.p 
-          {...textReveal}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-muted-foreground text-lg leading-relaxed"
-        >
-          {item.description}
-        </motion.p>
-        
-        <motion.div
-          {...textReveal}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs font-mono text-primary/70 uppercase tracking-wider">Impact</span>
-          </div>
-          <p className="text-primary font-medium text-lg mt-2">
-            {item.impact}
+          <p className="text-muted-foreground text-lg leading-relaxed">
+            {card.subhead}
           </p>
         </motion.div>
         
-        <ul className="space-y-3 pt-2">
-          {item.detailBullets.map((bullet, bulletIndex) => (
-            <motion.li 
-              key={bulletIndex} 
+        <motion.div
+          {...textReveal}
+          transition={{ duration: 0.5, delay: 0.15 }}
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-mono text-primary uppercase tracking-wider">Core Capabilities</span>
+          </div>
+        </motion.div>
+        
+        <div className="space-y-4">
+          {card.capabilities.map((capability, capIndex) => (
+            <motion.div 
+              key={capIndex}
               {...textReveal}
-              transition={{ duration: 0.4, delay: 0.3 + bulletIndex * 0.08 }}
-              className="flex items-start gap-3"
+              transition={{ duration: 0.4, delay: 0.2 + capIndex * 0.1 }}
+              className="rounded-xl border border-primary/20 bg-primary/5 p-4"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2.5 flex-shrink-0" />
-              <span className="text-muted-foreground">{bullet}</span>
-            </motion.li>
+              <h4 className="text-primary font-medium mb-1">{capability.title}</h4>
+              <p className="text-muted-foreground text-sm">{capability.description}</p>
+            </motion.div>
           ))}
-        </ul>
+        </div>
         
         <motion.div 
           {...textReveal}
-          transition={{ duration: 0.5, delay: 0.7 }}
+          transition={{ duration: 0.5, delay: 0.55 }}
           className="pt-4 border-l-2 border-primary/30 pl-4"
         >
-          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider block mb-2">Outcome:</span>
+          <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider block mb-2">The Outcome:</span>
           <p className="text-primary leading-relaxed font-medium">
-            {item.outcome}
+            {card.outcome}
           </p>
         </motion.div>
       </div>
       
       <motion.div 
         {...textReveal}
-        transition={{ duration: 0.6, delay: 0.15 }}
-        className={`relative ${isAlternate ? "md:order-1" : ""}`}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className={`relative ${isFirstCard ? "md:order-1" : ""}`}
       >
         <div className="rounded-2xl border border-primary/20 overflow-hidden shadow-2xl shadow-primary/10 bg-zinc-900/50">
           <picture>
-            <source srcSet={item.imageWebp} type="image/webp" />
+            <source srcSet={card.imageWebp} type="image/webp" />
             <img
-              src={item.imageJpg}
-              alt={item.imageAlt}
+              src={card.imageJpg}
+              alt={card.imageAlt}
               width="960"
               height="1200"
               loading="lazy"
               decoding="async"
               className="w-full h-auto object-cover"
-              data-testid={`image-pain-relief-${item.id}`}
+              data-testid={`image-consolidated-${card.id}`}
             />
           </picture>
         </div>
@@ -964,9 +894,9 @@ function PainReliefNarrativeSection() {
           </p>
         </motion.div>
         
-        <div className="max-w-6xl mx-auto">
-          {painReliefNarrativeData.map((item, index) => (
-            <PainReliefStackedCard key={item.id} item={item} index={index} />
+        <div className="max-w-6xl mx-auto divide-y divide-white/5">
+          {consolidatedCardsData.map((card, index) => (
+            <ConsolidatedCard key={card.id} card={card} index={index} />
           ))}
         </div>
       </div>
