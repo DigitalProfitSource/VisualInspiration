@@ -18,6 +18,7 @@ import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
 import heroBg from "@assets/generated_images/subtle_abstract_dark_technical_flow_background.png";
+import heroAiAssistant from "/images/hero-ai-assistant.webp";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 import { ArchitectFlowDiagram } from "@/components/ui/architect-flow-diagram";
 import { DiagnoseFrictionDiagram } from "@/components/ui/diagnose-friction-diagram";
@@ -915,6 +916,8 @@ export default function Home() {
   const heroBgScale = useTransform(scrollY, [0, 600], [1, 1.15]);
   const circuitY = useTransform(scrollY, [0, 600], [0, 80]);
   const contentY = useTransform(scrollY, [0, 600], [0, 50]);
+  const heroImageY = useTransform(scrollY, [0, 600], [0, 120]);
+  const heroImageScale = useTransform(scrollY, [0, 600], [1, 1.08]);
 
   return (
     <Layout>
@@ -935,72 +938,101 @@ export default function Home() {
             style={{ y: heroBgY, scale: heroBgScale }} 
             src={heroBg} 
             alt="Background" 
-            className="w-full h-full object-cover opacity-30 mix-blend-screen" 
+            className="w-full h-full object-cover opacity-20 mix-blend-screen" 
           />
           <motion.div style={{ y: circuitY }}>
-            <CircuitBeams className="opacity-60" />
+            <CircuitBeams className="opacity-40" />
           </motion.div>
           <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
         </motion.div>
 
-        <motion.div style={{ y: contentY }} className="container mx-auto px-6 relative z-10">
-          <motion.div 
-            initial="initial"
-            animate="animate"
-            variants={stagger}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <motion.div variants={fadeIn} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono text-primary mb-8 backdrop-blur-md shadow-[0_0_20px_-5px_rgba(var(--primary),0.3)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_var(--color-primary)]" />
-              Operational AI Advisor™
-            </motion.div>
-            
-            <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl lg:text-8xl font-display font-medium tracking-tight mb-6 leading-[1.1] text-balance max-w-5xl mx-auto">
-              Practical AI for <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Service Businesses</span>
-            </motion.h1>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-8rem)]">
+            {/* Left Side - Text Content */}
+            <motion.div 
+              style={{ y: contentY }}
+              initial="initial"
+              animate="animate"
+              variants={stagger}
+              className="text-center lg:text-left"
+            >
+              <motion.div variants={fadeIn} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono text-primary mb-8 backdrop-blur-md shadow-[0_0_20px_-5px_rgba(var(--primary),0.3)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_var(--color-primary)]" />
+                Operational AI Advisor™
+              </motion.div>
+              
+              <motion.h1 variants={fadeIn} className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-medium tracking-tight mb-6 leading-[1.1] text-balance">
+                Practical AI for <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Service Businesses</span>
+              </motion.h1>
 
-            <motion.p variants={fadeIn} className="text-lg text-primary/80 mb-6 font-medium">
-              Empowering Human Teams with Intelligent Automation
-            </motion.p>
-            
-            <motion.p variants={fadeIn} className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-              Seamlessly integrate AI to boost productivity, not replace your people. Experience the future of collaborative work.
-            </motion.p>
-            
-            <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-5 items-center justify-center">
-              <ContactFormDialog
-                source="clarity-session"
-                title="Get Your AI Clarity Session"
-                description="Tell us about your business and we'll help you identify the best AI opportunities for operational efficiency."
-                trigger={
-                  <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
-                    <button 
-                      data-testid="button-hero-cta"
-                      className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full pt-3.5 pr-6 pb-3.5 pl-7 relative shadow-2xl backdrop-blur-xl w-full sm:w-auto"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
-                      <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
-                      <div className="relative z-10 flex items-center justify-center gap-3">
-                        <div className="text-left">
-                          <p className="group-hover:text-white transition-colors duration-300 text-base font-bold text-white font-sans drop-shadow-sm">Get Your AI Clarity Session</p>
+              <motion.p variants={fadeIn} className="text-lg text-primary/80 mb-4 font-medium">
+                Empowering Human Teams with Intelligent Automation
+              </motion.p>
+              
+              <motion.p variants={fadeIn} className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                Seamlessly integrate AI to boost productivity, not replace your people. Experience the future of collaborative work.
+              </motion.p>
+              
+              <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4 items-center lg:items-start justify-center lg:justify-start">
+                <ContactFormDialog
+                  source="clarity-session"
+                  title="Get Your AI Clarity Session"
+                  description="Tell us about your business and we'll help you identify the best AI opportunities for operational efficiency."
+                  trigger={
+                    <div className="relative group">
+                      <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
+                      <button 
+                        data-testid="button-hero-cta"
+                        className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full pt-3.5 pr-6 pb-3.5 pl-7 relative shadow-2xl backdrop-blur-xl w-full sm:w-auto"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                        <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
+                        <div className="relative z-10 flex items-center justify-center gap-3">
+                          <div className="text-left">
+                            <p className="group-hover:text-white transition-colors duration-300 text-base font-bold text-white font-sans drop-shadow-sm">Get Your AI Clarity Session</p>
+                          </div>
+                          <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                            <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
+                              <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
+                            </svg>
+                          </div>
                         </div>
-                        <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
-                          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
-                            <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
-                          </svg>
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                }
-              />
-              <p className="text-sm text-muted-foreground/80">
-                Stop losing leads. Stop guessing. Start with clarity.
-              </p>
+                      </button>
+                    </div>
+                  }
+                />
+                <p className="text-sm text-muted-foreground/80 lg:self-center">
+                  Stop losing leads. Stop guessing. Start with clarity.
+                </p>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        </motion.div>
+
+            {/* Right Side - AI Assistant Image with Parallax */}
+            <motion.div 
+              style={{ y: heroImageY, scale: heroImageScale }}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="relative hidden lg:block"
+            >
+              <div className="relative">
+                {/* Glow effect behind image */}
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-cyan-400/10 to-primary/20 blur-3xl opacity-50 rounded-3xl" />
+                
+                {/* Main image */}
+                <img
+                  src={heroAiAssistant}
+                  alt="AI-powered assistant seamlessly connecting phone, chat, email, and calendar"
+                  className="relative w-full h-auto rounded-2xl"
+                  data-testid="image-hero-ai-assistant"
+                />
+                
+                {/* Subtle border overlay */}
+                <div className="absolute inset-0 rounded-2xl border border-primary/20 pointer-events-none" />
+              </div>
+            </motion.div>
+          </div>
+        </div>
         
         <motion.div 
           initial={{ opacity: 0 }}
