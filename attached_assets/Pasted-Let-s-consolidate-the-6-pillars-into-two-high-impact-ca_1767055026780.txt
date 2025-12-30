@@ -1,0 +1,79 @@
+Let's consolidate the 6 pillars into two high-impact cards. I grouped them by the "Problem Type" (Leaking Revenue vs. Wasted Time) to directly answer your page headline: "What’s really costing you time, revenue, and sanity."
+
+
+
+The Strategy:
+
+Card 1 (The Offense): Focuses on Revenue. It combines Speed-to-Lead, Web Conversion, and Database Reactivation. It addresses the fear of "missing out" on money.
+
+Card 2 (The Defense): Focuses on Time & Sanity. It combines Ops Automation, Follow-Up Engine, and Reputation. It addresses the pain of "burnout" and manual labor.
+
+CARD 1: The Automated Growth Engine
+
+Theme: Speed, Acquisition, & Cash Flow
+
+Web Copy (Context on the side):
+
+
+
+HEADLINE: Stop Losing Leads to Speed and Silence
+
+SUBHEAD: Your marketing works, but your capture system is leaking. We install an "Always-On" sales layer that engages every opportunity instantly.
+
+CORE CAPABILITIES:
+
+
+
+Speed-to-Lead Capture: Instant SMS/Voice response in <60 seconds. No lead goes cold.
+
+AI Web Conversion: 24/7 chat agents that qualify visitors and book appointments while you sleep.
+
+Database Mining: Automatically re-engages past lists to generate immediate cash flow.
+
+THE OUTCOME:
+
+Maximum ROI on every ad dollar and a calendar full of qualified appointments—zero manual effort required.
+
+
+
+CARD 2: The Operational Ecosystem
+
+Theme: Efficiency, Retention, & Stability
+
+Web Copy (Context on the side):
+
+
+
+HEADLINE: Scale Your Operations, Not Your Headcount
+
+SUBHEAD: Eliminate the manual busywork and "human bottlenecks" that cause burnout. We build the backend infrastructure that runs your business on autopilot.
+
+CORE CAPABILITIES:
+
+
+
+Ops & Workflow Automation: Connects your CRM and tools to eliminate data entry and admin chaos.
+
+The Follow-Up Engine: Relentlessly chases no-shows and stale quotes until they convert.
+
+Reputation Flywheel: Automates review requests and intercepts negative feedback to bulletproof your brand.
+
+THE OUTCOME:
+
+A business that runs smoothly whether your team is at full capacity or on vacation. Reclaim your time and sanity.
+
+
+
+
+
+Implementation Note
+
+To make this work on the site:
+
+
+
+Layout: Place the Image on the Left and Text on the Right for Card 1. Then flip it (Text Left, Image Right) for Card 2. This creates a balanced "Z-pattern" reading flow that breaks the scrolling monotony.
+
+
+
+Pls suggest what to name the WebP and the backup JPEG files for each image?
