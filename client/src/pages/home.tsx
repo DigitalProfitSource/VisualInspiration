@@ -1015,6 +1015,8 @@ export default function Home() {
       <TechTicker />
       {/* Pain vs Relief Section - Tabbed Layout */}
       <PainReliefTabs />
+      {/* Industry Results Carousel - RELOCATED */}
+      <IndustryCarousel />
       {/* Customer Journey Alignment Section */}
       <section className="py-32 relative">
         <div className="container mx-auto px-6">
@@ -1155,8 +1157,6 @@ export default function Home() {
       </section>
       {/* Revenue-Focused System Section */}
       <RevenueSystemSection />
-      {/* Industry Results Carousel */}
-      <IndustryCarousel />
       {/* The SimpleSequence Method */}
       <section id="method" className="py-40 relative overflow-hidden bg-background pl-[0px] pr-[0px] mt-[0px] mb-[0px] pt-[60px] pb-[60px]">
         <GridBeam />
