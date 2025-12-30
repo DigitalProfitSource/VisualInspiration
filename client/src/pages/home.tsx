@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight } from "lucide-react";
 import {
   Accordion,
@@ -910,11 +911,13 @@ function PainReliefTabs() {
 
 export default function Home() {
   const { scrollY } = useScroll();
+  const isMobile = useIsMobile();
   const heroOpacity = useTransform(scrollY, [0, 600], [1, 0]);
   const heroBgY = useTransform(scrollY, [0, 600], [0, 150]);
   const heroBgScale = useTransform(scrollY, [0, 600], [1, 1.1]);
   const circuitY = useTransform(scrollY, [0, 600], [0, 80]);
   const contentY = useTransform(scrollY, [0, 600], [0, 50]);
+  const heroImagePosition = isMobile ? '50% 75%' : '70% 45%';
 
   return (
     <Layout>
@@ -931,10 +934,10 @@ export default function Home() {
         {/* Full-width AI Assistant Background with Parallax */}
         <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
           <motion.img 
-            style={{ y: heroBgY, scale: heroBgScale }} 
+            style={{ y: heroBgY, scale: heroBgScale, objectPosition: heroImagePosition }} 
             src={heroAiAssistant} 
             alt="AI-powered assistant connecting phone, chat, email, and calendar" 
-            className="absolute inset-0 w-full h-full object-cover object-right md:object-center" 
+            className="absolute inset-0 w-full h-full object-cover" 
             data-testid="image-hero-background"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
