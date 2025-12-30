@@ -941,7 +941,7 @@ export default function Home() {
             <img 
               src="/images/hero-mobile.jpg"
               alt="AI-powered assistant connecting voice, chatbot, and scheduling" 
-              className="absolute inset-0 w-full h-full object-cover object-top md:object-center" 
+              className="absolute inset-0 w-full h-full object-cover object-top md:object-[70%_center]" 
               data-testid="image-hero-background"
             />
           </motion.picture>
