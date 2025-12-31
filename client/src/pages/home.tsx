@@ -67,19 +67,19 @@ const revenueFeatures = [
   },
   {
     icon: RefreshCw,
-    title: "Follow-Up & Show-Rate Engine",
+    title: "Follow-Up & Rebooking Engine",
     image: followUpDiagram,
-    frontDescription: "Runs multi-step SMS and email sequences on leads from any channel—calls, chats, forms, or DMs—with win-back campaigns for \"never booked\" and no-show leads tuned to your workflow.",
-    impact: "Built to increase show rates and reduce no-shows",
-    backIntro: "Most systems stop after one reply. Simple Sequence keeps going—politely, automatically, and on your behalf.",
+    frontDescription: "Your team means well—but follow-up depends on memory and mood. No-shows vanish. Estimates expire. Old leads rot.",
+    impact: "Every no-show, stale quote, and missed opportunity re-engaged automatically",
+    backIntro: "Simple Sequence keeps chasing—politely, automatically, and on your behalf—until they book or say no.",
     backBullets: [
-      "New lead flows kick in no matter where the lead came from",
-      "Reminder & reschedule logic that adapts to time zones and timing",
-      "No-show / canceled win-backs that reopen lost opportunities",
-      "Branching logic for consults, intakes, or estimates depending on your industry",
-      "Tracks responses and status in your CRM so your team always knows what's next"
+      "Multi-step SMS and email sequences for every lead stage",
+      "Win-back campaigns for 'never booked' and no-show leads",
+      "Automatic estimate follow-up before they go cold",
+      "Personalized timing based on behavior and engagement",
+      "Logs every interaction back into your CRM"
     ],
-    backOutcome: "More people actually show up, therefore your marketing and ad spend become booked revenue instead of missed chances."
+    backOutcome: "Predictable cash flow, silent churn eliminated, and revenue recovered without adding headcount."
   },
   {
     icon: BookOpen,
