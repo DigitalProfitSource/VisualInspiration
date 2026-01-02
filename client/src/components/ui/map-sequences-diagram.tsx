@@ -57,12 +57,6 @@ export function MapSequencesDiagram() {
             <stop offset="40%" stopColor="rgba(147,197,253,1)" />
             <stop offset="100%" stopColor="rgba(103,232,249,1)" />
           </radialGradient>
-          <radialGradient id="winDotFill" cx="30%" cy="30%" r="70%">
-            <stop offset="0%" stopColor="rgba(255,255,255,1)" />
-            <stop offset="30%" stopColor="rgba(167,243,208,1)" />
-            <stop offset="70%" stopColor="rgba(52,211,153,1)" />
-            <stop offset="100%" stopColor="rgba(16,185,129,1)" />
-          </radialGradient>
         </defs>
 
         <motion.path
@@ -100,7 +94,7 @@ export function MapSequencesDiagram() {
                 cx={milestone.x}
                 cy={milestone.y}
                 r={glowSize}
-                fill={isWin ? "rgba(16,185,129,0.12)" : "rgba(103,232,249,0.1)"}
+                fill="rgba(103,232,249,0.1)"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={isInView ? { scale: 1, opacity: 0.6 } : {}}
                 transition={{ duration: 0.8, delay: 1.2 + i * 0.5, ease: "easeOut" }}
@@ -110,7 +104,7 @@ export function MapSequencesDiagram() {
                 cx={milestone.x}
                 cy={milestone.y}
                 r={dotSize}
-                fill={isWin ? "url(#winDotFill)" : "url(#dotFill)"}
+                fill="url(#dotFill)"
                 filter={isWin ? "url(#strongGlow)" : "url(#glow)"}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={isInView ? { scale: 1, opacity: 1 } : {}}
@@ -122,7 +116,7 @@ export function MapSequencesDiagram() {
                 cy={milestone.y}
                 r={dotSize}
                 fill="transparent"
-                stroke={isWin ? "rgba(52,211,153,0.8)" : "rgba(147,197,253,0.7)"}
+                stroke="rgba(147,197,253,0.7)"
                 strokeWidth={isWin ? 3 : 2}
                 initial={{ scale: 1, opacity: 0 }}
                 animate={isInView ? { 
@@ -145,7 +139,7 @@ export function MapSequencesDiagram() {
                     cy={milestone.y}
                     r={dotSize}
                     fill="transparent"
-                    stroke="rgba(167,243,208,0.6)"
+                    stroke="rgba(103,232,249,0.6)"
                     strokeWidth={2}
                     initial={{ scale: 1, opacity: 0 }}
                     animate={isInView ? { 
@@ -165,7 +159,7 @@ export function MapSequencesDiagram() {
                     cy={milestone.y}
                     r={18}
                     fill="transparent"
-                    stroke="rgba(16,185,129,0.4)"
+                    stroke="rgba(103,232,249,0.4)"
                     strokeWidth={1}
                     strokeDasharray="4 4"
                     initial={{ opacity: 0, rotate: 0 }}
@@ -187,7 +181,7 @@ export function MapSequencesDiagram() {
                 x={milestone.x}
                 y={milestone.y - (isWin ? 24 : 20)}
                 textAnchor="middle"
-                fill={isWin ? "rgba(52,211,153,1)" : "rgba(103,232,249,0.95)"}
+                fill="rgba(103,232,249,0.95)"
                 className={`font-semibold uppercase tracking-wider ${isWin ? 'text-[10px]' : 'text-[9px]'}`}
                 initial={{ opacity: 0, y: 5 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
