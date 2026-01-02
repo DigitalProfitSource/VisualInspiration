@@ -82,20 +82,20 @@ const revenueFeatures = [
     backOutcome: "Predictable cash flow, silent churn eliminated, and revenue recovered without adding headcount."
   },
   {
-    icon: BookOpen,
-    title: "Education & FAQ Flows",
+    icon: Globe,
+    title: "AI-Ready Web Conversion Layer",
     image: educationFaqDiagram,
-    frontDescription: "Uses your own content and policies to answer routine questions before they reach your team—sending explainers, pricing ranges, and pre-visit prep automatically across SMS, email, and chat.",
-    impact: "Designed to cut routine FAQs by up to 80%",
-    backIntro: "Your team repeats the same explanations all day. Simple Sequence says it for them—consistently, accurately, and on-brand.",
+    frontDescription: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
+    impact: "Your website becomes a 24/7 sales assistant",
+    backIntro: "Simple Sequence turns passive traffic into active conversations and booked appointments—even when you're offline.",
     backBullets: [
-      "RAG-style knowledge base built from your FAQs, docs, pricing ranges, and policies",
-      "Service / procedure explainers that answer \"What do I get?\" and \"Is this right for me?\"",
-      "Pre-visit prep and post-visit instructions sent automatically after booking",
-      "Triggered from forms, chats, DMs, and pipeline stages so answers show up exactly when needed",
-      "Guardrails so the AI never steps into regulated advice—it sticks to your approved information"
+      "AI chat that qualifies and books appointments instantly",
+      "Captures intent from visitors who would otherwise bounce",
+      "Answers common questions without human involvement",
+      "Routes complex inquiries to the right team member",
+      "Works after hours when competitors are offline"
     ],
-    backOutcome: "Fewer low-value calls and emails, therefore more time for high-value conversations and better-educated clients who are ready to say yes."
+    backOutcome: "More conversions from existing traffic, paid ad ROI that actually compounds, and zero missed after-hours opportunities."
   },
   {
     icon: Handshake,
