@@ -101,17 +101,17 @@ const revenueFeatures = [
     icon: Handshake,
     title: "White-Glove Integration & ROI",
     image: integrationRoiDiagram,
-    frontDescription: "We handle the plumbing—phones, calendars, CRM/EMR, inboxes, and GHL automation—then review performance monthly to tune scripts and flows around what actually drives revenue.",
-    impact: "Real-time visibility into calls, leads, and booked revenue",
-    backIntro: "You don't need another disconnected tool. You need a front-desk system wired into how your business already runs.",
+    frontDescription: "We handle the plumbing—phones, calendars, CRM/EMR, and automation—so critical workflows run in the background, held together by your people, not duct tape.",
+    impact: "Critical workflows running consistently with human oversight maintained",
+    backIntro: "You don't need another disconnected tool. You need a system that reduces manual load while keeping human judgment where it matters most.",
     backBullets: [
       "Done-for-you setup across phone systems, chat widgets, GHL pipelines, calendars, and EMR/CRMs",
-      "Uses GoHighLevel's automation strength while Simple Sequence becomes the brain deciding what to trigger and when",
-      "Centralized logging so sales, ops, and owners all see the same picture",
+      "Critical workflows running consistently in the background with zero intervention",
+      "Reduced manual load so your team focuses on judgment calls, not data entry",
       "Dashboards that track calls handled, leads captured, show-rate, and projected revenue",
-      "Monthly optimization sessions to refine messaging, routing, and campaigns based on real data"
+      "System oversight preserved—humans stay in control of what matters"
     ],
-    backOutcome: "A front desk you can actually measure and improve, therefore no more guessing whether your phones and follow-ups are working—or what they're really worth."
+    backOutcome: "A front desk you can actually measure and improve, with workflows that don't break when you step away—and real-time visibility into what's working."
   }
 ];
 
