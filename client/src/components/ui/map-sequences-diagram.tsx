@@ -21,44 +21,6 @@ export function MapSequencesDiagram() {
       className="relative w-full max-w-md aspect-[4/3]" 
       data-testid="map-sequences-diagram"
     >
-      <motion.div
-        className="absolute top-2 left-4 md:left-6"
-        initial={{ opacity: 0, y: -10 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <span className="text-[11px] md:text-xs font-semibold text-primary tracking-wider">Map Sequences</span>
-      </motion.div>
-
-      <motion.div
-        className="absolute left-1 top-1/2 -translate-y-1/2 -rotate-90 origin-center"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 0.5 } : {}}
-        transition={{ duration: 0.5, delay: 0.3 }}
-      >
-        <span className="text-[8px] font-mono text-primary/70 uppercase tracking-widest whitespace-nowrap">Progress</span>
-      </motion.div>
-
-      <motion.div
-        className="absolute left-6 top-1/2 -translate-y-1/2 -rotate-90 origin-center"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 0.5 } : {}}
-        transition={{ duration: 0.5, delay: 0.4 }}
-      >
-        <span className="text-[8px] font-mono text-primary/50 uppercase tracking-widest whitespace-nowrap">Revenue</span>
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5, delay: 0.5 }}
-      >
-        <div className="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center bg-zinc-900/80">
-          <span className="text-sm font-bold text-primary">02</span>
-        </div>
-      </motion.div>
-
       <svg
         viewBox="0 0 440 240"
         className="w-full h-full"
@@ -71,7 +33,7 @@ export function MapSequencesDiagram() {
             <stop offset="100%" stopColor="rgba(147,197,253,1)" />
           </linearGradient>
           <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+            <feGaussianBlur stdDeviation="4" result="coloredBlur" />
             <feMerge>
               <feMergeNode in="coloredBlur" />
               <feMergeNode in="SourceGraphic" />
@@ -81,47 +43,22 @@ export function MapSequencesDiagram() {
             <stop offset="0%" stopColor="rgba(103,232,249,1)" />
             <stop offset="100%" stopColor="rgba(147,197,253,1)" />
           </linearGradient>
+          <radialGradient id="dotFill" cx="30%" cy="30%" r="70%">
+            <stop offset="0%" stopColor="rgba(147,197,253,1)" />
+            <stop offset="100%" stopColor="rgba(103,232,249,0.9)" />
+          </radialGradient>
         </defs>
 
-        <rect
-          x="50"
-          y="20"
-          width="370"
-          height="190"
-          fill="transparent"
-          stroke="rgba(103,232,249,0.08)"
-          strokeWidth="1"
-          rx="8"
+        <motion.path
+          d={curvePath}
+          fill="none"
+          stroke="rgba(103,232,249,0.2)"
+          strokeWidth="12"
+          strokeLinecap="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={isInView ? { pathLength: 1, opacity: 0.3 } : {}}
+          transition={{ duration: 3.5, ease: "easeOut", delay: 0.3 }}
         />
-
-        {[80, 120, 160, 200].map((y, i) => (
-          <motion.line
-            key={`h-${i}`}
-            x1="50"
-            y1={y}
-            x2="420"
-            y2={y}
-            stroke="rgba(103,232,249,0.05)"
-            strokeWidth="1"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.3, delay: 0.2 + i * 0.05 }}
-          />
-        ))}
-        {[100, 160, 220, 280, 340].map((x, i) => (
-          <motion.line
-            key={`v-${i}`}
-            x1={x}
-            y1="20"
-            x2={x}
-            y2="210"
-            stroke="rgba(103,232,249,0.03)"
-            strokeWidth="1"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.3, delay: 0.25 + i * 0.05 }}
-          />
-        ))}
 
         <motion.path
           d={curvePath}
@@ -132,18 +69,7 @@ export function MapSequencesDiagram() {
           filter="url(#glow)"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={isInView ? { pathLength: 1, opacity: 1 } : {}}
-          transition={{ duration: 2, ease: "easeOut", delay: 0.5 }}
-        />
-
-        <motion.path
-          d={curvePath}
-          fill="none"
-          stroke="rgba(103,232,249,0.3)"
-          strokeWidth="8"
-          strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={isInView ? { pathLength: 1, opacity: 0.4 } : {}}
-          transition={{ duration: 2, ease: "easeOut", delay: 0.5 }}
+          transition={{ duration: 3.5, ease: "easeOut", delay: 0.3 }}
         />
 
         {milestones.map((milestone, i) => (
@@ -151,77 +77,58 @@ export function MapSequencesDiagram() {
             <motion.circle
               cx={milestone.x}
               cy={milestone.y}
-              r="20"
-              fill="rgba(103,232,249,0.1)"
+              r="24"
+              fill="rgba(103,232,249,0.08)"
               initial={{ scale: 0, opacity: 0 }}
-              animate={isInView ? { scale: 1, opacity: 0.3 } : {}}
-              transition={{ duration: 0.4, delay: 0.8 + i * 0.25 }}
+              animate={isInView ? { scale: 1, opacity: 0.5 } : {}}
+              transition={{ duration: 0.8, delay: 1.2 + i * 0.5, ease: "easeOut" }}
             />
 
             <motion.circle
               cx={milestone.x}
               cy={milestone.y}
-              r="12"
-              fill="rgba(24,24,27,0.95)"
-              stroke="url(#dotGradient)"
-              strokeWidth="2"
+              r="10"
+              fill="url(#dotFill)"
+              filter="url(#glow)"
               initial={{ scale: 0, opacity: 0 }}
               animate={isInView ? { scale: 1, opacity: 1 } : {}}
-              transition={{ duration: 0.4, delay: 0.9 + i * 0.25 }}
+              transition={{ duration: 0.6, delay: 1.4 + i * 0.5, ease: "backOut" }}
             />
 
             <motion.circle
               cx={milestone.x}
               cy={milestone.y}
-              r="5"
-              fill="url(#dotGradient)"
-              initial={{ scale: 0 }}
+              r="10"
+              fill="transparent"
+              stroke="rgba(147,197,253,0.6)"
+              strokeWidth="2"
+              initial={{ scale: 0, opacity: 0 }}
               animate={isInView ? { 
-                scale: [1, 1.2, 1],
-                opacity: [0.8, 1, 0.8]
+                scale: [1, 1.8, 1],
+                opacity: [0.6, 0, 0.6]
               } : {}}
               transition={{
-                duration: 2,
+                duration: 3,
                 repeat: Infinity,
-                delay: 1.2 + i * 0.25,
-                ease: "easeInOut"
+                delay: 2 + i * 0.5,
+                ease: "easeOut"
               }}
             />
 
             <motion.text
               x={milestone.x}
-              y={milestone.y - 22}
+              y={milestone.y - 20}
               textAnchor="middle"
               fill="rgba(103,232,249,0.9)"
               className="text-[9px] font-semibold uppercase tracking-wider"
               initial={{ opacity: 0, y: 5 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 1 + i * 0.25 }}
+              transition={{ duration: 0.6, delay: 1.6 + i * 0.5 }}
             >
               {milestone.label}
             </motion.text>
           </motion.g>
         ))}
-
-        <motion.circle
-          cx="380"
-          cy="35"
-          r="16"
-          fill="none"
-          stroke="rgba(147,197,253,0.6)"
-          strokeWidth="2"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={isInView ? { 
-            scale: [1, 1.5, 1],
-            opacity: [0.6, 0, 0.6]
-          } : {}}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            delay: 2.5,
-            ease: "easeOut"
-          }}
-        />
       </svg>
     </div>
   );
