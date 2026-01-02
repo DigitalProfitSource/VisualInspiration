@@ -1,14 +1,20 @@
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { 
   Search, 
   Wrench, 
   TrendingUp,
   CheckCircle2,
   Clock,
-  FileCheck,
   Microscope,
   Target,
-  RefreshCw
+  RefreshCw,
+  ArrowRight,
+  Zap,
+  Bot,
+  Database,
+  Cog,
+  MessageSquare,
+  Star
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
@@ -22,7 +28,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
+import { Link } from "wouter";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -36,11 +43,11 @@ interface Phase {
   icon: React.ElementType;
   title: string;
   description: string;
-  leftColumn: {
+  whatHappens: {
     title: string;
     items: string[];
   };
-  rightColumn: {
+  whatYouExperience: {
     title: string;
     items: string[];
   };
@@ -52,97 +59,104 @@ const phases: Phase[] = [
     number: 1,
     icon: Search,
     title: "Diagnostic & Audit",
-    description: "Before we fix anything, we find out what's actually broken. We map how leads move today, identify where they slip away across calls, texts, forms, and DMs, and uncover the friction your team feels every day but can't quite name.",
-    leftColumn: {
-      title: "What We Analyze",
+    description: "Before we fix anything, we find out what's actually broken. We map how leads move through your business today, identify where they slip away, and uncover the friction your team feels but can't quite name.",
+    whatHappens: {
+      title: "What Happens",
       items: [
-        "Where leads come in and where they quietly disappear",
-        "Response times across phone, text, chat, and forms",
-        "Follow-up gaps that cost you appointments and revenue",
-        "Manual processes draining your team's time and focus",
-        "Friction points your team complains about but no one has mapped",
-        "Where AI could help — and where it shouldn't touch the conversation"
+        "You complete a short questionnaire about your current systems",
+        "We get view-only access to your tools (CRM, forms, calendar)",
+        "One 60-minute clarity session with you and/or your team",
+        "We analyze your lead flow, response times, and follow-up patterns",
+        "We identify which of the Six Pillars need attention first"
       ]
     },
-    rightColumn: {
-      title: "What You Receive",
+    whatYouExperience: {
+      title: "What You Experience",
       items: [
-        "Front-Desk & Follow-Up Clarity Score showing exactly where you're stuck",
-        "Lead Leakage Report tied to real revenue impact, not just vanity stats",
-        "Prioritized Roadmap of what to fix first, second, and later",
-        "30-Day Quick-Win Action Plan so you see progress fast",
-        "System Architecture Blueprint for a cleaner, AI-ready workflow"
+        "Minimal disruption — about 2 hours of your time total",
+        "No judgment — we're here to help, not criticize",
+        "Clear communication throughout the process",
+        "A diagnostic report you can actually understand",
+        "A prioritized roadmap with quick wins identified"
       ]
     },
-    timeline: "5–7 business days from kickoff to final diagnostic report + clarity blueprint."
+    timeline: "5–7 business days from kickoff to final diagnostic report."
   },
   {
     number: 2,
     icon: Wrench,
     title: "Build & Deploy",
-    description: "Once you have clarity, we build. We turn the blueprint into a working front-desk and follow-up system — integrated with what you already use — therefore your team can finally stop firefighting and start executing.",
-    leftColumn: {
-      title: "Our Approach",
+    description: "Once you have clarity, we build. We turn the diagnostic findings into working systems — installing the Six Pillars that matter most for your business, integrated with what you already use.",
+    whatHappens: {
+      title: "What Happens",
       items: [
-        "We build in priority order — quick wins and high-ROI fixes first",
-        "Works with your existing tools (no forced platform swaps)",
-        "Custom workflows that reflect how your team actually operates",
-        "AI that triages, qualifies, and nurtures instead of just answering",
-        "Clear handoff rules so humans and AI never step on each other",
-        "Training so your team feels confident, not confused, when it goes live"
+        "We build in priority order — quick wins first, then bigger systems",
+        "Your existing tools stay in place (no forced platform swaps)",
+        "We configure and connect your Six Pillar systems",
+        "Custom workflows that match how your team actually operates",
+        "Training sessions so your team feels confident, not confused"
       ]
     },
-    rightColumn: {
-      title: "Communication Cadence",
+    whatYouExperience: {
+      title: "What You Experience",
       items: [
-        "Weekly updates so you always know what's happening",
-        "Milestone reviews for your input and approval",
-        "Direct access to progress so nothing feels like a black box",
-        "Testing loops to catch issues before go-live",
-        "Full walkthrough and handoff when we're done — with recordings and documentation"
+        "Weekly updates — you always know what's happening",
+        "Milestone reviews where you provide input and approval",
+        "Direct access to progress (nothing feels like a black box)",
+        "Testing before go-live so we catch issues early",
+        "Full walkthrough with recordings and documentation at handoff"
       ]
     },
-    timeline: "3–6 weeks depending on package tier and system complexity."
+    timeline: "3–6 weeks depending on which pillars you're implementing."
   },
   {
     number: 3,
     icon: TrendingUp,
     title: "Optimize & Scale",
-    description: "Your business evolves — your systems should too. We monitor what's working, what isn't, and help you scale the results without adding more chaos or headcount.",
-    leftColumn: {
-      title: "Included Review Cycles",
+    description: "Your business evolves — your systems should too. After launch, we monitor what's working, tune what isn't, and help you scale the results without adding chaos or headcount.",
+    whatHappens: {
+      title: "What Happens",
       items: [
-        "Performance tracking so you see what's improving, not just what's built",
+        "Built-in review cycles at 30, 60, and 90 days post-launch",
+        "Performance tracking against your baseline metrics",
         "Bottleneck fixes as new friction points emerge",
-        "Workflow tuning based on real usage and outcome data",
-        "Conversion improvements as you learn more about your best leads",
+        "Workflow tuning based on real usage data",
         "Recommendations for what to tackle next, in order of impact"
       ]
     },
-    rightColumn: {
-      title: "Optional Ongoing Support",
+    whatYouExperience: {
+      title: "What You Experience",
       items: [
-        "Monthly insights so you stay ahead of issues instead of reacting",
-        "A/B testing to continuously improve messages and flows",
-        "New workflows as your services, locations, or offers change",
-        "Strategic consulting when you need guidance on next moves",
-        "Priority support when something breaks or needs a fast tweak"
+        "Confidence that someone is watching the metrics for you",
+        "Quick responses when something needs adjustment",
+        "Clear reports showing what's improved (and what's next)",
+        "Optional ongoing support if you want a long-term partner",
+        "No surprises — proactive communication about any issues"
       ]
     },
-    timeline: "Review cycles at 30, 60, and 90 days post-launch. Ongoing optimization available as a monthly retainer."
+    timeline: "Review cycles included. Ongoing optimization available as a monthly retainer."
   }
+];
+
+const sixPillars = [
+  { icon: Zap, name: "Speed-to-Lead", desc: "Instant response systems" },
+  { icon: Bot, name: "AI Web Conversion", desc: "24/7 chat qualification" },
+  { icon: Database, name: "Database Reactivation", desc: "Mine dormant leads" },
+  { icon: Cog, name: "Ops Automation", desc: "Eliminate manual busywork" },
+  { icon: MessageSquare, name: "Follow-Up Engine", desc: "Relentless nurture sequences" },
+  { icon: Star, name: "Reputation Flywheel", desc: "Automated review generation" },
 ];
 
 const principles = [
   {
     icon: Microscope,
     title: "Evidence-Based",
-    description: "We don't guess — we diagnose. Every recommendation comes from your actual data, conversations, and workflows, therefore you're not betting your operations on theory."
+    description: "We don't guess — we diagnose. Every recommendation comes from your actual data, conversations, and workflows. You're not betting your operations on theory."
   },
   {
     icon: Target,
     title: "Outcome-Focused",
-    description: "We're not here to sell you tools. We're here to help you make decisions that move the needle: more kept appointments, faster response times, and fewer leaks in your revenue paths."
+    description: "We're not here to sell you tools. We're here to deliver results: more appointments, faster response times, and fewer leaks in your revenue paths."
   },
   {
     icon: RefreshCw,
@@ -154,15 +168,15 @@ const principles = [
 const faqs = [
   {
     question: "How long until I see results?",
-    answer: "Diagnostic: 5–7 business days to get your clarity report. Build: 3–6 weeks to deploy. Many clients see quick wins within the first 30 days."
+    answer: "Diagnostic: 5–7 business days. Build: 3–6 weeks. Many clients see quick wins within the first 30 days of implementation."
   },
   {
     question: "What do I need to provide to get started?",
-    answer: "Just a short questionnaire, view-only access to your tools, and one clarity session. We handle the rest."
+    answer: "A short questionnaire, view-only access to your tools, and one 60-minute clarity session. We handle everything else."
   },
   {
     question: "Will this disrupt my day-to-day operations?",
-    answer: "No. Everything happens alongside your current workflow. No downtime, no chaos."
+    answer: "No. Everything happens alongside your current workflow. No downtime, no chaos. About 2 hours of your time for the diagnostic phase."
   },
   {
     question: "What if I need changes after the system is live?",
@@ -170,27 +184,19 @@ const faqs = [
   },
   {
     question: "Do I have to replace the tools I'm already using?",
-    answer: "Almost never. We work with what you have — unless something truly can't support the architecture."
-  },
-  {
-    question: "What's the difference between Diagnostic and Build?",
-    answer: "Diagnostic gives you clarity on what's broken and what to do. Build actually deploys the fix."
-  },
-  {
-    question: "How do you measure success?",
-    answer: "Less friction, faster response times, smoother handoffs, and measurable improvements in conversion and follow-up."
+    answer: "Almost never. We work with what you have — unless something truly can't support the systems we're building."
   },
   {
     question: "What if I'm not ready for a full build?",
-    answer: "Start with just the Diagnostic + Blueprint. You can implement it yourself or come back when you're ready."
+    answer: "Start with just the Diagnostic. You'll get a clear roadmap you can implement yourself or bring us back when you're ready."
+  },
+  {
+    question: "How do you measure success?",
+    answer: "Faster response times, higher contact rates, better follow-up consistency, and measurable improvements in conversions and revenue."
   },
   {
     question: "Will my team be trained on the new systems?",
-    answer: "Yes. Every Build engagement includes training and documentation so your team feels confident."
-  },
-  {
-    question: "What kinds of businesses do you work with?",
-    answer: "Any service business where speed, follow-up, and operational clarity make the difference between winning and losing."
+    answer: "Yes. Every Build engagement includes training sessions, documentation, and recordings so your team feels confident."
   }
 ];
 
@@ -229,11 +235,11 @@ function PhaseCard({ phase, index }: { phase: Phase; index: number }) {
 
         {/* Two Column Content */}
         <div className="grid md:grid-cols-2 gap-10 mb-10">
-          {/* Left Column */}
+          {/* Left Column - What Happens */}
           <div>
-            <h4 className="text-base font-semibold text-white mb-5">{phase.leftColumn.title}</h4>
+            <h4 className="text-base font-semibold text-white mb-5">{phase.whatHappens.title}</h4>
             <ul className="space-y-4">
-              {phase.leftColumn.items.map((item, i) => (
+              {phase.whatHappens.items.map((item, i) => (
                 <motion.li 
                   key={i}
                   initial={{ opacity: 0, x: -15 }}
@@ -248,11 +254,11 @@ function PhaseCard({ phase, index }: { phase: Phase; index: number }) {
             </ul>
           </div>
 
-          {/* Right Column */}
+          {/* Right Column - What You Experience */}
           <div>
-            <h4 className="text-base font-semibold text-white mb-5">{phase.rightColumn.title}</h4>
+            <h4 className="text-base font-semibold text-white mb-5">{phase.whatYouExperience.title}</h4>
             <ul className="space-y-4">
-              {phase.rightColumn.items.map((item, i) => (
+              {phase.whatYouExperience.items.map((item, i) => (
                 <motion.li 
                   key={i}
                   initial={{ opacity: 0, x: -15 }}
@@ -295,8 +301,8 @@ export default function Process() {
   return (
     <Layout>
       <SEO 
-        title="Our Process - Diagnostic, Build, Optimize | SimpleSequence"
-        description="Three-phase methodology: Diagnostic & Audit, Build & Deploy, and Optimize & Scale. Transparent process with clear timelines and deliverables."
+        title="Our Process - How We Work With You | SimpleSequence"
+        description="Three-phase client journey: Diagnostic & Audit, Build & Deploy, and Optimize & Scale. Clear timelines, transparent communication, and no surprises."
         jsonLd={faqSchema}
       />
 
@@ -311,12 +317,12 @@ export default function Process() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <span className="text-sm font-mono text-primary mb-6 block">OUR METHODOLOGY</span>
+            <span className="text-sm font-mono text-primary mb-6 block">YOUR JOURNEY</span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium mb-8 tracking-tight">
-              How We <span className="text-primary">Work</span>
+              How We <span className="text-primary">Work With You</span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto">
-              You're tired of guessing. We're here to give you the clarity you actually need — a structured process that shows exactly where your front desk, follow-up, and operations break down, and how to fix them in the right order.
+              A structured process designed around your experience — not ours. Clear phases, honest timelines, and no surprises along the way.
             </p>
           </motion.div>
         </div>
@@ -334,6 +340,62 @@ export default function Process() {
         </div>
       </section>
 
+      {/* Six Pillars Reference */}
+      <section className="py-24 relative overflow-hidden border-t border-white/5">
+        <div className="container mx-auto px-6">
+          <motion.div 
+            initial={fadeInUp.initial}
+            whileInView={fadeInUp.whileInView}
+            viewport={fadeInUp.viewport}
+            transition={fadeInUp.transition}
+            className="text-center mb-12"
+          >
+            <span className="text-sm font-mono text-primary mb-4 block">WHAT WE INSTALL</span>
+            <h2 className="text-3xl md:text-4xl font-display font-medium mb-6">
+              The <span className="text-primary">Six Pillars</span> We Deploy
+            </h2>
+            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+              During the Build phase, we install the systems that matter most for your business. Each pillar is designed to work together as a unified operating engine.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto mb-10">
+            {sixPillars.map((pillar, i) => {
+              const Icon = pillar.icon;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className="p-4 rounded-xl border border-white/10 bg-white/[0.02] hover:border-primary/30 transition-all duration-300 text-center"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-3">
+                    <Icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h4 className="text-sm font-medium text-white mb-1">{pillar.name}</h4>
+                  <p className="text-xs text-slate-500">{pillar.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="text-center">
+            <Link href="/solutions">
+              <Button 
+                variant="outline" 
+                className="rounded-full border-white/20 hover:border-primary/50 hover:bg-primary/5"
+                data-testid="link-view-solutions"
+              >
+                Explore the Six Pillars in Detail
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Why This Methodology Works */}
       <section className="py-28 relative overflow-hidden border-t border-white/5">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.05),transparent_50%)]" />
@@ -346,10 +408,10 @@ export default function Process() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-display font-medium mb-6">
-              Why This <span className="text-primary">Methodology Works</span>
+              Why Clients <span className="text-primary">Trust This Process</span>
             </h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Because we focus on what actually matters: understanding your reality, fixing what's broken in your front desk and follow-up, and building systems that grow with you.
+              Because we focus on what actually matters: understanding your reality, fixing what's broken, and building systems that grow with you.
             </p>
           </motion.div>
 
@@ -388,10 +450,10 @@ export default function Process() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-display font-medium mb-6">
-              Frequently Asked <span className="text-primary">Questions</span>
+              Common <span className="text-primary">Questions</span>
             </h2>
             <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Honest answers to the questions business owners ask before getting started.
+              Honest answers about what to expect when you work with us.
             </p>
           </motion.div>
 
@@ -399,7 +461,7 @@ export default function Process() {
             <div className="grid md:grid-cols-2 gap-6">
               {/* Left Column FAQs */}
               <Accordion type="single" collapsible className="space-y-4">
-                {faqs.slice(0, 5).map((faq, i) => (
+                {faqs.slice(0, 4).map((faq, i) => (
                   <AccordionItem 
                     key={i} 
                     value={`faq-left-${i}`}
@@ -423,7 +485,7 @@ export default function Process() {
 
               {/* Right Column FAQs */}
               <Accordion type="single" collapsible className="space-y-4">
-                {faqs.slice(5).map((faq, i) => (
+                {faqs.slice(4).map((faq, i) => (
                   <AccordionItem 
                     key={i} 
                     value={`faq-right-${i}`}
@@ -431,13 +493,13 @@ export default function Process() {
                   >
                     <AccordionTrigger 
                       className="text-left text-white hover:no-underline py-5 text-sm font-medium"
-                      data-testid={`accordion-trigger-faq-${i + 5}`}
+                      data-testid={`accordion-trigger-faq-${i + 4}`}
                     >
                       {faq.question}
                     </AccordionTrigger>
                     <AccordionContent 
                       className="text-slate-400 text-sm leading-relaxed pb-5"
-                      data-testid={`accordion-content-faq-${i + 5}`}
+                      data-testid={`accordion-content-faq-${i + 4}`}
                     >
                       {faq.answer}
                     </AccordionContent>
@@ -460,15 +522,15 @@ export default function Process() {
             transition={fadeInUp.transition}
           >
             <h2 className="text-4xl md:text-6xl font-display font-medium mb-10">
-              Ready to See <span className="text-primary">Your Path Forward</span>?
+              Ready to <span className="text-primary">Get Started</span>?
             </h2>
             <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
-              Start with a diagnostic to uncover exactly where operational clarity can transform your business.
+              It starts with a conversation. Tell us about your business and we'll show you what's possible.
             </p>
             <ContactFormDialog
               source="process-cta"
-              title="Schedule a Discovery Call"
-              description="Tell us about your business and we'll help you understand where operational clarity can make the biggest impact."
+              title="Start Your Journey"
+              description="Tell us about your business and we'll help you understand where to begin."
               trigger={
                 <Button 
                   size="lg"

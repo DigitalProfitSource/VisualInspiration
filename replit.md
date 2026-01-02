@@ -5,11 +5,17 @@
 SimpleSequence is a consulting service website for an Operational AI Advisor helping service-based businesses adopt AI strategically. The platform provides diagnostic clarity on operational friction, workflow mapping, and AI implementation guidance without selling tools or services. The site features a modern, dark-themed design with animated components, lead capture functionality, and industry-specific case studies showcasing business transformation metrics.
 
 **Site Pages:**
-- **Home** (`/`) - Landing page with hero, tech ticker, friction grid, customer journey, method, industry carousel, AI Clarity Assessment, FAQ, testimonials, and founder section
-- **Solutions** (`/solutions`) - 8 operational stack frameworks with circuit beam effects and grid visualizations
+- **Home** (`/`) - Landing page with hero, tech ticker, friction grid, customer journey, method (4 steps: Diagnose Friction, Map Sequences, Locate Leverage, Architect the Flow), industry carousel, AI Clarity Assessment, FAQ, testimonials, and founder section
+- **Solutions** (`/solutions`) - The Six Pillars grouped into Growth Engine (Speed-to-Lead, AI Web Conversion, Database Reactivation) and Operational Ecosystem (Ops Automation, Follow-Up Engine, Reputation Flywheel) with circuit beam effects and grid visualizations
 - **Industries** (`/industries`) - 5 industry-specific sections with bidirectional scroll animations, varied card sizes, and jackpot-style number counters
-- **Process** (`/process`) - Three-phase methodology (Diagnostic & Audit, Build & Deploy, Optimize & Scale) with phase cards, timeline boxes, "Why This Methodology Works" principles, and FAQ accordion
+- **Process** (`/process`) - Client journey with three phases (Diagnostic & Audit, Build & Deploy, Optimize & Scale), "What Happens" vs "What You Experience" columns, Six Pillars reference section linking to Solutions, and FAQ accordion
 - **Offers** (`/offers`) - AI Clarity Assessment and full 5-tier pricing section (Blueprint, Tune-Up, Growth Architecture, Operating System, Ongoing Optimization Partner)
+
+**Content Alignment:**
+- **Six Pillars** are the core deliverables (Speed-to-Lead, AI Web Conversion, Database Reactivation, Ops Automation, Follow-Up Engine, Reputation Flywheel)
+- **Process page** focuses on client journey (how we work with you)
+- **Solutions page** focuses on deliverables (what we deploy)
+- **Home Method section** bridges the conceptual approach with the Six Pillars
 
 ## User Preferences
 

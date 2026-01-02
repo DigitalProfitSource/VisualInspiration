@@ -1334,7 +1334,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Operational Stack Band - Inside Method Section */}
+          {/* Six Pillars Band - Inside Method Section */}
           <motion.div 
             initial={fadeInUpViewport.initial}
             whileInView={fadeInUpViewport.whileInView}
@@ -1343,15 +1343,15 @@ export default function Home() {
             className="mt-24 pt-20 border-t border-white/10 max-w-3xl mx-auto"
           >
             <p className="text-center text-sm text-slate-400 leading-relaxed mb-4">
-              Under the hood, SimpleSequence runs on eight clarity frameworks that align your website, intake, CRM, follow-up, and operations into one intelligent flow—therefore, your AI front desk and follow-up system doesn't sit on top of broken processes.
+              Under the hood, SimpleSequence deploys six interconnected systems — Speed-to-Lead, AI Web Conversion, Database Reactivation, Ops Automation, Follow-Up Engine, and Reputation Flywheel — that transform how you capture, convert, and retain customers.
             </p>
             <div className="flex justify-center">
               <a 
                 href="/solutions" 
                 className="inline-flex items-center gap-2 text-primary hover:text-cyan-300 text-sm font-medium transition-colors duration-300 group"
-                data-testid="link-operational-stack"
+                data-testid="link-six-pillars"
               >
-                See the Operational Stack
+                Explore the Six Pillars
                 <motion.span
                   animate={{ x: [0, 4, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity }}

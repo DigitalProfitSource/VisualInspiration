@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import { 
-  Globe, 
-  Database, 
-  Bot, 
   Zap, 
-  RefreshCw, 
-  Star, 
-  Route, 
-  Clock,
-  CheckCircle2
+  Bot, 
+  Database, 
+  Cog, 
+  MessageSquare, 
+  Star,
+  CheckCircle2,
+  TrendingUp,
+  Shield
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
@@ -38,168 +38,213 @@ const fadeIn = {
   transition: { duration: 0.6 }
 };
 
-const solutions = [
+interface Pillar {
+  number: string;
+  title: string;
+  subtitle: string;
+  icon: React.ElementType;
+  delivers: string[];
+  outcomes: { title: string; desc: string }[];
+}
+
+const growthEnginePillars: Pillar[] = [
   {
     number: "01",
-    title: "Customer-Ready Website Architecture",
-    subtitle: "Your website is no longer a brochure — it's a behavioral intake layer that captures intent and feeds your front-desk system, instead of letting visitors disappear.",
-    icon: Globe,
-    clarifies: [
-      "How your site should capture intent at different stages (cold, warm, ready now)",
-      "What information to collect (and when) so follow-up can be personal and relevant",
-      "How to reduce friction for each traffic source (search, ads, social, referrals)",
-      "Where AI assistive layers can enhance the journey without replacing humans"
+    title: "Speed-to-Lead Capture",
+    subtitle: "Every minute you wait costs you money. We install instant response systems that engage leads in under 60 seconds via SMS, voice, or chat — before they move on to your competitor.",
+    icon: Zap,
+    delivers: [
+      "Instant SMS/voice response triggered the moment a lead comes in",
+      "After-hours coverage so no inquiry goes cold overnight",
+      "Multi-channel routing: phone, text, web forms, social DMs",
+      "Escalation rules when AI can't handle it alone",
+      "Response time tracking and accountability dashboards"
     ],
-    insights: [
-      { title: "Visitor Intent Patterns", desc: "Understanding what visitors need at each touchpoint" },
-      { title: "Intake Sequence Mapping", desc: "Logical flow from first click to qualified lead" },
-      { title: "SEO/ESO Alignment", desc: "Structure optimized for discoverability and engagement" },
-      { title: "Website-to-CRM Handoff", desc: "Clear rules for clean, reliable data transfer" }
+    outcomes: [
+      { title: "Sub-60 Second Response", desc: "Leads engaged before they can click away" },
+      { title: "24/7 Lead Coverage", desc: "No more missed opportunities after hours" },
+      { title: "Higher Contact Rates", desc: "Reach leads when intent is highest" }
     ]
   },
   {
     number: "02",
-    title: "CRM Pipeline Architecture",
-    subtitle: "A blueprint showing how every lead and opportunity should be tracked, advanced, and handed off — so nothing falls through the cracks once it's captured.",
-    icon: Database,
-    clarifies: [
-      "Ideal pipeline stages for your business (from first contact to closed revenue)",
-      "Qualification logic: what makes a lead \"ready\" vs \"not yet\"",
-      "Follow-up timing based on stage and intent",
-      "Status definitions your team actually understands and uses consistently",
-      "Where AI can support routing, prioritization, and pattern detection"
+    title: "AI Web Conversion",
+    subtitle: "Your website generates traffic, but visitors disappear without a trace. We deploy AI assistants that qualify visitors, answer questions, and book appointments — while you sleep.",
+    icon: Bot,
+    delivers: [
+      "AI chat agents trained on your services and FAQs",
+      "Smart qualification flows that capture intent and urgency",
+      "Appointment booking integrated with your calendar",
+      "Lead enrichment with context before handoff to humans",
+      "Guardrails so AI knows when to escalate to your team"
     ],
-    insights: [
-      { title: "Industry-Aligned Pipeline", desc: "Model tailored to your business type" },
-      { title: "Stage-by-Stage Logic", desc: "Clear decision points at each stage" },
-      { title: "Accountability Structure", desc: "Who owns what, when" },
-      { title: "Reporting Clarity", desc: "Metrics that actually matter for revenue" }
+    outcomes: [
+      { title: "Always-On Sales Layer", desc: "Convert visitors 24/7 without adding headcount" },
+      { title: "Pre-Qualified Appointments", desc: "Your calendar fills with ready-to-buy leads" },
+      { title: "Reduced Bounce Rate", desc: "Visitors get answers instead of leaving" }
     ]
   },
   {
     number: "03",
-    title: "AI-Assisted Intake Opportunities",
-    subtitle: "Where natural-language AI can safely support — not replace — your front-desk workflows across phone, chat, and messaging.",
-    icon: Bot,
-    clarifies: [
-      "When AI should answer first (and when it shouldn't)",
-      "When humans must handle the conversation from the start",
-      "What types of calls/messages AI can intelligently route or triage",
-      "Where AI reduces friction without harming trust or compliance"
+    title: "Database Reactivation",
+    subtitle: "Your CRM is full of leads you've already paid for — sitting dormant. We mine your existing database to generate immediate cash flow from people who already know your name.",
+    icon: Database,
+    delivers: [
+      "Dormancy segmentation to identify high-value reactivation targets",
+      "Re-engagement sequences tailored to time since last contact",
+      "Seasonal and event-triggered campaigns that feel natural",
+      "Multi-touch outreach: email, SMS, and ringless voicemail",
+      "Win-back offers and messaging frameworks that convert"
     ],
-    insights: [
-      { title: "Intake Logic Tree", desc: "Decision framework for routing and escalation" },
-      { title: "AI vs Human Boundaries", desc: "Clear delineation of responsibilities" },
-      { title: "Scripts & Guardrails", desc: "Recommended language and limits for safety" },
-      { title: "Risk Analysis", desc: "Where AI helps, where it's dangerous, and how to avoid bad deployments" }
+    outcomes: [
+      { title: "Immediate Cash Flow", desc: "Revenue from leads you already own" },
+      { title: "Lower CAC", desc: "Reactivated leads cost less than new acquisition" },
+      { title: "Database Hygiene", desc: "Clean, organized, and actionable contact lists" }
     ]
-  },
+  }
+];
+
+const operationalPillars: Pillar[] = [
   {
     number: "04",
-    title: "Follow-Up Clarity Protocols",
-    subtitle: "The rules for consistent follow-up — so leads stop going cold and your team stops guessing what to do next.",
-    icon: Zap,
-    clarifies: [
-      "Follow-up timing standards by lead type and stage",
-      "Which messages matter most at each point in the journey",
-      "When human outreach is essential vs when automation can lead",
-      "What triggers follow-up behavior (events, time, actions)",
-      "Where AI can support follow-up without replacing human judgment"
+    title: "Ops & Workflow Automation",
+    subtitle: "Your team is drowning in manual tasks: data entry, status updates, appointment reminders. We connect your tools and eliminate the busywork so your team can focus on revenue.",
+    icon: Cog,
+    delivers: [
+      "CRM automation that updates records without manual entry",
+      "Appointment reminders and confirmation sequences",
+      "Task creation and assignment based on pipeline stage",
+      "Cross-tool integrations: CRM, calendar, invoicing, comms",
+      "Process visibility so you can see where work gets stuck"
     ],
-    insights: [
-      { title: "Sequence-by-Sequence Clarity", desc: "Logical progression of touches" },
-      { title: "Intent Segments", desc: "Messaging hierarchy by lead type and intent" },
-      { title: "Human vs AI Decision Points", desc: "Exactly when to escalate" },
-      { title: "Engagement Timing Rules", desc: "Cadence patterns that avoid both spam and neglect" }
+    outcomes: [
+      { title: "Hours Saved Weekly", desc: "Eliminate repetitive admin tasks" },
+      { title: "Fewer Errors", desc: "Automation doesn't forget or mistype" },
+      { title: "Team Focus", desc: "Your people do what only humans can do" }
     ]
   },
   {
     number: "05",
-    title: "Lead Reactivation Framework",
-    subtitle: "Your database contains hidden revenue — old leads you've been ignoring that can become real opportunities with the right timing and message.",
-    icon: RefreshCw,
-    clarifies: [
-      "Which cold leads are worth re-engaging (and which aren't)",
-      "What message type works best for each dormancy stage",
-      "How not to sound spammy, desperate, or tone-deaf",
-      "When to use humans, automation, or AI for outreach"
+    title: "Follow-Up Engine",
+    subtitle: "Leads go cold because follow-up is inconsistent. We build relentless, intelligent follow-up sequences that chase no-shows, nurture maybes, and convert stale quotes — without annoying anyone.",
+    icon: MessageSquare,
+    delivers: [
+      "Stage-based follow-up sequences triggered automatically",
+      "No-show and cancellation recovery campaigns",
+      "Quote follow-up until they say yes, no, or not now",
+      "Human vs AI decision points so escalation happens at the right time",
+      "Cadence optimization to avoid spam while staying persistent"
     ],
-    insights: [
-      { title: "Dormancy Segmentation", desc: "Categorizing leads by inactivity and value" },
-      { title: "Re-engagement Logic", desc: "Strategic approach per segment" },
-      { title: "Seasonal & Event Triggers", desc: "Industry-timed nudges that feel natural" },
-      { title: "Message Pathways", desc: "Guardrails for tone, content, and call-to-action" }
+    outcomes: [
+      { title: "No Lead Left Behind", desc: "Every opportunity gets proper follow-up" },
+      { title: "Recovered Revenue", desc: "Win back no-shows and stale quotes" },
+      { title: "Consistent Execution", desc: "Follow-up happens whether you're busy or not" }
     ]
   },
   {
     number: "06",
-    title: "Reputation & Review Flow",
-    subtitle: "A strategic timing sequence that builds consistent reviews where trust is highest — and routes issues internally before they damage your brand.",
+    title: "Reputation Flywheel",
+    subtitle: "Reviews drive decisions, but asking feels awkward and timing is everything. We automate review requests at the perfect moment and route negative feedback internally before it goes public.",
     icon: Star,
-    clarifies: [
-      "Optimal moments to request reviews based on visit or project milestones",
-      "Which platforms matter most for your reputation and search",
-      "How to direct unhappy clients away from public channels and into resolution",
-      "How to incorporate sentiment into your operational loops and training"
+    delivers: [
+      "Review requests triggered at optimal moments (post-service, post-payment)",
+      "Multi-platform support: Google, Yelp, Facebook, industry-specific",
+      "Sentiment detection that routes unhappy clients to resolution first",
+      "Response templates for both positive and negative reviews",
+      "Review velocity tracking and reputation scorecards"
     ],
-    insights: [
-      { title: "Review Timing Logic", desc: "When to ask for maximum response" },
-      { title: "Sentiment-Routing Pathways", desc: "How to handle negative feedback internally" },
-      { title: "Platform Prioritization", desc: "Where reviews matter most for your niche" },
-      { title: "Internal Escalation", desc: "Structure for resolving issues quickly and consistently" }
-    ]
-  },
-  {
-    number: "07",
-    title: "Industry-Aligned Conversion Paths",
-    subtitle: "Decision-support pathways tailored to your industry's buying behavior and customer intent, so more inquiries move confidently toward \"yes.\"",
-    icon: Route,
-    clarifies: [
-      "What customers need to see or hear to move forward",
-      "What slows decisions or creates friction in your niche",
-      "What accelerates them (offers, proof, education, urgency)",
-      "Where AI can support triage or qualification without overstepping"
-    ],
-    insights: [
-      { title: "Quote/Estimate Pathways", desc: "Consultation and estimate flow optimization" },
-      { title: "Form Progression Logic", desc: "Step-by-step intake design that doesn't drop people" },
-      { title: "Conversion Dropoff Analysis", desc: "Identifying where and why leads bail" },
-      { title: "Messaging Clarity Map", desc: "What to say, when, and on which channel" }
-    ]
-  },
-  {
-    number: "08",
-    title: "Operational Rhythm & Visibility",
-    subtitle: "Your internal cadence for consistent execution and reduced friction — so the system doesn't fall apart after launch.",
-    icon: Clock,
-    clarifies: [
-      "Team handoffs and who owns each step",
-      "Daily, weekly, and monthly operational rhythms that keep things moving",
-      "Communication loops between front desk, sales, and delivery teams",
-      "AI readiness signals across operations (when you're ready to automate more)"
-    ],
-    insights: [
-      { title: "Process Visibility Map", desc: "See where work gets stuck and why" },
-      { title: "Accountability Roles", desc: "Clear ownership at each stage" },
-      { title: "Workflow Enhancements", desc: "Opportunities for better efficiency and outcomes" },
-      { title: "Operational Cadence Model", desc: "Rhythm that works for your actual team" }
+    outcomes: [
+      { title: "More 5-Star Reviews", desc: "Consistent asks = consistent results" },
+      { title: "Damage Control", desc: "Intercept problems before they go public" },
+      { title: "Trust Building", desc: "Social proof that drives new business" }
     ]
   }
 ];
+
+function PillarCard({ pillar, index, isReversed }: { pillar: Pillar; index: number; isReversed: boolean }) {
+  const Icon = pillar.icon;
+  
+  return (
+    <motion.div
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={stagger}
+      className="relative"
+      data-testid={`card-pillar-${pillar.number}`}
+    >
+      <div className={`grid lg:grid-cols-12 gap-8 lg:gap-12 items-start ${isReversed ? '' : 'lg:flex-row-reverse'}`}>
+        {/* Main Content */}
+        <motion.div 
+          variants={fadeIn}
+          className={`lg:col-span-7 ${isReversed ? '' : 'lg:col-start-6'}`}
+        >
+          {/* Icon Box */}
+          <div className="group w-14 h-14 mb-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:scale-110 hover:border-primary/50 transition-all duration-300">
+            <Icon className="w-6 h-6 text-primary group-hover:drop-shadow-[0_0_8px_rgba(103,232,249,0.5)]" />
+          </div>
+
+          {/* Title & Subtitle */}
+          <div className="flex items-baseline gap-4 mb-4">
+            <span className="text-xs font-mono text-primary/60">{pillar.number}</span>
+            <h2 className="text-2xl md:text-3xl font-display font-medium text-white">{pillar.title}</h2>
+          </div>
+          <p className="text-lg text-slate-400 leading-relaxed mb-8">
+            {pillar.subtitle}
+          </p>
+
+          {/* What We Deliver */}
+          <div className="mb-8">
+            <h3 className="text-sm font-mono text-primary mb-4">WHAT WE DELIVER</h3>
+            <ul className="space-y-3">
+              {pillar.delivers.map((item, i) => (
+                <li key={i} className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.div>
+
+        {/* Outcomes Card */}
+        <motion.div 
+          variants={fadeIn}
+          className={`lg:col-span-5 ${isReversed ? '' : 'lg:col-start-1 lg:row-start-1'}`}
+        >
+          <div className="p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent">
+            <h3 className="text-sm font-mono text-primary mb-6">YOUR OUTCOMES</h3>
+            <div className="space-y-6">
+              {pillar.outcomes.map((outcome, i) => (
+                <div key={i}>
+                  <h4 className="font-medium text-white mb-1">{outcome.title}</h4>
+                  <p className="text-sm text-slate-500">{outcome.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Divider */}
+      <div className="mt-24 border-b border-white/5" />
+    </motion.div>
+  );
+}
 
 export default function Solutions() {
   const solutionsSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "SimpleSequence Operational Stack",
-    description: "Eight interconnected clarity frameworks for service businesses",
-    itemListElement: solutions.map((solution, i) => ({
+    name: "SimpleSequence Six Pillars",
+    description: "Six interconnected systems that transform how service businesses capture, convert, and retain customers",
+    itemListElement: [...growthEnginePillars, ...operationalPillars].map((pillar, i) => ({
       "@type": "ListItem",
       position: i + 1,
       item: {
         "@type": "Service",
-        name: solution.title,
-        description: solution.subtitle
+        name: pillar.title,
+        description: pillar.subtitle
       }
     }))
   };
@@ -207,12 +252,12 @@ export default function Solutions() {
   return (
     <Layout>
       <SEO 
-        title="AI Operational Solutions | SimpleSequence"
-        description="Eight operational stack frameworks for service businesses: Website Architecture, CRM Pipelines, AI-Assisted Intake, Follow-Up Protocols, Lead Reactivation, and more."
+        title="The Six Pillars | SimpleSequence"
+        description="Six operational systems for service businesses: Speed-to-Lead, AI Web Conversion, Database Reactivation, Ops Automation, Follow-Up Engine, and Reputation Flywheel."
         jsonLd={solutionsSchema}
       />
 
-      {/* Hero Section - starts after header which is now in Layout */}
+      {/* Hero Section */}
       <section className="pt-40 pb-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary),0.08),transparent_50%)]" />
         <CircuitBeams className="opacity-50" />
@@ -223,104 +268,103 @@ export default function Solutions() {
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <span className="text-sm font-mono text-primary mb-6 block">THE OPERATIONAL STACK</span>
+            <span className="text-sm font-mono text-primary mb-6 block">WHAT WE DEPLOY</span>
             <h1 className="text-4xl md:text-6xl font-display font-medium mb-8 tracking-tight">
-              The SimpleSequence <span className="text-primary">Operational Stack</span>
+              The <span className="text-primary">Six Pillars</span>
             </h1>
             <p className="text-xl text-slate-400 leading-relaxed mb-8 max-w-3xl mx-auto">
-              Eight interconnected clarity frameworks that show you exactly how your front desk, follow-up, and operations should run — so you stop guessing and start scaling with confidence.
+              Six interconnected systems that transform how you capture, convert, and retain customers — so you stop guessing and start scaling with confidence.
             </p>
             <div className="p-6 rounded-2xl border border-white/10 bg-white/[0.02] max-w-2xl mx-auto">
               <p className="text-slate-300 leading-relaxed">
-                <span className="text-white font-medium">This is not software.</span><br />
-                This is the architecture that makes your software, team, and AI investments actually work together, therefore reducing chaos instead of creating more of it.
+                <span className="text-white font-medium">This is not a menu — it's a system.</span><br />
+                Each pillar reinforces the others. Speed-to-Lead feeds your pipeline. Follow-Up converts it. Reputation compounds the results. Together, they create an operational engine that runs whether you're there or not.
               </p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Solutions Grid */}
+      {/* Growth Engine Section */}
       <section className="py-24 relative overflow-hidden">
-        {/* Grid and beam background for workflow effect */}
         <div className="absolute inset-0">
           <GridBeam showCenterBeam={true} gridOpacity={0.08} />
         </div>
         <div className="container mx-auto px-6 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={fadeInUp.initial}
+            whileInView={fadeInUp.whileInView}
+            viewport={fadeInUp.viewport}
+            transition={fadeInUp.transition}
+            className="max-w-3xl mb-20"
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 flex items-center justify-center">
+                <TrendingUp className="w-6 h-6 text-primary" />
+              </div>
+              <span className="text-sm font-mono text-primary uppercase tracking-widest">The Growth Engine</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">
+              Stop Losing Leads to <span className="text-primary">Speed and Silence</span>
+            </h2>
+            <p className="text-lg text-slate-400 leading-relaxed">
+              Your marketing works, but your capture system is leaking. These three pillars install an "Always-On" sales layer that engages every opportunity instantly — maximum ROI on every ad dollar and a calendar full of qualified appointments.
+            </p>
+          </motion.div>
+
+          {/* Growth Engine Pillars */}
           <div className="space-y-32">
-            {solutions.map((solution, index) => {
-              const Icon = solution.icon;
-              const isEven = index % 2 === 0;
-              
-              return (
-                <motion.div
-                  key={solution.number}
-                  initial="initial"
-                  whileInView="animate"
-                  viewport={{ once: true, margin: "-100px" }}
-                  variants={stagger}
-                  className="relative"
-                >
-                  <div className={`grid lg:grid-cols-12 gap-8 lg:gap-12 items-start ${isEven ? '' : 'lg:flex-row-reverse'}`}>
-                    {/* Main Content */}
-                    <motion.div 
-                      variants={fadeIn}
-                      className={`lg:col-span-7 ${isEven ? '' : 'lg:col-start-6'}`}
-                    >
-                      {/* Icon Box */}
-                      <div className="group w-14 h-14 mb-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:scale-110 hover:border-primary/50 transition-all duration-300">
-                        <Icon className="w-6 h-6 text-primary group-hover:drop-shadow-[0_0_8px_rgba(103,232,249,0.5)]" />
-                      </div>
+            {growthEnginePillars.map((pillar, index) => (
+              <PillarCard 
+                key={pillar.number} 
+                pillar={pillar} 
+                index={index}
+                isReversed={index % 2 === 0}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
 
-                      {/* Title & Subtitle */}
-                      <div className="flex items-baseline gap-4 mb-4">
-                        <span className="text-xs font-mono text-primary/60">{solution.number}</span>
-                        <h2 className="text-2xl md:text-3xl font-display font-medium text-white">{solution.title}</h2>
-                      </div>
-                      <p className="text-lg text-slate-400 leading-relaxed mb-8">
-                        {solution.subtitle}
-                      </p>
+      {/* Operational Ecosystem Section */}
+      <section className="py-24 relative overflow-hidden border-t border-white/5">
+        <div className="absolute inset-0">
+          <GridBeam showCenterBeam={false} gridOpacity={0.06} />
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            initial={fadeInUp.initial}
+            whileInView={fadeInUp.whileInView}
+            viewport={fadeInUp.viewport}
+            transition={fadeInUp.transition}
+            className="max-w-3xl mb-20"
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 flex items-center justify-center">
+                <Shield className="w-6 h-6 text-primary" />
+              </div>
+              <span className="text-sm font-mono text-primary uppercase tracking-widest">The Operational Ecosystem</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">
+              Scale Your Operations, <span className="text-primary">Not Your Headcount</span>
+            </h2>
+            <p className="text-lg text-slate-400 leading-relaxed">
+              Eliminate the manual busywork and "human bottlenecks" that cause burnout. These three pillars build the backend infrastructure that runs your business on autopilot — reclaim your time and sanity.
+            </p>
+          </motion.div>
 
-                      {/* What This Clarifies */}
-                      <div className="mb-8">
-                        <h3 className="text-sm font-mono text-primary mb-4">WHAT THIS CLARIFIES</h3>
-                        <ul className="space-y-3">
-                          {solution.clarifies.map((item, i) => (
-                            <li key={i} className="flex items-start gap-3 text-slate-300">
-                              <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </motion.div>
-
-                    {/* Key Insights Card */}
-                    <motion.div 
-                      variants={fadeIn}
-                      className={`lg:col-span-5 ${isEven ? '' : 'lg:col-start-1 lg:row-start-1'}`}
-                    >
-                      <div className="p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent">
-                        <h3 className="text-sm font-mono text-primary mb-6">KEY INSIGHTS DELIVERED</h3>
-                        <div className="space-y-6">
-                          {solution.insights.map((insight, i) => (
-                            <div key={i}>
-                              <h4 className="font-medium text-white mb-1">{insight.title}</h4>
-                              <p className="text-sm text-slate-500">{insight.desc}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Divider */}
-                  {index < solutions.length - 1 && (
-                    <div className="mt-24 border-b border-white/5" />
-                  )}
-                </motion.div>
-              );
-            })}
+          {/* Operational Pillars */}
+          <div className="space-y-32">
+            {operationalPillars.map((pillar, index) => (
+              <PillarCard 
+                key={pillar.number} 
+                pillar={pillar} 
+                index={index}
+                isReversed={index % 2 === 0}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -336,22 +380,22 @@ export default function Solutions() {
             transition={fadeInUp.transition}
           >
             <h2 className="text-4xl md:text-5xl font-display font-medium mb-8">
-              Ready for <span className="text-primary">operational clarity</span>?
+              Ready to Install <span className="text-primary">Your Six Pillars</span>?
             </h2>
             <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
-              Stop wondering what's broken. Start with a free assessment to see exactly where you stand — and what to fix first to support a stronger front desk and follow-up system.
+              Start with a free diagnostic to see which pillars need attention first — and what to fix to stop the leaks in your revenue and operations.
             </p>
             <ContactFormDialog
               source="solutions-cta"
-              title="Get Your Operational Assessment"
-              description="Tell us about your business and we'll provide a comprehensive operational clarity analysis."
+              title="Get Your Operational Diagnostic"
+              description="Tell us about your business and we'll show you which pillars need attention first."
               trigger={
                 <Button 
                   size="lg"
                   className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
                   data-testid="button-solutions-cta"
                 >
-                  Get Your Free Assessment
+                  Get Your Free Diagnostic
                 </Button>
               }
             />
