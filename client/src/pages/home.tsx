@@ -1242,7 +1242,7 @@ export default function Home() {
                 { step: "01", title: "Diagnose Friction", desc: "We find exactly where things break down — the hidden drag you've been feeling but couldn't name.", component: DiagnoseFrictionDiagram },
                 { step: "02", title: "Map Sequences", desc: "We document the workflows that actually drive revenue and expose what's unclear or broken.", component: MapSequencesDiagram },
                 { step: "03", title: "Locate Leverage", desc: "We identify where AI creates real lift — triage, routing, and follow-up — and where your team's judgment still matters most, not shiny distractions.", component: LocateLeverageDiagram },
-                { step: "04", title: "Architect the Flow", desc: "We document the real workflows from first contact to repeat business, therefore exposing what actually drives revenue and what's unclear or broken.", component: ArchitectFlowDiagram }
+                { step: "04", title: "Architect the Flow", desc: "We don't just stack tools; we engineer a unified operating system. We take fragmented channels and forge them into a single, intelligent core that processes every interaction with precision.", component: ArchitectFlowDiagram }
               ].map((item, i) => {
                 const VisualComponent = item.component;
                 const isReversed = i % 2 === 1;
