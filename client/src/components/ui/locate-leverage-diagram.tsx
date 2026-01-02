@@ -2,15 +2,15 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
 const aiTasks = [
-  { id: 1, label: "Triage", x: 80, y: 100 },
-  { id: 2, label: "Routing", x: 50, y: 145 },
-  { id: 3, label: "Follow-up", x: 110, y: 145 },
+  { id: 1, label: "Triage", x: 70, y: 80 },
+  { id: 2, label: "Routing", x: 40, y: 135 },
+  { id: 3, label: "Follow-up", x: 100, y: 135 },
 ];
 
 const humanTasks = [
-  { id: 4, label: "Strategy", x: 320, y: 100 },
-  { id: 5, label: "Negotiation", x: 290, y: 145 },
-  { id: 6, label: "Relationships", x: 350, y: 145 },
+  { id: 4, label: "Strategy", x: 330, y: 80 },
+  { id: 5, label: "Negotiation", x: 300, y: 135 },
+  { id: 6, label: "Relationships", x: 360, y: 135 },
 ];
 
 export function LocateLeverageDiagram() {
@@ -24,7 +24,7 @@ export function LocateLeverageDiagram() {
       data-testid="locate-leverage-diagram"
     >
       <svg
-        viewBox="0 0 400 260"
+        viewBox="0 0 400 240"
         className="w-full h-full"
         style={{ filter: "drop-shadow(0 0 15px rgba(103,232,249,0.1))" }}
       >
@@ -48,7 +48,7 @@ export function LocateLeverageDiagram() {
         </defs>
 
         <motion.polygon
-          points="200,230 190,195 210,195"
+          points="200,175 185,205 215,205"
           fill="rgba(103,232,249,0.6)"
           initial={{ opacity: 0, scale: 0 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -57,21 +57,21 @@ export function LocateLeverageDiagram() {
 
         <motion.g
           initial={{ rotate: 0 }}
-          animate={isInView ? { rotate: [-6, -2, -6] } : {}}
+          animate={isInView ? { rotate: [-5, -1, -5] } : {}}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          style={{ transformOrigin: "200px 195px" }}
+          style={{ transformOrigin: "200px 175px" }}
         >
           <motion.rect
-            x="50"
-            y="190"
-            width="300"
-            height="8"
-            rx="4"
+            x="35"
+            y="170"
+            width="330"
+            height="10"
+            rx="5"
             fill="url(#beamGradient)"
             initial={{ opacity: 0, scaleX: 0 }}
             animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
-            style={{ transformOrigin: "200px 195px" }}
+            style={{ transformOrigin: "200px 175px" }}
           />
 
           <motion.g
@@ -82,22 +82,10 @@ export function LocateLeverageDiagram() {
             {aiTasks.map((task, i) => {
               return (
                 <motion.g key={task.id}>
-                  <motion.line
-                    x1={task.x}
-                    y1={task.y + 22}
-                    x2={80}
-                    y2="190"
-                    stroke="rgba(103,232,249,0.4)"
-                    strokeWidth="1.5"
-                    initial={{ pathLength: 0 }}
-                    animate={isInView ? { pathLength: 1 } : {}}
-                    transition={{ duration: 0.4, delay: 0.9 + i * 0.1 }}
-                  />
-                  
                   <motion.circle
                     cx={task.x}
                     cy={task.y}
-                    r="26"
+                    r="32"
                     fill="url(#aiTaskGlow)"
                     initial={{ scale: 0, opacity: 0 }}
                     animate={isInView ? { 
@@ -110,7 +98,7 @@ export function LocateLeverageDiagram() {
                   <motion.circle
                     cx={task.x}
                     cy={task.y}
-                    r="20"
+                    r="26"
                     fill="rgba(24,24,27,0.95)"
                     stroke="rgba(103,232,249,0.8)"
                     strokeWidth="2"
@@ -124,7 +112,7 @@ export function LocateLeverageDiagram() {
                     x={task.x}
                     y={task.y + 4}
                     textAnchor="middle"
-                    className="fill-white text-[7px] font-medium"
+                    className="fill-white text-[9px] font-medium"
                     initial={{ opacity: 0 }}
                     animate={isInView ? { opacity: 1 } : {}}
                     transition={{ delay: 1.2 + i * 0.1 }}
@@ -138,18 +126,18 @@ export function LocateLeverageDiagram() {
                     transition={{ delay: 1.4 + i * 0.1 }}
                   >
                     <rect
-                      x={task.x - 9}
-                      y={task.y + 10}
-                      width="18"
-                      height="9"
+                      x={task.x - 10}
+                      y={task.y + 12}
+                      width="20"
+                      height="10"
                       rx="2"
                       fill="rgba(103,232,249,1)"
                     />
                     <text
                       x={task.x}
-                      y={task.y + 17}
+                      y={task.y + 20}
                       textAnchor="middle"
-                      className="fill-zinc-900 text-[5px] font-bold"
+                      className="fill-zinc-900 text-[6px] font-bold"
                     >
                       AI
                     </text>
@@ -167,22 +155,10 @@ export function LocateLeverageDiagram() {
             {humanTasks.map((task, i) => {
               return (
                 <motion.g key={task.id}>
-                  <motion.line
-                    x1={task.x}
-                    y1={task.y + 22}
-                    x2={320}
-                    y2="190"
-                    stroke="rgba(103,232,249,0.25)"
-                    strokeWidth="1.5"
-                    initial={{ pathLength: 0 }}
-                    animate={isInView ? { pathLength: 1 } : {}}
-                    transition={{ duration: 0.4, delay: 1.3 + i * 0.1 }}
-                  />
-                  
                   <motion.circle
                     cx={task.x}
                     cy={task.y}
-                    r="20"
+                    r="26"
                     fill="rgba(24,24,27,0.95)"
                     stroke="rgba(103,232,249,0.3)"
                     strokeWidth="2"
@@ -195,7 +171,7 @@ export function LocateLeverageDiagram() {
                     x={task.x}
                     y={task.y + 4}
                     textAnchor="middle"
-                    className="fill-white/60 text-[6px] font-medium"
+                    className="fill-white/60 text-[8px] font-medium"
                     initial={{ opacity: 0 }}
                     animate={isInView ? { opacity: 1 } : {}}
                     transition={{ delay: 1.6 + i * 0.1 }}
@@ -209,8 +185,8 @@ export function LocateLeverageDiagram() {
         </motion.g>
 
         <motion.text
-          x="80"
-          y="55"
+          x="70"
+          y="35"
           textAnchor="middle"
           className="text-[9px] font-mono uppercase tracking-wider"
           fill="rgba(103,232,249,0.9)"
@@ -222,8 +198,8 @@ export function LocateLeverageDiagram() {
         </motion.text>
 
         <motion.text
-          x="320"
-          y="55"
+          x="330"
+          y="35"
           textAnchor="middle"
           className="text-[9px] font-mono uppercase tracking-wider"
           fill="rgba(103,232,249,0.5)"
