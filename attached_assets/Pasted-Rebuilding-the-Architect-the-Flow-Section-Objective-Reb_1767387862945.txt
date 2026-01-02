@@ -1,0 +1,66 @@
+Rebuilding the "Architect the Flow" Section
+Objective: Rebuild the existing "Architect the Flow" section. We are moving away from the previous "vertical stack" visualization and implementing a new "Engineered Core" processor metaphor. This needs to be built programmatically (HTML/CSS and SVG for the diagram lines/paths) to ensure scalability and enable future animation. No static image files should be used for the diagram itself.
+
+Design Concept: The new concept visualizes taking fragmented, raw inputs (left), funneling them into a central, intelligent processor (center), and producing unified, reliable outputs (right). It should feel like a high-tech schematic of a powerful engine.
+
+1. Overall Container & Background
+
+Background: Maintain the current dark charcoal background with the subtle technical grid pattern.
+
+Layout: A two-column flex or grid layout. Text on the left, diagram on the right.
+
+2. Left Column: Text Content Update the text content to match the new engineering context:
+
+Title: <h2>Architect the Flow</h2> (Large, white text).
+
+Body Paragraph: <p> (Smaller, light gray/white text): "We don't just stack tools; we engineer a unified operating system. We take fragmented channels and forge them into a single, intelligent core that processes every interaction with precision, turning chaotic inputs into reliable revenue."
+
+Section Indicator: Retain the glowing cyan circular element containing the number "04" positioned between the text and the diagram.
+
+3. Right Column: The "Engineered Core" Diagram (SVG/CSS) This entire diagram should be constructed using clean HTML elements for the nodes/labels and an SVG overlay for the connecting glowing paths.
+
+A. The Inputs (Far Left):
+
+Create a vertical stack of four distinct input nodes labeled: PHONE, EMAIL, CHAT, FORMS.
+
+Each node should have a corresponding glowing technical icon.
+
+B. The Core Processor (Center):
+
+Create a prominent central container labeled "ENGINEERED CORE".
+
+Inside this core, build a structured internal flow loop with three distinct processing nodes:
+
+INTELLIGENT ROUTING (Top)
+
+AUTOMATED PROCESSING (Center)
+
+DATA ENRICHMENT (Bottom)
+
+Use SVG paths to create a cyclical, looping flow between these internal nodes, indicating continuous processing.
+
+C. The Outputs (Far Right):
+
+Create a vertical stack of three solid, glowing rectangular containers representing the stable outcomes:
+
+CRM RECORD
+
+REVENUE PIPELINE
+
+STRATEGIC INSIGHTS
+
+D. The Connections (The Flow):
+
+Input to Core: Use curved SVG paths to show the four separate Input nodes converging and funneling into a single entry point on the left side of the "Engineered Core." Label this converging flow "RAW INPUTS".
+
+Core to Output: Use thick, powerful SVG paths to show a unified stream exiting the right side of the Core. Label this stream "RELIABLE OUTPUTS." This main stream should then neatly branch into the three final Output containers.
+
+4. Styling & Animation (CSS)
+
+Color Palette: Strictly adhere to the glowing cyan/bright blue palette against the dark background.
+
+Glow Effects: Apply CSS box-shadow and drop-shadow filters to all nodes, text labels, and SVG paths to create a vibrant, neon-light effect.
+
+Animation (Crucial):
+
+The connecting SVG paths must not be static lines. Implement a CSS animation (e.g., manipulating stroke-dasharray and stroke-dashoffset) to make light trails or "data packets" appear to flow continuously from the Inputs, through the Core loop, and out to the Outputs. This makes the engine feel active and alive.
