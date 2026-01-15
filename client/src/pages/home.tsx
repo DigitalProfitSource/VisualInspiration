@@ -918,7 +918,7 @@ export default function Home() {
   return (
     <Layout>
       <SEO 
-        title="Practical AI for Service Businesses | SimpleSequence"
+        title="SimpleSequence | Practical AI for Service Businesses"
         description="Operational AI Advisor helping service businesses adopt AI with clarity, precision, and real-world leverage. AI-powered front desk and follow-up systems."
         jsonLd={{
           "@context": "https://schema.org",
