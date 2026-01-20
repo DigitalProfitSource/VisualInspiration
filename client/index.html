@@ -51,44 +51,107 @@
       data-widget-id="696fd454572f85432b83c7bf">
     </script>
     <script>
-      // Open chat widget and make it visible
+      // Find and click the phone/call button inside the widget (only within shadow root)
+      function clickPhoneButton() {
+        var chatWidget = document.querySelector('chat-widget');
+        if (!chatWidget || !chatWidget.shadowRoot) return false;
+        
+        var root = chatWidget.shadowRoot;
+        
+        // Look for phone/call button using specific selectors
+        var selectors = [
+          '[data-testid*="phone"]',
+          '[data-testid*="call"]',
+          '[aria-label*="call" i]',
+          '[aria-label*="phone" i]',
+          '[class*="phone"]',
+          '[class*="call-btn"]',
+          '[class*="voice"]',
+          'button[class*="call"]'
+        ];
+        
+        for (var i = 0; i < selectors.length; i++) {
+          var btn = root.querySelector(selectors[i]);
+          if (btn) {
+            btn.click();
+            return true;
+          }
+        }
+        
+        // Try buttons with SVG icons that have phone-related paths
+        var buttons = root.querySelectorAll('button');
+        for (var j = 0; j < buttons.length; j++) {
+          var btn = buttons[j];
+          var svg = btn.querySelector('svg');
+          if (svg && !btn.textContent.trim()) {
+            // This is likely an icon-only button - could be the phone button
+            var svgContent = svg.innerHTML.toLowerCase();
+            if (svgContent.includes('phone') || svgContent.includes('call')) {
+              btn.click();
+              return true;
+            }
+          }
+        }
+        
+        return false;
+      }
+      
+      // Open chat widget, make it visible, and auto-click the phone button
       window.openLeadConnectorChat = function() {
-        console.log('Button clicked - attempting to open chat');
         var chatWidget = document.querySelector('chat-widget');
         
-        // Show the widget
+        // Show the widget first
         if (chatWidget) {
           chatWidget.classList.add('lc-chat-open');
           chatWidget.style.cssText = 'position: fixed !important; bottom: 20px !important; right: 20px !important; opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; z-index: 999999 !important;';
-          console.log('Widget made visible');
         }
         
-        // Call the API to open the chat
+        // Open the widget via API, then click the phone button
         var maxAttempts = 20;
         var attempts = 0;
         
         function tryOpen() {
           attempts++;
-          console.log('Attempt ' + attempts + ' to open widget');
           
-          if (window.leadConnector && window.leadConnector.chatWidget) {
-            console.log('API available, isLoaded:', window.leadConnector.chatWidget.isLoaded);
-            if (window.leadConnector.chatWidget.isLoaded) {
-              window.leadConnector.chatWidget.openWidget();
-              console.log('openWidget() called');
-              return;
-            }
+          if (window.leadConnector && window.leadConnector.chatWidget && window.leadConnector.chatWidget.isLoaded) {
+            window.leadConnector.chatWidget.openWidget();
+            
+            // After widget opens, try to click the phone button within widget only
+            var phoneAttempts = 0;
+            var phoneInterval = setInterval(function() {
+              phoneAttempts++;
+              if (clickPhoneButton()) {
+                clearInterval(phoneInterval);
+              }
+              if (phoneAttempts > 10) {
+                clearInterval(phoneInterval);
+              }
+            }, 200);
+            
+            return;
           }
           
           if (attempts < maxAttempts) {
             setTimeout(tryOpen, 300);
-          } else {
-            console.log('Max attempts reached');
           }
         }
         
         tryOpen();
       };
+      
+      // Close chat when Escape is pressed
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          var chatWidget = document.querySelector('chat-widget');
+          if (chatWidget && chatWidget.classList.contains('lc-chat-open')) {
+            if (window.leadConnector && window.leadConnector.chatWidget && window.leadConnector.chatWidget.closeWidget) {
+              window.leadConnector.chatWidget.closeWidget();
+            }
+            chatWidget.classList.remove('lc-chat-open');
+            chatWidget.style.cssText = '';
+          }
+        }
+      });
     </script>
   </body>
 </html>
