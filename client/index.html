@@ -29,47 +29,59 @@
       data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" 
       data-widget-id="696fd454572f85432b83c7bf">
     </script>
-    <style>
-      /* Hide the LeadConnector chat-widget launcher bubble */
-      chat-widget {
-        --chat-widget-position: fixed !important;
-        --chat-widget-bottom: -9999px !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-      }
-      /* When active (chat is open), make it visible */
-      chat-widget.hydrated[class*="active"],
-      chat-widget.active {
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        visibility: visible !important;
-        height: auto !important;
-        width: auto !important;
-        bottom: auto !important;
-        --chat-widget-bottom: 20px !important;
-      }
-    </style>
     <script>
+      // Wait for widget to load, then hide the launcher bubble inside shadow DOM
+      function hideLauncherBubble() {
+        var chatWidget = document.querySelector('chat-widget');
+        if (chatWidget && chatWidget.shadowRoot) {
+          // Find and hide the launcher/open button inside shadow DOM
+          var launcher = chatWidget.shadowRoot.querySelector('.launcher, .open-button, [class*="launcher"], [class*="open"], button');
+          if (launcher) {
+            launcher.style.display = 'none';
+          }
+          // Also try to hide the whole widget-open container
+          var containers = chatWidget.shadowRoot.querySelectorAll('[class*="widget-open"], [class*="chat-open"]');
+          containers.forEach(function(el) {
+            if (!el.closest('[class*="chat-body"]') && !el.closest('[class*="conversation"]')) {
+              el.style.display = 'none';
+            }
+          });
+        }
+      }
+      
+      // Poll until widget loads and hide launcher
+      var hideAttempts = 0;
+      var hideInterval = setInterval(function() {
+        hideAttempts++;
+        var chatWidget = document.querySelector('chat-widget');
+        if (chatWidget && chatWidget.shadowRoot) {
+          hideLauncherBubble();
+          // Check if launcher exists and is hidden
+          var launcher = chatWidget.shadowRoot.querySelector('.launcher, .open-button, [class*="launcher"], [class*="open"]');
+          if (!launcher || launcher.style.display === 'none') {
+            clearInterval(hideInterval);
+          }
+        }
+        if (hideAttempts > 30) {
+          clearInterval(hideInterval);
+        }
+      }, 500);
+      
       // Open chat widget using the official API
       window.openLeadConnectorChat = function() {
-        if (window.leadConnector && window.leadConnector.chatWidget && typeof window.leadConnector.chatWidget.openWidget === 'function') {
-          // Make the widget visible before opening
-          var chatWidget = document.querySelector('chat-widget');
-          if (chatWidget) {
-            chatWidget.style.opacity = '1';
-            chatWidget.style.pointerEvents = 'auto';
-            chatWidget.style.visibility = 'visible';
-            chatWidget.style.height = 'auto';
-            chatWidget.style.width = 'auto';
+        var maxAttempts = 10;
+        var attempts = 0;
+        
+        function tryOpen() {
+          attempts++;
+          if (window.leadConnector && window.leadConnector.chatWidget && window.leadConnector.chatWidget.isLoaded) {
+            window.leadConnector.chatWidget.openWidget();
+          } else if (attempts < maxAttempts) {
+            setTimeout(tryOpen, 200);
           }
-          window.leadConnector.chatWidget.openWidget();
-        } else {
-          console.log('Chat widget API not available yet');
         }
+        
+        tryOpen();
       };
     </script>
   </body>
