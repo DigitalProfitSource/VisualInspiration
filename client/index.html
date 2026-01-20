@@ -30,42 +30,45 @@
       data-widget-id="696fd454572f85432b83c7bf">
     </script>
     <style>
-      /* Hide the default LeadConnector launcher bubble - we use our Talk to Samantha button */
-      .lc_text-widget-open,
-      [class*="lc_text-widget-open"] {
+      /* Hide the LeadConnector chat-widget launcher bubble */
+      chat-widget {
+        --chat-widget-position: fixed !important;
+        --chat-widget-bottom: -9999px !important;
         opacity: 0 !important;
         pointer-events: none !important;
-        position: fixed !important;
-        bottom: -9999px !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        width: 0 !important;
+        overflow: hidden !important;
+      }
+      /* When active (chat is open), make it visible */
+      chat-widget.hydrated[class*="active"],
+      chat-widget.active {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+        height: auto !important;
+        width: auto !important;
+        bottom: auto !important;
+        --chat-widget-bottom: 20px !important;
       }
     </style>
     <script>
+      // Open chat widget using the official API
       window.openLeadConnectorChat = function() {
-        // Method 1: Try official chat widget API
-        if (window.leadConnector && window.leadConnector.chatWidget) {
+        if (window.leadConnector && window.leadConnector.chatWidget && typeof window.leadConnector.chatWidget.openWidget === 'function') {
+          // Make the widget visible before opening
+          var chatWidget = document.querySelector('chat-widget');
+          if (chatWidget) {
+            chatWidget.style.opacity = '1';
+            chatWidget.style.pointerEvents = 'auto';
+            chatWidget.style.visibility = 'visible';
+            chatWidget.style.height = 'auto';
+            chatWidget.style.width = 'auto';
+          }
           window.leadConnector.chatWidget.openWidget();
-          return;
-        }
-        // Method 2: Find and click the text widget launcher
-        var launcher = document.querySelector('.lc_text-widget-open, [class*="lc_text-widget-open"]');
-        if (launcher) {
-          // Temporarily make it visible and clickable
-          launcher.style.opacity = '1';
-          launcher.style.pointerEvents = 'auto';
-          launcher.style.bottom = '20px';
-          launcher.click();
-          // Hide it again after a brief moment
-          setTimeout(function() {
-            launcher.style.opacity = '0';
-            launcher.style.pointerEvents = 'none';
-            launcher.style.bottom = '-9999px';
-          }, 100);
-          return;
-        }
-        // Method 3: Look for any widget container and trigger it
-        var widget = document.querySelector('[class*="lc_text-widget"]');
-        if (widget) {
-          widget.click();
+        } else {
+          console.log('Chat widget API not available yet');
         }
       };
     </script>
