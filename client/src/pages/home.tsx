@@ -998,13 +998,8 @@ export default function Home() {
                 data-testid="button-hero-cta-mobile"
                 onClick={() => {
                   const w = window as any;
-                  if (w.LC_API?.openChatWidget) {
-                    w.LC_API.openChatWidget();
-                  } else {
-                    const iframe = document.querySelector('iframe[src*="leadconnectorhq"]') as HTMLIFrameElement;
-                    if (iframe) iframe.style.display = 'block';
-                    const bubble = document.querySelector('[class*="lc-chat"], [class*="chat-bubble"], [id*="chat-widget"]') as HTMLElement;
-                    if (bubble) bubble.click();
+                  if (w.openLeadConnectorChat) {
+                    w.openLeadConnectorChat();
                   }
                 }}
                 className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full py-3.5 px-8 relative shadow-2xl backdrop-blur-xl"
@@ -1040,13 +1035,8 @@ export default function Home() {
                 data-testid="button-hero-cta"
                 onClick={() => {
                   const w = window as any;
-                  if (w.LC_API?.openChatWidget) {
-                    w.LC_API.openChatWidget();
-                  } else {
-                    const iframe = document.querySelector('iframe[src*="leadconnectorhq"]') as HTMLIFrameElement;
-                    if (iframe) iframe.style.display = 'block';
-                    const bubble = document.querySelector('[class*="lc-chat"], [class*="chat-bubble"], [id*="chat-widget"]') as HTMLElement;
-                    if (bubble) bubble.click();
+                  if (w.openLeadConnectorChat) {
+                    w.openLeadConnectorChat();
                   }
                 }}
                 className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full py-3.5 px-8 relative shadow-2xl backdrop-blur-xl"

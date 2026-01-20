@@ -29,5 +29,45 @@
       data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" 
       data-widget-id="696fd454572f85432b83c7bf">
     </script>
+    <style>
+      /* Hide the default LeadConnector launcher bubble - we use our Talk to Samantha button */
+      .lc_text-widget-open,
+      [class*="lc_text-widget-open"] {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        position: fixed !important;
+        bottom: -9999px !important;
+      }
+    </style>
+    <script>
+      window.openLeadConnectorChat = function() {
+        // Method 1: Try official chat widget API
+        if (window.leadConnector && window.leadConnector.chatWidget) {
+          window.leadConnector.chatWidget.openWidget();
+          return;
+        }
+        // Method 2: Find and click the text widget launcher
+        var launcher = document.querySelector('.lc_text-widget-open, [class*="lc_text-widget-open"]');
+        if (launcher) {
+          // Temporarily make it visible and clickable
+          launcher.style.opacity = '1';
+          launcher.style.pointerEvents = 'auto';
+          launcher.style.bottom = '20px';
+          launcher.click();
+          // Hide it again after a brief moment
+          setTimeout(function() {
+            launcher.style.opacity = '0';
+            launcher.style.pointerEvents = 'none';
+            launcher.style.bottom = '-9999px';
+          }, 100);
+          return;
+        }
+        // Method 3: Look for any widget container and trigger it
+        var widget = document.querySelector('[class*="lc_text-widget"]');
+        if (widget) {
+          widget.click();
+        }
+      };
+    </script>
   </body>
 </html>
