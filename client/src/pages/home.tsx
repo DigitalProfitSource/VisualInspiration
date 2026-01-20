@@ -1017,9 +1017,7 @@ export default function Home() {
                 </div>
               }
             />
-            <p className="text-sm text-muted-foreground/80 text-center">
-              Stop losing leads. Stop guessing. Start with clarity.
-            </p>
+            <p className="text-sm text-muted-foreground/80 text-center">Don't just guess. Hear exactly how we handle your missed calls and capture revenue</p>
           </motion.div>
         </motion.div>
 
