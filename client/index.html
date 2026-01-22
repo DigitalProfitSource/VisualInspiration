@@ -29,132 +29,91 @@
       data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" 
       data-widget-id="696fd454572f85432b83c7bf">
     </script>
+    <style>
+      /* Hide chat widget by default */
+      chat-widget:not(.lc-active) {
+        position: fixed !important;
+        bottom: -9999px !important;
+        right: -9999px !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+        z-index: -1 !important;
+      }
+      chat-widget.lc-active {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+        z-index: 999999 !important;
+      }
+    </style>
     <script>
       (function() {
-        var widgetUserActivated = false;
-        
-        // Hide the widget element completely
+        // Simple periodic check to ensure widget stays hidden (no MutationObserver)
         function hideWidget() {
           var chatWidget = document.querySelector('chat-widget');
-          if (chatWidget && !widgetUserActivated) {
-            chatWidget.style.cssText = 'position: fixed !important; bottom: -9999px !important; right: -9999px !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; z-index: -1 !important; width: 0 !important; height: 0 !important; overflow: hidden !important;';
+          if (chatWidget && !chatWidget.classList.contains('lc-active')) {
+            chatWidget.style.cssText = 'position: fixed !important; bottom: -9999px !important; right: -9999px !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; z-index: -1 !important;';
           }
         }
         
-        // Show the widget
-        function showWidget() {
+        // Check periodically for first 10 seconds only
+        var checkCount = 0;
+        var hideInterval = setInterval(function() {
+          checkCount++;
+          hideWidget();
+          if (checkCount > 40) {
+            clearInterval(hideInterval);
+          }
+        }, 250);
+        
+        // Also check on load
+        window.addEventListener('load', function() {
+          hideWidget();
+          setTimeout(hideWidget, 1000);
+          setTimeout(hideWidget, 3000);
+        });
+        
+        // Open chat widget
+        window.openLeadConnectorChat = function() {
           var chatWidget = document.querySelector('chat-widget');
           if (chatWidget) {
-            widgetUserActivated = true;
-            chatWidget.style.cssText = 'position: fixed !important; bottom: 20px !important; right: 20px !important; opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; z-index: 999999 !important; width: auto !important; height: auto !important; overflow: visible !important;';
+            chatWidget.classList.add('lc-active');
+            chatWidget.style.cssText = 'position: fixed !important; bottom: 20px !important; right: 20px !important; opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; z-index: 999999 !important;';
           }
-        }
-        
-        // Use MutationObserver to keep widget hidden until user activates it
-        var observer = new MutationObserver(function(mutations) {
-          if (!widgetUserActivated) {
-            hideWidget();
-          }
-        });
-        
-        // Start observing once DOM is ready
-        function startObserving() {
-          observer.observe(document.body, { 
-            childList: true, 
-            subtree: true, 
-            attributes: true,
-            attributeFilter: ['style', 'class']
-          });
-          // Initial hide
-          hideWidget();
-          // Keep checking periodically for the first few seconds
-          var hideChecks = 0;
-          var hideInterval = setInterval(function() {
-            hideChecks++;
-            hideWidget();
-            if (hideChecks > 20) {
-              clearInterval(hideInterval);
-            }
-          }, 250);
-        }
-        
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', startObserving);
-        } else {
-          startObserving();
-        }
-        
-        // Also hide on window load (widget might load late)
-        window.addEventListener('load', function() {
-          setTimeout(hideWidget, 500);
-          setTimeout(hideWidget, 1000);
-          setTimeout(hideWidget, 2000);
-        });
-        
-        // Open chat widget and show it
-        window.openLeadConnectorChat = function() {
-          // Show the widget
-          showWidget();
           
-          // Stop the observer from hiding it
-          observer.disconnect();
+          // Stop the hide interval
+          clearInterval(hideInterval);
           
           // Open via API
-          var maxAttempts = 30;
           var attempts = 0;
-          
           function tryOpen() {
             attempts++;
-            
             if (window.leadConnector && window.leadConnector.chatWidget && window.leadConnector.chatWidget.isLoaded) {
               window.leadConnector.chatWidget.openWidget();
-              
-              // On desktop, try to auto-click phone button if shadow DOM is accessible
-              var chatWidget = document.querySelector('chat-widget');
-              if (chatWidget && chatWidget.shadowRoot) {
-                var phoneAttempts = 0;
-                var phoneInterval = setInterval(function() {
-                  phoneAttempts++;
-                  var root = chatWidget.shadowRoot;
-                  if (root) {
-                    var selectors = ['[class*="phone"]', '[class*="call"]', '[aria-label*="call" i]', 'button'];
-                    for (var i = 0; i < selectors.length; i++) {
-                      var btns = root.querySelectorAll(selectors[i]);
-                      for (var j = 0; j < btns.length; j++) {
-                        var btn = btns[j];
-                        if (btn.querySelector && btn.querySelector('svg') && !btn.textContent.trim()) {
-                          btn.click();
-                          clearInterval(phoneInterval);
-                          return;
-                        }
-                      }
-                    }
-                  }
-                  if (phoneAttempts > 10) {
-                    clearInterval(phoneInterval);
-                  }
-                }, 200);
-              }
               return;
             }
-            
-            if (attempts < maxAttempts) {
+            if (attempts < 20) {
               setTimeout(tryOpen, 200);
             }
           }
-          
           tryOpen();
         };
         
-        // Close chat when Escape is pressed
+        // Close on Escape
         document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape' && widgetUserActivated) {
-            if (window.leadConnector && window.leadConnector.chatWidget && window.leadConnector.chatWidget.closeWidget) {
-              window.leadConnector.chatWidget.closeWidget();
+          if (e.key === 'Escape') {
+            var chatWidget = document.querySelector('chat-widget');
+            if (chatWidget && chatWidget.classList.contains('lc-active')) {
+              if (window.leadConnector && window.leadConnector.chatWidget && window.leadConnector.chatWidget.closeWidget) {
+                window.leadConnector.chatWidget.closeWidget();
+              }
+              chatWidget.classList.remove('lc-active');
+              chatWidget.style.cssText = 'position: fixed !important; bottom: -9999px !important; right: -9999px !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; z-index: -1 !important;';
             }
-            widgetUserActivated = false;
-            hideWidget();
-            startObserving();
           }
         });
       })();
