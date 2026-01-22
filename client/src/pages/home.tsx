@@ -1675,7 +1675,7 @@ export default function Home() {
         </div>
       </section>
       {/* Final CTA */}
-      <section className="py-40 text-center relative overflow-hidden">
+      <section className="py-16 md:py-24 text-center relative overflow-hidden">
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.h2 
@@ -1683,9 +1683,9 @@ export default function Home() {
             whileInView={fadeInUpViewport.whileInView}
             viewport={fadeInUpViewport.viewport}
             transition={fadeInUpViewport.transition}
-            className="text-5xl md:text-7xl font-medium mb-12 tracking-tight"
+            className="text-4xl md:text-7xl font-medium mb-8 md:mb-12 tracking-tight"
           >
-            Start with <span className="text-primary">clarity.</span>
+            Hear it <span className="text-primary">for yourself.</span>
           </motion.h2>
           <motion.div 
              initial={{ opacity: 0, y: 20 }}
@@ -1701,16 +1701,16 @@ export default function Home() {
                 }
               }}
               data-testid="button-bottom-cta"
-              className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full pt-4 pr-8 pb-4 pl-9 relative shadow-2xl backdrop-blur-xl inline-block"
+              className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-2xl py-4 px-6 md:rounded-full md:pt-4 md:pr-8 md:pb-4 md:pl-9 relative shadow-2xl backdrop-blur-xl inline-block max-w-sm md:max-w-none"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
               <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
-              <div className="relative z-10 flex items-center justify-center gap-3">
+              <div className="relative z-10 flex items-center justify-between md:justify-center gap-3">
                 <div className="text-left">
-                  <p className="group-hover:text-white transition-colors duration-300 text-xl font-bold text-white font-sans drop-shadow-sm">Talk to Samantha (Live Demo)</p>
-                  <p className="text-sm text-zinc-400 mt-1">Hear how we handle your missed calls</p>
+                  <p className="group-hover:text-white transition-colors duration-300 text-base md:text-xl font-bold text-white font-sans drop-shadow-sm">Talk to Samantha</p>
+                  <p className="text-xs md:text-sm text-zinc-400 mt-0.5 md:mt-1">Live demo of our AI voice assistant</p>
                 </div>
-                <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                <div className="flex-shrink-0 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
                   <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
                     <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
                   </svg>
