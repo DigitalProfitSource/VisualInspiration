@@ -1,5 +1,6 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
+import { X } from "lucide-react";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
   Accordion,
@@ -915,6 +916,36 @@ export default function Home() {
   const circuitY = useTransform(scrollY, [0, 600], [0, 80]);
   const contentY = useTransform(scrollY, [0, 600], [0, 50]);
 
+  const [showFloatingCta, setShowFloatingCta] = useState(false);
+  const [floatingCtaDismissed, setFloatingCtaDismissed] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollThreshold = window.innerHeight * 1.5;
+      if (window.scrollY > scrollThreshold && !floatingCtaDismissed) {
+        setShowFloatingCta(true);
+      } else if (window.scrollY <= scrollThreshold) {
+        setShowFloatingCta(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [floatingCtaDismissed]);
+
+  const handleFloatingCtaClick = () => {
+    const w = window as any;
+    if (w.openLeadConnectorChat) {
+      w.openLeadConnectorChat();
+    }
+  };
+
+  const handleDismissFloatingCta = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFloatingCtaDismissed(true);
+    setShowFloatingCta(false);
+  };
+
   return (
     <Layout>
       <SEO 
@@ -1679,6 +1710,51 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Floating CTA for Mobile - appears after scrolling */}
+      <AnimatePresence>
+        {showFloatingCta && !floatingCtaDismissed && (
+          <motion.div
+            initial={{ opacity: 0, y: 100, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 100, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="fixed bottom-6 left-4 right-4 z-50 md:hidden"
+          >
+            <div className="relative">
+              {/* Dismiss button */}
+              <button
+                onClick={handleDismissFloatingCta}
+                className="absolute -top-2 -right-2 z-10 w-8 h-8 bg-zinc-800 border border-zinc-600 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors shadow-lg"
+                aria-label="Dismiss"
+                data-testid="button-dismiss-floating-cta"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Main floating button */}
+              <button
+                onClick={handleFloatingCtaClick}
+                data-testid="button-floating-cta"
+                className="w-full group hover:shadow-sky-500/30 hover:shadow-2xl active:scale-[0.98] transition-all duration-300 cursor-pointer overflow-hidden bg-gradient-to-br from-sky-900/90 via-zinc-900/95 to-black/90 border-sky-500/40 border-2 rounded-2xl py-4 px-6 relative shadow-2xl backdrop-blur-xl"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                <div className="relative z-10 flex items-center justify-between gap-3">
+                  <div className="flex flex-col items-start">
+                    <p className="text-base font-bold text-white">Talk to Samantha (Live Demo)</p>
+                    <p className="text-xs text-zinc-400 mt-0.5">Hear how we handle your missed calls</p>
+                  </div>
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-sky-400">
+                      <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
+                    </svg>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 }
