@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -1358,7 +1358,7 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-      {/* AI Clarity Assessment */}
+      {/* Revenue Friction Analysis */}
       <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
         
@@ -1374,24 +1374,25 @@ export default function Home() {
               <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
                 START HERE
               </div>
-              <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight">The AI Clarity Assessment™</h2>
-              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                A quick assessment that reveals where you're losing leads, where follow-up breaks down, and where your team is stuck doing work that should be automated. Delivered with an Executive AI Analysis.
+              <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight">The Revenue Friction Analysis</h2>
+              <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
+                Your growth isn't stalling due to lack of effort; it's stalling due to hidden operational drag. Leads go cold in the invisible gaps between manual tasks and handoffs that your CRM isn't tracking. This AI-powered analysis pinpoints exactly where friction is choking your pipeline and uncovers the single biggest operational gap <span className="text-white font-medium">costing you deals right now.</span>
               </p>
-              <p className="text-lg text-primary/80 font-medium mb-10">
-                No fluff. No hype. Just practical insight.
+              <p className="text-lg text-white font-semibold mb-10">
+                Move from guessing to knowing. Stop letting invisible inefficiencies dictate your revenue.
               </p>
               <ContactFormDialog
-                source="assessment"
-                title="Take the Free Assessment"
-                description="Complete the form and we'll send you a personalized AI readiness assessment for your business."
+                source="friction-analysis"
+                title="Get Your Executive Analysis"
+                description="Complete the form and we'll send you a personalized Revenue Friction Analysis for your business."
                 trigger={
                   <Button 
                     size="lg" 
                     data-testid="button-assessment-cta"
-                    className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
+                    className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] group"
                   >
-                    Take the Free Assessment
+                    Get My Executive Analysis
+                    <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </Button>
                 }
               />
@@ -1405,38 +1406,44 @@ export default function Home() {
               className="w-full max-w-md relative"
             >
                {/* Mockup Effect */}
-               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-blue-500/20 rounded-2xl blur-lg opacity-50" />
+               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-2xl blur-lg opacity-50" />
                <div className="relative bg-zinc-900 p-8 rounded-2xl border border-white/10 shadow-2xl">
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="flex gap-2">
-                      <div className="w-3 h-3 rounded-full bg-[#403e3e80]" />
-                      <div className="w-3 h-3 rounded-full bg-[#7f7e7d80]" />
-                      <div className="w-3 h-3 rounded-full bg-[#b9bdba80]" />
-                    </div>
-                    <div className="text-xs font-mono text-zinc-500">ASSESSMENT_RESULTS.PDF</div>
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-6">
+                    <span className="text-xs font-mono text-zinc-400 tracking-wider">EXECUTIVE AI ANALYSIS</span>
+                    <FileText className="w-4 h-4 text-primary" />
                   </div>
-                  <div className="space-y-6">
-                    <div className="space-y-3">
-                      <div className="h-2 bg-white/10 rounded w-3/4" />
-                      <div className="h-2 bg-white/10 rounded w-full" />
-                      <div className="h-2 bg-white/5 rounded w-5/6" />
+                  
+                  {/* Progress bars */}
+                  <div className="space-y-2 mb-6">
+                    <div className="h-1.5 bg-primary/60 rounded-full w-full" />
+                    <div className="h-1.5 bg-primary/40 rounded-full w-4/5" />
+                    <div className="h-1.5 bg-primary/20 rounded-full w-3/5" />
+                  </div>
+                  
+                  {/* Friction Point Label */}
+                  <div className="text-xs font-mono text-zinc-500 mb-4 tracking-wider">FRICTION POINT IDENTIFICATION</div>
+                  
+                  {/* Operational Efficiency Score */}
+                  <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5 mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Activity className="w-4 h-4 text-primary" />
+                      <span className="text-xs text-zinc-400">Operational Efficiency Score</span>
                     </div>
-                    <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Activity className="w-4 h-4 text-primary" />
-                        <span className="text-xs font-bold text-primary">OPERATIONAL SCORE</span>
-                      </div>
-                      <div className="text-3xl font-mono font-bold text-white">72<span className="text-zinc-600">/100</span></div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-4xl font-mono font-bold text-white">76</span>
+                      <span className="text-2xl font-mono text-zinc-600">/100</span>
+                      <TrendingUp className="w-5 h-5 text-primary ml-auto" />
                     </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-4">
-                        <div className="w-8 h-8 rounded-full bg-white/5" />
-                        <div className="space-y-1.5">
-                          <div className="h-2 bg-white/10 rounded w-24" />
-                          <div className="h-2 bg-white/5 rounded w-16" />
-                        </div>
-                      </div>
+                  </div>
+                  
+                  {/* Potential Revenue Impact */}
+                  <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Sparkles className="w-4 h-4 text-primary" />
+                      <span className="text-xs text-zinc-400">Potential Revenue Impact</span>
                     </div>
+                    <div className="text-3xl font-mono font-bold text-white">$35,000</div>
                   </div>
                </div>
             </motion.div>
