@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, Check, ChevronDown, Phone, Users, Brain, Shield, Zap, BarChart3, Info } from "lucide-react";
+import { Activity, Check, ChevronDown, Phone, Users, Brain, Shield, Zap, BarChart3, Info, FileText, TrendingUp, Sparkles } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
@@ -879,38 +879,45 @@ export default function Offers() {
               transition={{ duration: 0.8 }}
               className="w-full max-w-md relative"
             >
-               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-blue-500/20 rounded-2xl blur-lg opacity-50" />
+               {/* Mockup Effect */}
+               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-2xl blur-lg opacity-50" />
                <div className="relative bg-zinc-900 p-8 rounded-2xl border border-white/10 shadow-2xl">
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="flex gap-2">
-                      <div className="w-3 h-3 rounded-full bg-[#403e3e80]" />
-                      <div className="w-3 h-3 rounded-full bg-[#7f7e7d80]" />
-                      <div className="w-3 h-3 rounded-full bg-[#b9bdba80]" />
-                    </div>
-                    <div className="text-xs font-mono text-zinc-500">ASSESSMENT_RESULTS.PDF</div>
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-6">
+                    <span className="text-xs font-mono text-zinc-400 tracking-wider">EXECUTIVE AI ANALYSIS</span>
+                    <FileText className="w-4 h-4 text-primary" />
                   </div>
-                  <div className="space-y-6">
-                    <div className="space-y-3">
-                      <div className="h-2 bg-white/10 rounded w-3/4" />
-                      <div className="h-2 bg-white/10 rounded w-full" />
-                      <div className="h-2 bg-white/5 rounded w-5/6" />
+                  
+                  {/* Progress bars */}
+                  <div className="space-y-2 mb-6">
+                    <div className="h-1.5 bg-primary/60 rounded-full w-full" />
+                    <div className="h-1.5 bg-primary/40 rounded-full w-4/5" />
+                    <div className="h-1.5 bg-primary/20 rounded-full w-3/5" />
+                  </div>
+                  
+                  {/* Friction Point Label */}
+                  <div className="text-xs font-mono text-zinc-500 mb-4 tracking-wider">FRICTION POINT IDENTIFICATION</div>
+                  
+                  {/* Operational Efficiency Score */}
+                  <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5 mb-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Activity className="w-4 h-4 text-primary" />
+                      <span className="text-xs text-zinc-400">Operational Efficiency Score</span>
                     </div>
-                    <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Activity className="w-4 h-4 text-primary" />
-                        <span className="text-xs font-bold text-primary">OPERATIONAL SCORE</span>
-                      </div>
-                      <div className="text-3xl font-mono font-bold text-white">72<span className="text-zinc-600">/100</span></div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-4xl font-mono font-bold text-white">76</span>
+                      <span className="text-2xl font-mono text-zinc-600">/100</span>
+                      <TrendingUp className="w-5 h-5 text-primary ml-auto" />
                     </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-4">
-                        <div className="w-8 h-8 rounded-full bg-white/5" />
-                        <div className="space-y-1.5">
-                          <div className="h-2 bg-white/10 rounded w-24" />
-                          <div className="h-2 bg-white/5 rounded w-16" />
-                        </div>
-                      </div>
+                  </div>
+                  
+                  {/* Potential Revenue Impact */}
+                  <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Sparkles className="w-4 h-4 text-primary" />
+                      <span className="text-xs text-zinc-400">Potential Revenue Impact</span>
                     </div>
+                    <div className="text-3xl font-mono font-bold text-white">$35,000</div>
                   </div>
                </div>
             </motion.div>
