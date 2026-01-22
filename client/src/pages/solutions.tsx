@@ -385,20 +385,15 @@ export default function Solutions() {
             <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
               Start with a free diagnostic to see which pillars need attention first — and what to fix to stop the leaks in your revenue and operations.
             </p>
-            <ContactFormDialog
-              source="solutions-cta"
-              title="Get Your Operational Diagnostic"
-              description="Tell us about your business and we'll show you which pillars need attention first."
-              trigger={
-                <Button 
-                  size="lg"
-                  className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
-                  data-testid="button-solutions-cta"
-                >
-                  Get Your Free Diagnostic
-                </Button>
-              }
-            />
+            <a 
+              href="https://simple-sequence-ai.replit.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="button-solutions-cta"
+              className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
+            >
+              Get Your Free Diagnostic
+            </a>
           </motion.div>
         </div>
       </section>

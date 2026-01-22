@@ -856,20 +856,15 @@ export default function Offers() {
                   <span>What your next 90-day focus should be with SimpleSequence</span>
                 </li>
               </ul>
-              <ContactFormDialog
-                source="assessment-offers"
-                title="Take the Free Assessment"
-                description="Complete the form and we'll send you a personalized AI readiness assessment for your business."
-                trigger={
-                  <Button 
-                    size="lg" 
-                    data-testid="button-offers-assessment-cta"
-                    className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)]"
-                  >
-                    Take the Free Assessment
-                  </Button>
-                }
-              />
+              <a 
+                href="https://simple-sequence-ai.replit.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="button-offers-assessment-cta"
+                className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
+              >
+                Take the Free Assessment
+              </a>
             </motion.div>
             
             <motion.div 
