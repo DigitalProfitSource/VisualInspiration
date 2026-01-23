@@ -1,0 +1,702 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/glass-ui";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle, BarChart3, ArrowRight, DollarSign, Loader2, ChevronDown, ChevronUp, FileDown } from "lucide-react";
+import { AssessmentResult, GapScore } from "@/lib/scoring";
+import { generateAssessmentPDF } from "@/lib/pdf-generator";
+
+function GapCard({ 
+  title, 
+  gap, 
+  description
+}: { 
+  title: string; 
+  gap: GapScore; 
+  description: string;
+}) {
+  const [showCalculation, setShowCalculation] = useState(false);
+
+  return (
+    <Card className="p-6 border-cyan-500/20 bg-cyan-950/10 relative overflow-hidden">
+      <div className="mb-4">
+        <h3 className="text-xl font-heading font-semibold text-white">{title}</h3>
+      </div>
+      
+      <p className="text-sm text-slate-400 mb-6">{description}</p>
+      
+      <div className="space-y-4 mb-6">
+        <div>
+          <p className="text-xs text-cyan-400 uppercase tracking-wider mb-2">What We Found</p>
+          <ul className="space-y-1">
+            {gap.findings.map((finding, i) => (
+              <li key={i} className="text-sm text-slate-300 flex gap-2">
+                <span className="text-slate-500">-</span>
+                {finding}
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        {gap.causes.length > 0 && (
+          <div>
+            <p className="text-xs text-cyan-400 uppercase tracking-wider mb-2">What's Causing This</p>
+            <ul className="space-y-1">
+              {gap.causes.map((cause, i) => (
+                <li key={i} className="text-sm text-slate-300 flex gap-2">
+                  <span className="text-slate-500">-</span>
+                  {cause}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      
+      <div className="bg-slate-900/60 rounded-lg p-4 border border-cyan-500/20">
+        <p className="text-xs text-slate-400 uppercase tracking-wider mb-2">Estimated Monthly Impact</p>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xl font-mono font-bold text-cyan-400">
+            ${gap.estimate.toLocaleString()}
+          </span>
+        </div>
+        
+        <button
+          onClick={() => setShowCalculation(!showCalculation)}
+          className="flex items-center gap-1 text-xs text-slate-500 hover:text-cyan-400 transition-colors"
+        >
+          {showCalculation ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+          {showCalculation ? "Hide calculation" : "Show calculation"}
+        </button>
+
+        <AnimatePresence>
+          {showCalculation && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden"
+            >
+              <div className="mt-3 pt-3 border-t border-slate-800 space-y-2">
+                <p className="text-xs text-slate-400">{gap.calculationDetails.description}</p>
+                <p className="text-[10px] text-cyan-500/70 font-mono leading-relaxed">{gap.calculationDetails.formula}</p>
+                <p className="text-[10px] text-slate-500 italic">
+                  *Conservative estimate based on reported metrics and lower-end industry conversion benchmarks.
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </Card>
+  );
+}
+
+function TierCard({ 
+  tier, 
+  price,
+  setupFee,
+  description, 
+  features, 
+  isRecommended,
+  ctaText,
+  badge,
+  reason
+}: { 
+  tier: string; 
+  price: string;
+  setupFee?: string;
+  description: string;
+  features: string[];
+  isRecommended?: boolean;
+  ctaText: string;
+  badge?: string;
+  reason?: string;
+}) {
+  return (
+    <Card className={`p-6 ${isRecommended ? 'border-cyan-500/50 bg-gradient-to-br from-cyan-950/30 to-slate-900/50' : 'border-slate-700/50 bg-slate-900/30'}`}>
+      {isRecommended && (
+        <div className="text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-2">Recommended for Your Business</div>
+      )}
+      <div className="flex items-center gap-3 mb-2">
+        <h4 className="text-xl font-heading font-bold text-white">{tier}</h4>
+        {badge && (
+          <span className="px-2 py-0.5 text-xs bg-slate-700/50 text-slate-300 rounded">{badge}</span>
+        )}
+      </div>
+      <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">{price}</p>
+      {setupFee && (
+        <p className="text-sm text-slate-400 mb-3">One-time setup: {setupFee}</p>
+      )}
+      <p className="text-sm text-slate-400 mb-4">{description}</p>
+      
+      {isRecommended && reason && (
+        <div className="bg-cyan-950/30 border border-cyan-500/20 rounded-lg p-3 mb-4">
+          <p className="text-xs text-cyan-400 uppercase tracking-wider mb-1">Why {tier}?</p>
+          <p className="text-sm text-slate-300">{reason}</p>
+        </div>
+      )}
+      
+      <ul className="space-y-2 mb-6">
+        {features.map((feature, i) => (
+          <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
+            <CheckCircle className="text-cyan-500 flex-shrink-0 mt-0.5" size={16} />
+            {feature}
+          </li>
+        ))}
+      </ul>
+      
+      <Button 
+        className={`w-full py-6 text-base font-bold uppercase tracking-wide flex items-center justify-center transition-all duration-200 rounded-xl ${
+          isRecommended 
+            ? 'bg-cyan-500 hover:bg-cyan-400 text-white border-cyan-400 shadow-[0_4px_14px_0_rgba(6,182,212,0.39)]' 
+            : 'bg-transparent hover:bg-slate-800 text-slate-200 border-slate-700'
+        }`}
+        variant={isRecommended ? "default" : "outline"}
+      >
+        <span>{ctaText}</span>
+      </Button>
+    </Card>
+  );
+}
+
+function CalculationBreakdown({ result }: { result: AssessmentResult }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="mt-6">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
+        data-testid="button-toggle-calculation"
+      >
+        How we calculated these numbers
+        {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="mt-4 space-y-4 text-sm">
+              <div className="bg-slate-900/60 rounded-lg p-4 border border-slate-700/50">
+                <h4 className="text-cyan-400 font-semibold mb-2">Speed Gap: ${result.speedGap.estimate.toLocaleString()}</h4>
+                <p className="text-slate-400 mb-2">{result.speedGap.calculationDetails.description}</p>
+                <p className="text-slate-300 font-mono text-xs">{result.speedGap.calculationDetails.formula}</p>
+              </div>
+
+              <div className="bg-slate-900/60 rounded-lg p-4 border border-slate-700/50">
+                <h4 className="text-cyan-400 font-semibold mb-2">Silence Gap: ${result.silenceGap.estimate.toLocaleString()}</h4>
+                <p className="text-slate-400 mb-2">{result.silenceGap.calculationDetails.description}</p>
+                <p className="text-slate-300 font-mono text-xs">{result.silenceGap.calculationDetails.formula}</p>
+              </div>
+
+              <div className="bg-slate-900/60 rounded-lg p-4 border border-slate-700/50">
+                <h4 className="text-cyan-400 font-semibold mb-2">Chaos Gap: ${result.chaosGap.estimate.toLocaleString()}</h4>
+                <p className="text-slate-400 mb-2">{result.chaosGap.calculationDetails.description}</p>
+                <p className="text-slate-300 font-mono text-xs">{result.chaosGap.calculationDetails.formula}</p>
+              </div>
+
+              <p className="text-slate-500 text-xs italic">
+                *Conservative estimate based on your reported metrics and lower-end industry conversion benchmarks. 
+                Actual recovery depends on lead quality, market conditions, and execution.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function CostOfWaiting({ result }: { result: AssessmentResult }) {
+  const totalGap = result.totalMonthlyGap;
+  const monthlyManualHours = result.chaosGap.calculationDetails.inputs.monthlyHours as number || 0;
+  const estimatedLostLeads = Math.round(
+    (result.speedGap.estimate / result.avgJobValue) + 
+    (result.silenceGap.estimate / result.avgJobValue * 0.6)
+  );
+
+  return (
+    <div className="cost-of-waiting-section bg-slate-900/60 border border-slate-800 rounded-xl p-8 my-12 shadow-2xl">
+      <div className="section-header flex items-center gap-3 mb-6">
+        <h2 className="text-cyan-400 text-2xl font-heading font-bold m-0">The Real Cost of Waiting</h2>
+      </div>
+      
+      <div className="waiting-content">
+        <h3 className="text-white text-lg font-semibold mt-6 mb-4">Every month you wait to address these gaps:</h3>
+        <ul className="monthly-costs space-y-3">
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span><span className="text-cyan-400 font-bold font-mono">${totalGap.toLocaleString()}</span> in lost revenue (gone forever)</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Competitors capture the leads you're missing</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Your team burns <span className="text-white font-bold">{Math.round(monthlyManualHours)}</span> hours on manual work</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Your no-show rate stays at <span className="text-white font-bold">{result.silenceGap.calculationDetails.inputs.noShowRate}</span></span>
+          </li>
+        </ul>
+        
+        <h3 className="text-white text-lg font-semibold mt-8 mb-4">Six months from now:</h3>
+        <ul className="cumulative-costs space-y-3">
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span><span className="text-cyan-400 font-bold font-mono">${(totalGap * 6).toLocaleString()}</span> in cumulative lost revenue</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Your competitors have <span className="text-cyan-400 font-bold font-mono">{estimatedLostLeads * 6}-{Math.round(estimatedLostLeads * 6 * 1.2)}</span> of the customers you could have had</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Your team has wasted <span className="text-white font-bold">{Math.round(monthlyManualHours * 6)}</span> hours on busywork</span>
+          </li>
+        </ul>
+        
+      <div className="urgency-statement mt-8 p-6 bg-slate-900/60 border border-slate-800 rounded-lg text-white shadow-xl">
+        <h3 className="text-xl font-heading font-bold text-white mb-2">
+          This isn't a future problem.
+        </h3>
+        <p className="text-slate-300">
+          This is happening right now, today. Each day of delay is a permanent loss of revenue and competitive advantage.
+        </p>
+      </div>
+      </div>
+    </div>
+  );
+}
+
+function DIYSection({ result }: { result: AssessmentResult }) {
+  return (
+    <div className="diy-section space-y-8 mt-12 mb-16">
+      <div className="flex items-center gap-3 mb-6">
+        <h2 className="text-cyan-400 text-2xl font-heading font-bold m-0">Your DIY Action Plan</h2>
+      </div>
+      
+      <p className="text-slate-300 text-lg mb-8">
+        You can implement these fixes with or without SimpleSequence. Here is how to do it yourself:
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {result.speedGap.estimate > 0 && (
+          <Card className="p-6 border-slate-700/50 bg-slate-900/30">
+            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              <span className="text-cyan-500">1.</span> Speed Gap Fixes
+            </h3>
+            <ul className="space-y-4">
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Set up auto-responders</p>
+                <p className="text-slate-400 text-xs">Use Google Voice or your CRM's basic auto-reply for after-hours leads.</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Instant SMS Text-Back</p>
+                <p className="text-slate-400 text-xs">Connect Zapier to Twilio to send an "I'll call you right back" text on every missed call (~$30/mo).</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Response Protocol</p>
+                <p className="text-slate-400 text-xs">Train your team on a strict sub-5-minute response protocol for all new inquiries.</p>
+              </li>
+            </ul>
+          </Card>
+        )}
+
+        {result.silenceGap.estimate > 0 && (
+          <Card className="p-6 border-slate-700/50 bg-slate-900/30">
+            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              <span className="text-cyan-500">2.</span> Silence Gap Fixes
+            </h3>
+            <ul className="space-y-4">
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">No-Show Recovery</p>
+                <p className="text-slate-400 text-xs">Create a script: "Hi [Name], we missed you! Would you like to reschedule for tomorrow?"</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Quote Follow-up</p>
+                <p className="text-slate-400 text-xs">Set manual calendar reminders for Day 3, 7, and 14 after sending any quote.</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Database Reactivation</p>
+                <p className="text-slate-400 text-xs">Export your old leads and send a "Checking in" email with a special seasonal offer.</p>
+              </li>
+            </ul>
+          </Card>
+        )}
+
+        {result.chaosGap.estimate > 0 && (
+          <Card className="p-6 border-slate-700/50 bg-slate-900/30">
+            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              <span className="text-cyan-500">3.</span> Chaos Gap Fixes
+            </h3>
+            <ul className="space-y-4">
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Task Documentation</p>
+                <p className="text-slate-400 text-xs">Document your top 10 most repetitive administrative tasks step-by-step.</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Free Automation</p>
+                <p className="text-slate-400 text-xs">Use the free tiers of Zapier or Make.com to sync data between your tools automatically.</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Google Docs Wiki</p>
+                <p className="text-slate-400 text-xs">Create a central "Wiki" in Google Docs for FAQs, pricing, and common scenarios.</p>
+              </li>
+            </ul>
+          </Card>
+        )}
+      </div>
+
+      <div className="bg-slate-900/60 border border-slate-800 p-8 text-white rounded-lg shadow-xl">
+        <h4 className="font-heading font-bold text-xl mb-3">The Reality of DIY Implementation</h4>
+        <p className="text-slate-300 mb-6 leading-relaxed">
+          Most businesses intend to implement these fixes but never do. Success requires specialized systems that run without your constant attention. Manual implementation typically requires:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-2 p-4 bg-slate-800/40 rounded-lg border border-slate-700/50">
+            <span className="text-cyan-400 font-bold uppercase tracking-wider text-[10px]">Time Investment</span>
+            <span className="text-slate-200 text-sm font-medium">15-30 hours of technical setup and troubleshooting</span>
+          </div>
+          <div className="flex flex-col gap-2 p-4 bg-slate-800/40 rounded-lg border border-slate-700/50">
+            <span className="text-cyan-400 font-bold uppercase tracking-wider text-[10px]">Technical Debt</span>
+            <span className="text-slate-200 text-sm font-medium">Advanced API & integration knowledge to prevent failures</span>
+          </div>
+          <div className="flex flex-col gap-2 p-4 bg-slate-800/40 rounded-lg border border-slate-700/50">
+            <span className="text-cyan-400 font-bold uppercase tracking-wider text-[10px]">Ongoing Overhead</span>
+            <span className="text-slate-200 text-sm font-medium">Constant maintenance, API updates, and security monitoring</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FeedbackSection({ leadId }: { leadId: string | null }) {
+  const [feedback, setFeedback] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!feedback.trim()) return;
+    
+    setIsSubmitting(true);
+    try {
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leadId, feedback }),
+      });
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <Card className="p-6 border-slate-700/50 bg-slate-900/30 text-center">
+        <CheckCircle className="mx-auto text-cyan-500 mb-3" size={32} />
+        <p className="text-white font-medium">Thank you for your feedback!</p>
+        <p className="text-slate-400 text-sm">We appreciate you taking the time to share your thoughts.</p>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="p-6 border-slate-700/50 bg-slate-900/30">
+      <h3 className="text-lg font-heading font-semibold text-white mb-3">How did we do?</h3>
+      <p className="text-slate-400 text-sm mb-4">
+        Was this assessment helpful? Any suggestions for making it better?
+      </p>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <textarea
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          placeholder="Share your thoughts..."
+          className="w-full h-24 px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 resize-none"
+          data-testid="input-feedback"
+        />
+        <Button 
+          type="submit" 
+          disabled={isSubmitting || !feedback.trim()}
+          className="w-full md:w-auto"
+          data-testid="button-submit-feedback"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Sending...
+            </>
+          ) : (
+            "Send Feedback"
+          )}
+        </Button>
+      </form>
+    </Card>
+  );
+}
+
+export default function Results() {
+  const [location, setLocation] = useLocation();
+  
+  const resultStr = sessionStorage.getItem("assessment_results") || localStorage.getItem("assessment_results");
+  const leadId = sessionStorage.getItem("currentLeadId");
+  const result: AssessmentResult | null = resultStr ? JSON.parse(resultStr) : null;
+
+  useEffect(() => {
+    if (!result) {
+      setLocation("/");
+    }
+  }, [result, setLocation]);
+
+  if (!result) return null;
+
+  const frontlineFeatures = [
+    "AI Voice backup when team is busy/after-hours",
+    "24/7 website chatbot",
+    "Instant SMS text-back",
+    "Speed-to-lead engine (<60 seconds)",
+    "250 AI Voice Minutes/mo"
+  ];
+
+  const specialistFeatures = [
+    "Everything in Frontline, plus:",
+    "Automated no-show recovery",
+    "Quote follow-up sequences",
+    "Database reactivation campaigns",
+    "Review request automation",
+    "500 AI Voice Minutes/mo"
+  ];
+
+  const commandFeatures = [
+    "Everything in Specialist, plus:",
+    "Internal AI Knowledge Base",
+    "Custom system integrations",
+    "Service delivery automation",
+    "Priority decision logic",
+    "1,000 AI Voice Minutes/mo"
+  ];
+
+  return (
+    <div className="max-w-[900px] mx-auto space-y-8 pb-20 pt-10 px-4 md:px-8">
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center space-y-4"
+      >
+        <h1 className="text-3xl md:text-4xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+          Your Revenue Gap Report: {result.businessName}
+        </h1>
+        <p className="text-slate-300 text-lg">
+          Here's what's really happening in your business - and exactly how much it's costing you.
+        </p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.05 }}
+      >
+        <Card className="p-6 border-slate-700/50 bg-slate-900/40">
+          <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Your Business at a Glance</h3>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+            <div>
+              <p className="text-slate-500">Industry</p>
+              <p className="text-white font-medium">{result.industry}</p>
+            </div>
+            <div>
+              <p className="text-slate-500">Specialization</p>
+              <p className="text-white font-medium">{result.niche}</p>
+            </div>
+            <div>
+              <p className="text-slate-500">Monthly Leads</p>
+              <p className="text-white font-medium">{result.monthlyLeads}</p>
+            </div>
+            <div>
+              <p className="text-slate-500">Team Size</p>
+              <p className="text-white font-medium">{result.teamSize}</p>
+            </div>
+            <div>
+              <p className="text-slate-500">Avg Job Value</p>
+              <p className="text-white font-medium">${result.avgJobValue.toLocaleString()}</p>
+            </div>
+          </div>
+        </Card>
+      </motion.div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="space-y-6"
+      >
+        <h2 className="text-2xl font-heading font-bold text-white">Gap Analysis</h2>
+        
+        <GapCard 
+          title="Speed Gap" 
+          gap={result.speedGap}
+          description="Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first."
+        />
+        
+        <GapCard 
+          title="Silence Gap" 
+          gap={result.silenceGap}
+          description="Most revenue isn't lost at first contact - it's lost in the days and weeks after when no one follows up."
+        />
+        
+        <GapCard 
+          title="Chaos Gap" 
+          gap={result.chaosGap}
+          description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."
+        />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <Card className="p-8 border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 to-slate-900/50">
+          <h3 className="text-xl font-heading font-semibold text-cyan-400 flex items-center gap-2 mb-4">
+            <BarChart3 size={24} /> Total Impact Summary
+          </h3>
+          
+          <div className="text-center py-6">
+            <p className="text-sm text-slate-400 uppercase tracking-wider mb-3">Total Monthly Revenue Gap</p>
+            <p className="text-4xl md:text-5xl font-mono font-bold text-cyan-400 mb-2">
+              ${result.totalMonthlyGap.toLocaleString()}
+            </p>
+            <p className="text-lg text-slate-300 font-medium">
+              Annualized: ${result.annualizedGap.toLocaleString()}
+            </p>
+
+            <div className="mt-6 grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-cyan-400 font-semibold">Speed Gap</p>
+                <p className="text-white font-mono">${result.speedGap.estimate.toLocaleString()}</p>
+              </div>
+              <div>
+                <p className="text-cyan-400 font-semibold">Silence Gap</p>
+                <p className="text-white font-mono">${result.silenceGap.estimate.toLocaleString()}</p>
+              </div>
+              <div>
+                <p className="text-cyan-400 font-semibold">Chaos Gap</p>
+                <p className="text-white font-mono">${result.chaosGap.estimate.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </motion.div>
+
+      {result && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.22 }}
+        >
+          <CostOfWaiting result={result} />
+        </motion.div>
+      )}
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25 }}
+        className="space-y-6"
+      >
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 className="text-2xl font-heading font-bold text-white mb-2">Your Prioritized Opportunities</h2>
+            <p className="text-slate-400">{result.tierReason}</p>
+          </div>
+          <Button 
+            onClick={() => generateAssessmentPDF(result)}
+            className="bg-cyan-600 hover:bg-cyan-700 whitespace-nowrap"
+            data-testid="button-download-pdf"
+          >
+            <FileDown className="mr-2 h-4 w-4" />
+            Download Full PDF Report
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <TierCard
+            tier="Frontline"
+            price="$297/mo"
+            setupFee="$500"
+            description="The Human-First Safety Net - Fix the Speed Gap first."
+            features={frontlineFeatures}
+            isRecommended={result.recommendedTier === 'Frontline'}
+            ctaText="Get Started"
+            reason={result.recommendedTier === 'Frontline' ? result.tierReason : undefined}
+          />
+          
+          <TierCard
+            tier="Specialist"
+            price="$497/mo"
+            setupFee="$1,000"
+            description="The Revenue & Reputation Accelerator - Address Speed + Silence Gaps."
+            features={specialistFeatures}
+            isRecommended={result.recommendedTier === 'Specialist'}
+            ctaText="Get Started"
+            reason={result.recommendedTier === 'Specialist' ? result.tierReason : undefined}
+          />
+          
+          <TierCard
+            tier="Command"
+            price="Starting at $997/mo"
+            setupFee="$2,500+"
+            description="The Autonomous Operations Engine - Full operational transformation."
+            features={commandFeatures}
+            isRecommended={result.recommendedTier === 'Command'}
+            ctaText="Apply Now"
+            badge="By Application"
+            reason={result.recommendedTier === 'Command' ? result.tierReason : undefined}
+          />
+        </div>
+
+        <DIYSection result={result} />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <FeedbackSection leadId={leadId} />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="mt-12 text-center"
+      >
+        <a 
+          href="https://simplesequence.ai" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[#2a3038] bg-[#12161a] text-[#c0c8d0] hover:text-[#00D9FF] hover:border-[#00D9FF]/40 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.3)] hover:shadow-[0_4px_16px_rgba(0,217,255,0.1)]"
+          data-testid="link-return-to-main-site"
+        >
+          <ArrowRight size={16} className="rotate-180" />
+          Return to simplesequence.ai
+        </a>
+      </motion.div>
+    </div>
+  );
+}
