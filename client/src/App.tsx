@@ -11,6 +11,8 @@ import Process from "@/pages/process";
 import Offers from "@/pages/offers";
 import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
+import Assessment from "@/pages/assessment";
+import Results from "@/pages/results";
 
 function Router() {
   return (
@@ -22,6 +24,8 @@ function Router() {
       <Route path="/offers" component={Offers} />
       <Route path="/blog" component={Blog} />
       <Route path="/blog/:slug" component={BlogPost} />
+      <Route path="/assessment" component={Assessment} />
+      <Route path="/results" component={Results} />
       <Route component={NotFound} />
     </Switch>
   );

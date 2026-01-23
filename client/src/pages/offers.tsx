@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "wouter";
 import { Activity, Check, ChevronDown, Phone, Users, Brain, Shield, Zap, BarChart3, Info, FileText, TrendingUp, Sparkles } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
@@ -856,15 +857,13 @@ export default function Offers() {
                   <span>What your next 90-day focus should be with SimpleSequence</span>
                 </li>
               </ul>
-              <a 
-                href="https://simple-sequence-ai.replit.app"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link 
+                href="/assessment"
                 data-testid="button-offers-assessment-cta"
                 className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
               >
                 Take the Free Assessment
-              </a>
+              </Link>
             </motion.div>
             
             <motion.div 

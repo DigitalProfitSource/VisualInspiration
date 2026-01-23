@@ -1,0 +1,3535 @@
+================================================================================
+FILE 1: client/src/lib/scoring.ts
+================================================================================
+
+import { AssessmentData } from "./types";
+
+// =====================================================
+// GAP SCORE INTERFACES
+// =====================================================
+
+export interface GapScore {
+  estimate: number;
+  findings: string[];
+  causes: string[];
+  calculationDetails: {
+    description: string;
+    formula: string;
+    inputs: Record<string, string | number>;
+  };
+}
+
+export interface AssessmentResult {
+  businessName: string;
+  industry: string;
+  niche: string;
+  teamSize: string;
+  monthlyLeads: number;
+  avgJobValue: number;
+  closeRate: number;
+
+  speedGap: GapScore;
+  silenceGap: GapScore;
+  chaosGap: GapScore;
+
+  totalMonthlyGap: number;
+  annualizedGap: number;
+
+  recommendedTier: 'Frontline' | 'Specialist' | 'Command';
+  tierReason: string;
+}
+
+// =====================================================
+// UTILITY PARSERS
+// =====================================================
+
+function parseMonthlyLeads(value: string): number {
+  if (value.includes("I don't know")) return 50;
+  if (value.includes("200+")) return 250;
+  if (value.includes("101-200")) return 150;
+  if (value.includes("51-100")) return 75;
+  if (value.includes("26-50")) return 38;
+  if (value.includes("11-25")) return 18;
+  if (value.includes("1-10")) return 5;
+  return 50;
+}
+
+function parseJobValue(value: string): number {
+  const cleaned = value.replace(/[$,]/g, '');
+  return parseInt(cleaned) || 2500;
+}
+
+function parseCloseRate(value: string): number {
+  if (value.includes("I don't know")) return 0.30;
+  if (value.includes("9-10")) return 0.95;
+  if (value.includes("7-8")) return 0.75;
+  if (value.includes("5-6")) return 0.55;
+  if (value.includes("3-4")) return 0.35;
+  if (value.includes("1-2")) return 0.15;
+  return 0.30;
+}
+
+function parseUnavailablePercent(value: string): number {
+  if (value.includes("0-10%")) return 0;
+  if (value.includes("11-25%")) return 18;
+  if (value.includes("26-50%")) return 38;
+  if (value.includes("51-75%")) return 63;
+  if (value.includes("76-100%")) return 88;
+  if (value.includes("I don't know")) return 30;
+  return 30;
+}
+
+function parseNoShowRate(value: string): number {
+  if (value.includes("I don't track")) return 15;
+  if (value.includes("35%+")) return 40;
+  if (value.includes("21-35%")) return 28;
+  if (value.includes("11-20%")) return 15;
+  if (value.includes("0-10%")) return 5;
+  return 15;
+}
+
+function parseManualHours(value: string): number {
+  if (value.includes("I'm not sure")) return 8;
+  if (value.includes("20+")) return 25;
+  if (value.includes("11-20")) return 15;
+  if (value.includes("6-10")) return 8;
+  if (value.includes("3-5")) return 4;
+  if (value.includes("0-2")) return 1;
+  return 8;
+}
+
+function roundToFifty(value: number): number {
+  return Math.round(value / 50) * 50;
+}
+
+function conservativeEstimate(low: number, high: number): number {
+  return roundToFifty((low * 0.6) + (high * 0.4));
+}
+
+// =====================================================
+// SPEED GAP CALCULATION (FIXED)
+// =====================================================
+
+function calculateSpeedGap(data: AssessmentData, monthlyLeads: number, avgJobValue: number): GapScore {
+  const findings: string[] = [];
+  const causes: string[] = [];
+
+  const unavailablePercent = parseUnavailablePercent(data.unavailability_pct);
+  
+  if (unavailablePercent === 0) {
+    return {
+      estimate: 0,
+      findings: ["You're available nearly 100% of the time - excellent speed coverage"],
+      causes: [],
+      calculationDetails: {
+        description: "No speed gap - you are always available",
+        formula: "0% unavailable = $0 speed gap",
+        inputs: { unavailablePercent: 0 }
+      }
+    };
+  }
+
+  const speedLossRates: Record<string, number> = {
+    "Under 5 minutes (excellent—top 10%)": 0.05,
+    "5-30 minutes (good—top 25%)": 0.18,
+    "30 minutes to 2 hours (average—middle 50%)": 0.30,
+    "2-4 hours (slow—bottom 25%)": 0.40,
+    "4-24 hours (very slow—bottom 10%)": 0.55,
+    "24+ hours (critical problem)": 0.70,
+    "It varies wildly (inconsistent)": 0.45
+  };
+
+  const responseTime = data.first_contact_speed;
+  const speedLossRate = speedLossRates[responseTime] || 0.30;
+  
+  const unavailableLeads = monthlyLeads * (unavailablePercent / 100);
+  
+  // Weighting: 70% Phone, 30% Digital
+  const phoneWeight = 0.7;
+  const digitalWeight = 0.3;
+
+  const phoneLossMultipliers: Record<string, number> = {
+    "Voicemail only": 0.8,
+    "Answering service": 0.5,
+    "AI voice assistant": 0.1,
+    "Honestly, most calls get missed": 0.95,
+    "I'm not sure": 0.7
+  };
+
+  const digitalLossMultipliers: Record<string, number> = {
+    "Auto-responder": 0.3,
+    "Self-service booking": 0.1,
+    "We respond when we can": 0.6,
+    "Many slip through": 0.85,
+    "I'm not sure": 0.5
+  };
+
+  const phoneMultiplier = phoneLossMultipliers[data.phone_unavailable_handling] || 0.7;
+  const digitalMultiplier = digitalLossMultipliers[data.digital_unavailable_handling] || 0.5;
+
+  const leadsLost = unavailableLeads * ((phoneMultiplier * phoneWeight) + (digitalMultiplier * digitalWeight)) * speedLossRate;
+
+  const lowEstimate = leadsLost * avgJobValue * 0.50;
+  const highEstimate = leadsLost * avgJobValue * 0.70;
+  const estimate = conservativeEstimate(lowEstimate, highEstimate);
+
+  const responseLabel = responseTime.split('(')[0].trim();
+  findings.push(`Average response time: ${responseLabel}`);
+  findings.push(`${unavailablePercent}% of leads arrive when you're unavailable`);
+  findings.push(`Phone handling: ${data.phone_unavailable_handling}`);
+  findings.push(`Digital handling: ${data.digital_unavailable_handling}`);
+
+  causes.push(`${unavailablePercent}% of your leads arrive when you're unavailable`);
+  causes.push(`Phone calls go to: ${data.phone_unavailable_handling}`);
+  causes.push(`Digital leads handled via: ${data.digital_unavailable_handling}`);
+  causes.push(`You respond in ${responseLabel} when available, but miss this ${unavailablePercent}% entirely`);
+  causes.push("Competitors with AI answering capture these leads in under 60 seconds");
+
+  return {
+    estimate,
+    findings,
+    causes,
+    calculationDetails: {
+      description: "Speed Gap = Unavailable leads x Loss rate x Avg job value",
+      formula: `${monthlyLeads} x ${unavailablePercent}% x ${Math.round(speedLossRate * 100)}% x $${avgJobValue}`,
+      inputs: {
+        monthlyLeads,
+        unavailablePercent: `${unavailablePercent}%`,
+        lossRate: `${Math.round(speedLossRate * 100)}%`,
+        avgJobValue: `$${avgJobValue}`,
+        leadsLost: Math.round(leadsLost),
+        result: `~$${estimate.toLocaleString()}`
+      }
+    }
+  };
+}
+
+// =====================================================
+// SILENCE GAP CALCULATION (FIXED - Dormant amortized)
+// =====================================================
+
+function calculateSilenceGap(data: AssessmentData, monthlyLeads: number, avgJobValue: number, closeRate: number): GapScore {
+  const findings: string[] = [];
+  const causes: string[] = [];
+
+  const noShowRate = parseNoShowRate(data.no_show_rate);
+  const noShowAppointments = monthlyLeads * closeRate * (noShowRate / 100);
+  const noShowRecoveryRate = 0.25;
+  const noShowMonthly = noShowAppointments * noShowRecoveryRate * avgJobValue;
+
+  const quotesGiven = monthlyLeads * closeRate;
+  const staleQuotes = quotesGiven * 0.50;
+  
+  const quoteRecoveryRates: Record<string, number> = {
+    "Automated follow-up sequence": 0.10,
+    "Manual follow-up": 0.15,
+    "One attempt": 0.20,
+    "Nothing": 0.25
+  };
+  
+  let quoteRecoveryRate = 0.20;
+  for (const [key, rate] of Object.entries(quoteRecoveryRates)) {
+    if (data.quote_followup.includes(key)) {
+      quoteRecoveryRate = rate;
+      break;
+    }
+  }
+  const quoteMonthly = staleQuotes * quoteRecoveryRate * avgJobValue;
+
+  const dormantCounts: Record<string, number> = {
+    "hundreds or thousands": 500,
+    "50-200": 125,
+    "under 50": 25,
+    "No, we actively": 0,
+    "I don't know": 100
+  };
+  
+  let dormantCount = 100;
+  for (const [key, count] of Object.entries(dormantCounts)) {
+    if (data.dormant_leads.includes(key)) {
+      dormantCount = count;
+      break;
+    }
+  }
+  
+  const reactivationRate = 0.08;
+  const dormantOneTime = dormantCount * reactivationRate * avgJobValue;
+  const dormantMonthly = dormantOneTime / 12;
+
+  const totalLow = (noShowMonthly + quoteMonthly + dormantMonthly) * 0.8;
+  const totalHigh = (noShowMonthly + quoteMonthly + dormantMonthly) * 1.2;
+  const estimate = conservativeEstimate(totalLow, totalHigh);
+
+  const noShowLabel = data.no_show_rate.split('(')[0].trim();
+  findings.push(`No-show recovery: ${data.no_show_recovery.split('(')[0].trim()}`);
+  findings.push(`Quote follow-up: ${data.quote_followup.split('(')[0].trim()}`);
+  findings.push(`Dormant database: ${data.dormant_leads.split('(')[0].trim()}`);
+
+  if (!data.no_show_recovery.includes("automatically")) {
+    causes.push("No-shows represent lost revenue with inconsistent recovery effort");
+  }
+  if (data.quote_followup.includes("Nothing") || data.quote_followup.includes("One attempt")) {
+    causes.push("Quotes sent without persistent follow-up have significantly lower close rates");
+  }
+  if (dormantCount > 0) {
+    causes.push(`~${dormantCount} dormant leads represent untapped revenue (8% reactivation typical)`);
+  }
+
+  return {
+    estimate,
+    findings,
+    causes,
+    calculationDetails: {
+      description: "Silence Gap = No-show recovery + Quote follow-up + Dormant reactivation",
+      formula: `($${Math.round(noShowMonthly)}) + ($${Math.round(quoteMonthly)}) + ($${Math.round(dormantMonthly)}/mo from ${dormantCount} dormant leads)`,
+      inputs: {
+        noShowRate: `${noShowRate}%`,
+        noShowMonthly: `~$${Math.round(noShowMonthly).toLocaleString()}/mo`,
+        staleQuotes: Math.round(staleQuotes),
+        quoteMonthly: `~$${Math.round(quoteMonthly).toLocaleString()}/mo`,
+        dormantCount,
+        dormantMonthly: `~$${Math.round(dormantMonthly).toLocaleString()}/mo (amortized over 12 months)`,
+        result: `~$${estimate.toLocaleString()}`
+      }
+    }
+  };
+}
+
+// =====================================================
+// CHAOS GAP CALCULATION
+// =====================================================
+
+function calculateChaosGap(data: AssessmentData): GapScore {
+  const findings: string[] = [];
+  const causes: string[] = [];
+
+  const manualHours = parseManualHours(data.manual_hours);
+  const hourlyRate = 30;
+  const weeksPerMonth = 4.33;
+  const monthlyHours = manualHours * weeksPerMonth;
+  
+  const lowEstimate = monthlyHours * hourlyRate * 0.8;
+  const highEstimate = monthlyHours * hourlyRate * 1.2;
+  const estimate = conservativeEstimate(lowEstimate, highEstimate);
+
+  findings.push(`${manualHours} hours/week on manual coordination`);
+  findings.push(`Knowledge bottleneck: ${data.knowledge_bottleneck.split('(')[0].trim()}`);
+  findings.push(`Operational complexity: ${data.operational_complexity.split('(')[0].trim()}`);
+
+  if (manualHours >= 20) {
+    causes.push("Team is drowning in administrative tasks");
+  } else if (manualHours >= 11) {
+    causes.push("Significant time lost to manual data entry and coordination");
+  } else if (manualHours >= 6) {
+    causes.push("Noticeable drag from manual processes");
+  }
+
+  if (data.knowledge_bottleneck.includes("major bottleneck")) {
+    causes.push("Constant interruptions for repeated questions");
+  }
+
+  if (data.operational_complexity.includes("complex") || data.operational_complexity.includes("Enterprise")) {
+    causes.push("High complexity amplifies operational inefficiencies");
+  }
+
+  return {
+    estimate,
+    findings,
+    causes,
+    calculationDetails: {
+      description: "Chaos Gap = Weekly manual hours x $30/hr x 4.33 weeks",
+      formula: `${manualHours} hours x $30 x 4.33 weeks = ~$${estimate.toLocaleString()}/mo`,
+      inputs: {
+        manualHoursPerWeek: manualHours,
+        hourlyRate: "$30",
+        monthlyHours: Math.round(monthlyHours),
+        result: `~$${estimate.toLocaleString()}`
+      }
+    }
+  };
+}
+
+// =====================================================
+// TIER RECOMMENDATION (FIXED - Match highest gap)
+// =====================================================
+
+function recommendTier(
+  speedGap: number,
+  silenceGap: number,
+  chaosGap: number,
+  monthlyLeads: number,
+  complexity: string
+): { tier: 'Frontline' | 'Specialist' | 'Command'; reason: string } {
+  const isComplex = complexity.includes("complex") || complexity.includes("Enterprise");
+  const maxGap = Math.max(speedGap, silenceGap, chaosGap);
+  
+  let dominantGapName = "Speed";
+  let dominantGapValue = speedGap;
+  if (silenceGap === maxGap) {
+    dominantGapName = "Silence";
+    dominantGapValue = silenceGap;
+  } else if (chaosGap === maxGap) {
+    dominantGapName = "Chaos";
+    dominantGapValue = chaosGap;
+  }
+
+  if (complexity.includes("Enterprise")) {
+    return {
+      tier: 'Command',
+      reason: `Your enterprise-level operations require full automation. Your ${dominantGapName} Gap is ~$${dominantGapValue.toLocaleString()}/mo.`
+    };
+  }
+
+  if (monthlyLeads > 150) {
+    return {
+      tier: 'Command',
+      reason: `With ${monthlyLeads} leads/month, you need enterprise-grade automation. Your ${dominantGapName} Gap is ~$${dominantGapValue.toLocaleString()}/mo.`
+    };
+  }
+
+  if (chaosGap === maxGap && isComplex) {
+    return {
+      tier: 'Command',
+      reason: `Your Chaos Gap (~$${chaosGap.toLocaleString()}/mo) combined with operational complexity requires full automation.`
+    };
+  }
+
+  if (chaosGap === maxGap) {
+    return {
+      tier: 'Specialist',
+      reason: `Your biggest cost is the Chaos Gap (~$${chaosGap.toLocaleString()}/mo). Specialist includes automation that eliminates manual coordination and admin work.`
+    };
+  }
+  
+  if (silenceGap === maxGap || silenceGap > speedGap * 1.5) {
+    return {
+      tier: 'Specialist',
+      reason: `Your biggest cost is the Silence Gap (~$${silenceGap.toLocaleString()}/mo). Frontline only fixes Speed—it won't address no-shows, stale quotes, or dormant leads. Specialist addresses both.`
+    };
+  }
+
+  return {
+    tier: 'Frontline',
+    reason: `Your primary gap is Speed (~$${speedGap.toLocaleString()}/mo). Frontline provides instant response when you're unavailable.`
+  };
+}
+
+// =====================================================
+// MAIN CALCULATION FUNCTION
+// =====================================================
+
+export function calculateResults(data: AssessmentData): AssessmentResult {
+  const monthlyLeads = parseMonthlyLeads(data.monthly_lead_volume);
+  const avgJobValue = parseJobValue(data.avg_job_value);
+  const closeRate = parseCloseRate(data.close_rate);
+
+  const speedGap = calculateSpeedGap(data, monthlyLeads, avgJobValue);
+  const silenceGap = calculateSilenceGap(data, monthlyLeads, avgJobValue, closeRate);
+  const chaosGap = calculateChaosGap(data);
+
+  const totalMonthlyGap = speedGap.estimate + silenceGap.estimate + chaosGap.estimate;
+  const annualizedGap = totalMonthlyGap * 12;
+
+  const { tier, reason } = recommendTier(
+    speedGap.estimate,
+    silenceGap.estimate,
+    chaosGap.estimate,
+    monthlyLeads,
+    data.operational_complexity
+  );
+
+  return {
+    businessName: data.business_name || "Your Business",
+    industry: data.industry,
+    niche: data.niche_specificity,
+    teamSize: data.team_size,
+    monthlyLeads,
+    avgJobValue,
+    closeRate,
+
+    speedGap,
+    silenceGap,
+    chaosGap,
+
+    totalMonthlyGap,
+    annualizedGap,
+
+    recommendedTier: tier,
+    tierReason: reason
+  };
+}
+
+================================================================================
+FILE 2: client/src/lib/types.ts
+================================================================================
+
+import { z } from "zod";
+
+// =====================================================
+// STEP 1: PAIN SELECTION
+// =====================================================
+
+export const RevenuePainItemSchema = z.object({
+  value: z.string(),
+  severity: z.number().min(1).max(5)
+});
+
+export const RevenuePainSchema = z.array(RevenuePainItemSchema).min(1, "Select at least one area that feels familiar").max(3, "Select up to 3 areas");
+
+export type RevenuePainItem = z.infer<typeof RevenuePainItemSchema>;
+
+// =====================================================
+// STEP 2: BUSINESS CONTEXT
+// =====================================================
+
+export const IndustrySchema = z.enum([
+  "HVAC",
+  "Plumbing",
+  "Electrical",
+  "Roofing",
+  "Solar",
+  "Remodeling",
+  "Landscaping",
+  "Windows & Doors",
+  "Painting",
+  "Cleaning",
+  "Pest Control",
+  "Legal",
+  "Med Spa / Aesthetics",
+  "Real Estate",
+  "Auto Services",
+  "Other"
+]);
+
+export const TeamSizeSchema = z.enum([
+  "Solo",
+  "2–5",
+  "6–15",
+  "16–50",
+  "50+"
+]);
+
+export const MonthlyLeadVolumeSchema = z.enum([
+  "1-10 leads/month",
+  "11-25 leads/month",
+  "26-50 leads/month",
+  "51-100 leads/month",
+  "101-200 leads/month",
+  "200+ leads/month",
+  "I don't know"
+]);
+
+// =====================================================
+// STEP 3: SPEED GAP
+// =====================================================
+
+export const FirstContactSpeedSchema = z.enum([
+  "Under 5 minutes (excellent—top 10%)",
+  "5-30 minutes (good—top 25%)",
+  "30 minutes to 2 hours (average—middle 50%)",
+  "2-4 hours (slow—bottom 25%)",
+  "4-24 hours (very slow—bottom 10%)",
+  "24+ hours (critical problem)",
+  "It varies wildly (inconsistent)"
+]);
+
+export const UnavailabilityPctSchema = z.enum([
+  "0-10% (Rare—we're almost always available)",
+  "11-25% (Occasional—some evenings/weekends)",
+  "26-50% (Frequent—about half the time)",
+  "51-75% (Most of the time—we miss more than we catch)",
+  "76-100% (Nearly constant—we're rarely available when they call)",
+  "I don't know (we don't track this)"
+]);
+
+export const PhoneUnavailableHandlingSchema = z.enum([
+  "Voicemail only",
+  "Answering service",
+  "AI voice assistant",
+  "Honestly, most calls get missed"
+]);
+
+export const DigitalUnavailableHandlingSchema = z.enum([
+  "Auto-responder",
+  "Self-service booking",
+  "We respond when we can",
+  "Many slip through"
+]);
+
+// =====================================================
+// STEP 4: SILENCE GAP
+// =====================================================
+
+export const NoShowRecoverySchema = z.enum([
+  "Yes, automatically (system does it for us)",
+  "Yes, manually (someone has to remember to do it)",
+  "Sometimes (when we're not too busy)",
+  "Rarely (we try but it's inconsistent)",
+  "No (once they no-show, they're gone)"
+]);
+
+export const QuoteFollowUpSchema = z.enum([
+  "Automated follow-up sequence (emails/texts until they respond)",
+  "Manual follow-up (we call/text when we remember)",
+  "One attempt (we follow up once, then stop)",
+  "Nothing (once we quote, we wait for them to decide)"
+]);
+
+export const DormantLeadsSchema = z.enum([
+  "Yes, hundreds or thousands (significant untapped opportunity)",
+  "Yes, 50-200 leads (moderate database)",
+  "Yes, under 50 (small list)",
+  "No, we actively work our database (stay on top of it)",
+  "I don't know / We don't track leads in a database"
+]);
+
+export const NoShowRateSchema = z.enum([
+  "0-10% (excellent—very reliable customers)",
+  "11-20% (average—some no-shows)",
+  "21-35% (high—significant problem)",
+  "35%+ (critical—major revenue drain)",
+  "I don't track this"
+]);
+
+// =====================================================
+// STEP 5: CHANNEL & ENGAGEMENT
+// =====================================================
+
+export const ContactChannelSchema = z.enum([
+  "Phone call",
+  "Text/SMS",
+  "Website form",
+  "Social media messages",
+  "Chat widget",
+  "Email",
+  "Online booking",
+  "Walk-ins only"
+]);
+export type ContactChannel = z.infer<typeof ContactChannelSchema>;
+
+export const SocialMediaActivitySchema = z.enum([
+  "Yes, very active (post 3+ times/week, respond to comments/DMs)",
+  "Somewhat active (have pages, post occasionally)",
+  "Barely active (pages exist but rarely use them)",
+  "No (don't use social media for business)"
+]);
+
+export const ReviewRequestSchema = z.enum([
+  "Yes, automatically (every customer gets a review request)",
+  "Yes, manually (we ask when we remember)",
+  "Sometimes (only our best customers)",
+  "No (we rely on organic reviews)"
+]);
+
+export const CloseRateSchema = z.enum([
+  "1-2 out of 10 (10-20%)",
+  "3-4 out of 10 (30-40%)",
+  "5-6 out of 10 (50-60%)",
+  "7-8 out of 10 (70-80%)",
+  "9-10 out of 10 (90-100%)",
+  "I don't know"
+]);
+
+// =====================================================
+// STEP 6: CHAOS GAP
+// =====================================================
+
+export const ManualHoursSchema = z.enum([
+  "0-2 hours/week (minimal—very streamlined)",
+  "3-5 hours/week (manageable)",
+  "6-10 hours/week (significant—noticeable drag)",
+  "11-20 hours/week (major time sink)",
+  "20+ hours/week (overwhelming—drowning in admin)",
+  "I'm not sure"
+]);
+
+export const KnowledgeBottleneckSchema = z.enum([
+  "Yes, major bottleneck (constant interruptions for the same questions)",
+  "Yes, but manageable (happens occasionally)",
+  "No (everything is straightforward or well-documented)"
+]);
+
+export const OperationalComplexitySchema = z.enum([
+  "Single location, focused service (simple)",
+  "Single location, multiple service lines (moderate)",
+  "Multiple locations, same service (moderate)",
+  "Multiple locations, multiple services (complex)",
+  "Enterprise/franchise operations (very complex)"
+]);
+
+// =====================================================
+// ASSESSMENT SCHEMA (Speed/Silence/Chaos Framework)
+// =====================================================
+
+export const AssessmentSchema = z.object({
+  // Step 1: Pain Selection
+  revenue_pain: RevenuePainSchema,
+
+  // Step 2: Business Context
+  business_name: z.string().min(1, "Business name or website is required"),
+  industry: IndustrySchema,
+  niche_specificity: z.string().min(1, "Select your specialization"),
+  team_size: TeamSizeSchema,
+  avg_job_value: z.string().min(1, "Required"),
+  monthly_lead_volume: MonthlyLeadVolumeSchema,
+
+  // Step 3: Speed Gap
+  first_contact_speed: FirstContactSpeedSchema,
+  unavailability_pct: UnavailabilityPctSchema,
+  phone_unavailable_handling: PhoneUnavailableHandlingSchema,
+  digital_unavailable_handling: DigitalUnavailableHandlingSchema,
+
+  // Step 4: Silence Gap
+  no_show_recovery: NoShowRecoverySchema,
+  quote_followup: QuoteFollowUpSchema,
+  dormant_leads: DormantLeadsSchema,
+  no_show_rate: NoShowRateSchema,
+
+  // Step 5: Channel & Engagement
+  contact_channels: z.array(ContactChannelSchema).min(1, "Select at least one channel"),
+  social_media_activity: SocialMediaActivitySchema,
+  review_request: ReviewRequestSchema,
+  close_rate: CloseRateSchema,
+
+  // Step 6: Chaos Gap
+  manual_hours: ManualHoursSchema,
+  knowledge_bottleneck: KnowledgeBottleneckSchema,
+  operational_complexity: OperationalComplexitySchema,
+
+  // Contact fields (for lead capture)
+  contact_name: z.string().min(1, "Name is required"),
+  contact_email: z.string().email("Invalid email address"),
+  contact_phone: z.string().optional(),
+  contact_website: z.string().optional(),
+  disclaimer_accepted: z.boolean().refine(v => v === true, "You must accept the disclaimer")
+});
+
+export type AssessmentData = z.infer<typeof AssessmentSchema>;
+
+export type StepId = 'pain' | 'context' | 'speed' | 'silence' | 'channels' | 'chaos' | 'contact';
+
+================================================================================
+FILE 3: client/src/lib/constants.ts
+================================================================================
+
+import { StepId } from "./types";
+
+// =====================================================
+// STEP DEFINITIONS (Speed/Silence/Chaos Framework)
+// =====================================================
+
+export const STEPS: { id: StepId; title: string; description: string; progress: number; fields: string[] }[] = [
+  {
+    id: 'context',
+    title: "Tell Us About Your Business",
+    description: "To give you precise numbers, we need to understand your business compared to the 1,200+ similar companies we've analyzed.",
+    progress: 0,
+    fields: ['business_name', 'industry', 'niche_specificity', 'team_size', 'avg_job_value', 'monthly_lead_volume']
+  },
+  {
+    id: 'pain',
+    title: "Where Do You Suspect Revenue Is Slipping?",
+    description: "Select up to 3 areas that feel familiar. It's okay if you're not sure - that's what we're here to figure out together.",
+    progress: 17,
+    fields: ['revenue_pain']
+  },
+  {
+    id: 'speed',
+    title: "The Speed Gap",
+    description: "Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first.",
+    progress: 33,
+    fields: ['first_contact_speed', 'phone_unavailable_handling', 'digital_unavailable_handling', 'unavailability_pct']
+  },
+  {
+    id: 'silence',
+    title: "The Silence Gap",
+    description: "Most revenue isn't lost at first contact—it's lost in the days and weeks after when no one follows up. 80% of sales require 5+ touchpoints.",
+    progress: 50,
+    fields: ['no_show_recovery', 'quote_followup', 'no_show_rate', 'dormant_leads']
+  },
+  {
+    id: 'channels',
+    title: "How Leads Try to Reach You",
+    description: "Let's see if you're actually monitoring all the ways leads try to contact you—and whether you're showing up where your competitors are.",
+    progress: 67,
+    fields: ['contact_channels', 'close_rate', 'social_media_activity', 'review_request']
+  },
+  {
+    id: 'chaos',
+    title: "The Chaos Gap",
+    description: "Let's quantify how much time you're losing to manual coordination and busywork—time that could be spent serving customers.",
+    progress: 83,
+    fields: ['manual_hours', 'knowledge_bottleneck', 'operational_complexity']
+  },
+  {
+    id: 'contact' as StepId,
+    title: "Get Your Results",
+    description: "Enter your details below to receive your custom revenue gap analysis and implementation roadmap.",
+    progress: 95,
+    fields: ['contact_name', 'contact_email', 'contact_phone', 'disclaimer_accepted']
+  }
+];
+
+// =====================================================
+// STEP 2: PAIN SELECTION OPTIONS
+// =====================================================
+
+export const REVENUE_PAIN_OPTIONS = [
+  { value: "Leads disappear before we can respond", subtitle: "They move faster than we do" },
+  { value: "We're too slow to beat competitors", subtitle: "Someone else gets there first" },
+  { value: "No-shows and quotes go cold", subtitle: "We don't follow up systematically" },
+  { value: "Old leads sit unused in our database", subtitle: "Hundreds of opportunities rotting" },
+  { value: "Too much manual chaos", subtitle: "Data entry, coordination, busywork" },
+  { value: "Not sure—we just know we're leaving money on the table", subtitle: "Help us figure it out" }
+];
+
+// =====================================================
+// STEP 1: BUSINESS CONTEXT OPTIONS
+// =====================================================
+
+export const INDUSTRIES = [
+  "HVAC",
+  "Plumbing",
+  "Electrical",
+  "Roofing",
+  "Solar",
+  "Remodeling",
+  "Landscaping",
+  "Windows & Doors",
+  "Painting",
+  "Cleaning",
+  "Pest Control",
+  "Legal",
+  "Med Spa / Aesthetics",
+  "Real Estate",
+  "Auto Services",
+  "Other"
+] as const;
+
+export const HVAC_BUSINESS_TYPES = ["Service & Repair", "System Replacement", "New Construction", "Commercial"];
+export const PLUMBING_BUSINESS_TYPES = ["General Service/Repair", "Sewer & Excavation", "Water Heaters/Filtration", "New Construction"];
+export const ELECTRICAL_BUSINESS_TYPES = ["Service Calls", "Panel Upgrades/Rewiring", "Solar/Battery", "Lighting Design"];
+export const ROOFING_BUSINESS_TYPES = ["Repairs/Maintenance", "Full Replacement (Resi)", "Commercial Roofing", "Storm Restoration"];
+export const SOLAR_BUSINESS_TYPES = ["Residential Install", "Panel Cleaning/Maintenance", "Commercial Project"];
+export const REMODELING_BUSINESS_TYPES = ["Kitchen/Bath", "Whole Home", "Decks/Outdoor", "Handyman Services"];
+export const LANDSCAPING_BUSINESS_TYPES = ["Maintenance (Mow/Blow)", "Design & Build (Hardscaping)", "Tree Service", "Irrigation"];
+export const WINDOWS_DOORS_BUSINESS_TYPES = ["Retrofit/Replacement", "New Construction", "Glass Repair"];
+export const PAINTING_BUSINESS_TYPES = ["Residential Interior/Exterior", "Cabinet Refinishing", "Commercial"];
+export const CLEANING_BUSINESS_TYPES = ["Residential Maid Service", "Commercial Janitorial", "Carpet/Specialty"];
+export const PEST_CONTROL_BUSINESS_TYPES = ["General Pest", "Termite/Wildlife (High Ticket)", "Commercial"];
+export const LEGAL_BUSINESS_TYPES = ["Personal Injury (Contingency)", "Family/Criminal (Retainer)", "Estate Planning (Flat Fee)", "Corporate"];
+export const MED_SPA_BUSINESS_TYPES = ["Injectables/Lasers", "Plastic Surgery", "General Skincare"];
+export const REAL_ESTATE_BUSINESS_TYPES = ["Residential Sales", "Property Management", "Commercial Sales"];
+export const AUTO_BUSINESS_TYPES = ["Detailing/PPF", "General Repair", "Body Shop"];
+
+export const INDUSTRY_NICHE_MAP: Record<string, readonly string[]> = {
+  "HVAC": HVAC_BUSINESS_TYPES,
+  "Plumbing": PLUMBING_BUSINESS_TYPES,
+  "Electrical": ELECTRICAL_BUSINESS_TYPES,
+  "Roofing": ROOFING_BUSINESS_TYPES,
+  "Solar": SOLAR_BUSINESS_TYPES,
+  "Remodeling": REMODELING_BUSINESS_TYPES,
+  "Painting": PAINTING_BUSINESS_TYPES,
+  "Cleaning": CLEANING_BUSINESS_TYPES,
+  "Landscaping": LANDSCAPING_BUSINESS_TYPES,
+  "Windows & Doors": WINDOWS_DOORS_BUSINESS_TYPES,
+  "Pest Control": PEST_CONTROL_BUSINESS_TYPES,
+  "Med Spa / Aesthetics": MED_SPA_BUSINESS_TYPES,
+  "Legal": LEGAL_BUSINESS_TYPES,
+  "Auto Services": AUTO_BUSINESS_TYPES,
+  "Real Estate": REAL_ESTATE_BUSINESS_TYPES
+};
+
+export const TEAM_SIZE_OPTIONS = [
+  "Solo",
+  "2–5",
+  "6–15",
+  "16–50",
+  "50+"
+] as const;
+
+export const MONTHLY_LEAD_VOLUME_OPTIONS = [
+  "1-10 leads/month",
+  "11-25 leads/month",
+  "26-50 leads/month",
+  "51-100 leads/month",
+  "101-200 leads/month",
+  "200+ leads/month",
+  "I don't know"
+] as const;
+
+// =====================================================
+// STEP 3: SPEED GAP OPTIONS
+// =====================================================
+
+export const FIRST_CONTACT_SPEED_OPTIONS = [
+  "Under 5 minutes (excellent—top 10%)",
+  "5-30 minutes (good—top 25%)",
+  "30 minutes to 2 hours (average—middle 50%)",
+  "2-4 hours (slow—bottom 25%)",
+  "4-24 hours (very slow—bottom 10%)",
+  "24+ hours (critical problem)",
+  "It varies wildly (inconsistent)"
+] as const;
+
+export const UNAVAILABILITY_PCT_OPTIONS = [
+  "0-10% (Rare—we're almost always available)",
+  "11-25% (Occasional—some evenings/weekends)",
+  "26-50% (Frequent—about half the time)",
+  "51-75% (Most of the time—we miss more than we catch)",
+  "76-100% (Nearly constant—we're rarely available when they call)",
+  "I don't know (we don't track this)"
+] as const;
+
+export const PHONE_UNAVAILABLE_HANDLING_OPTIONS = [
+  { value: "Voicemail only", subtitle: "They leave a message, we call back when we can" },
+  { value: "Answering service", subtitle: "Human takes messages, we return calls later" },
+  { value: "AI voice assistant", subtitle: "24/7 intelligent voice answering" },
+  { value: "Honestly, most calls get missed", subtitle: "We do our best but know we miss some" }
+] as const;
+
+export const DIGITAL_UNAVAILABLE_HANDLING_OPTIONS = [
+  { value: "Auto-responder", subtitle: "Automatic text/email: \"We'll get back to you soon\"" },
+  { value: "Self-service booking", subtitle: "Online scheduling available 24/7" },
+  { value: "We respond when we can", subtitle: "Manual response later" },
+  { value: "Many slip through", subtitle: "Web leads often go unaddressed" }
+] as const;
+
+// =====================================================
+// STEP 4: SILENCE GAP OPTIONS
+// =====================================================
+
+export const NO_SHOW_RECOVERY_OPTIONS = [
+  "Yes, automatically (system does it for us)",
+  "Yes, manually (someone has to remember to do it)",
+  "Sometimes (when we're not too busy)",
+  "Rarely (we try but it's inconsistent)",
+  "No (once they no-show, they're gone)"
+] as const;
+
+export const QUOTE_FOLLOWUP_OPTIONS = [
+  "Automated follow-up sequence (emails/texts until they respond)",
+  "Manual follow-up (we call/text when we remember)",
+  "One attempt (we follow up once, then stop)",
+  "Nothing (once we quote, we wait for them to decide)"
+] as const;
+
+export const DORMANT_LEADS_OPTIONS = [
+  "Yes, hundreds or thousands (significant untapped opportunity)",
+  "Yes, 50-200 leads (moderate database)",
+  "Yes, under 50 (small list)",
+  "No, we actively work our database (stay on top of it)",
+  "I don't know / We don't track leads in a database"
+] as const;
+
+export const NO_SHOW_RATE_OPTIONS = [
+  "0-10% (excellent—very reliable customers)",
+  "11-20% (average—some no-shows)",
+  "21-35% (high—significant problem)",
+  "35%+ (critical—major revenue drain)",
+  "I don't track this"
+] as const;
+
+// =====================================================
+// STEP 5: CHANNEL & ENGAGEMENT OPTIONS
+// =====================================================
+
+export const CONTACT_CHANNEL_OPTIONS = [
+  { value: "Phone call", subtitle: "Direct calls" },
+  { value: "Text/SMS", subtitle: "Mobile messaging" },
+  { value: "Website form", subtitle: "Contact form, quote request" },
+  { value: "Social media messages", subtitle: "Instagram, Facebook, WhatsApp" },
+  { value: "Chat widget", subtitle: "Live chat on website" },
+  { value: "Email", subtitle: "Direct email" },
+  { value: "Online booking", subtitle: "Self-service scheduling" },
+  { value: "Walk-ins only", subtitle: "No digital presence" }
+] as const;
+
+export const SOCIAL_MEDIA_ACTIVITY_OPTIONS = [
+  "Yes, very active (post 3+ times/week, respond to comments/DMs)",
+  "Somewhat active (have pages, post occasionally)",
+  "Barely active (pages exist but rarely use them)",
+  "No (don't use social media for business)"
+] as const;
+
+export const REVIEW_REQUEST_OPTIONS = [
+  "Yes, automatically (every customer gets a review request)",
+  "Yes, manually (we ask when we remember)",
+  "Sometimes (only our best customers)",
+  "No (we rely on organic reviews)"
+] as const;
+
+export const CLOSE_RATE_OPTIONS = [
+  "1-2 out of 10 (10-20%)",
+  "3-4 out of 10 (30-40%)",
+  "5-6 out of 10 (50-60%)",
+  "7-8 out of 10 (70-80%)",
+  "9-10 out of 10 (90-100%)",
+  "I don't know"
+] as const;
+
+// =====================================================
+// STEP 6: CHAOS GAP OPTIONS
+// =====================================================
+
+export const MANUAL_HOURS_OPTIONS = [
+  "0-2 hours/week (minimal—very streamlined)",
+  "3-5 hours/week (manageable)",
+  "6-10 hours/week (significant—noticeable drag)",
+  "11-20 hours/week (major time sink)",
+  "20+ hours/week (overwhelming—drowning in admin)",
+  "I'm not sure"
+] as const;
+
+export const KNOWLEDGE_BOTTLENECK_OPTIONS = [
+  "Yes, major bottleneck (constant interruptions for the same questions)",
+  "Yes, but manageable (happens occasionally)",
+  "No (everything is straightforward or well-documented)"
+] as const;
+
+export const OPERATIONAL_COMPLEXITY_OPTIONS = [
+  { value: "Single location, focused service (simple)", complexity: "simple" },
+  { value: "Single location, multiple service lines (moderate)", complexity: "moderate" },
+  { value: "Multiple locations, same service (moderate)", complexity: "moderate" },
+  { value: "Multiple locations, multiple services (complex)", complexity: "complex" },
+  { value: "Enterprise/franchise operations (very complex)", complexity: "very_complex" }
+] as const;
+
+// =====================================================
+// SPEED GAP LOSS BENCHMARKS (for scoring)
+// =====================================================
+
+export const SPEED_GAP_LOSS_RATES: Record<string, { min: number; max: number }> = {
+  "Under 5 minutes (excellent—top 10%)": { min: 0, max: 0 },
+  "5-30 minutes (good—top 25%)": { min: 0.15, max: 0.20 },
+  "30 minutes to 2 hours (average—middle 50%)": { min: 0.25, max: 0.35 },
+  "2-4 hours (slow—bottom 25%)": { min: 0.35, max: 0.45 },
+  "4-24 hours (very slow—bottom 10%)": { min: 0.50, max: 0.60 },
+  "24+ hours (critical problem)": { min: 0.65, max: 0.75 },
+  "It varies wildly (inconsistent)": { min: 0.40, max: 0.50 }
+};
+
+// =====================================================
+// TIER RECOMMENDATION THRESHOLDS
+// =====================================================
+
+export const TIER_THRESHOLDS = {
+  frontline: {
+    maxLeadVolume: 50,
+    minSpeedProblems: true,
+    minSilenceProblems: false
+  },
+  specialist: {
+    minLeadVolume: 50,
+    maxLeadVolume: 150,
+    speedProblems: true,
+    silenceProblems: true
+  },
+  command: {
+    minLeadVolume: 150,
+    minManualHours: 10,
+    highComplexity: true
+  }
+};
+
+================================================================================
+FILE 4: shared/schema.ts
+================================================================================
+
+import { sql } from "drizzle-orm";
+import { pgTable, text, varchar, timestamp, integer, jsonb } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
+
+// Assessment leads table
+export const assessmentLeads = pgTable("assessment_leads", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  
+  // Assessment data (stored as JSONB for flexibility)
+  assessmentData: jsonb("assessment_data").notNull(),
+  
+  // Calculated results
+  clarityScore: integer("clarity_score").notNull(),
+  revenueLeakLow: integer("revenue_leak_low").notNull(),
+  revenueLeakHigh: integer("revenue_leak_high").notNull(),
+  timeWastedMinutes: integer("time_wasted_minutes").notNull(),
+  
+  // Contact info (collected after viewing results)
+  contactName: text("contact_name"),
+  contactEmail: text("contact_email"),
+  contactPhone: text("contact_phone"),
+  contactWebsite: text("contact_website"),
+  userFeedback: text("user_feedback"),
+  
+  // Timestamps
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  contactSubmittedAt: timestamp("contact_submitted_at"),
+});
+
+export const insertAssessmentLeadSchema = createInsertSchema(assessmentLeads).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertAssessmentLead = z.infer<typeof insertAssessmentLeadSchema>;
+export type AssessmentLead = typeof assessmentLeads.$inferSelect;
+
+================================================================================
+FILE 5: server/routes.ts
+================================================================================
+
+import type { Express } from "express";
+import { createServer, type Server } from "http";
+import { storage } from "./storage";
+import { z } from "zod";
+
+export async function registerRoutes(
+  httpServer: Server,
+  app: Express
+): Promise<Server> {
+  app.post("/api/assessment/submit", async (req, res) => {
+    try {
+      const schema = z.object({
+        assessmentData: z.any(),
+        speedGapScore: z.number(),
+        silenceGapScore: z.number(),
+        chaosGapScore: z.number(),
+        totalMonthlyImpactLow: z.number().optional(),
+        totalMonthlyImpactHigh: z.number().optional(),
+        contactName: z.string().min(1),
+        contactEmail: z.string().email(),
+        contactPhone: z.string().optional(),
+      });
+
+      const data = schema.parse(req.body);
+
+      const lead = await storage.createAssessmentLead({
+        assessmentData: data.assessmentData,
+        clarityScore: Math.round((100 - (data.speedGapScore + data.silenceGapScore + data.chaosGapScore) / 3)),
+        revenueLeakLow: data.totalMonthlyImpactLow || 0,
+        revenueLeakHigh: data.totalMonthlyImpactHigh || 0,
+        timeWastedMinutes: 0,
+        contactName: data.contactName,
+        contactEmail: data.contactEmail,
+        contactPhone: data.contactPhone || null,
+        contactWebsite: null,
+        contactSubmittedAt: new Date(),
+      });
+
+      res.json({ leadId: lead.id });
+    } catch (error) {
+      console.error("Error submitting assessment:", error);
+      res.status(400).json({ error: "Invalid assessment data" });
+    }
+  });
+
+  app.post("/api/assessment/:leadId/contact", async (req, res) => {
+    try {
+      const { leadId } = req.params;
+      
+      const schema = z.object({
+        contactName: z.string().min(1),
+        contactEmail: z.string().email(),
+        contactPhone: z.string().optional(),
+        contactWebsite: z.string().optional(),
+        userFeedback: z.string().optional(),
+      });
+
+      const contactInfo = schema.parse(req.body);
+
+      const updated = await storage.updateAssessmentLeadContact(leadId, contactInfo);
+
+      if (!updated) {
+        res.status(404).json({ error: "Lead not found" });
+        return;
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error submitting contact:", error);
+      res.status(400).json({ error: "Invalid contact data" });
+    }
+  });
+
+  app.post("/api/feedback", async (req, res) => {
+    try {
+      const schema = z.object({
+        leadId: z.string().optional(),
+        feedback: z.string().min(1),
+      });
+
+      const data = schema.parse(req.body);
+      
+      if (data.leadId) {
+        await storage.updateAssessmentLeadContact(data.leadId, { userFeedback: data.feedback });
+      }
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      res.status(400).json({ error: "Invalid feedback data" });
+    }
+  });
+
+  app.get("/api/assessment/:leadId", async (req, res) => {
+    try {
+      const { leadId } = req.params;
+      const lead = await storage.getAssessmentLead(leadId);
+
+      if (!lead) {
+        res.status(404).json({ error: "Lead not found" });
+        return;
+      }
+
+      res.json(lead);
+    } catch (error) {
+      console.error("Error fetching assessment:", error);
+      res.status(500).json({ error: "Server error" });
+    }
+  });
+
+  return httpServer;
+}
+
+================================================================================
+FILE 6: client/src/components/ui/glass-ui.tsx
+================================================================================
+
+import * as React from "react"
+import { cn } from "@/lib/utils"
+import { Slot } from "@radix-ui/react-slot"
+import * as SliderPrimitive from "@radix-ui/react-slider"
+import * as SelectPrimitive from "@radix-ui/react-select"
+import { Check, ChevronDown, ChevronUp } from "lucide-react"
+
+// --- Button ---
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  asChild?: boolean
+  variant?: "primary" | "secondary" | "ghost" | "outline"
+  size?: "sm" | "md" | "lg"
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = "primary", size = "md", asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
+    return (
+      <Comp
+        className={cn(
+          "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-bold tracking-wide ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95 uppercase",
+          {
+            "bg-primary text-black hover:bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)]": variant === "primary",
+            "bg-secondary text-secondary-foreground hover:bg-secondary/80": variant === "secondary",
+            "hover:bg-cyan-950/30 hover:text-cyan-400": variant === "ghost",
+            "border border-slate-700 bg-transparent hover:border-cyan-500/50 hover:text-cyan-400": variant === "outline",
+            "h-9 px-4 py-2": size === "sm",
+            "h-12 px-8 py-2": size === "md",
+            "h-14 px-10 text-base": size === "lg",
+          },
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Button.displayName = "Button"
+
+// --- Card ---
+const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-2xl text-card-foreground p-8 md:p-12 transition-all duration-300 w-full bg-[#0d1117] border border-[#1e2830] shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.03)] backdrop-blur-sm",
+        className
+      )}
+      {...props}
+    />
+  )
+)
+Card.displayName = "Card"
+
+// --- Input ---
+const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          "flex h-12 w-full rounded-xl border border-[#2a3038] bg-[#12161a] px-4 py-2 text-base text-white ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[#6b7280] focus-visible:outline-none focus-visible:border-[#00D9FF]/60 focus-visible:shadow-[0_0_12px_rgba(0,217,255,0.15),inset_0_1px_0_rgba(0,217,255,0.05)] disabled:cursor-not-allowed disabled:opacity-50 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.02)] hover:border-[#3a4048] hover:shadow-[0_4px_12px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]",
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+Input.displayName = "Input"
+
+// --- Label ---
+const Label = React.forwardRef<HTMLLabelElement, React.LabelHTMLAttributes<HTMLLabelElement>>(
+  ({ className, ...props }, ref) => (
+    <label
+      ref={ref}
+      className={cn(
+        "text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-4 block text-slate-200",
+        className
+      )}
+      {...props}
+    />
+  )
+)
+Label.displayName = "Label"
+
+// --- Select (Custom Radix UI Implementation) ---
+
+interface SelectProps {
+  value?: string;
+  onValueChange?: (value: string) => void;
+  placeholder?: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+const SelectContext = React.createContext<{ onValueChange?: (value: string) => void }>({});
+
+const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
+  ({ children, value, onValueChange, placeholder, className }, ref) => {
+    return (
+      <SelectPrimitive.Root value={value || undefined} onValueChange={onValueChange}>
+        <SelectPrimitive.Trigger
+          ref={ref}
+          className={cn(
+            "flex h-14 w-full items-center justify-between rounded-xl border border-[#2a3038] bg-[#12161a] px-4 py-3 text-base text-white ring-offset-background placeholder:text-[#6b7280] focus:outline-none focus:border-[#00D9FF]/60 focus:shadow-[0_0_12px_rgba(0,217,255,0.15),inset_0_1px_0_rgba(0,217,255,0.05)] disabled:cursor-not-allowed disabled:opacity-50 hover:border-[#3a4048] transition-all shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.02)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)] data-[state=open]:border-[#00D9FF]/60",
+            className
+          )}
+        >
+          <SelectPrimitive.Value placeholder={placeholder} />
+          <SelectPrimitive.Icon asChild>
+            <ChevronDown className="h-5 w-5 text-[#6b7280]" />
+          </SelectPrimitive.Icon>
+        </SelectPrimitive.Trigger>
+        <SelectPrimitive.Portal>
+          <SelectPrimitive.Content
+            className="relative z-50 max-h-96 w-[var(--radix-select-trigger-width)] overflow-hidden rounded-xl border border-[#2a3038] bg-[#0d1117] text-white shadow-[0_8px_32px_rgba(0,0,0,0.6)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+            position="popper"
+            sideOffset={4}
+          >
+            <SelectPrimitive.Viewport className="p-1">
+               <SelectContext.Provider value={{ onValueChange }}>
+                 {children}
+               </SelectContext.Provider>
+            </SelectPrimitive.Viewport>
+          </SelectPrimitive.Content>
+        </SelectPrimitive.Portal>
+      </SelectPrimitive.Root>
+    )
+  }
+)
+Select.displayName = "Select"
+
+const SelectItem = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Item>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Item
+    ref={ref}
+    className={cn(
+      "relative flex w-full cursor-default select-none items-center rounded-lg py-3 px-4 text-base outline-none focus:bg-[#00D9FF] focus:text-[#0a0f12] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 transition-colors cursor-pointer hover:bg-[#00D9FF]/90 hover:text-[#0a0f12] data-[state=checked]:bg-[#00D9FF] data-[state=checked]:text-[#0a0f12]",
+      className
+    )}
+    {...props}
+  >
+    <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+  </SelectPrimitive.Item>
+))
+SelectItem.displayName = SelectPrimitive.Item.displayName
+
+// --- Radio Group ---
+interface RadioOption {
+  value: string;
+  label: string;
+  subtitle?: string;
+}
+
+interface RadioGroupProps {
+  options: RadioOption[];
+  value?: string;
+  onChange?: (value: string) => void;
+  className?: string;
+  columns?: 1 | 2 | 3;
+}
+
+const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
+  ({ options, value, onChange, className, columns = 1 }, ref) => {
+    const gridClass = columns === 3 ? "grid-cols-1 md:grid-cols-3" : 
+                      columns === 2 ? "grid-cols-1 md:grid-cols-2" : 
+                      "grid-cols-1";
+    
+    return (
+      <div ref={ref} className={cn(`grid ${gridClass} gap-3`, className)}>
+        {options.map((option) => {
+          const isSelected = value === option.value;
+          return (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => onChange?.(option.value)}
+              className={cn(
+                "relative flex flex-col p-4 rounded-xl border text-left transition-all duration-200 overflow-hidden",
+                isSelected 
+                  ? "bg-[#0d1a1f] border-[#00D9FF]/60 shadow-[0_0_20px_rgba(0,217,255,0.2),0_4px_16px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(0,217,255,0.1)]" 
+                  : "bg-[#12161a] border-[#2a3038] shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.02)] hover:bg-[#181d22] hover:border-[#3a4048] hover:shadow-[0_4px_12px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]"
+              )}
+            >
+              {isSelected && (
+                <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF]/[0.08] via-transparent to-transparent pointer-events-none" />
+              )}
+              <div className="relative flex items-center gap-3">
+                <div className={cn(
+                  "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
+                  isSelected 
+                    ? "border-[#00D9FF] bg-[#00D9FF] shadow-[0_0_8px_rgba(0,217,255,0.5)]" 
+                    : "border-[#4a5058]"
+                )}>
+                  {isSelected && <div className="w-2 h-2 rounded-full bg-[#0a0f12]" />}
+                </div>
+                <span className={cn("font-medium", isSelected ? "text-white" : "text-[#c0c8d0]")}>
+                  {option.label}
+                </span>
+              </div>
+              {option.subtitle && (
+                <span className="relative text-sm text-[#6b7280] mt-1 ml-8">{option.subtitle}</span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+);
+RadioGroup.displayName = "RadioGroup";
+
+// --- Visual Card Selector ---
+interface VisualCardOption {
+  value: string;
+  label: string;
+  subtitle?: string;
+}
+
+interface VisualCardSelectorProps {
+  options: VisualCardOption[];
+  value?: string;
+  onChange?: (value: string) => void;
+  className?: string;
+  columns?: 1 | 2;
+}
+
+const VisualCardSelector = React.forwardRef<HTMLDivElement, VisualCardSelectorProps>(
+  ({ options, value, onChange, className, columns = 1 }, ref) => {
+    const gridClass = columns === 2 ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1";
+    
+    return (
+      <div ref={ref} className={cn(`grid ${gridClass} gap-3`, className)}>
+        {options.map((option) => {
+          const isSelected = value === option.value;
+          return (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => onChange?.(option.value)}
+              className={cn(
+                "relative flex flex-col p-5 rounded-xl border text-left transition-all duration-200 overflow-hidden",
+                isSelected 
+                  ? "bg-[#0d1a1f] border-[#00D9FF]/60 shadow-[0_0_20px_rgba(0,217,255,0.2),0_4px_16px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(0,217,255,0.1)]" 
+                  : "bg-[#12161a] border-[#2a3038] shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.02)] hover:bg-[#181d22] hover:border-[#3a4048] hover:shadow-[0_4px_12px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]"
+              )}
+            >
+              {isSelected && (
+                <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF]/[0.08] via-transparent to-transparent pointer-events-none" />
+              )}
+              <span className={cn("relative text-lg font-medium", isSelected ? "text-white" : "text-[#c0c8d0]")}>
+                {option.label}
+              </span>
+              {option.subtitle && (
+                <span className="relative text-sm text-[#6b7280] mt-1">{option.subtitle}</span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+);
+VisualCardSelector.displayName = "VisualCardSelector";
+
+// --- Slider ---
+const Slider = React.forwardRef<
+  React.ElementRef<typeof SliderPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <SliderPrimitive.Root
+    ref={ref}
+    className={cn(
+      "relative flex w-full touch-none select-none items-center py-4", // Added padding for better touch target
+      className
+    )}
+    {...props}
+  >
+    <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-slate-800 border border-slate-700/50 shadow-inner">
+      <SliderPrimitive.Range className="absolute h-full bg-gradient-to-r from-cyan-600 to-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.3)]" />
+    </SliderPrimitive.Track>
+    {props.value?.[0] !== -1 && (
+        <SliderPrimitive.Thumb className="block h-6 w-6 rounded-full border-2 border-cyan-300 bg-slate-950 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-110 shadow-[0_0_20px_rgba(34,211,238,0.6)] cursor-grab active:cursor-grabbing" />
+    )}
+  </SliderPrimitive.Root>
+))
+Slider.displayName = SliderPrimitive.Root.displayName
+
+export { Button, Card, Input, Label, Select, SelectItem, Slider, RadioGroup, VisualCardSelector }
+
+================================================================================
+FILE 7: client/src/components/Layout.tsx
+================================================================================
+
+import React from "react";
+import { Link } from "wouter";
+import { ExternalLink } from "lucide-react";
+
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export function Layout({ children }: LayoutProps) {
+  return (
+    <div className="min-h-screen text-foreground font-sans selection:bg-primary/30 relative overflow-hidden bg-background">
+      {/* Grid Background Effect */}
+      <div className="fixed inset-0 z-0 bg-grid-pattern pointer-events-none" />
+      <div className="fixed inset-0 z-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
+      
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 h-20 glass-panel flex items-center px-6 md:px-12 justify-between">
+        <Link href="/">
+          <div className="text-xl font-heading font-bold tracking-tighter hover:opacity-80 transition-opacity flex items-center gap-3 cursor-pointer">
+            {/* Logo Mark */}
+            <div className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+            <span className="text-white text-lg tracking-wide">SimpleSequence</span>
+          </div>
+        </Link>
+        
+        <a 
+          href="https://simplesequence.ai" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 text-sm text-[#6b7280] hover:text-[#00D9FF] transition-colors"
+          data-testid="link-back-to-main-site"
+        >
+          <span className="hidden md:inline">Back to Main Site</span>
+          <ExternalLink size={16} />
+        </a>
+      </header>
+
+      {/* Main Content */}
+      <main className="relative z-10 pt-32 pb-12 px-4 md:px-8 max-w-7xl mx-auto min-h-[calc(100vh-80px)] flex flex-col">
+        {children}
+      </main>
+    </div>
+  );
+}
+
+================================================================================
+FILE 8: client/src/pages/Assessment.tsx
+================================================================================
+
+import React, { useState } from "react";
+import { useForm, useWatch, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocation } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader2, ArrowRight, ArrowLeft, Sparkles } from "lucide-react";
+
+import { 
+  AssessmentSchema, 
+  AssessmentData, 
+  IndustrySchema, 
+  TeamSizeSchema,
+  ContactChannel
+} from "@/lib/types";
+import { 
+  STEPS, 
+  REVENUE_PAIN_OPTIONS,
+  INDUSTRY_NICHE_MAP,
+  TEAM_SIZE_OPTIONS,
+  MONTHLY_LEAD_VOLUME_OPTIONS,
+  FIRST_CONTACT_SPEED_OPTIONS,
+  UNAVAILABILITY_PCT_OPTIONS,
+  PHONE_UNAVAILABLE_HANDLING_OPTIONS,
+  DIGITAL_UNAVAILABLE_HANDLING_OPTIONS,
+  NO_SHOW_RECOVERY_OPTIONS,
+  QUOTE_FOLLOWUP_OPTIONS,
+  DORMANT_LEADS_OPTIONS,
+  NO_SHOW_RATE_OPTIONS,
+  CONTACT_CHANNEL_OPTIONS,
+  SOCIAL_MEDIA_ACTIVITY_OPTIONS,
+  REVIEW_REQUEST_OPTIONS,
+  CLOSE_RATE_OPTIONS,
+  MANUAL_HOURS_OPTIONS,
+  KNOWLEDGE_BOTTLENECK_OPTIONS,
+  OPERATIONAL_COMPLEXITY_OPTIONS
+} from "@/lib/constants";
+import { calculateResults } from "@/lib/scoring";
+import { Button, Card, Input, Label, Select, SelectItem, Slider, RadioGroup, VisualCardSelector } from "@/components/ui/glass-ui";
+
+export default function Assessment() {
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAnalysis, setShowAnalysis] = useState(false);
+  const [analysisStep, setAnalysisStep] = useState(0);
+  const [_, setLocation] = useLocation();
+
+  const form = useForm<AssessmentData>({
+    resolver: zodResolver(AssessmentSchema),
+    mode: "onChange",
+    defaultValues: {
+      revenue_pain: [],
+      business_name: "",
+      industry: "" as any,
+      niche_specificity: "",
+      team_size: "" as any,
+      avg_job_value: "",
+      monthly_lead_volume: "" as any,
+      first_contact_speed: "" as any,
+      unavailability_pct: "" as any,
+      phone_unavailable_handling: "" as any,
+      digital_unavailable_handling: "" as any,
+      no_show_recovery: "" as any,
+      quote_followup: "" as any,
+      dormant_leads: "" as any,
+      no_show_rate: "" as any,
+      contact_channels: [],
+      social_media_activity: "" as any,
+      review_request: "" as any,
+      close_rate: "" as any,
+      manual_hours: "" as any,
+      knowledge_bottleneck: "" as any,
+      operational_complexity: "" as any,
+      contact_name: "",
+      contact_email: "",
+      contact_phone: "",
+      disclaimer_accepted: false
+    }
+  });
+
+  const { register, control, formState: { errors }, trigger, setValue } = form;
+  const watchedValues = useWatch({ control });
+  const currentStep = STEPS[currentStepIndex];
+
+  const analysisMessages = [
+    "Comparing to 1,200+ similar businesses...",
+    "Calculating speed gap impact...",
+    "Analyzing follow-up opportunities...",
+    "Quantifying operational waste...",
+    "Generating your custom roadmap..."
+  ];
+
+  const handleNext = async () => {
+    const fieldsToValidate = currentStep.fields as (keyof AssessmentData)[];
+    const isValidStep = await trigger(fieldsToValidate);
+    
+    if (isValidStep) {
+      if (currentStepIndex < STEPS.length - 1) {
+        setCurrentStepIndex(prev => prev + 1);
+        window.scrollTo(0, 0);
+      } else {
+        setShowAnalysis(true);
+        setIsSubmitting(true);
+        
+        const interval = setInterval(() => {
+          setAnalysisStep(prev => {
+            if (prev >= analysisMessages.length - 1) {
+              clearInterval(interval);
+              return prev;
+            }
+            return prev + 1;
+          });
+        }, 600);
+        
+        setTimeout(async () => {
+          clearInterval(interval);
+          const results = calculateResults(watchedValues as AssessmentData);
+          
+          try {
+            const response = await fetch("/api/assessment/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                assessmentData: watchedValues,
+                speedGapScore: results.speedGap.estimate,
+                silenceGapScore: results.silenceGap.estimate,
+                chaosGapScore: results.chaosGap.estimate,
+                contactName: watchedValues.contact_name,
+                contactEmail: watchedValues.contact_email,
+                contactPhone: watchedValues.contact_phone || "",
+              }),
+            });
+
+            if (!response.ok) throw new Error("Failed to submit assessment");
+
+            const { leadId } = await response.json();
+            sessionStorage.setItem("currentLeadId", leadId);
+            sessionStorage.setItem("assessment_results", JSON.stringify(results));
+            setLocation("/results");
+          } catch (error) {
+            console.error("Error submitting assessment:", error);
+            sessionStorage.setItem("assessment_results", JSON.stringify(results));
+            setLocation("/results");
+          } finally {
+            setIsSubmitting(false);
+          }
+        }, 3500);
+      }
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStepIndex > 0) {
+      setCurrentStepIndex(prev => prev - 1);
+      window.scrollTo(0, 0);
+    } else {
+      setLocation('/');
+    }
+  };
+
+  const handlePainToggle = (optionValue: string) => {
+    const current = (watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>;
+    const existingIndex = current.findIndex(p => p.value === optionValue);
+    const isNotSureOption = optionValue.includes("Not sure");
+    
+    if (existingIndex >= 0) {
+      // Remove if already selected
+      setValue('revenue_pain', current.filter(p => p.value !== optionValue) as any);
+    } else {
+      if (isNotSureOption) {
+        // If "Not sure" is selected, clear everything else and just set "Not sure"
+        setValue('revenue_pain', [{ value: optionValue, severity: 3 }] as any);
+      } else {
+        // If a specific pain is selected, remove "Not sure" if it exists
+        const withoutNotSure = current.filter(p => !p.value.includes("Not sure"));
+        if (withoutNotSure.length < 3) {
+          setValue('revenue_pain', [...withoutNotSure, { value: optionValue, severity: 3 }] as any);
+        }
+      }
+    }
+    trigger('revenue_pain');
+  };
+
+  const handlePainSeverityChange = (optionValue: string, severity: number) => {
+    const current = (watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>;
+    const updated = current.map(p => 
+      p.value === optionValue ? { ...p, severity } : p
+    );
+    setValue('revenue_pain', updated as any);
+    trigger('revenue_pain');
+  };
+
+  const isPainSelected = (optionValue: string) => {
+    const current = (watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>;
+    return current.some(p => p.value === optionValue);
+  };
+
+  const getPainSeverity = (optionValue: string) => {
+    const current = (watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>;
+    const found = current.find(p => p.value === optionValue);
+    return found?.severity || 3;
+  };
+
+  const handleChannelToggle = (channel: ContactChannel) => {
+    const current = watchedValues.contact_channels || [];
+    if (current.includes(channel)) {
+      setValue('contact_channels', current.filter(c => c !== channel));
+    } else {
+      setValue('contact_channels', [...current, channel]);
+    }
+    trigger('contact_channels');
+  };
+
+  const getJobValueConfig = (niche: string | undefined) => {
+    if (!niche) return { min: 0, max: 50000, step: 500 };
+    const tier1 = ["Service & Repair", "General Service/Repair", "Service Calls", "Repairs/Maintenance", "Maintenance", "Residential Maid Service", "General Pest", "Detailing/PPF"];
+    const tier2 = ["System Replacement", "Panel Upgrades/Rewiring", "Kitchen/Bath", "Cabinet Refinishing", "Injectables/Lasers", "Retrofit/Replacement"];
+    const tier3 = ["Full Replacement (Resi)", "Sewer & Excavation", "Whole Home", "Personal Injury (Contingency)", "Commercial"];
+    if (tier1.some(t => niche?.includes(t))) return { min: 0, max: 3000, step: 50 };
+    if (tier2.some(t => niche?.includes(t))) return { min: 1000, max: 25000, step: 500 };
+    if (tier3.some(t => niche?.includes(t))) return { min: 5000, max: 100000, step: 1000 };
+    return { min: 0, max: 50000, step: 500 };
+  };
+
+  if (showAnalysis) {
+    const analysisProgress = Math.min(Math.round(((analysisStep + 1) / analysisMessages.length) * 100), 99);
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="space-y-6"
+        >
+          <div className="relative">
+            <div className="w-24 h-24 mx-auto rounded-full border-4 border-cyan-500/30 border-t-cyan-500 animate-spin" />
+            <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-cyan-400" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-heading font-bold">Analyzing Your Business...</h2>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={analysisStep}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-slate-400"
+              >
+                {analysisMessages[analysisStep]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+          <div className="text-xs text-cyan-400 font-medium">{analysisProgress}% Complete</div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  const renderField = (field: string) => {
+    switch (field) {
+      case 'revenue_pain':
+        const selectedCount = ((watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>).length;
+        return (
+          <div className="space-y-4 w-full">
+            <p className="text-sm text-slate-400 mb-2">
+              {selectedCount === 0 ? "Select up to 3 areas" : `${selectedCount}/3 selected`}
+            </p>
+            <div className="grid grid-cols-1 gap-3">
+              {REVENUE_PAIN_OPTIONS.map(option => {
+                const isSelected = isPainSelected(option.value);
+                const isNotSureOption = option.value.includes("Not sure");
+                const canSelect = selectedCount < 3 || isSelected;
+                
+                return (
+                  <div key={option.value} className="space-y-2">
+                    <button
+                      type="button"
+                      onClick={() => handlePainToggle(option.value)}
+                      disabled={!canSelect && !isSelected}
+                      data-testid={`button-pain-${option.value.slice(0, 20).toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+                      className={`relative w-full flex items-start gap-4 p-5 rounded-xl border text-left transition-all duration-200 overflow-hidden ${
+                        isSelected 
+                          ? 'bg-[#0d1a1f] border-[#00D9FF]/60 shadow-[0_0_20px_rgba(0,217,255,0.2),0_4px_16px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(0,217,255,0.1)]' 
+                          : canSelect
+                            ? 'bg-[#12161a] border-[#2a3038] shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.02)] hover:bg-[#181d22] hover:border-[#3a4048] hover:shadow-[0_4px_12px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]'
+                            : 'bg-[#0e1114] border-[#1e2228] opacity-50 cursor-not-allowed'
+                      }`}
+                    >
+                      {isSelected && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF]/[0.08] via-transparent to-transparent pointer-events-none" />
+                      )}
+                      <div className={`relative flex-shrink-0 w-5 h-5 mt-0.5 rounded border-2 flex items-center justify-center transition-all ${
+                        isSelected ? 'border-[#00D9FF] bg-[#00D9FF] shadow-[0_0_8px_rgba(0,217,255,0.5)]' : 'border-[#4a5058]'
+                      }`}>
+                        {isSelected && (
+                          <svg className="w-3 h-3 text-[#0a0f12]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="relative flex-1">
+                        <span className={`text-lg font-medium block ${isSelected ? 'text-white' : 'text-[#c0c8d0]'}`}>{option.value}</span>
+                        <span className="text-sm text-[#6b7280] mt-1 block">{option.subtitle}</span>
+                      </div>
+                    </button>
+                    <AnimatePresence>
+                      {isSelected && !isNotSureOption && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="ml-9 px-4 py-3 bg-[#0a0f12] rounded-lg border border-[#1e2830] shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="text-xs text-[#8b9299]">How confident are you this is a problem?</span>
+                              <span className="text-xs text-[#00D9FF] font-mono">{getPainSeverity(option.value)}/5</span>
+                            </div>
+                            <input
+                              type="range"
+                              min="1"
+                              max="5"
+                              value={getPainSeverity(option.value)}
+                              onChange={(e) => handlePainSeverityChange(option.value, parseInt(e.target.value))}
+                              className="w-full h-2 bg-[#1a2028] rounded-lg appearance-none cursor-pointer accent-[#00D9FF]"
+                            />
+                            <div className="flex justify-between text-[10px] text-[#6b7280] mt-1">
+                              <span>Just a hunch</span>
+                              <span>Very confident</span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
+            {errors.revenue_pain && <p className="text-cyan-400 text-xs">{(errors.revenue_pain as any)?.message || "Select at least one area"}</p>}
+          </div>
+        );
+
+      case 'business_name':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="business_name">Business Name or Website</Label>
+            <Input 
+              id="business_name" 
+              placeholder="Acme HVAC or www.acmehvac.com" 
+              {...register('business_name')} 
+              data-testid="input-business-name"
+            />
+            {errors.business_name && <p className="text-cyan-400 text-xs">{errors.business_name.message}</p>}
+            <p className="text-xs text-slate-500">For personalized recommendations</p>
+          </div>
+        );
+
+      case 'industry':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="industry">Industry</Label>
+            <Controller
+              control={control}
+              name="industry"
+              render={({ field }) => (
+                <Select 
+                  value={field.value} 
+                  onValueChange={(val) => {
+                    field.onChange(val);
+                    setValue('niche_specificity', '');
+                    setValue('avg_job_value', '');
+                  }} 
+                  placeholder="Select industry..."
+                >
+                  {IndustrySchema.options.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
+                </Select>
+              )}
+            />
+            {errors.industry && <p className="text-cyan-400 text-xs">{errors.industry.message}</p>}
+          </div>
+        );
+
+      case 'niche_specificity':
+        const selectedIndustry = watchedValues.industry;
+        const nicheOptions = selectedIndustry ? INDUSTRY_NICHE_MAP[selectedIndustry] || [] : [];
+        
+        if (selectedIndustry === 'Other') {
+          return (
+            <div className="space-y-2 w-full">
+              <Label htmlFor="niche_specificity">What is your primary service?</Label>
+              <Input 
+                id="niche_specificity" 
+                placeholder="e.g. Specialized Manufacturing" 
+                {...register('niche_specificity')} 
+              />
+              {errors.niche_specificity && <p className="text-cyan-400 text-xs">{errors.niche_specificity.message}</p>}
+            </div>
+          );
+        }
+
+        if (!selectedIndustry) {
+          return (
+            <div className="space-y-2 w-full">
+              <Label>Specialization</Label>
+              <div className="p-3 rounded-lg border border-slate-700/50 bg-slate-900/40 text-slate-500 text-sm">
+                Select an industry first
+              </div>
+            </div>
+          );
+        }
+        
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="niche_specificity">Specialization</Label>
+            <Controller
+              control={control}
+              name="niche_specificity"
+              render={({ field }) => (
+                <Select 
+                  value={field.value} 
+                  onValueChange={(val) => {
+                    field.onChange(val);
+                    setValue('avg_job_value', '');
+                  }} 
+                  placeholder="Select your focus..."
+                >
+                  {nicheOptions.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
+                </Select>
+              )}
+            />
+            {errors.niche_specificity && <p className="text-cyan-400 text-xs">{errors.niche_specificity.message}</p>}
+          </div>
+        );
+
+      case 'team_size':
+        return (
+          <div className="space-y-3 w-full">
+            <Label htmlFor="team_size">Team Size</Label>
+            <Controller
+              control={control}
+              name="team_size"
+              render={({ field }) => (
+                <RadioGroup
+                  options={TEAM_SIZE_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={3}
+                />
+              )}
+            />
+            {errors.team_size && <p className="text-cyan-400 text-xs">{errors.team_size.message}</p>}
+          </div>
+        );
+
+      case 'avg_job_value':
+        const config = getJobValueConfig(watchedValues.niche_specificity);
+        return (
+          <div className="space-y-4 w-full">
+            <div className="flex justify-between items-center">
+              <Label htmlFor="avg_job_value">Average Job Value</Label>
+              <span className={`font-mono font-medium ${watchedValues.avg_job_value ? 'text-cyan-400' : 'text-slate-500'}`}>
+                {watchedValues.avg_job_value ? `$${parseInt(watchedValues.avg_job_value).toLocaleString()}${parseInt(watchedValues.avg_job_value) >= config.max ? '+' : ''}` : "Select"}
+              </span>
+            </div>
+            <Controller
+              control={control}
+              name="avg_job_value"
+              render={({ field: sliderField }) => {
+                const value = sliderField.value ? parseInt(sliderField.value) : config.min;
+                return (
+                  <Slider
+                    min={config.min}
+                    max={config.max}
+                    step={config.step}
+                    value={[value]}
+                    onValueChange={(vals) => sliderField.onChange(vals[0].toString())}
+                    className={!sliderField.value ? "opacity-60" : ""}
+                  />
+                );
+              }}
+            />
+            {errors.avg_job_value && <p className="text-cyan-400 text-xs">{errors.avg_job_value.message}</p>}
+          </div>
+        );
+
+      case 'monthly_lead_volume':
+        return (
+          <div className="space-y-3 w-full">
+            <Label htmlFor="monthly_lead_volume">Monthly Lead Volume</Label>
+            <Controller
+              control={control}
+              name="monthly_lead_volume"
+              render={({ field }) => (
+                <RadioGroup
+                  options={MONTHLY_LEAD_VOLUME_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.monthly_lead_volume && <p className="text-cyan-400 text-xs">{errors.monthly_lead_volume.message}</p>}
+          </div>
+        );
+
+      case 'first_contact_speed':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>How fast do you typically make first contact with new leads?</Label>
+            <Controller
+              control={control}
+              name="first_contact_speed"
+              render={({ field }) => (
+                <RadioGroup
+                  options={FIRST_CONTACT_SPEED_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.first_contact_speed && <p className="text-cyan-400 text-xs">{errors.first_contact_speed.message}</p>}
+          </div>
+        );
+
+      case 'unavailability_pct':
+        return (
+          <div className="space-y-3 w-full pt-4">
+            <Label>If you had to guess, what percentage of leads contact you outside your normal availability?</Label>
+            <p className="text-xs text-slate-500 mb-2">Think about after-hours, weekends, busy periods, team in the field, etc.</p>
+            <Controller
+              control={control}
+              name="unavailability_pct"
+              render={({ field }) => (
+                <RadioGroup
+                  options={UNAVAILABILITY_PCT_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.unavailability_pct && <p className="text-cyan-400 text-xs">{errors.unavailability_pct.message}</p>}
+          </div>
+        );
+
+      case 'phone_unavailable_handling':
+        return (
+          <div className="space-y-4 w-full">
+            <Label>When a phone call comes in and you can't answer, what happens?</Label>
+            <Controller
+              control={control}
+              name="phone_unavailable_handling"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={PHONE_UNAVAILABLE_HANDLING_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value, 
+                    subtitle: opt.subtitle 
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.phone_unavailable_handling && <p className="text-cyan-400 text-xs">{errors.phone_unavailable_handling.message}</p>}
+          </div>
+        );
+
+      case 'digital_unavailable_handling':
+        return (
+          <div className="space-y-4 w-full">
+            <Label>When a text, email, or web form comes in and you're busy, what happens?</Label>
+            <Controller
+              control={control}
+              name="digital_unavailable_handling"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={DIGITAL_UNAVAILABLE_HANDLING_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value, 
+                    subtitle: opt.subtitle 
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.digital_unavailable_handling && <p className="text-cyan-400 text-xs">{errors.digital_unavailable_handling.message}</p>}
+          </div>
+        );
+
+      case 'no_show_recovery':
+        const isAppointmentBased = ['Legal', 'Med Spa / Aesthetics', 'Real Estate', 'Other'].includes(watchedValues.industry || '');
+        const label = isAppointmentBased 
+          ? "Do you systematically follow up with no-shows to rebook them?"
+          : "Do you follow up when customers cancel or aren't home?";
+        
+        return (
+          <div className="space-y-3 w-full">
+            <Label>{label}</Label>
+            <Controller
+              control={control}
+              name="no_show_recovery"
+              render={({ field }) => (
+                <RadioGroup
+                  options={NO_SHOW_RECOVERY_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.no_show_recovery && <p className="text-cyan-400 text-xs">{errors.no_show_recovery.message}</p>}
+          </div>
+        );
+
+      case 'quote_followup':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>What happens to quotes that don't close immediately?</Label>
+            <Controller
+              control={control}
+              name="quote_followup"
+              render={({ field }) => (
+                <RadioGroup
+                  options={QUOTE_FOLLOWUP_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.quote_followup && <p className="text-cyan-400 text-xs">{errors.quote_followup.message}</p>}
+          </div>
+        );
+
+      case 'dormant_leads':
+        return (
+          <div className="space-y-3 w-full pt-4">
+            <Label>Do you have old leads (6+ months dormant) sitting in your database?</Label>
+            <Controller
+              control={control}
+              name="dormant_leads"
+              render={({ field }) => (
+                <RadioGroup
+                  options={DORMANT_LEADS_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.dormant_leads && <p className="text-cyan-400 text-xs">{errors.dormant_leads.message}</p>}
+          </div>
+        );
+
+      case 'no_show_rate':
+        const rateIsAppointmentBased = ['Legal', 'Med Spa / Aesthetics', 'Real Estate', 'Other'].includes(watchedValues.industry || '');
+        const rateLabel = rateIsAppointmentBased
+          ? "What's your appointment no-show rate?"
+          : "What's your average cancellation rate?";
+
+        return (
+          <div className="space-y-3 w-full">
+            <Label>{rateLabel}</Label>
+            <Controller
+              control={control}
+              name="no_show_rate"
+              render={({ field }) => (
+                <RadioGroup
+                  options={NO_SHOW_RATE_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.no_show_rate && <p className="text-cyan-400 text-xs">{errors.no_show_rate.message}</p>}
+          </div>
+        );
+
+      case 'contact_channels':
+        return (
+          <div className="space-y-4 w-full">
+            <div className="flex justify-between items-center">
+              <Label>How can leads currently contact you?</Label>
+              <span className="text-sm text-slate-500">{(watchedValues.contact_channels || []).length}/8 selected</span>
+            </div>
+            <p className="text-xs text-slate-500">Select ALL that apply</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {CONTACT_CHANNEL_OPTIONS.map(option => {
+                const isSelected = (watchedValues.contact_channels || []).includes(option.value as ContactChannel);
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => handleChannelToggle(option.value as ContactChannel)}
+                    className={`flex flex-col p-3 rounded-lg border text-center transition-all ${
+                      isSelected 
+                        ? 'bg-cyan-500/10 border-cyan-500' 
+                        : 'bg-slate-900/40 border-slate-700/50 hover:bg-slate-800/60'
+                    }`}
+                  >
+                    <span className={`text-sm font-medium ${isSelected ? 'text-white' : 'text-slate-300'}`}>{option.value}</span>
+                    <span className="text-xs text-slate-500 mt-1">{option.subtitle}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {errors.contact_channels && <p className="text-cyan-400 text-xs">{errors.contact_channels.message}</p>}
+          </div>
+        );
+
+      case 'social_media_activity':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>Are you active on social media for your business?</Label>
+            <Controller
+              control={control}
+              name="social_media_activity"
+              render={({ field }) => (
+                <RadioGroup
+                  options={SOCIAL_MEDIA_ACTIVITY_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.social_media_activity && <p className="text-cyan-400 text-xs">{errors.social_media_activity.message}</p>}
+          </div>
+        );
+
+      case 'review_request':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>Do you systematically ask customers for reviews?</Label>
+            <Controller
+              control={control}
+              name="review_request"
+              render={({ field }) => (
+                <RadioGroup
+                  options={REVIEW_REQUEST_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.review_request && <p className="text-cyan-400 text-xs">{errors.review_request.message}</p>}
+          </div>
+        );
+
+      case 'close_rate':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>Out of every 10 leads, how many become paying customers?</Label>
+            <p className="text-xs text-slate-500 mb-2">This is your close rate - just estimate if you don't track it exactly</p>
+            <Controller
+              control={control}
+              name="close_rate"
+              render={({ field }) => (
+                <RadioGroup
+                  options={CLOSE_RATE_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={3}
+                />
+              )}
+            />
+            {errors.close_rate && <p className="text-cyan-400 text-xs">{errors.close_rate.message}</p>}
+          </div>
+        );
+
+      case 'manual_hours':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>How many hours per week do you spend on manual coordination?</Label>
+            <Controller
+              control={control}
+              name="manual_hours"
+              render={({ field }) => (
+                <RadioGroup
+                  options={MANUAL_HOURS_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.manual_hours && <p className="text-cyan-400 text-xs">{errors.manual_hours.message}</p>}
+          </div>
+        );
+
+      case 'knowledge_bottleneck':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>Do you have repetitive questions that create bottlenecks?</Label>
+            <Controller
+              control={control}
+              name="knowledge_bottleneck"
+              render={({ field }) => (
+                <RadioGroup
+                  options={KNOWLEDGE_BOTTLENECK_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.knowledge_bottleneck && <p className="text-cyan-400 text-xs">{errors.knowledge_bottleneck.message}</p>}
+          </div>
+        );
+
+      case 'operational_complexity':
+        return (
+          <div className="space-y-4 w-full">
+            <Label>How complex are your operations?</Label>
+            <Controller
+              control={control}
+              name="operational_complexity"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={OPERATIONAL_COMPLEXITY_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.operational_complexity && <p className="text-cyan-400 text-xs">{errors.operational_complexity.message}</p>}
+          </div>
+        );
+
+      case 'contact_name':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="contact_name">Your Name</Label>
+            <Input 
+              id="contact_name" 
+              placeholder="John Doe" 
+              {...register('contact_name')} 
+              data-testid="input-contact-name"
+            />
+            {errors.contact_name && <p className="text-cyan-400 text-xs">{errors.contact_name.message}</p>}
+          </div>
+        );
+
+      case 'contact_email':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="contact_email">Email Address</Label>
+            <Input 
+              id="contact_email" 
+              type="email"
+              placeholder="john@example.com" 
+              {...register('contact_email')} 
+              data-testid="input-contact-email"
+            />
+            {errors.contact_email && <p className="text-cyan-400 text-xs">{errors.contact_email.message}</p>}
+          </div>
+        );
+
+      case 'contact_phone':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="contact_phone">Cell Phone Number (Optional)</Label>
+            <Input 
+              id="contact_phone" 
+              type="tel"
+              placeholder="(555) 000-0000" 
+              {...register('contact_phone')} 
+              data-testid="input-contact-phone"
+            />
+          </div>
+        );
+
+      case 'disclaimer_accepted':
+        return (
+          <div className="space-y-4 w-full pt-4">
+            <div className="flex items-start gap-3 p-4 rounded-lg bg-slate-900/60 border border-slate-800">
+              <input 
+                type="checkbox" 
+                id="disclaimer_accepted"
+                {...register('disclaimer_accepted')}
+                className="mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:ring-cyan-500"
+              />
+              <Label htmlFor="disclaimer_accepted" className="text-xs text-slate-400 leading-relaxed cursor-pointer">I understand that these estimates are conservative benchmarks based on industry data. By submitting, I agree to receive my report and related business insights via email.</Label>
+            </div>
+            {errors.disclaimer_accepted && <p className="text-cyan-400 text-xs">{errors.disclaimer_accepted.message}</p>}
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-cyan-400">
+            {currentStep.progress}% Complete
+          </span>
+          {currentStepIndex < STEPS.length - 1 && (
+            <span className="text-sm text-slate-500">
+              Step {currentStepIndex + 1} of {STEPS.length - 1}
+            </span>
+          )}
+        </div>
+        <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+          <motion.div 
+            className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400"
+            initial={{ width: 0 }}
+            animate={{ width: `${currentStepIndex === STEPS.length - 1 ? 100 : currentStep.progress}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentStep.id}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Card className="p-8">
+            <div className="space-y-2 mb-8">
+              <h2 className="text-2xl font-heading font-bold text-white">{currentStep.title}</h2>
+              <p className="text-slate-400">{currentStep.description}</p>
+            </div>
+
+            <div className="space-y-6">
+              {currentStep.fields.map(field => (
+                <div key={field}>{renderField(field)}</div>
+              ))}
+            </div>
+
+            <div className="flex justify-between mt-8 pt-6 border-t border-slate-700/50">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={handleBack}
+                data-testid="button-back"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+              </Button>
+              <Button
+                type="button"
+                onClick={handleNext}
+                disabled={isSubmitting}
+                data-testid="button-next"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : currentStepIndex === STEPS.length - 2 ? (
+                  <>
+                    Get Results
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                ) : currentStepIndex === STEPS.length - 1 ? (
+                  <>
+                    Submit
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    Continue
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+================================================================================
+FILE 9: client/src/pages/Results.tsx
+================================================================================
+
+import { useEffect, useState } from "react";
+import { useLocation } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/glass-ui";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle, BarChart3, ArrowRight, DollarSign, Loader2, ChevronDown, ChevronUp, FileDown } from "lucide-react";
+import { AssessmentResult, GapScore } from "@/lib/scoring";
+import { generateAssessmentPDF } from "@/lib/pdf-generator";
+
+function GapCard({ 
+  title, 
+  gap, 
+  description
+}: { 
+  title: string; 
+  gap: GapScore; 
+  description: string;
+}) {
+  const [showCalculation, setShowCalculation] = useState(false);
+
+  return (
+    <Card className="p-6 border-cyan-500/20 bg-cyan-950/10 relative overflow-hidden">
+      <div className="mb-4">
+        <h3 className="text-xl font-heading font-semibold text-white">{title}</h3>
+      </div>
+      
+      <p className="text-sm text-slate-400 mb-6">{description}</p>
+      
+      <div className="space-y-4 mb-6">
+        <div>
+          <p className="text-xs text-cyan-400 uppercase tracking-wider mb-2">What We Found</p>
+          <ul className="space-y-1">
+            {gap.findings.map((finding, i) => (
+              <li key={i} className="text-sm text-slate-300 flex gap-2">
+                <span className="text-slate-500">-</span>
+                {finding}
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        {gap.causes.length > 0 && (
+          <div>
+            <p className="text-xs text-cyan-400 uppercase tracking-wider mb-2">What's Causing This</p>
+            <ul className="space-y-1">
+              {gap.causes.map((cause, i) => (
+                <li key={i} className="text-sm text-slate-300 flex gap-2">
+                  <span className="text-slate-500">-</span>
+                  {cause}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+      
+      <div className="bg-slate-900/60 rounded-lg p-4 border border-cyan-500/20">
+        <p className="text-xs text-slate-400 uppercase tracking-wider mb-2">Estimated Monthly Impact</p>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xl font-mono font-bold text-cyan-400">
+            ${gap.estimate.toLocaleString()}
+          </span>
+        </div>
+        
+        <button
+          onClick={() => setShowCalculation(!showCalculation)}
+          className="flex items-center gap-1 text-xs text-slate-500 hover:text-cyan-400 transition-colors"
+        >
+          {showCalculation ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+          {showCalculation ? "Hide calculation" : "Show calculation"}
+        </button>
+
+        <AnimatePresence>
+          {showCalculation && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden"
+            >
+              <div className="mt-3 pt-3 border-t border-slate-800 space-y-2">
+                <p className="text-xs text-slate-400">{gap.calculationDetails.description}</p>
+                <p className="text-[10px] text-cyan-500/70 font-mono leading-relaxed">{gap.calculationDetails.formula}</p>
+                <p className="text-[10px] text-slate-500 italic">
+                  *Conservative estimate based on reported metrics and lower-end industry conversion benchmarks.
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </Card>
+  );
+}
+
+function TierCard({ 
+  tier, 
+  price,
+  setupFee,
+  description, 
+  features, 
+  isRecommended,
+  ctaText,
+  badge,
+  reason
+}: { 
+  tier: string; 
+  price: string;
+  setupFee?: string;
+  description: string;
+  features: string[];
+  isRecommended?: boolean;
+  ctaText: string;
+  badge?: string;
+  reason?: string;
+}) {
+  return (
+    <Card className={`p-6 ${isRecommended ? 'border-cyan-500/50 bg-gradient-to-br from-cyan-950/30 to-slate-900/50' : 'border-slate-700/50 bg-slate-900/30'}`}>
+      {isRecommended && (
+        <div className="text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-2">Recommended for Your Business</div>
+      )}
+      <div className="flex items-center gap-3 mb-2">
+        <h4 className="text-xl font-heading font-bold text-white">{tier}</h4>
+        {badge && (
+          <span className="px-2 py-0.5 text-xs bg-slate-700/50 text-slate-300 rounded">{badge}</span>
+        )}
+      </div>
+      <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">{price}</p>
+      {setupFee && (
+        <p className="text-sm text-slate-400 mb-3">One-time setup: {setupFee}</p>
+      )}
+      <p className="text-sm text-slate-400 mb-4">{description}</p>
+      
+      {isRecommended && reason && (
+        <div className="bg-cyan-950/30 border border-cyan-500/20 rounded-lg p-3 mb-4">
+          <p className="text-xs text-cyan-400 uppercase tracking-wider mb-1">Why {tier}?</p>
+          <p className="text-sm text-slate-300">{reason}</p>
+        </div>
+      )}
+      
+      <ul className="space-y-2 mb-6">
+        {features.map((feature, i) => (
+          <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
+            <CheckCircle className="text-cyan-500 flex-shrink-0 mt-0.5" size={16} />
+            {feature}
+          </li>
+        ))}
+      </ul>
+      
+      <Button 
+        className={`w-full py-6 text-base font-bold uppercase tracking-wide flex items-center justify-center transition-all duration-200 rounded-xl ${
+          isRecommended 
+            ? 'bg-cyan-500 hover:bg-cyan-400 text-white border-cyan-400 shadow-[0_4px_14px_0_rgba(6,182,212,0.39)]' 
+            : 'bg-transparent hover:bg-slate-800 text-slate-200 border-slate-700'
+        }`}
+        variant={isRecommended ? "default" : "outline"}
+      >
+        <span>{ctaText}</span>
+      </Button>
+    </Card>
+  );
+}
+
+function CalculationBreakdown({ result }: { result: AssessmentResult }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="mt-6">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
+        data-testid="button-toggle-calculation"
+      >
+        How we calculated these numbers
+        {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="mt-4 space-y-4 text-sm">
+              <div className="bg-slate-900/60 rounded-lg p-4 border border-slate-700/50">
+                <h4 className="text-cyan-400 font-semibold mb-2">Speed Gap: ${result.speedGap.estimate.toLocaleString()}</h4>
+                <p className="text-slate-400 mb-2">{result.speedGap.calculationDetails.description}</p>
+                <p className="text-slate-300 font-mono text-xs">{result.speedGap.calculationDetails.formula}</p>
+              </div>
+
+              <div className="bg-slate-900/60 rounded-lg p-4 border border-slate-700/50">
+                <h4 className="text-cyan-400 font-semibold mb-2">Silence Gap: ${result.silenceGap.estimate.toLocaleString()}</h4>
+                <p className="text-slate-400 mb-2">{result.silenceGap.calculationDetails.description}</p>
+                <p className="text-slate-300 font-mono text-xs">{result.silenceGap.calculationDetails.formula}</p>
+              </div>
+
+              <div className="bg-slate-900/60 rounded-lg p-4 border border-slate-700/50">
+                <h4 className="text-cyan-400 font-semibold mb-2">Chaos Gap: ${result.chaosGap.estimate.toLocaleString()}</h4>
+                <p className="text-slate-400 mb-2">{result.chaosGap.calculationDetails.description}</p>
+                <p className="text-slate-300 font-mono text-xs">{result.chaosGap.calculationDetails.formula}</p>
+              </div>
+
+              <p className="text-slate-500 text-xs italic">
+                *Conservative estimate based on your reported metrics and lower-end industry conversion benchmarks. 
+                Actual recovery depends on lead quality, market conditions, and execution.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function CostOfWaiting({ result }: { result: AssessmentResult }) {
+  const totalGap = result.totalMonthlyGap;
+  const monthlyManualHours = result.chaosGap.calculationDetails.inputs.monthlyHours as number || 0;
+  const estimatedLostLeads = Math.round(
+    (result.speedGap.estimate / result.avgJobValue) + 
+    (result.silenceGap.estimate / result.avgJobValue * 0.6)
+  );
+
+  return (
+    <div className="cost-of-waiting-section bg-slate-900/60 border border-slate-800 rounded-xl p-8 my-12 shadow-2xl">
+      <div className="section-header flex items-center gap-3 mb-6">
+        <h2 className="text-cyan-400 text-2xl font-heading font-bold m-0">The Real Cost of Waiting</h2>
+      </div>
+      
+      <div className="waiting-content">
+        <h3 className="text-white text-lg font-semibold mt-6 mb-4">Every month you wait to address these gaps:</h3>
+        <ul className="monthly-costs space-y-3">
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span><span className="text-cyan-400 font-bold font-mono">${totalGap.toLocaleString()}</span> in lost revenue (gone forever)</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Competitors capture the leads you're missing</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Your team burns <span className="text-white font-bold">{Math.round(monthlyManualHours)}</span> hours on manual work</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Your no-show rate stays at <span className="text-white font-bold">{result.silenceGap.calculationDetails.inputs.noShowRate}</span></span>
+          </li>
+        </ul>
+        
+        <h3 className="text-white text-lg font-semibold mt-8 mb-4">Six months from now:</h3>
+        <ul className="cumulative-costs space-y-3">
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span><span className="text-cyan-400 font-bold font-mono">${(totalGap * 6).toLocaleString()}</span> in cumulative lost revenue</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Your competitors have <span className="text-cyan-400 font-bold font-mono">{estimatedLostLeads * 6}-{Math.round(estimatedLostLeads * 6 * 1.2)}</span> of the customers you could have had</span>
+          </li>
+          <li className="text-slate-300 text-base flex items-start gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 flex-shrink-0" />
+            <span>Your team has wasted <span className="text-white font-bold">{Math.round(monthlyManualHours * 6)}</span> hours on busywork</span>
+          </li>
+        </ul>
+        
+      <div className="urgency-statement mt-8 p-6 bg-slate-900/60 border border-slate-800 rounded-lg text-white shadow-xl">
+        <h3 className="text-xl font-heading font-bold text-white mb-2">
+          This isn't a future problem.
+        </h3>
+        <p className="text-slate-300">
+          This is happening right now, today. Each day of delay is a permanent loss of revenue and competitive advantage.
+        </p>
+      </div>
+      </div>
+    </div>
+  );
+}
+
+function DIYSection({ result }: { result: AssessmentResult }) {
+  return (
+    <div className="diy-section space-y-8 mt-12 mb-16">
+      <div className="flex items-center gap-3 mb-6">
+        <h2 className="text-cyan-400 text-2xl font-heading font-bold m-0">Your DIY Action Plan</h2>
+      </div>
+      
+      <p className="text-slate-300 text-lg mb-8">
+        You can implement these fixes with or without SimpleSequence. Here is how to do it yourself:
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {result.speedGap.estimate > 0 && (
+          <Card className="p-6 border-slate-700/50 bg-slate-900/30">
+            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              <span className="text-cyan-500">1.</span> Speed Gap Fixes
+            </h3>
+            <ul className="space-y-4">
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Set up auto-responders</p>
+                <p className="text-slate-400 text-xs">Use Google Voice or your CRM's basic auto-reply for after-hours leads.</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Instant SMS Text-Back</p>
+                <p className="text-slate-400 text-xs">Connect Zapier to Twilio to send an "I'll call you right back" text on every missed call (~$30/mo).</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Response Protocol</p>
+                <p className="text-slate-400 text-xs">Train your team on a strict sub-5-minute response protocol for all new inquiries.</p>
+              </li>
+            </ul>
+          </Card>
+        )}
+
+        {result.silenceGap.estimate > 0 && (
+          <Card className="p-6 border-slate-700/50 bg-slate-900/30">
+            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              <span className="text-cyan-500">2.</span> Silence Gap Fixes
+            </h3>
+            <ul className="space-y-4">
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">No-Show Recovery</p>
+                <p className="text-slate-400 text-xs">Create a script: "Hi [Name], we missed you! Would you like to reschedule for tomorrow?"</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Quote Follow-up</p>
+                <p className="text-slate-400 text-xs">Set manual calendar reminders for Day 3, 7, and 14 after sending any quote.</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Database Reactivation</p>
+                <p className="text-slate-400 text-xs">Export your old leads and send a "Checking in" email with a special seasonal offer.</p>
+              </li>
+            </ul>
+          </Card>
+        )}
+
+        {result.chaosGap.estimate > 0 && (
+          <Card className="p-6 border-slate-700/50 bg-slate-900/30">
+            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              <span className="text-cyan-500">3.</span> Chaos Gap Fixes
+            </h3>
+            <ul className="space-y-4">
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Task Documentation</p>
+                <p className="text-slate-400 text-xs">Document your top 10 most repetitive administrative tasks step-by-step.</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Free Automation</p>
+                <p className="text-slate-400 text-xs">Use the free tiers of Zapier or Make.com to sync data between your tools automatically.</p>
+              </li>
+              <li className="text-sm">
+                <p className="text-white font-medium mb-1">Google Docs Wiki</p>
+                <p className="text-slate-400 text-xs">Create a central "Wiki" in Google Docs for FAQs, pricing, and common scenarios.</p>
+              </li>
+            </ul>
+          </Card>
+        )}
+      </div>
+
+      <div className="bg-slate-900/60 border border-slate-800 p-8 text-white rounded-lg shadow-xl">
+        <h4 className="font-heading font-bold text-xl mb-3">The Reality of DIY Implementation</h4>
+        <p className="text-slate-300 mb-6 leading-relaxed">
+          Most businesses intend to implement these fixes but never do. Success requires specialized systems that run without your constant attention. Manual implementation typically requires:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-2 p-4 bg-slate-800/40 rounded-lg border border-slate-700/50">
+            <span className="text-cyan-400 font-bold uppercase tracking-wider text-[10px]">Time Investment</span>
+            <span className="text-slate-200 text-sm font-medium">15-30 hours of technical setup and troubleshooting</span>
+          </div>
+          <div className="flex flex-col gap-2 p-4 bg-slate-800/40 rounded-lg border border-slate-700/50">
+            <span className="text-cyan-400 font-bold uppercase tracking-wider text-[10px]">Technical Debt</span>
+            <span className="text-slate-200 text-sm font-medium">Advanced API & integration knowledge to prevent failures</span>
+          </div>
+          <div className="flex flex-col gap-2 p-4 bg-slate-800/40 rounded-lg border border-slate-700/50">
+            <span className="text-cyan-400 font-bold uppercase tracking-wider text-[10px]">Ongoing Overhead</span>
+            <span className="text-slate-200 text-sm font-medium">Constant maintenance, API updates, and security monitoring</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FeedbackSection({ leadId }: { leadId: string | null }) {
+  const [feedback, setFeedback] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!feedback.trim()) return;
+    
+    setIsSubmitting(true);
+    try {
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ leadId, feedback }),
+      });
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <Card className="p-6 border-slate-700/50 bg-slate-900/30 text-center">
+        <CheckCircle className="mx-auto text-cyan-500 mb-3" size={32} />
+        <p className="text-white font-medium">Thank you for your feedback!</p>
+        <p className="text-slate-400 text-sm">We appreciate you taking the time to share your thoughts.</p>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="p-6 border-slate-700/50 bg-slate-900/30">
+      <h3 className="text-lg font-heading font-semibold text-white mb-3">How did we do?</h3>
+      <p className="text-slate-400 text-sm mb-4">
+        Was this assessment helpful? Any suggestions for making it better?
+      </p>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <textarea
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          placeholder="Share your thoughts..."
+          className="w-full h-24 px-4 py-3 bg-slate-900/60 border border-slate-700/50 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 resize-none"
+          data-testid="input-feedback"
+        />
+        <Button 
+          type="submit" 
+          disabled={isSubmitting || !feedback.trim()}
+          className="w-full md:w-auto"
+          data-testid="button-submit-feedback"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Sending...
+            </>
+          ) : (
+            "Send Feedback"
+          )}
+        </Button>
+      </form>
+    </Card>
+  );
+}
+
+export default function Results() {
+  const [location, setLocation] = useLocation();
+  
+  const resultStr = sessionStorage.getItem("assessment_results") || localStorage.getItem("assessment_results");
+  const leadId = sessionStorage.getItem("currentLeadId");
+  const result: AssessmentResult | null = resultStr ? JSON.parse(resultStr) : null;
+
+  useEffect(() => {
+    if (!result) {
+      setLocation("/");
+    }
+  }, [result, setLocation]);
+
+  if (!result) return null;
+
+  const frontlineFeatures = [
+    "AI Voice backup when team is busy/after-hours",
+    "24/7 website chatbot",
+    "Instant SMS text-back",
+    "Speed-to-lead engine (<60 seconds)",
+    "250 AI Voice Minutes/mo"
+  ];
+
+  const specialistFeatures = [
+    "Everything in Frontline, plus:",
+    "Automated no-show recovery",
+    "Quote follow-up sequences",
+    "Database reactivation campaigns",
+    "Review request automation",
+    "500 AI Voice Minutes/mo"
+  ];
+
+  const commandFeatures = [
+    "Everything in Specialist, plus:",
+    "Internal AI Knowledge Base",
+    "Custom system integrations",
+    "Service delivery automation",
+    "Priority decision logic",
+    "1,000 AI Voice Minutes/mo"
+  ];
+
+  return (
+    <div className="max-w-[900px] mx-auto space-y-8 pb-20 pt-10 px-4 md:px-8">
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center space-y-4"
+      >
+        <h1 className="text-3xl md:text-4xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+          Your Revenue Gap Report: {result.businessName}
+        </h1>
+        <p className="text-slate-300 text-lg">
+          Here's what's really happening in your business - and exactly how much it's costing you.
+        </p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.05 }}
+      >
+        <Card className="p-6 border-slate-700/50 bg-slate-900/40">
+          <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Your Business at a Glance</h3>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+            <div>
+              <p className="text-slate-500">Industry</p>
+              <p className="text-white font-medium">{result.industry}</p>
+            </div>
+            <div>
+              <p className="text-slate-500">Specialization</p>
+              <p className="text-white font-medium">{result.niche}</p>
+            </div>
+            <div>
+              <p className="text-slate-500">Monthly Leads</p>
+              <p className="text-white font-medium">{result.monthlyLeads}</p>
+            </div>
+            <div>
+              <p className="text-slate-500">Team Size</p>
+              <p className="text-white font-medium">{result.teamSize}</p>
+            </div>
+            <div>
+              <p className="text-slate-500">Avg Job Value</p>
+              <p className="text-white font-medium">${result.avgJobValue.toLocaleString()}</p>
+            </div>
+          </div>
+        </Card>
+      </motion.div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="space-y-6"
+      >
+        <h2 className="text-2xl font-heading font-bold text-white">Gap Analysis</h2>
+        
+        <GapCard 
+          title="Speed Gap" 
+          gap={result.speedGap}
+          description="Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first."
+        />
+        
+        <GapCard 
+          title="Silence Gap" 
+          gap={result.silenceGap}
+          description="Most revenue isn't lost at first contact - it's lost in the days and weeks after when no one follows up."
+        />
+        
+        <GapCard 
+          title="Chaos Gap" 
+          gap={result.chaosGap}
+          description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."
+        />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <Card className="p-8 border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 to-slate-900/50">
+          <h3 className="text-xl font-heading font-semibold text-cyan-400 flex items-center gap-2 mb-4">
+            <BarChart3 size={24} /> Total Impact Summary
+          </h3>
+          
+          <div className="text-center py-6">
+            <p className="text-sm text-slate-400 uppercase tracking-wider mb-3">Total Monthly Revenue Gap</p>
+            <p className="text-4xl md:text-5xl font-mono font-bold text-cyan-400 mb-2">
+              ${result.totalMonthlyGap.toLocaleString()}
+            </p>
+            <p className="text-lg text-slate-300 font-medium">
+              Annualized: ${result.annualizedGap.toLocaleString()}
+            </p>
+
+            <div className="mt-6 grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-cyan-400 font-semibold">Speed Gap</p>
+                <p className="text-white font-mono">${result.speedGap.estimate.toLocaleString()}</p>
+              </div>
+              <div>
+                <p className="text-cyan-400 font-semibold">Silence Gap</p>
+                <p className="text-white font-mono">${result.silenceGap.estimate.toLocaleString()}</p>
+              </div>
+              <div>
+                <p className="text-cyan-400 font-semibold">Chaos Gap</p>
+                <p className="text-white font-mono">${result.chaosGap.estimate.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </motion.div>
+
+      {result && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.22 }}
+        >
+          <CostOfWaiting result={result} />
+        </motion.div>
+      )}
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25 }}
+        className="space-y-6"
+      >
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 className="text-2xl font-heading font-bold text-white mb-2">Your Prioritized Opportunities</h2>
+            <p className="text-slate-400">{result.tierReason}</p>
+          </div>
+          <Button 
+            onClick={() => generateAssessmentPDF(result)}
+            className="bg-cyan-600 hover:bg-cyan-700 whitespace-nowrap"
+            data-testid="button-download-pdf"
+          >
+            <FileDown className="mr-2 h-4 w-4" />
+            Download Full PDF Report
+          </Button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <TierCard
+            tier="Frontline"
+            price="$297/mo"
+            setupFee="$500"
+            description="The Human-First Safety Net - Fix the Speed Gap first."
+            features={frontlineFeatures}
+            isRecommended={result.recommendedTier === 'Frontline'}
+            ctaText="Get Started"
+            reason={result.recommendedTier === 'Frontline' ? result.tierReason : undefined}
+          />
+          
+          <TierCard
+            tier="Specialist"
+            price="$497/mo"
+            setupFee="$1,000"
+            description="The Revenue & Reputation Accelerator - Address Speed + Silence Gaps."
+            features={specialistFeatures}
+            isRecommended={result.recommendedTier === 'Specialist'}
+            ctaText="Get Started"
+            reason={result.recommendedTier === 'Specialist' ? result.tierReason : undefined}
+          />
+          
+          <TierCard
+            tier="Command"
+            price="Starting at $997/mo"
+            setupFee="$2,500+"
+            description="The Autonomous Operations Engine - Full operational transformation."
+            features={commandFeatures}
+            isRecommended={result.recommendedTier === 'Command'}
+            ctaText="Apply Now"
+            badge="By Application"
+            reason={result.recommendedTier === 'Command' ? result.tierReason : undefined}
+          />
+        </div>
+
+        <DIYSection result={result} />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <FeedbackSection leadId={leadId} />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="mt-12 text-center"
+      >
+        <a 
+          href="https://simplesequence.ai" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[#2a3038] bg-[#12161a] text-[#c0c8d0] hover:text-[#00D9FF] hover:border-[#00D9FF]/40 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.3)] hover:shadow-[0_4px_16px_rgba(0,217,255,0.1)]"
+          data-testid="link-return-to-main-site"
+        >
+          <ArrowRight size={16} className="rotate-180" />
+          Return to simplesequence.ai
+        </a>
+      </motion.div>
+    </div>
+  );
+}
+
+================================================================================
+FILE 10: client/src/lib/pdf-generator.ts (OPTIONAL - for PDF export)
+================================================================================
+
+import { jsPDF } from "jspdf";
+import { AssessmentResult } from "./scoring";
+
+export function generateAssessmentPDF(result: AssessmentResult) {
+  const doc = new jsPDF();
+  const cyan = [0, 217, 255] as [number, number, number];
+
+  // Page 1: Executive Summary
+  doc.setFontSize(24);
+  doc.setTextColor(...cyan);
+  doc.text('Executive Summary', 20, 30);
+  
+  doc.setFontSize(16);
+  doc.setTextColor(0, 0, 0);
+  doc.text(`Revenue Gap Report: ${result.businessName}`, 20, 45);
+  
+  doc.setFontSize(12);
+  doc.text(`Total Monthly Revenue Gap: ~$${result.totalMonthlyGap.toLocaleString()}`, 20, 60);
+  doc.text(`Annualized Revenue Gap: ~$${result.annualizedGap.toLocaleString()}`, 20, 70);
+  
+  doc.text('Business Profile:', 20, 85);
+  doc.text(`- Industry: ${result.industry}`, 25, 95);
+  doc.text(`- Specialization: ${result.niche}`, 25, 103);
+  doc.text(`- Monthly Leads: ${result.monthlyLeads}`, 25, 111);
+  doc.text(`- Avg Job Value: $${result.avgJobValue.toLocaleString()}`, 25, 119);
+
+  // Page 2: Speed Gap
+  doc.addPage();
+  doc.setFontSize(20);
+  doc.setTextColor(...cyan);
+  doc.text('Gap #1: The Speed Gap', 20, 30);
+  doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
+  doc.text(`Estimated Monthly Impact: ~$${result.speedGap.estimate.toLocaleString()}`, 20, 45);
+  doc.setFontSize(12);
+  doc.text('Findings:', 20, 60);
+  result.speedGap.findings.forEach((f, i) => doc.text(`- ${f}`, 25, 70 + (i * 8)));
+
+  // Page 3: Silence Gap
+  doc.addPage();
+  doc.setFontSize(20);
+  doc.setTextColor(...cyan);
+  doc.text('Gap #2: The Silence Gap', 20, 30);
+  doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
+  doc.text(`Estimated Monthly Impact: ~$${result.silenceGap.estimate.toLocaleString()}`, 20, 45);
+  doc.setFontSize(12);
+  doc.text('Findings:', 20, 60);
+  result.silenceGap.findings.forEach((f, i) => doc.text(`- ${f}`, 25, 70 + (i * 8)));
+
+  // Page 4: Chaos Gap
+  doc.addPage();
+  doc.setFontSize(20);
+  doc.setTextColor(...cyan);
+  doc.text('Gap #3: The Chaos Gap', 20, 30);
+  doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
+  doc.text(`Estimated Monthly Impact: ~$${result.chaosGap.estimate.toLocaleString()}`, 20, 45);
+  doc.setFontSize(12);
+  doc.text('Findings:', 20, 60);
+  result.chaosGap.findings.forEach((f, i) => doc.text(`- ${f}`, 25, 70 + (i * 8)));
+
+  // Page 5: Action Plan
+  generatePage5_ActionPlan(doc, result);
+
+  // Page 6: Case Study
+  generatePage6_CaseStudy(doc, result);
+
+  // Page 7: Next Steps
+  doc.addPage();
+  doc.setFontSize(20);
+  doc.setTextColor(...cyan);
+  doc.text('Next Steps', 20, 30);
+  doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
+  doc.text(`Recommended Tier: ${result.recommendedTier}`, 20, 45);
+  doc.setFontSize(11);
+  const reasonLines = doc.splitTextToSize(result.tierReason, 170);
+  doc.text(reasonLines, 20, 55);
+
+  doc.save(`Revenue_Gap_Report_${result.businessName.replace(/\s+/g, '_')}.pdf`);
+}
+
+function generatePage5_ActionPlan(doc: jsPDF, result: AssessmentResult) {
+  doc.addPage();
+  doc.setFontSize(20);
+  doc.setTextColor(0, 217, 255);
+  doc.text('Your Action Plan', 20, 20);
+  
+  doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
+  doc.text('You can implement these fixes with or without SimpleSequence', 20, 35);
+  
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text("If you DON'T use SimpleSequence:", 20, 50);
+  
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'normal');
+  
+  let y = 65;
+
+  if (result.speedGap.estimate > 0) {
+    doc.setFont('helvetica', 'bold');
+    doc.text('Speed Gap Fixes:', 20, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text('1. Set up auto-responders for after-hours', 25, y + 10);
+    doc.setFontSize(10);
+    doc.text('   (Free: Google Voice, basic CRM auto-reply)', 25, y + 15);
+    doc.setFontSize(12);
+    doc.text('2. Add SMS follow-up for missed calls', 25, y + 25);
+    doc.setFontSize(10);
+    doc.text('   (Zapier + Twilio, ~0/mo)', 25, y + 30);
+    doc.setFontSize(12);
+    doc.text('3. Train team on sub-5-minute response protocol', 25, y + 40);
+    y += 55;
+  }
+  
+  if (result.silenceGap.estimate > 0) {
+    doc.setFont('helvetica', 'bold');
+    doc.text('Silence Gap Fixes:', 20, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text('1. Create no-show recovery script', 25, y + 10);
+    doc.setFontSize(10);
+    doc.text('   (Template: "Hi [Name], we missed you at your appointment...")', 25, y + 15);
+    doc.setFontSize(12);
+    doc.text('2. Set calendar reminders to follow up on stale quotes', 25, y + 25);
+    doc.setFontSize(10);
+    doc.text('   (Day 3, Day 7, Day 14 after quote sent)', 25, y + 30);
+    doc.setFontSize(12);
+    doc.text('3. Export dormant leads, create reactivation campaign', 25, y + 40);
+    doc.setFontSize(10);
+    doc.text('   (Email or call with "special offer" or "checking in")', 25, y + 45);
+    y += 60;
+  }
+  
+  if (result.chaosGap.estimate > 0) {
+    doc.setFont('helvetica', 'bold');
+    doc.text('Chaos Gap Fixes:', 20, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text('1. Document your top 10 repetitive tasks', 25, y + 10);
+    doc.text('2. Use free automation tools', 25, y + 20);
+    doc.setFontSize(10);
+    doc.text('   (Zapier free tier, Make.com, n8n)', 25, y + 25);
+    doc.setFontSize(12);
+    doc.text('3. Create knowledge base in Google Docs', 25, y + 35);
+    doc.setFontSize(10);
+    doc.text('   (FAQs, pricing, common scenarios)', 25, y + 40);
+    y += 55;
+  }
+  
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('The Reality:', 20, y + 10);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Most businesses intend to implement these fixes but never do.', 20, y + 20);
+  doc.text('Why? Because implementation requires:', 20, y + 30);
+  doc.text('• 15-30 hours of setup time', 25, y + 40);
+  doc.text('• Technical knowledge of integrations', 25, y + 48);
+  doc.text('• Ongoing maintenance and optimization', 25, y + 56);
+  
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text('If you DO use SimpleSequence:', 20, y + 75);
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'normal');
+  doc.text('We handle everything above in 7-14 days:', 20, y + 85);
+  doc.text(`• ${result.recommendedTier} tier: $${result.recommendedTier === 'Frontline' ? '297' : result.recommendedTier === 'Specialist' ? '497' : '997'}/mo`, 25, y + 95);
+  doc.text('• Setup: Included (one-time fee covers implementation)', 25, y + 103);
+}
+
+function generatePage6_CaseStudy(doc: jsPDF, result: AssessmentResult) {
+  doc.addPage();
+  doc.setFontSize(20);
+  doc.setTextColor(0, 217, 255);
+  doc.text('Case Study: Similar Business', 20, 20);
+  
+  const caseStudy = getCaseStudyForIndustry(result.industry);
+  
+  doc.setFontSize(14);
+  doc.setTextColor(0, 0, 0);
+  doc.setFont('helvetica', 'bold');
+  doc.text(caseStudy.companyName, 20, 40);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(12);
+  doc.text(`Industry: ${caseStudy.industry}`, 20, 50);
+  doc.text(`Team Size: ${caseStudy.teamSize}`, 20, 58);
+  doc.text(`Monthly Leads: ${caseStudy.leadVolume}`, 20, 66);
+  
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Before SimpleSequence:', 20, 85);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(12);
+  doc.text(`Speed Gap: ~$${caseStudy.before.speedGap.toLocaleString()}/mo`, 25, 95);
+  doc.text(`Silence Gap: ~$${caseStudy.before.silenceGap.toLocaleString()}/mo`, 25, 103);
+  doc.text(`Chaos Gap: ~$${caseStudy.before.chaosGap.toLocaleString()}/mo`, 25, 111);
+  doc.setFont('helvetica', 'bold');
+  doc.text(`Total: ~$${caseStudy.before.total.toLocaleString()}/mo in lost revenue`, 25, 121);
+  
+  doc.setFont('helvetica', 'bold');
+  doc.text('What They Implemented:', 20, 140);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`Tier: ${caseStudy.tier}`, 25, 150);
+  doc.text(`Timeline: ${caseStudy.timeline}`, 25, 158);
+  
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Results After 90 Days:', 20, 177);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(12);
+  doc.text(`Monthly recovery: ~$${caseStudy.after.recovery.toLocaleString()}`, 25, 187);
+  doc.text(`Response time: ${caseStudy.after.responseTime}`, 25, 195);
+  doc.text(`No-show rate: ${caseStudy.after.noShowRate}% (down from ${caseStudy.before.noShowRate}%)`, 25, 203);
+  doc.text(`Close rate: ${caseStudy.after.closeRate}% (up from ${caseStudy.before.closeRate}%)`, 25, 211);
+  
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text('What They Said:', 20, 230);
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(11);
+  
+  const testimonialLines = doc.splitTextToSize(caseStudy.testimonial, 170);
+  doc.text(testimonialLines, 25, 240);
+  
+  const testimonialHeight = testimonialLines.length * 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text(`— ${caseStudy.testimonialAuthor}, ${caseStudy.testimonialTitle}`, 25, 240 + testimonialHeight + 5);
+}
+
+function getCaseStudyForIndustry(industry: string) {
+  const caseStudies: Record<string, any> = {
+    'Legal': {
+      companyName: 'Wilson & Associates Law',
+      industry: 'Family Law',
+      teamSize: '3-7',
+      leadVolume: '15-20/mo',
+      before: {
+        speedGap: 4200,
+        silenceGap: 8900,
+        chaosGap: 600,
+        total: 13700,
+        noShowRate: 25,
+        closeRate: 28
+      },
+      tier: 'Specialist',
+      timeline: '10 days to go-live',
+      after: {
+        recovery: 11400,
+        responseTime: 'Under 5 minutes (24/7)',
+        noShowRate: 8,
+        closeRate: 42
+      },
+      testimonial: "We were losing consultations because we couldn't answer after 5pm. Now AI handles initial contact 24/7, and we've seen our consultation bookings increase 47%. The ROI paid for itself in the first month.",
+      testimonialAuthor: 'Sarah Wilson',
+      testimonialTitle: 'Managing Partner'
+    },
+    'HVAC': {
+      companyName: 'Premier Heating & Cooling',
+      industry: 'Residential HVAC',
+      teamSize: '8-12',
+      leadVolume: '60-80/mo',
+      before: {
+        speedGap: 8100,
+        silenceGap: 14200,
+        chaosGap: 890,
+        total: 23190,
+        noShowRate: 18,
+        closeRate: 32
+      },
+      tier: 'Specialist',
+      timeline: '12 days to go-live',
+      after: {
+        recovery: 19300,
+        responseTime: 'Under 60 seconds (24/7)',
+        noShowRate: 6,
+        closeRate: 48
+      },
+      testimonial: "Emergency calls at 2am were going to voicemail. By the time we called back at 8am, they'd already hired someone else. Now our AI answers immediately, books the appointment, and we show up. Game changer.",
+      testimonialAuthor: 'Mike Rodriguez',
+      testimonialTitle: 'Owner'
+    }
+  };
+  
+  return caseStudies[industry] || caseStudies['HVAC'];
+}

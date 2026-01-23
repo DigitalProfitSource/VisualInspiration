@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
+import { Link } from "wouter";
 import { X } from "lucide-react";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
@@ -1377,16 +1378,14 @@ export default function Home() {
               <p className="text-lg text-white font-semibold mb-10">
                 Move from guessing to knowing. Stop letting invisible inefficiencies dictate your revenue.
               </p>
-              <a 
-                href="https://simple-sequence-ai.replit.app"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link 
+                href="/assessment"
                 data-testid="button-assessment-cta"
                 className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] group transition-colors"
               >
                 Get My Executive Analysis
                 <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
+              </Link>
             </motion.div>
             
             <motion.div 

@@ -1,0 +1,251 @@
+export interface Step {
+  id: string;
+  title: string;
+  description: string;
+  fields: string[];
+  progress: number;
+}
+
+export const STEPS: Step[] = [
+  {
+    id: "pain",
+    title: "What's Draining Revenue?",
+    description: "Select up to 3 areas that feel the most familiar. Don't overthink it - just pick what resonates.",
+    fields: ["revenue_pain"],
+    progress: 0
+  },
+  {
+    id: "business",
+    title: "About Your Business",
+    description: "Help us understand your business context so we can calibrate our analysis.",
+    fields: ["business_name", "industry", "niche_specificity", "team_size", "avg_job_value", "monthly_lead_volume"],
+    progress: 17
+  },
+  {
+    id: "speed",
+    title: "The Speed Gap",
+    description: "How quickly do leads get a response, and what happens when you're unavailable?",
+    fields: ["first_contact_speed", "unavailability_pct", "phone_unavailable_handling", "digital_unavailable_handling"],
+    progress: 34
+  },
+  {
+    id: "silence",
+    title: "The Silence Gap",
+    description: "What happens after the first conversation - do leads get followed up?",
+    fields: ["no_show_recovery", "quote_followup", "dormant_leads", "no_show_rate"],
+    progress: 51
+  },
+  {
+    id: "engagement",
+    title: "Channels & Engagement",
+    description: "How do leads reach you, and how do you engage customers?",
+    fields: ["contact_channels", "social_media_activity", "review_request", "close_rate"],
+    progress: 68
+  },
+  {
+    id: "chaos",
+    title: "The Chaos Gap",
+    description: "How much operational overhead is slowing you down?",
+    fields: ["manual_hours", "knowledge_bottleneck", "operational_complexity"],
+    progress: 85
+  },
+  {
+    id: "contact",
+    title: "Get Your Results",
+    description: "We'll send your personalized Revenue Gap Report to your inbox.",
+    fields: ["contact_name", "contact_email", "contact_phone", "disclaimer_accepted"],
+    progress: 95
+  }
+];
+
+export const REVENUE_PAIN_OPTIONS = [
+  { value: "Leads go cold before we respond", subtitle: "Speed problem" },
+  { value: "No-shows and cancellations hurt revenue", subtitle: "Follow-up problem" },
+  { value: "Quotes sent but never closed", subtitle: "Persistence problem" },
+  { value: "Old leads sitting in the database", subtitle: "Reactivation problem" },
+  { value: "Too much time on manual admin work", subtitle: "Efficiency problem" },
+  { value: "Inconsistent customer experience", subtitle: "Process problem" },
+  { value: "Reputation not growing fast enough", subtitle: "Review problem" },
+  { value: "Can't answer calls when busy", subtitle: "Availability problem" }
+];
+
+export const INDUSTRY_NICHE_MAP: Record<string, string[]> = {
+  "HVAC": ["Residential HVAC", "Commercial HVAC", "HVAC Installation", "HVAC Maintenance", "HVAC Repair"],
+  "Plumbing": ["Residential Plumbing", "Commercial Plumbing", "Emergency Plumbing", "Drain Cleaning", "Water Heater Services"],
+  "Electrical": ["Residential Electrical", "Commercial Electrical", "Emergency Electrical", "EV Charger Installation", "Panel Upgrades"],
+  "Roofing": ["Residential Roofing", "Commercial Roofing", "Storm Damage Repair", "Roof Replacement", "Metal Roofing"],
+  "Solar": ["Residential Solar", "Commercial Solar", "Battery Storage", "Solar Maintenance"],
+  "Remodeling": ["Kitchen Remodeling", "Bathroom Remodeling", "Whole Home Renovation", "Basement Finishing", "Room Additions"],
+  "Landscaping": ["Lawn Care", "Landscape Design", "Irrigation", "Tree Services", "Hardscaping"],
+  "Windows & Doors": ["Window Replacement", "Door Installation", "Entry Doors", "Patio Doors", "Siding"],
+  "Painting": ["Interior Painting", "Exterior Painting", "Commercial Painting", "Cabinet Refinishing"],
+  "Cleaning": ["Residential Cleaning", "Commercial Cleaning", "Deep Cleaning", "Move-In/Move-Out", "Carpet Cleaning"],
+  "Pest Control": ["Residential Pest Control", "Commercial Pest Control", "Termite Control", "Wildlife Removal"],
+  "Legal": ["Family Law", "Personal Injury", "Criminal Defense", "Estate Planning", "Business Law", "Immigration"],
+  "Med Spa / Aesthetics": ["Injectables", "Body Contouring", "Laser Treatments", "Skin Care", "IV Therapy"],
+  "Real Estate": ["Residential Sales", "Commercial Sales", "Property Management", "Luxury Homes"],
+  "Auto Services": ["General Repair", "Collision Repair", "Detailing", "Oil Change", "Tire Services"],
+  "Other": ["Professional Services", "Healthcare", "Fitness", "Consulting", "Other"]
+};
+
+export const TEAM_SIZE_OPTIONS = ["Solo", "2–5", "6–15", "16–50", "50+"];
+
+export const MONTHLY_LEAD_VOLUME_OPTIONS = [
+  "1-10 leads/month",
+  "11-25 leads/month",
+  "26-50 leads/month",
+  "51-100 leads/month",
+  "101-200 leads/month",
+  "200+ leads/month",
+  "I don't know"
+];
+
+export const FIRST_CONTACT_SPEED_OPTIONS = [
+  "Under 5 minutes (excellent—top 10%)",
+  "5-30 minutes (good—top 25%)",
+  "30 minutes to 2 hours (average—middle 50%)",
+  "2-4 hours (slow—bottom 25%)",
+  "4-24 hours (very slow—bottom 10%)",
+  "24+ hours (critical problem)",
+  "It varies wildly (inconsistent)"
+];
+
+export const UNAVAILABILITY_PCT_OPTIONS = [
+  "0-10% (Rare—we're almost always available)",
+  "11-25% (Occasional—some evenings/weekends)",
+  "26-50% (Frequent—about half the time)",
+  "51-75% (Most of the time—we miss more than we catch)",
+  "76-100% (Nearly constant—we're rarely available when they call)",
+  "I don't know (we don't track this)"
+];
+
+export const PHONE_UNAVAILABLE_HANDLING_OPTIONS = [
+  { value: "Voicemail only", subtitle: "They leave a message, you call back" },
+  { value: "Answering service", subtitle: "Live person takes messages" },
+  { value: "AI voice assistant", subtitle: "Automated AI handles the call" },
+  { value: "Honestly, most calls get missed", subtitle: "No backup system" }
+];
+
+export const DIGITAL_UNAVAILABLE_HANDLING_OPTIONS = [
+  { value: "Auto-responder", subtitle: "Instant email or text reply" },
+  { value: "Self-service booking", subtitle: "They can book without you" },
+  { value: "We respond when we can", subtitle: "Manual response only" },
+  { value: "Many slip through", subtitle: "No system in place" }
+];
+
+export const NO_SHOW_RECOVERY_OPTIONS = [
+  "Yes, automatically (system does it for us)",
+  "Yes, manually (someone has to remember to do it)",
+  "Sometimes (when we're not too busy)",
+  "Rarely (we try but it's inconsistent)",
+  "No (once they no-show, they're gone)"
+];
+
+export const QUOTE_FOLLOWUP_OPTIONS = [
+  "Automated follow-up sequence (emails/texts until they respond)",
+  "Manual follow-up (we call/text when we remember)",
+  "One attempt (we follow up once, then stop)",
+  "Nothing (once we quote, we wait for them to decide)"
+];
+
+export const DORMANT_LEADS_OPTIONS = [
+  "Yes, hundreds or thousands (significant untapped opportunity)",
+  "Yes, 50-200 leads (moderate database)",
+  "Yes, under 50 (small list)",
+  "No, we actively work our database (stay on top of it)",
+  "I don't know / We don't track leads in a database"
+];
+
+export const NO_SHOW_RATE_OPTIONS = [
+  "0-10% (excellent—very reliable customers)",
+  "11-20% (average—some no-shows)",
+  "21-35% (high—significant problem)",
+  "35%+ (critical—major revenue drain)",
+  "I don't track this"
+];
+
+export const CONTACT_CHANNEL_OPTIONS = [
+  { value: "Phone call", subtitle: "Inbound calls" },
+  { value: "Text/SMS", subtitle: "Text messages" },
+  { value: "Website form", subtitle: "Contact forms" },
+  { value: "Social media messages", subtitle: "FB, IG, etc." },
+  { value: "Chat widget", subtitle: "Website chat" },
+  { value: "Email", subtitle: "Direct email" },
+  { value: "Online booking", subtitle: "Self-service" },
+  { value: "Walk-ins only", subtitle: "In-person" }
+];
+
+export const SOCIAL_MEDIA_ACTIVITY_OPTIONS = [
+  "Yes, very active (post 3+ times/week, respond to comments/DMs)",
+  "Somewhat active (have pages, post occasionally)",
+  "Barely active (pages exist but rarely use them)",
+  "No (don't use social media for business)"
+];
+
+export const REVIEW_REQUEST_OPTIONS = [
+  "Yes, automatically (every customer gets a review request)",
+  "Yes, manually (we ask when we remember)",
+  "Sometimes (only our best customers)",
+  "No (we rely on organic reviews)"
+];
+
+export const CLOSE_RATE_OPTIONS = [
+  "1-2 out of 10 (10-20%)",
+  "3-4 out of 10 (30-40%)",
+  "5-6 out of 10 (50-60%)",
+  "7-8 out of 10 (70-80%)",
+  "9-10 out of 10 (90-100%)",
+  "I don't know"
+];
+
+export const MANUAL_HOURS_OPTIONS = [
+  "0-2 hours/week (minimal—very streamlined)",
+  "3-5 hours/week (manageable)",
+  "6-10 hours/week (significant—noticeable drag)",
+  "11-20 hours/week (major time sink)",
+  "20+ hours/week (overwhelming—drowning in admin)",
+  "I'm not sure"
+];
+
+export const KNOWLEDGE_BOTTLENECK_OPTIONS = [
+  "Yes, major bottleneck (constant interruptions for the same questions)",
+  "Yes, but manageable (happens occasionally)",
+  "No (everything is straightforward or well-documented)"
+];
+
+export const OPERATIONAL_COMPLEXITY_OPTIONS = [
+  { value: "Single location, focused service (simple)" },
+  { value: "Single location, multiple service lines (moderate)" },
+  { value: "Multiple locations, same service (moderate)" },
+  { value: "Multiple locations, multiple services (complex)" },
+  { value: "Enterprise/franchise operations (very complex)" }
+];
+
+export const SPEED_GAP_LOSS_RATES: Record<string, { min: number; max: number }> = {
+  "Under 5 minutes (excellent—top 10%)": { min: 0, max: 0 },
+  "5-30 minutes (good—top 25%)": { min: 0.15, max: 0.20 },
+  "30 minutes to 2 hours (average—middle 50%)": { min: 0.25, max: 0.35 },
+  "2-4 hours (slow—bottom 25%)": { min: 0.35, max: 0.45 },
+  "4-24 hours (very slow—bottom 10%)": { min: 0.50, max: 0.60 },
+  "24+ hours (critical problem)": { min: 0.65, max: 0.75 },
+  "It varies wildly (inconsistent)": { min: 0.40, max: 0.50 }
+};
+
+export const TIER_THRESHOLDS = {
+  frontline: {
+    maxLeadVolume: 50,
+    minSpeedProblems: true,
+    minSilenceProblems: false
+  },
+  specialist: {
+    minLeadVolume: 50,
+    maxLeadVolume: 150,
+    speedProblems: true,
+    silenceProblems: true
+  },
+  command: {
+    minLeadVolume: 150,
+    minManualHours: 10,
+    highComplexity: true
+  }
+};
