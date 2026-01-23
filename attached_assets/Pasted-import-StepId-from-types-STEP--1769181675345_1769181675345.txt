@@ -1,0 +1,319 @@
+import { StepId } from "./types";
+
+// =====================================================
+// STEP DEFINITIONS (Speed/Silence/Chaos Framework)
+// =====================================================
+
+export const STEPS: { id: StepId; title: string; description: string; progress: number; fields: string[] }[] = [
+  {
+    id: 'context',
+    title: "Tell Us About Your Business",
+    description: "To give you precise numbers, we need to understand your business compared to the 1,200+ similar companies we've analyzed.",
+    progress: 0,
+    fields: ['business_name', 'industry', 'niche_specificity', 'team_size', 'avg_job_value', 'monthly_lead_volume']
+  },
+  {
+    id: 'pain',
+    title: "Where Do You Suspect Revenue Is Slipping?",
+    description: "Select up to 3 areas that feel familiar. It's okay if you're not sure - that's what we're here to figure out together.",
+    progress: 17,
+    fields: ['revenue_pain']
+  },
+  {
+    id: 'speed',
+    title: "The Speed Gap",
+    description: "Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first.",
+    progress: 33,
+    fields: ['first_contact_speed', 'phone_unavailable_handling', 'digital_unavailable_handling', 'unavailability_pct']
+  },
+  {
+    id: 'silence',
+    title: "The Silence Gap",
+    description: "Most revenue isn't lost at first contact—it's lost in the days and weeks after when no one follows up. 80% of sales require 5+ touchpoints.",
+    progress: 50,
+    fields: ['no_show_recovery', 'quote_followup', 'no_show_rate', 'dormant_leads']
+  },
+  {
+    id: 'channels',
+    title: "How Leads Try to Reach You",
+    description: "Let's see if you're actually monitoring all the ways leads try to contact you—and whether you're showing up where your competitors are.",
+    progress: 67,
+    fields: ['contact_channels', 'close_rate', 'social_media_activity', 'review_request']
+  },
+  {
+    id: 'chaos',
+    title: "The Chaos Gap",
+    description: "Let's quantify how much time you're losing to manual coordination and busywork—time that could be spent serving customers.",
+    progress: 83,
+    fields: ['manual_hours', 'knowledge_bottleneck', 'operational_complexity']
+  },
+  {
+    id: 'contact' as StepId,
+    title: "Get Your Results",
+    description: "Enter your details below to receive your custom revenue gap analysis and implementation roadmap.",
+    progress: 95,
+    fields: ['contact_name', 'contact_email', 'contact_phone', 'disclaimer_accepted']
+  }
+];
+
+// =====================================================
+// STEP 2: PAIN SELECTION OPTIONS
+// =====================================================
+
+export const REVENUE_PAIN_OPTIONS = [
+  { value: "Leads disappear before we can respond", subtitle: "They move faster than we do" },
+  { value: "We're too slow to beat competitors", subtitle: "Someone else gets there first" },
+  { value: "No-shows and quotes go cold", subtitle: "We don't follow up systematically" },
+  { value: "Old leads sit unused in our database", subtitle: "Hundreds of opportunities rotting" },
+  { value: "Too much manual chaos", subtitle: "Data entry, coordination, busywork" },
+  { value: "Not sure—we just know we're leaving money on the table", subtitle: "Help us figure it out" }
+];
+
+// =====================================================
+// STEP 1: BUSINESS CONTEXT OPTIONS
+// =====================================================
+
+export const INDUSTRIES = [
+  "HVAC",
+  "Plumbing",
+  "Electrical",
+  "Roofing",
+  "Solar",
+  "Remodeling",
+  "Landscaping",
+  "Windows & Doors",
+  "Painting",
+  "Cleaning",
+  "Pest Control",
+  "Legal",
+  "Med Spa / Aesthetics",
+  "Real Estate",
+  "Auto Services",
+  "Other"
+] as const;
+
+export const HVAC_BUSINESS_TYPES = ["Service & Repair", "System Replacement", "New Construction", "Commercial"];
+export const PLUMBING_BUSINESS_TYPES = ["General Service/Repair", "Sewer & Excavation", "Water Heaters/Filtration", "New Construction"];
+export const ELECTRICAL_BUSINESS_TYPES = ["Service Calls", "Panel Upgrades/Rewiring", "Solar/Battery", "Lighting Design"];
+export const ROOFING_BUSINESS_TYPES = ["Repairs/Maintenance", "Full Replacement (Resi)", "Commercial Roofing", "Storm Restoration"];
+export const SOLAR_BUSINESS_TYPES = ["Residential Install", "Panel Cleaning/Maintenance", "Commercial Project"];
+export const REMODELING_BUSINESS_TYPES = ["Kitchen/Bath", "Whole Home", "Decks/Outdoor", "Handyman Services"];
+export const LANDSCAPING_BUSINESS_TYPES = ["Maintenance (Mow/Blow)", "Design & Build (Hardscaping)", "Tree Service", "Irrigation"];
+export const WINDOWS_DOORS_BUSINESS_TYPES = ["Retrofit/Replacement", "New Construction", "Glass Repair"];
+export const PAINTING_BUSINESS_TYPES = ["Residential Interior/Exterior", "Cabinet Refinishing", "Commercial"];
+export const CLEANING_BUSINESS_TYPES = ["Residential Maid Service", "Commercial Janitorial", "Carpet/Specialty"];
+export const PEST_CONTROL_BUSINESS_TYPES = ["General Pest", "Termite/Wildlife (High Ticket)", "Commercial"];
+export const LEGAL_BUSINESS_TYPES = ["Personal Injury (Contingency)", "Family/Criminal (Retainer)", "Estate Planning (Flat Fee)", "Corporate"];
+export const MED_SPA_BUSINESS_TYPES = ["Injectables/Lasers", "Plastic Surgery", "General Skincare"];
+export const REAL_ESTATE_BUSINESS_TYPES = ["Residential Sales", "Property Management", "Commercial Sales"];
+export const AUTO_BUSINESS_TYPES = ["Detailing/PPF", "General Repair", "Body Shop"];
+
+export const INDUSTRY_NICHE_MAP: Record<string, readonly string[]> = {
+  "HVAC": HVAC_BUSINESS_TYPES,
+  "Plumbing": PLUMBING_BUSINESS_TYPES,
+  "Electrical": ELECTRICAL_BUSINESS_TYPES,
+  "Roofing": ROOFING_BUSINESS_TYPES,
+  "Solar": SOLAR_BUSINESS_TYPES,
+  "Remodeling": REMODELING_BUSINESS_TYPES,
+  "Painting": PAINTING_BUSINESS_TYPES,
+  "Cleaning": CLEANING_BUSINESS_TYPES,
+  "Landscaping": LANDSCAPING_BUSINESS_TYPES,
+  "Windows & Doors": WINDOWS_DOORS_BUSINESS_TYPES,
+  "Pest Control": PEST_CONTROL_BUSINESS_TYPES,
+  "Med Spa / Aesthetics": MED_SPA_BUSINESS_TYPES,
+  "Legal": LEGAL_BUSINESS_TYPES,
+  "Auto Services": AUTO_BUSINESS_TYPES,
+  "Real Estate": REAL_ESTATE_BUSINESS_TYPES
+};
+
+export const TEAM_SIZE_OPTIONS = [
+  "Solo",
+  "2–5",
+  "6–15",
+  "16–50",
+  "50+"
+] as const;
+
+export const MONTHLY_LEAD_VOLUME_OPTIONS = [
+  "1-10 leads/month",
+  "11-25 leads/month",
+  "26-50 leads/month",
+  "51-100 leads/month",
+  "101-200 leads/month",
+  "200+ leads/month",
+  "I don't know"
+] as const;
+
+// =====================================================
+// STEP 3: SPEED GAP OPTIONS
+// =====================================================
+
+export const FIRST_CONTACT_SPEED_OPTIONS = [
+  "Under 5 minutes (excellent—top 10%)",
+  "5-30 minutes (good—top 25%)",
+  "30 minutes to 2 hours (average—middle 50%)",
+  "2-4 hours (slow—bottom 25%)",
+  "4-24 hours (very slow—bottom 10%)",
+  "24+ hours (critical problem)",
+  "It varies wildly (inconsistent)"
+] as const;
+
+export const UNAVAILABILITY_PCT_OPTIONS = [
+  "0-10% (Rare—we're almost always available)",
+  "11-25% (Occasional—some evenings/weekends)",
+  "26-50% (Frequent—about half the time)",
+  "51-75% (Most of the time—we miss more than we catch)",
+  "76-100% (Nearly constant—we're rarely available when they call)",
+  "I don't know (we don't track this)"
+] as const;
+
+export const PHONE_UNAVAILABLE_HANDLING_OPTIONS = [
+  { value: "Voicemail only", subtitle: "They leave a message, we call back when we can" },
+  { value: "Answering service", subtitle: "Human takes messages, we return calls later" },
+  { value: "AI voice assistant", subtitle: "24/7 intelligent voice answering" },
+  { value: "Honestly, most calls get missed", subtitle: "We do our best but know we miss some" }
+] as const;
+
+export const DIGITAL_UNAVAILABLE_HANDLING_OPTIONS = [
+  { value: "Auto-responder", subtitle: "Automatic text/email: \"We'll get back to you soon\"" },
+  { value: "Self-service booking", subtitle: "Online scheduling available 24/7" },
+  { value: "We respond when we can", subtitle: "Manual response later" },
+  { value: "Many slip through", subtitle: "Web leads often go unaddressed" }
+] as const;
+
+// =====================================================
+// STEP 4: SILENCE GAP OPTIONS
+// =====================================================
+
+export const NO_SHOW_RECOVERY_OPTIONS = [
+  "Yes, automatically (system does it for us)",
+  "Yes, manually (someone has to remember to do it)",
+  "Sometimes (when we're not too busy)",
+  "Rarely (we try but it's inconsistent)",
+  "No (once they no-show, they're gone)"
+] as const;
+
+export const QUOTE_FOLLOWUP_OPTIONS = [
+  "Automated follow-up sequence (emails/texts until they respond)",
+  "Manual follow-up (we call/text when we remember)",
+  "One attempt (we follow up once, then stop)",
+  "Nothing (once we quote, we wait for them to decide)"
+] as const;
+
+export const DORMANT_LEADS_OPTIONS = [
+  "Yes, hundreds or thousands (significant untapped opportunity)",
+  "Yes, 50-200 leads (moderate database)",
+  "Yes, under 50 (small list)",
+  "No, we actively work our database (stay on top of it)",
+  "I don't know / We don't track leads in a database"
+] as const;
+
+export const NO_SHOW_RATE_OPTIONS = [
+  "0-10% (excellent—very reliable customers)",
+  "11-20% (average—some no-shows)",
+  "21-35% (high—significant problem)",
+  "35%+ (critical—major revenue drain)",
+  "I don't track this"
+] as const;
+
+// =====================================================
+// STEP 5: CHANNEL & ENGAGEMENT OPTIONS
+// =====================================================
+
+export const CONTACT_CHANNEL_OPTIONS = [
+  { value: "Phone call", subtitle: "Direct calls" },
+  { value: "Text/SMS", subtitle: "Mobile messaging" },
+  { value: "Website form", subtitle: "Contact form, quote request" },
+  { value: "Social media messages", subtitle: "Instagram, Facebook, WhatsApp" },
+  { value: "Chat widget", subtitle: "Live chat on website" },
+  { value: "Email", subtitle: "Direct email" },
+  { value: "Online booking", subtitle: "Self-service scheduling" },
+  { value: "Walk-ins only", subtitle: "No digital presence" }
+] as const;
+
+export const SOCIAL_MEDIA_ACTIVITY_OPTIONS = [
+  "Yes, very active (post 3+ times/week, respond to comments/DMs)",
+  "Somewhat active (have pages, post occasionally)",
+  "Barely active (pages exist but rarely use them)",
+  "No (don't use social media for business)"
+] as const;
+
+export const REVIEW_REQUEST_OPTIONS = [
+  "Yes, automatically (every customer gets a review request)",
+  "Yes, manually (we ask when we remember)",
+  "Sometimes (only our best customers)",
+  "No (we rely on organic reviews)"
+] as const;
+
+export const CLOSE_RATE_OPTIONS = [
+  "1-2 out of 10 (10-20%)",
+  "3-4 out of 10 (30-40%)",
+  "5-6 out of 10 (50-60%)",
+  "7-8 out of 10 (70-80%)",
+  "9-10 out of 10 (90-100%)",
+  "I don't know"
+] as const;
+
+// =====================================================
+// STEP 6: CHAOS GAP OPTIONS
+// =====================================================
+
+export const MANUAL_HOURS_OPTIONS = [
+  "0-2 hours/week (minimal—very streamlined)",
+  "3-5 hours/week (manageable)",
+  "6-10 hours/week (significant—noticeable drag)",
+  "11-20 hours/week (major time sink)",
+  "20+ hours/week (overwhelming—drowning in admin)",
+  "I'm not sure"
+] as const;
+
+export const KNOWLEDGE_BOTTLENECK_OPTIONS = [
+  "Yes, major bottleneck (constant interruptions for the same questions)",
+  "Yes, but manageable (happens occasionally)",
+  "No (everything is straightforward or well-documented)"
+] as const;
+
+export const OPERATIONAL_COMPLEXITY_OPTIONS = [
+  { value: "Single location, focused service (simple)", complexity: "simple" },
+  { value: "Single location, multiple service lines (moderate)", complexity: "moderate" },
+  { value: "Multiple locations, same service (moderate)", complexity: "moderate" },
+  { value: "Multiple locations, multiple services (complex)", complexity: "complex" },
+  { value: "Enterprise/franchise operations (very complex)", complexity: "very_complex" }
+] as const;
+
+// =====================================================
+// SPEED GAP LOSS BENCHMARKS (for scoring)
+// =====================================================
+
+export const SPEED_GAP_LOSS_RATES: Record<string, { min: number; max: number }> = {
+  "Under 5 minutes (excellent—top 10%)": { min: 0, max: 0 },
+  "5-30 minutes (good—top 25%)": { min: 0.15, max: 0.20 },
+  "30 minutes to 2 hours (average—middle 50%)": { min: 0.25, max: 0.35 },
+  "2-4 hours (slow—bottom 25%)": { min: 0.35, max: 0.45 },
+  "4-24 hours (very slow—bottom 10%)": { min: 0.50, max: 0.60 },
+  "24+ hours (critical problem)": { min: 0.65, max: 0.75 },
+  "It varies wildly (inconsistent)": { min: 0.40, max: 0.50 }
+};
+
+// =====================================================
+// TIER RECOMMENDATION THRESHOLDS
+// =====================================================
+
+export const TIER_THRESHOLDS = {
+  frontline: {
+    maxLeadVolume: 50,
+    minSpeedProblems: true,
+    minSilenceProblems: false
+  },
+  specialist: {
+    minLeadVolume: 50,
+    maxLeadVolume: 150,
+    speedProblems: true,
+    silenceProblems: true
+  },
+  command: {
+    minLeadVolume: 150,
+    minManualHours: 10,
+    highComplexity: true
+  }
+};
