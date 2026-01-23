@@ -1,0 +1,984 @@
+import React, { useState } from "react";
+import { useForm, useWatch, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocation } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader2, ArrowRight, ArrowLeft, Sparkles } from "lucide-react";
+
+import { 
+  AssessmentSchema, 
+  AssessmentData, 
+  IndustrySchema, 
+  TeamSizeSchema,
+  ContactChannel
+} from "@/lib/types";
+import { 
+  STEPS, 
+  REVENUE_PAIN_OPTIONS,
+  INDUSTRY_NICHE_MAP,
+  TEAM_SIZE_OPTIONS,
+  MONTHLY_LEAD_VOLUME_OPTIONS,
+  FIRST_CONTACT_SPEED_OPTIONS,
+  UNAVAILABILITY_PCT_OPTIONS,
+  PHONE_UNAVAILABLE_HANDLING_OPTIONS,
+  DIGITAL_UNAVAILABLE_HANDLING_OPTIONS,
+  NO_SHOW_RECOVERY_OPTIONS,
+  QUOTE_FOLLOWUP_OPTIONS,
+  DORMANT_LEADS_OPTIONS,
+  NO_SHOW_RATE_OPTIONS,
+  CONTACT_CHANNEL_OPTIONS,
+  SOCIAL_MEDIA_ACTIVITY_OPTIONS,
+  REVIEW_REQUEST_OPTIONS,
+  CLOSE_RATE_OPTIONS,
+  MANUAL_HOURS_OPTIONS,
+  KNOWLEDGE_BOTTLENECK_OPTIONS,
+  OPERATIONAL_COMPLEXITY_OPTIONS
+} from "@/lib/constants";
+import { calculateResults } from "@/lib/scoring";
+import { Button, Card, Input, Label, Select, SelectItem, Slider, RadioGroup, VisualCardSelector } from "@/components/ui/glass-ui";
+
+export default function Assessment() {
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAnalysis, setShowAnalysis] = useState(false);
+  const [analysisStep, setAnalysisStep] = useState(0);
+  const [_, setLocation] = useLocation();
+
+  const form = useForm<AssessmentData>({
+    resolver: zodResolver(AssessmentSchema),
+    mode: "onChange",
+    defaultValues: {
+      revenue_pain: [],
+      business_name: "",
+      industry: "" as any,
+      niche_specificity: "",
+      team_size: "" as any,
+      avg_job_value: "",
+      monthly_lead_volume: "" as any,
+      first_contact_speed: "" as any,
+      unavailability_pct: "" as any,
+      phone_unavailable_handling: "" as any,
+      digital_unavailable_handling: "" as any,
+      no_show_recovery: "" as any,
+      quote_followup: "" as any,
+      dormant_leads: "" as any,
+      no_show_rate: "" as any,
+      contact_channels: [],
+      social_media_activity: "" as any,
+      review_request: "" as any,
+      close_rate: "" as any,
+      manual_hours: "" as any,
+      knowledge_bottleneck: "" as any,
+      operational_complexity: "" as any,
+      contact_name: "",
+      contact_email: "",
+      contact_phone: "",
+      disclaimer_accepted: false
+    }
+  });
+
+  const { register, control, formState: { errors }, trigger, setValue } = form;
+  const watchedValues = useWatch({ control });
+  const currentStep = STEPS[currentStepIndex];
+
+  const analysisMessages = [
+    "Comparing to 1,200+ similar businesses...",
+    "Calculating speed gap impact...",
+    "Analyzing follow-up opportunities...",
+    "Quantifying operational waste...",
+    "Generating your custom roadmap..."
+  ];
+
+  const handleNext = async () => {
+    const fieldsToValidate = currentStep.fields as (keyof AssessmentData)[];
+    const isValidStep = await trigger(fieldsToValidate);
+    
+    if (isValidStep) {
+      if (currentStepIndex < STEPS.length - 1) {
+        setCurrentStepIndex(prev => prev + 1);
+        window.scrollTo(0, 0);
+      } else {
+        setShowAnalysis(true);
+        setIsSubmitting(true);
+        
+        const interval = setInterval(() => {
+          setAnalysisStep(prev => {
+            if (prev >= analysisMessages.length - 1) {
+              clearInterval(interval);
+              return prev;
+            }
+            return prev + 1;
+          });
+        }, 600);
+        
+        setTimeout(async () => {
+          clearInterval(interval);
+          const results = calculateResults(watchedValues as AssessmentData);
+          
+          try {
+            const response = await fetch("/api/assessment/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                assessmentData: watchedValues,
+                speedGapScore: results.speedGap.estimate,
+                silenceGapScore: results.silenceGap.estimate,
+                chaosGapScore: results.chaosGap.estimate,
+                contactName: watchedValues.contact_name,
+                contactEmail: watchedValues.contact_email,
+                contactPhone: watchedValues.contact_phone || "",
+              }),
+            });
+
+            if (!response.ok) throw new Error("Failed to submit assessment");
+
+            const { leadId } = await response.json();
+            sessionStorage.setItem("currentLeadId", leadId);
+            sessionStorage.setItem("assessment_results", JSON.stringify(results));
+            setLocation("/results");
+          } catch (error) {
+            console.error("Error submitting assessment:", error);
+            sessionStorage.setItem("assessment_results", JSON.stringify(results));
+            setLocation("/results");
+          } finally {
+            setIsSubmitting(false);
+          }
+        }, 3500);
+      }
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStepIndex > 0) {
+      setCurrentStepIndex(prev => prev - 1);
+      window.scrollTo(0, 0);
+    } else {
+      setLocation('/');
+    }
+  };
+
+  const handlePainToggle = (optionValue: string) => {
+    const current = (watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>;
+    const existingIndex = current.findIndex(p => p.value === optionValue);
+    const isNotSureOption = optionValue.includes("Not sure");
+    
+    if (existingIndex >= 0) {
+      setValue('revenue_pain', current.filter(p => p.value !== optionValue) as any);
+    } else {
+      if (isNotSureOption) {
+        setValue('revenue_pain', [{ value: optionValue, severity: 3 }] as any);
+      } else {
+        const withoutNotSure = current.filter(p => !p.value.includes("Not sure"));
+        if (withoutNotSure.length < 3) {
+          setValue('revenue_pain', [...withoutNotSure, { value: optionValue, severity: 3 }] as any);
+        }
+      }
+    }
+    trigger('revenue_pain');
+  };
+
+  const handlePainSeverityChange = (optionValue: string, severity: number) => {
+    const current = (watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>;
+    const updated = current.map(p => 
+      p.value === optionValue ? { ...p, severity } : p
+    );
+    setValue('revenue_pain', updated as any);
+    trigger('revenue_pain');
+  };
+
+  const isPainSelected = (optionValue: string) => {
+    const current = (watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>;
+    return current.some(p => p.value === optionValue);
+  };
+
+  const getPainSeverity = (optionValue: string) => {
+    const current = (watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>;
+    const found = current.find(p => p.value === optionValue);
+    return found?.severity || 3;
+  };
+
+  const handleChannelToggle = (channel: ContactChannel) => {
+    const current = watchedValues.contact_channels || [];
+    if (current.includes(channel)) {
+      setValue('contact_channels', current.filter(c => c !== channel));
+    } else {
+      setValue('contact_channels', [...current, channel]);
+    }
+    trigger('contact_channels');
+  };
+
+  const getJobValueConfig = (niche: string | undefined) => {
+    if (!niche) return { min: 0, max: 50000, step: 500 };
+    const tier1 = ["Service & Repair", "General Service/Repair", "Service Calls", "Repairs/Maintenance", "Maintenance", "Residential Maid Service", "General Pest", "Detailing/PPF"];
+    const tier2 = ["System Replacement", "Panel Upgrades/Rewiring", "Kitchen/Bath", "Cabinet Refinishing", "Injectables/Lasers", "Retrofit/Replacement"];
+    const tier3 = ["Full Replacement (Resi)", "Sewer & Excavation", "Whole Home", "Personal Injury (Contingency)", "Commercial"];
+    if (tier1.some(t => niche?.includes(t))) return { min: 0, max: 3000, step: 50 };
+    if (tier2.some(t => niche?.includes(t))) return { min: 1000, max: 25000, step: 500 };
+    if (tier3.some(t => niche?.includes(t))) return { min: 5000, max: 100000, step: 1000 };
+    return { min: 0, max: 50000, step: 500 };
+  };
+
+  if (showAnalysis) {
+    const analysisProgress = Math.min(Math.round(((analysisStep + 1) / analysisMessages.length) * 100), 99);
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="space-y-6"
+        >
+          <div className="relative">
+            <div className="w-24 h-24 mx-auto rounded-full border-4 border-cyan-500/30 border-t-cyan-500 animate-spin" />
+            <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-cyan-400" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-heading font-bold">Analyzing Your Business...</h2>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={analysisStep}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-slate-400"
+              >
+                {analysisMessages[analysisStep]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+          <div className="text-xs text-cyan-400 font-medium">{analysisProgress}% Complete</div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  const renderField = (field: string) => {
+    switch (field) {
+      case 'revenue_pain':
+        const selectedCount = ((watchedValues.revenue_pain || []) as Array<{value: string; severity: number}>).length;
+        return (
+          <div className="space-y-4 w-full">
+            <p className="text-sm text-slate-400 mb-2">
+              {selectedCount === 0 ? "Select up to 3 areas" : `${selectedCount}/3 selected`}
+            </p>
+            <div className="grid grid-cols-1 gap-3">
+              {REVENUE_PAIN_OPTIONS.map(option => {
+                const isSelected = isPainSelected(option.value);
+                const isNotSureOption = option.value.includes("Not sure");
+                const canSelect = selectedCount < 3 || isSelected;
+                
+                return (
+                  <div key={option.value} className="space-y-2">
+                    <button
+                      type="button"
+                      onClick={() => handlePainToggle(option.value)}
+                      disabled={!canSelect && !isSelected}
+                      data-testid={`button-pain-${option.value.slice(0, 20).toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+                      className={`relative w-full flex items-start gap-4 p-5 rounded-xl border text-left transition-all duration-200 overflow-hidden ${
+                        isSelected 
+                          ? 'bg-[#0d1a1f] border-[#00D9FF]/60 shadow-[0_0_20px_rgba(0,217,255,0.2),0_4px_16px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(0,217,255,0.1)]' 
+                          : canSelect
+                            ? 'bg-[#12161a] border-[#2a3038] shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.02)] hover:bg-[#181d22] hover:border-[#3a4048] hover:shadow-[0_4px_12px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.04)]'
+                            : 'bg-[#0e1114] border-[#1e2228] opacity-50 cursor-not-allowed'
+                      }`}
+                    >
+                      {isSelected && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#00D9FF]/[0.08] via-transparent to-transparent pointer-events-none" />
+                      )}
+                      <div className={`relative flex-shrink-0 w-5 h-5 mt-0.5 rounded border-2 flex items-center justify-center transition-all ${
+                        isSelected ? 'border-[#00D9FF] bg-[#00D9FF] shadow-[0_0_8px_rgba(0,217,255,0.5)]' : 'border-[#4a5058]'
+                      }`}>
+                        {isSelected && (
+                          <svg className="w-3 h-3 text-[#0a0f12]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="relative flex-1">
+                        <span className={`text-lg font-medium block ${isSelected ? 'text-white' : 'text-[#c0c8d0]'}`}>{option.value}</span>
+                        <span className="text-sm text-[#6b7280] mt-1 block">{option.subtitle}</span>
+                      </div>
+                    </button>
+                    <AnimatePresence>
+                      {isSelected && !isNotSureOption && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="ml-9 px-4 py-3 bg-[#0a0f12] rounded-lg border border-[#1e2830] shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="text-xs text-[#8b9299]">How confident are you this is a problem?</span>
+                              <span className="text-xs text-[#00D9FF] font-mono">{getPainSeverity(option.value)}/5</span>
+                            </div>
+                            <input
+                              type="range"
+                              min="1"
+                              max="5"
+                              value={getPainSeverity(option.value)}
+                              onChange={(e) => handlePainSeverityChange(option.value, parseInt(e.target.value))}
+                              className="w-full h-2 bg-[#1a2028] rounded-lg appearance-none cursor-pointer accent-[#00D9FF]"
+                            />
+                            <div className="flex justify-between text-[10px] text-[#6b7280] mt-1">
+                              <span>Just a hunch</span>
+                              <span>Very confident</span>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
+            {errors.revenue_pain && <p className="text-cyan-400 text-xs">{(errors.revenue_pain as any)?.message || "Select at least one area"}</p>}
+          </div>
+        );
+
+      case 'business_name':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="business_name">Business Name or Website</Label>
+            <Input 
+              id="business_name" 
+              placeholder="Acme HVAC or www.acmehvac.com" 
+              {...register('business_name')} 
+              data-testid="input-business-name"
+            />
+            {errors.business_name && <p className="text-cyan-400 text-xs">{errors.business_name.message}</p>}
+            <p className="text-xs text-slate-500">For personalized recommendations</p>
+          </div>
+        );
+
+      case 'industry':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="industry">Industry</Label>
+            <Controller
+              control={control}
+              name="industry"
+              render={({ field }) => (
+                <Select 
+                  value={field.value} 
+                  onValueChange={(val) => {
+                    field.onChange(val);
+                    setValue('niche_specificity', '');
+                    setValue('avg_job_value', '');
+                  }} 
+                  placeholder="Select industry..."
+                >
+                  {IndustrySchema.options.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
+                </Select>
+              )}
+            />
+            {errors.industry && <p className="text-cyan-400 text-xs">{errors.industry.message}</p>}
+          </div>
+        );
+
+      case 'niche_specificity':
+        const selectedIndustry = watchedValues.industry;
+        const nicheOptions = selectedIndustry ? INDUSTRY_NICHE_MAP[selectedIndustry] || [] : [];
+        
+        if (selectedIndustry === 'Other') {
+          return (
+            <div className="space-y-2 w-full">
+              <Label htmlFor="niche_specificity">What is your primary service?</Label>
+              <Input 
+                id="niche_specificity" 
+                placeholder="e.g. Specialized Manufacturing" 
+                {...register('niche_specificity')} 
+              />
+              {errors.niche_specificity && <p className="text-cyan-400 text-xs">{errors.niche_specificity.message}</p>}
+            </div>
+          );
+        }
+
+        if (!selectedIndustry) {
+          return (
+            <div className="space-y-2 w-full">
+              <Label>Specialization</Label>
+              <div className="p-3 rounded-lg border border-slate-700/50 bg-slate-900/40 text-slate-500 text-sm">
+                Select an industry first
+              </div>
+            </div>
+          );
+        }
+        
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="niche_specificity">Specialization</Label>
+            <Controller
+              control={control}
+              name="niche_specificity"
+              render={({ field }) => (
+                <Select 
+                  value={field.value} 
+                  onValueChange={(val) => {
+                    field.onChange(val);
+                    setValue('avg_job_value', '');
+                  }} 
+                  placeholder="Select your focus..."
+                >
+                  {nicheOptions.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
+                </Select>
+              )}
+            />
+            {errors.niche_specificity && <p className="text-cyan-400 text-xs">{errors.niche_specificity.message}</p>}
+          </div>
+        );
+
+      case 'team_size':
+        return (
+          <div className="space-y-3 w-full">
+            <Label htmlFor="team_size">Team Size</Label>
+            <Controller
+              control={control}
+              name="team_size"
+              render={({ field }) => (
+                <RadioGroup
+                  options={TEAM_SIZE_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={3}
+                />
+              )}
+            />
+            {errors.team_size && <p className="text-cyan-400 text-xs">{errors.team_size.message}</p>}
+          </div>
+        );
+
+      case 'avg_job_value':
+        const config = getJobValueConfig(watchedValues.niche_specificity);
+        return (
+          <div className="space-y-4 w-full">
+            <div className="flex justify-between items-center">
+              <Label htmlFor="avg_job_value">Average Job Value</Label>
+              <span className={`font-mono font-medium ${watchedValues.avg_job_value ? 'text-cyan-400' : 'text-slate-500'}`}>
+                {watchedValues.avg_job_value ? `$${parseInt(watchedValues.avg_job_value).toLocaleString()}${parseInt(watchedValues.avg_job_value) >= config.max ? '+' : ''}` : "Select"}
+              </span>
+            </div>
+            <Controller
+              control={control}
+              name="avg_job_value"
+              render={({ field: sliderField }) => {
+                const value = sliderField.value ? parseInt(sliderField.value) : config.min;
+                return (
+                  <Slider
+                    min={config.min}
+                    max={config.max}
+                    step={config.step}
+                    value={[value]}
+                    onValueChange={(vals) => sliderField.onChange(vals[0].toString())}
+                    className={!sliderField.value ? "opacity-60" : ""}
+                  />
+                );
+              }}
+            />
+            {errors.avg_job_value && <p className="text-cyan-400 text-xs">{errors.avg_job_value.message}</p>}
+          </div>
+        );
+
+      case 'monthly_lead_volume':
+        return (
+          <div className="space-y-3 w-full">
+            <Label htmlFor="monthly_lead_volume">Monthly Lead Volume</Label>
+            <Controller
+              control={control}
+              name="monthly_lead_volume"
+              render={({ field }) => (
+                <RadioGroup
+                  options={MONTHLY_LEAD_VOLUME_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.monthly_lead_volume && <p className="text-cyan-400 text-xs">{errors.monthly_lead_volume.message}</p>}
+          </div>
+        );
+
+      case 'first_contact_speed':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>How fast do you typically make first contact with new leads?</Label>
+            <Controller
+              control={control}
+              name="first_contact_speed"
+              render={({ field }) => (
+                <RadioGroup
+                  options={FIRST_CONTACT_SPEED_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.first_contact_speed && <p className="text-cyan-400 text-xs">{errors.first_contact_speed.message}</p>}
+          </div>
+        );
+
+      case 'unavailability_pct':
+        return (
+          <div className="space-y-3 w-full pt-4">
+            <Label>If you had to guess, what percentage of leads contact you outside your normal availability?</Label>
+            <p className="text-xs text-slate-500 mb-2">Think about after-hours, weekends, busy periods, team in the field, etc.</p>
+            <Controller
+              control={control}
+              name="unavailability_pct"
+              render={({ field }) => (
+                <RadioGroup
+                  options={UNAVAILABILITY_PCT_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.unavailability_pct && <p className="text-cyan-400 text-xs">{errors.unavailability_pct.message}</p>}
+          </div>
+        );
+
+      case 'phone_unavailable_handling':
+        return (
+          <div className="space-y-4 w-full">
+            <Label>When a phone call comes in and you can't answer, what happens?</Label>
+            <Controller
+              control={control}
+              name="phone_unavailable_handling"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={PHONE_UNAVAILABLE_HANDLING_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value, 
+                    subtitle: opt.subtitle 
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.phone_unavailable_handling && <p className="text-cyan-400 text-xs">{errors.phone_unavailable_handling.message}</p>}
+          </div>
+        );
+
+      case 'digital_unavailable_handling':
+        return (
+          <div className="space-y-4 w-full">
+            <Label>When a text, email, or web form comes in and you're busy, what happens?</Label>
+            <Controller
+              control={control}
+              name="digital_unavailable_handling"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={DIGITAL_UNAVAILABLE_HANDLING_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value, 
+                    subtitle: opt.subtitle 
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.digital_unavailable_handling && <p className="text-cyan-400 text-xs">{errors.digital_unavailable_handling.message}</p>}
+          </div>
+        );
+
+      case 'no_show_recovery':
+        const isAppointmentBased = ['Legal', 'Med Spa / Aesthetics', 'Real Estate', 'Other'].includes(watchedValues.industry || '');
+        const label = isAppointmentBased 
+          ? "Do you systematically follow up with no-shows to rebook them?"
+          : "Do you follow up when customers cancel or aren't home?";
+        
+        return (
+          <div className="space-y-3 w-full">
+            <Label>{label}</Label>
+            <Controller
+              control={control}
+              name="no_show_recovery"
+              render={({ field }) => (
+                <RadioGroup
+                  options={NO_SHOW_RECOVERY_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.no_show_recovery && <p className="text-cyan-400 text-xs">{errors.no_show_recovery.message}</p>}
+          </div>
+        );
+
+      case 'quote_followup':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>What happens to quotes that don't close immediately?</Label>
+            <Controller
+              control={control}
+              name="quote_followup"
+              render={({ field }) => (
+                <RadioGroup
+                  options={QUOTE_FOLLOWUP_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.quote_followup && <p className="text-cyan-400 text-xs">{errors.quote_followup.message}</p>}
+          </div>
+        );
+
+      case 'dormant_leads':
+        return (
+          <div className="space-y-3 w-full pt-4">
+            <Label>Do you have old leads (6+ months dormant) sitting in your database?</Label>
+            <Controller
+              control={control}
+              name="dormant_leads"
+              render={({ field }) => (
+                <RadioGroup
+                  options={DORMANT_LEADS_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.dormant_leads && <p className="text-cyan-400 text-xs">{errors.dormant_leads.message}</p>}
+          </div>
+        );
+
+      case 'no_show_rate':
+        const rateIsAppointmentBased = ['Legal', 'Med Spa / Aesthetics', 'Real Estate', 'Other'].includes(watchedValues.industry || '');
+        const rateLabel = rateIsAppointmentBased
+          ? "What's your appointment no-show rate?"
+          : "What's your average cancellation rate?";
+
+        return (
+          <div className="space-y-3 w-full">
+            <Label>{rateLabel}</Label>
+            <Controller
+              control={control}
+              name="no_show_rate"
+              render={({ field }) => (
+                <RadioGroup
+                  options={NO_SHOW_RATE_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.no_show_rate && <p className="text-cyan-400 text-xs">{errors.no_show_rate.message}</p>}
+          </div>
+        );
+
+      case 'contact_channels':
+        return (
+          <div className="space-y-4 w-full">
+            <div className="flex justify-between items-center">
+              <Label>How can leads currently contact you?</Label>
+              <span className="text-sm text-slate-500">{(watchedValues.contact_channels || []).length}/8 selected</span>
+            </div>
+            <p className="text-xs text-slate-500">Select ALL that apply</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {CONTACT_CHANNEL_OPTIONS.map(option => {
+                const isSelected = (watchedValues.contact_channels || []).includes(option.value as ContactChannel);
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => handleChannelToggle(option.value as ContactChannel)}
+                    className={`flex flex-col p-3 rounded-lg border text-center transition-all ${
+                      isSelected 
+                        ? 'bg-cyan-500/10 border-cyan-500' 
+                        : 'bg-slate-900/40 border-slate-700/50 hover:bg-slate-800/60'
+                    }`}
+                  >
+                    <span className={`text-sm font-medium ${isSelected ? 'text-white' : 'text-slate-300'}`}>{option.value}</span>
+                    <span className="text-xs text-slate-500 mt-1">{option.subtitle}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {errors.contact_channels && <p className="text-cyan-400 text-xs">{errors.contact_channels.message}</p>}
+          </div>
+        );
+
+      case 'social_media_activity':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>Are you active on social media for your business?</Label>
+            <Controller
+              control={control}
+              name="social_media_activity"
+              render={({ field }) => (
+                <RadioGroup
+                  options={SOCIAL_MEDIA_ACTIVITY_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.social_media_activity && <p className="text-cyan-400 text-xs">{errors.social_media_activity.message}</p>}
+          </div>
+        );
+
+      case 'review_request':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>Do you systematically ask customers for reviews?</Label>
+            <Controller
+              control={control}
+              name="review_request"
+              render={({ field }) => (
+                <RadioGroup
+                  options={REVIEW_REQUEST_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.review_request && <p className="text-cyan-400 text-xs">{errors.review_request.message}</p>}
+          </div>
+        );
+
+      case 'close_rate':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>Out of every 10 leads, how many become paying customers?</Label>
+            <p className="text-xs text-slate-500 mb-2">This is your close rate - just estimate if you don't track it exactly</p>
+            <Controller
+              control={control}
+              name="close_rate"
+              render={({ field }) => (
+                <RadioGroup
+                  options={CLOSE_RATE_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={3}
+                />
+              )}
+            />
+            {errors.close_rate && <p className="text-cyan-400 text-xs">{errors.close_rate.message}</p>}
+          </div>
+        );
+
+      case 'manual_hours':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>How many hours per week do you spend on manual coordination?</Label>
+            <Controller
+              control={control}
+              name="manual_hours"
+              render={({ field }) => (
+                <RadioGroup
+                  options={MANUAL_HOURS_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={2}
+                />
+              )}
+            />
+            {errors.manual_hours && <p className="text-cyan-400 text-xs">{errors.manual_hours.message}</p>}
+          </div>
+        );
+
+      case 'knowledge_bottleneck':
+        return (
+          <div className="space-y-3 w-full">
+            <Label>Do you have repetitive questions that create bottlenecks?</Label>
+            <Controller
+              control={control}
+              name="knowledge_bottleneck"
+              render={({ field }) => (
+                <RadioGroup
+                  options={KNOWLEDGE_BOTTLENECK_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.knowledge_bottleneck && <p className="text-cyan-400 text-xs">{errors.knowledge_bottleneck.message}</p>}
+          </div>
+        );
+
+      case 'operational_complexity':
+        return (
+          <div className="space-y-4 w-full">
+            <Label>How complex are your operations?</Label>
+            <Controller
+              control={control}
+              name="operational_complexity"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={OPERATIONAL_COMPLEXITY_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.operational_complexity && <p className="text-cyan-400 text-xs">{errors.operational_complexity.message}</p>}
+          </div>
+        );
+
+      case 'contact_name':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="contact_name">Your Name</Label>
+            <Input 
+              id="contact_name" 
+              placeholder="John Doe" 
+              {...register('contact_name')} 
+              data-testid="input-contact-name"
+            />
+            {errors.contact_name && <p className="text-cyan-400 text-xs">{errors.contact_name.message}</p>}
+          </div>
+        );
+
+      case 'contact_email':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="contact_email">Email Address</Label>
+            <Input 
+              id="contact_email" 
+              type="email"
+              placeholder="john@example.com" 
+              {...register('contact_email')} 
+              data-testid="input-contact-email"
+            />
+            {errors.contact_email && <p className="text-cyan-400 text-xs">{errors.contact_email.message}</p>}
+          </div>
+        );
+
+      case 'contact_phone':
+        return (
+          <div className="space-y-2 w-full">
+            <Label htmlFor="contact_phone">Cell Phone Number (Optional)</Label>
+            <Input 
+              id="contact_phone" 
+              type="tel"
+              placeholder="(555) 000-0000" 
+              {...register('contact_phone')} 
+              data-testid="input-contact-phone"
+            />
+          </div>
+        );
+
+      case 'disclaimer_accepted':
+        return (
+          <div className="space-y-4 w-full pt-4">
+            <div className="flex items-start gap-3 p-4 rounded-lg bg-slate-900/60 border border-slate-800">
+              <input 
+                type="checkbox" 
+                id="disclaimer_accepted"
+                {...register('disclaimer_accepted')}
+                className="mt-1 h-4 w-4 rounded border-slate-700 bg-slate-800 text-cyan-500 focus:ring-cyan-500"
+              />
+              <Label htmlFor="disclaimer_accepted" className="text-xs text-slate-400 leading-relaxed cursor-pointer">I understand that these estimates are conservative benchmarks based on industry data. By submitting, I agree to receive my report and related business insights via email.</Label>
+            </div>
+            {errors.disclaimer_accepted && <p className="text-cyan-400 text-xs">{errors.disclaimer_accepted.message}</p>}
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-cyan-400">
+            {currentStep.progress}% Complete
+          </span>
+          {currentStepIndex < STEPS.length - 1 && (
+            <span className="text-sm text-slate-500">
+              Step {currentStepIndex + 1} of {STEPS.length - 1}
+            </span>
+          )}
+        </div>
+        <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+          <motion.div 
+            className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400"
+            initial={{ width: 0 }}
+            animate={{ width: `${currentStepIndex === STEPS.length - 1 ? 100 : currentStep.progress}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+      </div>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentStep.id}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Card className="p-8">
+            <div className="space-y-2 mb-8">
+              <h2 className="text-2xl font-heading font-bold text-white">{currentStep.title}</h2>
+              <p className="text-slate-400">{currentStep.description}</p>
+            </div>
+
+            <div className="space-y-6">
+              {currentStep.fields.map(field => (
+                <div key={field}>{renderField(field)}</div>
+              ))}
+            </div>
+
+            <div className="flex justify-between mt-8 pt-6 border-t border-slate-700/50">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={handleBack}
+                data-testid="button-back"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+              </Button>
+              <Button
+                type="button"
+                onClick={handleNext}
+                disabled={isSubmitting}
+                data-testid="button-next"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : currentStepIndex === STEPS.length - 2 ? (
+                  <>
+                    Get Results
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                ) : currentStepIndex === STEPS.length - 1 ? (
+                  <>
+                    Submit
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    Continue
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card> **...**
+
+_This response is too long to display in full._
