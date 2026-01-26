@@ -1,0 +1,15 @@
+{
+  "src/main.tsx": {
+    "file": "main.mjs",
+    "name": "main",
+    "src": "src/main.tsx",
+    "isEntry": true,
+    "assets": [
+      "assets/Untitled_design_1764887004065-C4jsJaxv.png",
+      "assets/intelligent_triage_routing_workflow_diagram-ChMn2ANN.png",
+      "assets/follow-up_automation_sequence_diagram-C_5sRyvR.png",
+      "assets/education_faq_knowledge_base_diagram-L_A3OY-i.png",
+      "assets/integration_roi_dashboard_diagram-CERKZCGh.png"
+    ]
+  }
+}
