@@ -1,0 +1,65 @@
+Hello Cesar,
+
+Since you are running SimpleSequence (SS) on Replit and using Hostinger for your email, the most robust way to handle this is to separate the "Data Entry" from the "Email Delivery," while keeping GoHighLevel (GHL) as your central brain.
+
+Here is the best architectural approach to get your leads into GHL and deliver the assessment results professionally.
+
+The Strategy: The "Webhook Handoff"
+Instead of trying to connect Replit directly to your database or email server manually every time, you should use a GHL Workflow Webhook.
+
+Replit calculates the diagnosis/score.
+
+Replit bundles the contact info + the score.
+
+Replit sends a single "POST" request to GHL.
+
+GHL receives the lead, creates the contact, and sends the email (using your domain).
+
+Step 1: Prepare GHL (The Listener)
+Go to Automation > Workflows > Create New.
+
+Trigger: Select Incoming Webhook.
+
+Copy the URL provided (e.g., services.leadconnectorhq.com/hooks/...).
+
+Action 1: "Create/Update Contact".
+
+Map the fields (Email, Name, Phone).
+
+Crucial: Enable "Allow Duplicate Contact" (set to Update) so existing leads get updated with new assessment scores.
+
+Action 2: "Send Email".
+
+From Email: results@simplesequence.ai (You can type this manually in the "From" field).
+
+Body: Use "Custom Values" to insert the assessment data. Since this data is coming from the Webhook, you will use {{webhook.score}} or {{webhook.diagnosis_result}}.
+
+Note: You must trigger the webhook once with test data for GHL to "see" the variables so you can select them in the email builder.
+
+Step 2: The Replit Code (The Sender)
+You need to add a small block of code to your backend (where your assessment finishes).
+
+If you are using Node.js (Common for Replit):
+
+JavaScript
+
+const axios = require('axios');
+
+async function sendToGHL(userData, assessmentResults) {
+  const webhookUrl = 'YOUR_GHL_WEBHOOK_URL_HERE';
+
+  const payload = {
+    email: userData.email,
+    first_name: userData.firstName,
+    // Custom variables for your assessment
+    diagnosis: assessmentResults.diagnosis, 
+    score: assessmentResults.score, 
+    summary: assessmentResults.summary
+  };
+
+  try {
+    await axios.post(webhookUrl, payload);
+    console.log('Lead and results sent to SimpleSequence CRM!');
+  } catch (error) {
+    console.error('Error sending to GHL:', error);
+  }
