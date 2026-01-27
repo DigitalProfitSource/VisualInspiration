@@ -44,3 +44,8 @@ waitForPort = 5000
 
 [agent]
 mockupState = "FULLSTACK"
+
+[userenv]
+
+[userenv.shared]
+GHL_WEBHOOK_URL = "https://services.leadconnectorhq.com/hooks/g9gg2U35jlB8ZBaIHoO9/webhook-trigger/d4e2715a-f9a3-4e47-be1f-52390cf42876"

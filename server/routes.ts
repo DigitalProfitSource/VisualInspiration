@@ -5,6 +5,70 @@ import { insertLeadSchema } from "@shared/schema";
 import { AssessmentSubmitSchema } from "@shared/assessment-schema";
 import { z } from "zod";
 
+async function sendToGHL(data: {
+  contactName: string;
+  contactEmail: string;
+  contactPhone?: string | null;
+  businessName: string;
+  industry: string;
+  clarityScore: number;
+  revenueLeakLow: number;
+  revenueLeakHigh: number;
+  speedGapScore: number;
+  silenceGapScore: number;
+  chaosGapScore: number;
+  topPainPoints: string[];
+  teamSize: string;
+  avgJobValue: string;
+  monthlyLeadVolume: string;
+}) {
+  const webhookUrl = process.env.GHL_WEBHOOK_URL;
+  
+  if (!webhookUrl) {
+    console.warn("GHL_WEBHOOK_URL not configured - skipping webhook");
+    return;
+  }
+
+  try {
+    const payload = {
+      first_name: data.contactName.split(" ")[0],
+      last_name: data.contactName.split(" ").slice(1).join(" ") || "",
+      email: data.contactEmail,
+      phone: data.contactPhone || "",
+      company_name: data.businessName,
+      industry: data.industry,
+      clarity_score: data.clarityScore,
+      revenue_leak_low: data.revenueLeakLow,
+      revenue_leak_high: data.revenueLeakHigh,
+      speed_gap_score: data.speedGapScore,
+      silence_gap_score: data.silenceGapScore,
+      chaos_gap_score: data.chaosGapScore,
+      top_pain_points: data.topPainPoints.join(", "),
+      team_size: data.teamSize,
+      avg_job_value: data.avgJobValue,
+      monthly_lead_volume: data.monthlyLeadVolume,
+      source: "SimpleSequence Assessment",
+      submitted_at: new Date().toISOString(),
+    };
+
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      console.error("GHL webhook failed:", response.status, await response.text());
+    } else {
+      console.log("Lead sent to GHL successfully");
+    }
+  } catch (error) {
+    console.error("Error sending to GHL:", error);
+  }
+}
+
 export async function registerRoutes(
   httpServer: Server,
   app: Express
@@ -44,11 +108,15 @@ export async function registerRoutes(
     try {
       const data = AssessmentSubmitSchema.parse(req.body);
 
+      const clarityScore = Math.round((100 - (data.speedGapScore + data.silenceGapScore + data.chaosGapScore) / 3));
+      const revenueLeakLow = Math.round(data.totalMonthlyImpactLow || 0);
+      const revenueLeakHigh = Math.round(data.totalMonthlyImpactHigh || 0);
+
       const lead = await storage.createAssessmentLead({
         assessmentData: data.assessmentData,
-        clarityScore: Math.round((100 - (data.speedGapScore + data.silenceGapScore + data.chaosGapScore) / 3)),
-        revenueLeakLow: Math.round(data.totalMonthlyImpactLow || 0),
-        revenueLeakHigh: Math.round(data.totalMonthlyImpactHigh || 0),
+        clarityScore,
+        revenueLeakLow,
+        revenueLeakHigh,
         timeWastedMinutes: 0,
         contactName: data.contactName,
         contactEmail: data.contactEmail,
@@ -56,6 +124,25 @@ export async function registerRoutes(
         contactWebsite: null,
         contactSubmittedAt: new Date(),
       });
+
+      // Send to GHL webhook (non-blocking)
+      sendToGHL({
+        contactName: data.contactName,
+        contactEmail: data.contactEmail,
+        contactPhone: data.contactPhone,
+        businessName: data.assessmentData.business_name,
+        industry: data.assessmentData.industry,
+        clarityScore,
+        revenueLeakLow,
+        revenueLeakHigh,
+        speedGapScore: data.speedGapScore,
+        silenceGapScore: data.silenceGapScore,
+        chaosGapScore: data.chaosGapScore,
+        topPainPoints: data.assessmentData.revenue_pain.map(p => p.value),
+        teamSize: data.assessmentData.team_size,
+        avgJobValue: data.assessmentData.avg_job_value,
+        monthlyLeadVolume: data.assessmentData.monthly_lead_volume,
+      }).catch(err => console.error("GHL webhook error:", err));
 
       res.json({ leadId: lead.id });
     } catch (error) {
