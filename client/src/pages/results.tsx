@@ -294,34 +294,7 @@ export default function Results() {
           transition={{ delay: 0.1 }}
           className="space-y-6 mb-12"
         >
-          <h2 className="text-2xl font-heading font-bold text-white">Gap Analysis</h2>
-          
-          <GapCard 
-            title="Speed Gap" 
-            gap={result.speedGap}
-            description="Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first."
-          />
-          
-          <GapCard 
-            title="Silence Gap" 
-            gap={result.silenceGap}
-            description="Most revenue isn't lost at first contact - it's lost in the days and weeks after when no one follows up."
-          />
-          
-          <GapCard 
-            title="Chaos Gap" 
-            gap={result.chaosGap}
-            description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mb-12"
-        >
-          <GlassCard className="p-8 border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 to-slate-900/50">
+          <GlassCard className="p-8 border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 to-slate-900/50 mb-8">
             <h3 className="text-xl font-heading font-semibold text-cyan-400 flex items-center gap-2 mb-4">
               <BarChart3 size={24} /> Total Impact Summary
             </h3>
@@ -351,7 +324,28 @@ export default function Results() {
               </div>
             </div>
           </GlassCard>
+
+          <h2 className="text-2xl font-heading font-bold text-white">Gap Analysis</h2>
+          
+          <GapCard 
+            title="Speed Gap" 
+            gap={result.speedGap}
+            description="Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first."
+          />
+          
+          <GapCard 
+            title="Silence Gap" 
+            gap={result.silenceGap}
+            description="Most revenue isn't lost at first contact - it's lost in the days and weeks after when no one follows up."
+          />
+          
+          <GapCard 
+            title="Chaos Gap" 
+            gap={result.chaosGap}
+            description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."
+          />
         </motion.div>
+
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -482,7 +476,6 @@ function DIYSection() {
     >
       <h2 className="text-2xl font-heading font-bold text-cyan-400 mb-2">Your DIY Action Plan</h2>
       <p className="text-slate-400 mb-6">You can implement these fixes with or without SimpleSequence. Here is how to do it yourself:</p>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
           <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
@@ -526,7 +519,6 @@ function DIYSection() {
           </div>
         </GlassCard>
       </div>
-
       <GlassCard className="p-6 border-amber-500/20 bg-amber-950/10">
         <h3 className="text-lg font-heading font-semibold text-white mb-3">The Reality of DIY Implementation</h3>
         <p className="text-slate-400 text-sm mb-4">
@@ -534,19 +526,19 @@ function DIYSection() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-slate-900/50 rounded-lg p-4">
-            <p className="text-xs text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-[#00d3f3]">
               <Clock size={12} /> Time Investment
             </p>
             <p className="text-sm text-slate-300">15-30 hours of technical setup and troubleshooting</p>
           </div>
           <div className="bg-slate-900/50 rounded-lg p-4">
-            <p className="text-xs text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-[#00d3f3]">
               <Code size={12} /> Technical Debt
             </p>
             <p className="text-sm text-slate-300">Advanced API & integration knowledge to prevent failures</p>
           </div>
           <div className="bg-slate-900/50 rounded-lg p-4">
-            <p className="text-xs text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-[#00d3f3]">
               <RefreshCw size={12} /> Ongoing Overhead
             </p>
             <p className="text-sm text-slate-300">Constant maintenance, API updates, and security monitoring</p>
