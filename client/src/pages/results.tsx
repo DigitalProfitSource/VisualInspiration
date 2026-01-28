@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
-import { BarChart3, ArrowRight, CheckCircle, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+import { BarChart3, ArrowRight, CheckCircle, ChevronDown, ChevronUp, ExternalLink, Wrench, Clock, Code, RefreshCw, Send } from "lucide-react";
 import { AssessmentResult, GapScore } from "@/lib/scoring";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 function GapCard({ 
   title, 
@@ -401,6 +403,10 @@ export default function Results() {
           </div>
         </motion.div>
 
+        <DIYSection />
+
+        <FeedbackSection />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -418,5 +424,237 @@ export default function Results() {
         </motion.div>
       </main>
     </div>
+  );
+}
+
+function DIYSection() {
+  const speedGapFixes = [
+    {
+      title: "Set up auto-responders",
+      description: "Use Google Voice or your CRM's basic auto-reply for after-hours leads."
+    },
+    {
+      title: "Instant SMS Text-Back",
+      description: "Connect Zapier to Twilio to send an \"I'll call you right back\" text on every missed call (~$30/mo)."
+    },
+    {
+      title: "Response Protocol",
+      description: "Train your team on a strict sub-5-minute response protocol for all new inquiries."
+    }
+  ];
+
+  const silenceGapFixes = [
+    {
+      title: "No-Show Recovery",
+      description: "Create a script: \"Hi [Name], we missed you! Would you like to reschedule for tomorrow?\""
+    },
+    {
+      title: "Quote Follow-up",
+      description: "Set manual calendar reminders for Day 3, 7, and 14 after sending any quote."
+    },
+    {
+      title: "Database Reactivation",
+      description: "Export your old leads and send a \"Checking in\" email with a special seasonal offer."
+    }
+  ];
+
+  const chaosGapFixes = [
+    {
+      title: "Task Documentation",
+      description: "Document your top 10 most repetitive administrative tasks step-by-step."
+    },
+    {
+      title: "Free Automation",
+      description: "Use the free tiers of Zapier or Make.com to sync data between your tools automatically."
+    },
+    {
+      title: "Google Docs Wiki",
+      description: "Create a central \"Wiki\" in Google Docs for FAQs, pricing, and common scenarios."
+    }
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 }}
+      className="mb-12"
+    >
+      <h2 className="text-2xl font-heading font-bold text-cyan-400 mb-2">Your DIY Action Plan</h2>
+      <p className="text-slate-400 mb-6">You can implement these fixes with or without SimpleSequence. Here is how to do it yourself:</p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
+          <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+            <span className="text-cyan-400">1.</span> Speed Gap Fixes
+          </h3>
+          <div className="space-y-4">
+            {speedGapFixes.map((fix, i) => (
+              <div key={i}>
+                <p className="font-semibold text-white text-sm mb-1">{fix.title}</p>
+                <p className="text-xs text-slate-400">{fix.description}</p>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+
+        <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
+          <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+            <span className="text-cyan-400">2.</span> Silence Gap Fixes
+          </h3>
+          <div className="space-y-4">
+            {silenceGapFixes.map((fix, i) => (
+              <div key={i}>
+                <p className="font-semibold text-white text-sm mb-1">{fix.title}</p>
+                <p className="text-xs text-slate-400">{fix.description}</p>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+
+        <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
+          <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+            <span className="text-cyan-400">3.</span> Chaos Gap Fixes
+          </h3>
+          <div className="space-y-4">
+            {chaosGapFixes.map((fix, i) => (
+              <div key={i}>
+                <p className="font-semibold text-white text-sm mb-1">{fix.title}</p>
+                <p className="text-xs text-slate-400">{fix.description}</p>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      </div>
+
+      <GlassCard className="p-6 border-amber-500/20 bg-amber-950/10">
+        <h3 className="text-lg font-heading font-semibold text-white mb-3">The Reality of DIY Implementation</h3>
+        <p className="text-slate-400 text-sm mb-4">
+          Most businesses intend to implement these fixes but never do. Success requires specialized systems that run without your constant attention. Manual implementation typically requires:
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-slate-900/50 rounded-lg p-4">
+            <p className="text-xs text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+              <Clock size={12} /> Time Investment
+            </p>
+            <p className="text-sm text-slate-300">15-30 hours of technical setup and troubleshooting</p>
+          </div>
+          <div className="bg-slate-900/50 rounded-lg p-4">
+            <p className="text-xs text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+              <Code size={12} /> Technical Debt
+            </p>
+            <p className="text-sm text-slate-300">Advanced API & integration knowledge to prevent failures</p>
+          </div>
+          <div className="bg-slate-900/50 rounded-lg p-4">
+            <p className="text-xs text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+              <RefreshCw size={12} /> Ongoing Overhead
+            </p>
+            <p className="text-sm text-slate-300">Constant maintenance, API updates, and security monitoring</p>
+          </div>
+        </div>
+      </GlassCard>
+    </motion.div>
+  );
+}
+
+function FeedbackSection() {
+  const [feedback, setFeedback] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = async () => {
+    if (!feedback.trim()) return;
+    
+    setIsSubmitting(true);
+    try {
+      const leadId = sessionStorage.getItem('leadId');
+      
+      const response = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          leadId: leadId || undefined,
+          feedback: feedback.trim() 
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to submit feedback");
+      }
+      
+      setSubmitted(true);
+      toast({
+        title: "Thank you!",
+        description: "Your feedback helps us improve the assessment.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit feedback. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+        className="mb-12"
+      >
+        <GlassCard className="p-6 border-cyan-500/20 bg-cyan-950/10">
+          <div className="flex items-center gap-3">
+            <CheckCircle className="text-cyan-400" size={24} />
+            <div>
+              <h3 className="text-lg font-heading font-semibold text-white">Thank you for your feedback!</h3>
+              <p className="text-slate-400 text-sm">We appreciate you taking the time to help us improve.</p>
+            </div>
+          </div>
+        </GlassCard>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.35 }}
+      className="mb-12"
+    >
+      <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
+        <h3 className="text-xl font-heading font-semibold text-white mb-2">How did we do?</h3>
+        <p className="text-slate-400 text-sm mb-4">Was this assessment helpful? Any suggestions for making it better?</p>
+        
+        <Textarea
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          placeholder="Share your thoughts..."
+          className="bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500 mb-4 min-h-[100px]"
+          data-testid="textarea-feedback"
+        />
+        
+        <Button
+          onClick={handleSubmit}
+          disabled={isSubmitting || !feedback.trim()}
+          className="bg-cyan-600 hover:bg-cyan-500 text-white"
+          data-testid="button-submit-feedback"
+        >
+          {isSubmitting ? (
+            "Submitting..."
+          ) : (
+            <>
+              <Send size={16} className="mr-2" />
+              Submit Feedback
+            </>
+          )}
+        </Button>
+      </GlassCard>
+    </motion.div>
   );
 }
