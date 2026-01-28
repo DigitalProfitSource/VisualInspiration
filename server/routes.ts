@@ -15,6 +15,7 @@ interface GHLWebhookData {
   websiteUrl?: string;
   businessName: string;
   industry: string;
+  clarityScore: number;
   result: AssessmentResult;
   revenuePains: string[];
   submittedAt: Date;
@@ -29,8 +30,6 @@ async function sendToGHL(data: GHLWebhookData) {
   }
 
   try {
-    const clarityScore = Math.round((100 - (data.result.speedGap.estimate + data.result.silenceGap.estimate + data.result.chaosGap.estimate) / 300) * 100);
-
     const emailHtml = generateAssessmentEmailHTML({
       contactName: data.contactName,
       businessName: data.businessName,
@@ -39,7 +38,7 @@ async function sendToGHL(data: GHLWebhookData) {
       teamSize: data.result.teamSize,
       avgJobValue: `$${data.result.avgJobValue.toLocaleString()}`,
       monthlyLeadVolume: String(data.result.monthlyLeads),
-      clarityScore,
+      clarityScore: data.clarityScore,
       totalMonthlyGap: data.result.totalMonthlyGap,
       annualizedGap: data.result.annualizedGap,
       speedGapEstimate: data.result.speedGap.estimate,
@@ -64,7 +63,15 @@ async function sendToGHL(data: GHLWebhookData) {
 
     const pdfBase64 = pdfBuffer.toString("base64");
 
-    const payload = {
+    const MAX_PAYLOAD_SIZE = 900000;
+    const pdfSize = pdfBase64.length;
+    const includePdf = pdfSize < MAX_PAYLOAD_SIZE;
+
+    if (!includePdf) {
+      console.warn(`PDF too large for webhook (${Math.round(pdfSize / 1024)}KB), sending without PDF`);
+    }
+
+    const payload: Record<string, string | number> = {
       first_name: data.contactName.split(" ")[0],
       last_name: data.contactName.split(" ").slice(1).join(" ") || "",
       email: data.contactEmail,
@@ -72,6 +79,7 @@ async function sendToGHL(data: GHLWebhookData) {
       company_name: data.businessName,
       website_url: data.websiteUrl || "",
       industry: data.industry,
+      clarity_score: data.clarityScore,
       recommended_tier: data.result.recommendedTier,
       total_monthly_gap: data.result.totalMonthlyGap,
       annualized_gap: data.result.annualizedGap,
@@ -79,8 +87,11 @@ async function sendToGHL(data: GHLWebhookData) {
       source: "SimpleSequence Assessment",
       submitted_at: data.submittedAt.toISOString(),
       assessment_email_html: emailHtml,
-      assessment_pdf_base64: pdfBase64,
     };
+
+    if (includePdf) {
+      payload.assessment_pdf_base64 = pdfBase64;
+    }
 
     const response = await fetch(webhookUrl, {
       method: "POST",
@@ -167,6 +178,7 @@ export async function registerRoutes(
         websiteUrl: data.assessmentData.website_url || undefined,
         businessName: result.businessName,
         industry: result.industry,
+        clarityScore,
         result,
         revenuePains: data.assessmentData.revenue_pain.map(p => p.value),
         submittedAt: new Date(),
