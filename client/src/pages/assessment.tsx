@@ -95,7 +95,7 @@ export default function Assessment() {
   const watchedValues = useWatch({ control });
   const currentStep = STEPS[currentStepIndex];
 
-  const isStep2 = currentStep.id === 'calibration';
+  const isStep3 = currentStep.id === 'calibration';
 
   const handlePainToggle = (value: string) => {
     const currentPains = (watchedValues.revenue_pain || []) as { value: string; severity: number }[];
@@ -796,7 +796,7 @@ export default function Assessment() {
           >
             <GlassCard className="p-8">
               <div className="mb-8">
-                {isStep2 && (
+                {isStep3 && (
                   <span className="text-[10px] font-bold tracking-[0.2em] text-cyan-400 uppercase block mb-2">
                     DIAGNOSTIC CALIBRATION
                   </span>

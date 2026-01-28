@@ -15,17 +15,17 @@ export const STEPS: Step[] = [
     progress: 0
   },
   {
-    id: "calibration",
-    title: "Calibrate Your Efficiency Analysis",
-    description: "Select the scenarios that occur most frequently in your daily operations. This helps the AI isolate your primary friction points.",
-    fields: ["revenue_pain"],
-    progress: 14
-  },
-  {
     id: "business",
     title: "About Your Business",
     description: "Help us understand your business context so we can calibrate our analysis.",
     fields: ["industry", "niche_specificity", "team_size", "avg_job_value", "monthly_lead_volume"],
+    progress: 14
+  },
+  {
+    id: "calibration",
+    title: "Calibrate Your Efficiency Analysis",
+    description: "Select the scenarios that occur most frequently in your daily operations. This helps the AI isolate your primary friction points.",
+    fields: ["revenue_pain"],
     progress: 28
   },
   {
