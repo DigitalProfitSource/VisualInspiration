@@ -135,7 +135,8 @@ export default function Assessment() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             assessmentData: data,
-            contactName: data.contact_name,
+            contactFirstName: data.contact_first_name,
+            contactLastName: data.contact_last_name,
             contactEmail: data.contact_email,
             contactPhone: data.contact_phone || '',
           }),
@@ -677,17 +678,31 @@ export default function Assessment() {
           </div>
         );
 
-      case 'contact_name':
+      case 'contact_first_name':
         return (
-          <div className="space-y-2 w-full">
-            <GlassLabel htmlFor="contact_name">Your Name</GlassLabel>
-            <GlassInput 
-              id="contact_name" 
-              placeholder="John Doe" 
-              {...register('contact_name')} 
-              data-testid="input-contact-name"
-            />
-            {errors.contact_name && <p className="text-cyan-400 text-xs">{errors.contact_name.message}</p>}
+          <div className="space-y-4 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <GlassLabel htmlFor="contact_first_name">First Name</GlassLabel>
+                <GlassInput 
+                  id="contact_first_name" 
+                  placeholder="Jane" 
+                  {...register('contact_first_name')} 
+                  data-testid="input-contact-first-name"
+                />
+                {errors.contact_first_name && <p className="text-cyan-400 text-xs">{errors.contact_first_name.message}</p>}
+              </div>
+              <div className="space-y-2">
+                <GlassLabel htmlFor="contact_last_name">Last Name</GlassLabel>
+                <GlassInput 
+                  id="contact_last_name" 
+                  placeholder="Doe" 
+                  {...register('contact_last_name')} 
+                  data-testid="input-contact-last-name"
+                />
+                {errors.contact_last_name && <p className="text-cyan-400 text-xs">{errors.contact_last_name.message}</p>}
+              </div>
+            </div>
           </div>
         );
 

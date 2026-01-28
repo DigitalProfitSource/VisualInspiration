@@ -60,7 +60,7 @@ export const STEPS: Step[] = [
     id: "contact",
     title: "Get Your Results",
     description: "We'll send your personalized Revenue Gap Report to your inbox.",
-    fields: ["contact_name", "contact_email", "contact_phone", "disclaimer_accepted"],
+    fields: ["contact_first_name", "contact_last_name", "contact_email", "contact_phone", "disclaimer_accepted"],
     progress: 95
   }
 ];

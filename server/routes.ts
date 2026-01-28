@@ -144,7 +144,7 @@ export async function registerRoutes(
         revenueLeakLow,
         revenueLeakHigh,
         timeWastedMinutes: 0,
-        contactName: data.contactName,
+        contactName: `${data.contactFirstName} ${data.contactLastName}`,
         contactEmail: data.contactEmail,
         contactPhone: data.contactPhone || null,
         contactWebsite: null,
@@ -153,7 +153,7 @@ export async function registerRoutes(
 
       // Send to GHL webhook (non-blocking)
       sendToGHL({
-        contactName: data.contactName,
+        contactName: `${data.contactFirstName} ${data.contactLastName}`,
         contactEmail: data.contactEmail,
         contactPhone: data.contactPhone,
         websiteUrl: data.assessmentData.website_url || undefined,

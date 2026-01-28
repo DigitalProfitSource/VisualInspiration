@@ -189,7 +189,8 @@ export const AssessmentDataSchema = z.object({
   manual_hours: ManualHoursSchema,
   knowledge_bottleneck: KnowledgeBottleneckSchema,
   operational_complexity: OperationalComplexitySchema,
-  contact_name: z.string().min(1),
+  contact_first_name: z.string().min(1),
+  contact_last_name: z.string().min(1),
   contact_email: z.string().email(),
   contact_phone: z.string().optional(),
   disclaimer_accepted: z.boolean(),
@@ -199,7 +200,8 @@ export type AssessmentData = z.infer<typeof AssessmentDataSchema>;
 
 export const AssessmentSubmitSchema = z.object({
   assessmentData: AssessmentDataSchema,
-  contactName: z.string().min(1),
+  contactFirstName: z.string().min(1),
+  contactLastName: z.string().min(1),
   contactEmail: z.string().email(),
   contactPhone: z.string().optional(),
 });
