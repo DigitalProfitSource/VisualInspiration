@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
-import { BarChart3, ArrowRight, CheckCircle, ChevronDown, ChevronUp, ExternalLink, Wrench, Clock, Code, RefreshCw, Send } from "lucide-react";
+import { BarChart3, ArrowRight, CheckCircle, ChevronDown, ChevronUp, ExternalLink, Wrench, Clock, Code, RefreshCw, Send, Download } from "lucide-react";
+import { generateAssessmentPDF } from "@/lib/pdf-generator";
 import { AssessmentResult, GapScore } from "@/lib/scoring";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
 import { Button } from "@/components/ui/button";
@@ -399,7 +400,7 @@ export default function Results() {
 
         <DIYSection />
 
-        <FeedbackSection />
+        <FeedbackSection result={result} />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -549,11 +550,19 @@ function DIYSection() {
   );
 }
 
-function FeedbackSection() {
+function FeedbackSection({ result }: { result: AssessmentResult }) {
   const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
+
+  const handleDownloadPDF = () => {
+    generateAssessmentPDF(result);
+    toast({
+      title: "PDF Downloaded",
+      description: "Your assessment report has been saved.",
+    });
+  };
 
   const handleSubmit = async () => {
     if (!feedback.trim()) return;
@@ -639,12 +648,22 @@ function FeedbackSection() {
             disabled={isSubmitting || !feedback.trim()}
             className="bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 border border-cyan-600/30 h-[42px] px-4"
             data-testid="button-submit-feedback"
+            title="Submit feedback"
           >
             {isSubmitting ? (
               <RefreshCw size={16} className="animate-spin" />
             ) : (
               <Send size={16} />
             )}
+          </Button>
+          
+          <Button
+            onClick={handleDownloadPDF}
+            className="bg-slate-700/50 hover:bg-slate-700 text-slate-300 border border-slate-600/30 h-[42px] px-4"
+            data-testid="button-download-pdf"
+            title="Download PDF Report"
+          >
+            <Download size={16} />
           </Button>
         </div>
       </div>

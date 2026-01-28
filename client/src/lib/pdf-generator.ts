@@ -54,10 +54,10 @@ export function generateAssessmentPDF(result: AssessmentResult): void {
   doc.setTextColor(...colors.lightText);
   const colWidth = contentWidth / 5;
   const labels = ['Industry', 'Specialization', 'Monthly Leads', 'Team Size', 'Avg Job Value'];
-  const values = [
+  const values: string[] = [
     result.industry,
     result.niche.length > 15 ? result.niche.substring(0, 15) + '...' : result.niche,
-    result.monthlyLeads,
+    String(result.monthlyLeads),
     result.teamSize,
     `$${result.avgJobValue.toLocaleString()}`
   ];
