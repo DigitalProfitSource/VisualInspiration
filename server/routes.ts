@@ -63,21 +63,13 @@ async function sendToGHL(data: GHLWebhookData) {
 
     const pdfBase64 = pdfBuffer.toString("base64");
 
-    const MAX_PAYLOAD_SIZE = 900000;
-    const pdfSize = pdfBase64.length;
-    const includePdf = pdfSize < MAX_PAYLOAD_SIZE;
-
-    if (!includePdf) {
-      console.warn(`PDF too large for webhook (${Math.round(pdfSize / 1024)}KB), sending without PDF`);
-    }
-
     const payload: Record<string, string | number> = {
       first_name: data.contactName.split(" ")[0],
       last_name: data.contactName.split(" ").slice(1).join(" ") || "",
       email: data.contactEmail,
       phone: data.contactPhone || "",
       company_name: data.businessName,
-      website_url: data.websiteUrl || "",
+      website: data.websiteUrl || "",
       industry: data.industry,
       clarity_score: data.clarityScore,
       recommended_tier: data.result.recommendedTier,
@@ -87,11 +79,8 @@ async function sendToGHL(data: GHLWebhookData) {
       source: "SimpleSequence Assessment",
       submitted_at: data.submittedAt.toISOString(),
       assessment_email_html: emailHtml,
+      assessment_pdf_base64: pdfBase64,
     };
-
-    if (includePdf) {
-      payload.assessment_pdf_base64 = pdfBase64;
-    }
 
     const response = await fetch(webhookUrl, {
       method: "POST",
