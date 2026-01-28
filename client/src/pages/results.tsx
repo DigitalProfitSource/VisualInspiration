@@ -519,26 +519,26 @@ function DIYSection() {
           </div>
         </GlassCard>
       </div>
-      <GlassCard className="p-6 border-amber-500/20 bg-amber-950/10">
+      <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
         <h3 className="text-lg font-heading font-semibold text-white mb-3">The Reality of DIY Implementation</h3>
         <p className="text-slate-400 text-sm mb-4">
           Most businesses intend to implement these fixes but never do. Success requires specialized systems that run without your constant attention. Manual implementation typically requires:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-slate-900/50 rounded-lg p-4">
-            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-[#00d3f3]">
+          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
+            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
               <Clock size={12} /> Time Investment
             </p>
             <p className="text-sm text-slate-300">15-30 hours of technical setup and troubleshooting</p>
           </div>
-          <div className="bg-slate-900/50 rounded-lg p-4">
-            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-[#00d3f3]">
+          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
+            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
               <Code size={12} /> Technical Debt
             </p>
             <p className="text-sm text-slate-300">Advanced API & integration knowledge to prevent failures</p>
           </div>
-          <div className="bg-slate-900/50 rounded-lg p-4">
-            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-[#00d3f3]">
+          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
+            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
               <RefreshCw size={12} /> Ongoing Overhead
             </p>
             <p className="text-sm text-slate-300">Constant maintenance, API updates, and security monitoring</p>
@@ -619,34 +619,35 @@ function FeedbackSection() {
       transition={{ delay: 0.35 }}
       className="mb-12"
     >
-      <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
-        <h3 className="text-xl font-heading font-semibold text-white mb-2">How did we do?</h3>
-        <p className="text-slate-400 text-sm mb-4">Was this assessment helpful? Any suggestions for making it better?</p>
+      <div className="max-w-2xl mx-auto">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-heading font-semibold text-white">How did we do?</h3>
+          <p className="text-slate-500 text-xs">Was this assessment helpful?</p>
+        </div>
         
-        <Textarea
-          value={feedback}
-          onChange={(e) => setFeedback(e.target.value)}
-          placeholder="Share your thoughts..."
-          className="bg-slate-900/50 border-slate-700 text-white placeholder:text-slate-500 mb-4 min-h-[100px]"
-          data-testid="textarea-feedback"
-        />
-        
-        <Button
-          onClick={handleSubmit}
-          disabled={isSubmitting || !feedback.trim()}
-          className="bg-cyan-600 hover:bg-cyan-500 text-white"
-          data-testid="button-submit-feedback"
-        >
-          {isSubmitting ? (
-            "Submitting..."
-          ) : (
-            <>
-              <Send size={16} className="mr-2" />
-              Submit Feedback
-            </>
-          )}
-        </Button>
-      </GlassCard>
+        <div className="flex gap-2">
+          <Textarea
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+            placeholder="Share your thoughts..."
+            className="bg-slate-900/40 border-slate-800 text-white placeholder:text-slate-600 min-h-[42px] h-[42px] py-2 resize-none flex-grow"
+            data-testid="textarea-feedback"
+          />
+          
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting || !feedback.trim()}
+            className="bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 border border-cyan-600/30 h-[42px] px-4"
+            data-testid="button-submit-feedback"
+          >
+            {isSubmitting ? (
+              <RefreshCw size={16} className="animate-spin" />
+            ) : (
+              <Send size={16} />
+            )}
+          </Button>
+        </div>
+      </div>
     </motion.div>
   );
 }
