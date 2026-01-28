@@ -3,37 +3,21 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertLeadSchema } from "@shared/schema";
 import { AssessmentSubmitSchema } from "@shared/assessment-schema";
-import { calculateResults } from "@shared/scoring";
+import { calculateResults, AssessmentResult } from "@shared/scoring";
 import { z } from "zod";
 import { generateAssessmentEmailHTML } from "./email-template";
+import { generateAssessmentPDF } from "./pdf-generator";
 
 interface GHLWebhookData {
   contactName: string;
   contactEmail: string;
   contactPhone?: string | null;
+  websiteUrl?: string;
   businessName: string;
   industry: string;
-  niche: string;
-  clarityScore: number;
-  revenueLeakLow: number;
-  revenueLeakHigh: number;
-  totalMonthlyGap: number;
-  annualizedGap: number;
-  speedGapScore: number;
-  speedGapEstimate: number;
-  speedGapFindings: string[];
-  silenceGapScore: number;
-  silenceGapEstimate: number;
-  silenceGapFindings: string[];
-  chaosGapScore: number;
-  chaosGapEstimate: number;
-  chaosGapFindings: string[];
-  recommendedTier: string;
-  tierReason: string;
-  topPainPoints: string[];
-  teamSize: string;
-  avgJobValue: string;
-  monthlyLeadVolume: string;
+  result: AssessmentResult;
+  revenuePains: string[];
+  submittedAt: Date;
 }
 
 async function sendToGHL(data: GHLWebhookData) {
@@ -45,26 +29,40 @@ async function sendToGHL(data: GHLWebhookData) {
   }
 
   try {
+    const clarityScore = Math.round((100 - (data.result.speedGap.estimate + data.result.silenceGap.estimate + data.result.chaosGap.estimate) / 300) * 100);
+
     const emailHtml = generateAssessmentEmailHTML({
       contactName: data.contactName,
       businessName: data.businessName,
       industry: data.industry,
-      niche: data.niche,
-      teamSize: data.teamSize,
-      avgJobValue: data.avgJobValue,
-      monthlyLeadVolume: data.monthlyLeadVolume,
-      clarityScore: data.clarityScore,
-      totalMonthlyGap: data.totalMonthlyGap,
-      annualizedGap: data.annualizedGap,
-      speedGapEstimate: data.speedGapEstimate,
-      speedGapFindings: data.speedGapFindings,
-      silenceGapEstimate: data.silenceGapEstimate,
-      silenceGapFindings: data.silenceGapFindings,
-      chaosGapEstimate: data.chaosGapEstimate,
-      chaosGapFindings: data.chaosGapFindings,
-      recommendedTier: data.recommendedTier,
-      tierReason: data.tierReason,
+      niche: data.result.niche,
+      teamSize: data.result.teamSize,
+      avgJobValue: `$${data.result.avgJobValue.toLocaleString()}`,
+      monthlyLeadVolume: String(data.result.monthlyLeads),
+      clarityScore,
+      totalMonthlyGap: data.result.totalMonthlyGap,
+      annualizedGap: data.result.annualizedGap,
+      speedGapEstimate: data.result.speedGap.estimate,
+      speedGapFindings: data.result.speedGap.findings,
+      silenceGapEstimate: data.result.silenceGap.estimate,
+      silenceGapFindings: data.result.silenceGap.findings,
+      chaosGapEstimate: data.result.chaosGap.estimate,
+      chaosGapFindings: data.result.chaosGap.findings,
+      recommendedTier: data.result.recommendedTier,
+      tierReason: data.result.tierReason,
     });
+
+    const pdfBuffer = await generateAssessmentPDF({
+      contactName: data.contactName,
+      contactEmail: data.contactEmail,
+      contactPhone: data.contactPhone || undefined,
+      websiteUrl: data.websiteUrl,
+      result: data.result,
+      submittedAt: data.submittedAt,
+      revenuePains: data.revenuePains,
+    });
+
+    const pdfBase64 = pdfBuffer.toString("base64");
 
     const payload = {
       first_name: data.contactName.split(" ")[0],
@@ -72,27 +70,16 @@ async function sendToGHL(data: GHLWebhookData) {
       email: data.contactEmail,
       phone: data.contactPhone || "",
       company_name: data.businessName,
+      website_url: data.websiteUrl || "",
       industry: data.industry,
-      clarity_score: data.clarityScore,
-      revenue_leak_low: data.revenueLeakLow,
-      revenue_leak_high: data.revenueLeakHigh,
-      total_monthly_gap: data.totalMonthlyGap,
-      annualized_gap: data.annualizedGap,
-      speed_gap_score: data.speedGapScore,
-      speed_gap_estimate: data.speedGapEstimate,
-      silence_gap_score: data.silenceGapScore,
-      silence_gap_estimate: data.silenceGapEstimate,
-      chaos_gap_score: data.chaosGapScore,
-      chaos_gap_estimate: data.chaosGapEstimate,
-      recommended_tier: data.recommendedTier,
-      tier_reason: data.tierReason,
-      top_pain_points: data.topPainPoints.join(", "),
-      team_size: data.teamSize,
-      avg_job_value: data.avgJobValue,
-      monthly_lead_volume: data.monthlyLeadVolume,
+      recommended_tier: data.result.recommendedTier,
+      total_monthly_gap: data.result.totalMonthlyGap,
+      annualized_gap: data.result.annualizedGap,
+      top_pain_points: data.revenuePains.join(", "),
       source: "SimpleSequence Assessment",
-      submitted_at: new Date().toISOString(),
+      submitted_at: data.submittedAt.toISOString(),
       assessment_email_html: emailHtml,
+      assessment_pdf_base64: pdfBase64,
     };
 
     const response = await fetch(webhookUrl, {
@@ -106,7 +93,7 @@ async function sendToGHL(data: GHLWebhookData) {
     if (!response.ok) {
       console.error("GHL webhook failed:", response.status, await response.text());
     } else {
-      console.log("Lead sent to GHL successfully with email HTML");
+      console.log("Lead sent to GHL successfully with email HTML and PDF");
     }
   } catch (error) {
     console.error("Error sending to GHL:", error);
@@ -177,29 +164,12 @@ export async function registerRoutes(
         contactName: data.contactName,
         contactEmail: data.contactEmail,
         contactPhone: data.contactPhone,
+        websiteUrl: data.assessmentData.website_url || undefined,
         businessName: result.businessName,
         industry: result.industry,
-        niche: result.niche,
-        clarityScore,
-        revenueLeakLow,
-        revenueLeakHigh,
-        totalMonthlyGap: result.totalMonthlyGap,
-        annualizedGap: result.annualizedGap,
-        speedGapScore: result.speedGap.estimate,
-        speedGapEstimate: result.speedGap.estimate,
-        speedGapFindings: result.speedGap.findings,
-        silenceGapScore: result.silenceGap.estimate,
-        silenceGapEstimate: result.silenceGap.estimate,
-        silenceGapFindings: result.silenceGap.findings,
-        chaosGapScore: result.chaosGap.estimate,
-        chaosGapEstimate: result.chaosGap.estimate,
-        chaosGapFindings: result.chaosGap.findings,
-        recommendedTier: result.recommendedTier,
-        tierReason: result.tierReason,
-        topPainPoints: data.assessmentData.revenue_pain.map(p => p.value),
-        teamSize: result.teamSize,
-        avgJobValue: `$${result.avgJobValue.toLocaleString()}`,
-        monthlyLeadVolume: String(result.monthlyLeads),
+        result,
+        revenuePains: data.assessmentData.revenue_pain.map(p => p.value),
+        submittedAt: new Date(),
       }).catch(err => console.error("GHL webhook error:", err));
 
       res.json({ leadId: lead.id });
