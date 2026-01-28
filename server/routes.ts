@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertLeadSchema } from "@shared/schema";
 import { AssessmentSubmitSchema } from "@shared/assessment-schema";
+import { calculateResults } from "@shared/scoring";
 import { z } from "zod";
 import { generateAssessmentEmailHTML } from "./email-template";
 
@@ -151,9 +152,12 @@ export async function registerRoutes(
     try {
       const data = AssessmentSubmitSchema.parse(req.body);
 
-      const clarityScore = Math.round((100 - (data.speedGapScore + data.silenceGapScore + data.chaosGapScore) / 3));
-      const revenueLeakLow = Math.round(data.totalMonthlyImpactLow || 0);
-      const revenueLeakHigh = Math.round(data.totalMonthlyImpactHigh || 0);
+      // Calculate results server-side for data integrity
+      const result = calculateResults(data.assessmentData);
+
+      const clarityScore = Math.round((100 - (result.speedGap.estimate + result.silenceGap.estimate + result.chaosGap.estimate) / 300) * 100);
+      const revenueLeakLow = Math.round(result.totalMonthlyGap * 0.8);
+      const revenueLeakHigh = Math.round(result.totalMonthlyGap * 1.2);
 
       const lead = await storage.createAssessmentLead({
         assessmentData: data.assessmentData,
@@ -173,29 +177,29 @@ export async function registerRoutes(
         contactName: data.contactName,
         contactEmail: data.contactEmail,
         contactPhone: data.contactPhone,
-        businessName: data.assessmentData.business_name,
-        industry: data.assessmentData.industry,
-        niche: data.assessmentData.niche_specificity,
+        businessName: result.businessName,
+        industry: result.industry,
+        niche: result.niche,
         clarityScore,
         revenueLeakLow,
         revenueLeakHigh,
-        totalMonthlyGap: data.totalMonthlyGap,
-        annualizedGap: data.annualizedGap,
-        speedGapScore: data.speedGapScore,
-        speedGapEstimate: data.speedGapEstimate,
-        speedGapFindings: data.speedGapFindings,
-        silenceGapScore: data.silenceGapScore,
-        silenceGapEstimate: data.silenceGapEstimate,
-        silenceGapFindings: data.silenceGapFindings,
-        chaosGapScore: data.chaosGapScore,
-        chaosGapEstimate: data.chaosGapEstimate,
-        chaosGapFindings: data.chaosGapFindings,
-        recommendedTier: data.recommendedTier,
-        tierReason: data.tierReason,
+        totalMonthlyGap: result.totalMonthlyGap,
+        annualizedGap: result.annualizedGap,
+        speedGapScore: result.speedGap.estimate,
+        speedGapEstimate: result.speedGap.estimate,
+        speedGapFindings: result.speedGap.findings,
+        silenceGapScore: result.silenceGap.estimate,
+        silenceGapEstimate: result.silenceGap.estimate,
+        silenceGapFindings: result.silenceGap.findings,
+        chaosGapScore: result.chaosGap.estimate,
+        chaosGapEstimate: result.chaosGap.estimate,
+        chaosGapFindings: result.chaosGap.findings,
+        recommendedTier: result.recommendedTier,
+        tierReason: result.tierReason,
         topPainPoints: data.assessmentData.revenue_pain.map(p => p.value),
-        teamSize: data.assessmentData.team_size,
-        avgJobValue: data.assessmentData.avg_job_value,
-        monthlyLeadVolume: data.assessmentData.monthly_lead_volume,
+        teamSize: result.teamSize,
+        avgJobValue: `$${result.avgJobValue.toLocaleString()}`,
+        monthlyLeadVolume: String(result.monthlyLeads),
       }).catch(err => console.error("GHL webhook error:", err));
 
       res.json({ leadId: lead.id });

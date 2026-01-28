@@ -1,4 +1,4 @@
-import type { AssessmentData } from "@shared/assessment-schema";
+import { AssessmentData } from "./assessment-schema";
 
 export interface GapScore {
   estimate: number;
