@@ -8,39 +8,46 @@ export interface Step {
 
 export const STEPS: Step[] = [
   {
-    id: "pain",
-    title: "What's Draining Revenue?",
-    description: "Select up to 3 areas that feel the most familiar. Don't overthink it - just pick what resonates.",
-    fields: ["revenue_pain"],
+    id: "initial",
+    title: "Project Identity",
+    description: "Start by identifying your business. This helps us anchor the analysis to your specific brand.",
+    fields: ["business_name", "website_url"],
     progress: 0
+  },
+  {
+    id: "calibration",
+    title: "Calibrate Your Efficiency Analysis",
+    description: "Select the scenarios that occur most frequently in your daily operations. This helps the AI isolate your primary friction points.",
+    fields: ["revenue_pain"],
+    progress: 14
   },
   {
     id: "business",
     title: "About Your Business",
     description: "Help us understand your business context so we can calibrate our analysis.",
-    fields: ["business_name", "industry", "niche_specificity", "team_size", "avg_job_value", "monthly_lead_volume"],
-    progress: 17
+    fields: ["industry", "niche_specificity", "team_size", "avg_job_value", "monthly_lead_volume"],
+    progress: 28
   },
   {
     id: "speed",
     title: "The Speed Gap",
     description: "How quickly do leads get a response, and what happens when you're unavailable?",
     fields: ["first_contact_speed", "unavailability_pct", "phone_unavailable_handling", "digital_unavailable_handling"],
-    progress: 34
+    progress: 42
   },
   {
     id: "silence",
     title: "The Silence Gap",
     description: "What happens after the first conversation - do leads get followed up?",
     fields: ["no_show_recovery", "quote_followup", "dormant_leads", "no_show_rate"],
-    progress: 51
+    progress: 56
   },
   {
     id: "engagement",
     title: "Channels & Engagement",
     description: "How do leads reach you, and how do you engage customers?",
     fields: ["contact_channels", "social_media_activity", "review_request", "close_rate"],
-    progress: 68
+    progress: 70
   },
   {
     id: "chaos",

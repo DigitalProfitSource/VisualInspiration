@@ -170,7 +170,8 @@ export const OperationalComplexitySchema = z.enum([
 
 export const AssessmentSchema = z.object({
   revenue_pain: RevenuePainSchema,
-  business_name: z.string().min(1, "Business name or website is required"),
+  business_name: z.string().min(1, "Company name is required"),
+  website_url: z.string().url("Please enter a valid URL").or(z.literal("")),
   industry: IndustrySchema,
   niche_specificity: z.string().min(1, "Select your specialization"),
   team_size: TeamSizeSchema,

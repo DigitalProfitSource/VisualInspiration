@@ -87,12 +87,15 @@ export default function Assessment() {
     defaultValues: {
       revenue_pain: [],
       contact_channels: [],
-      disclaimer_accepted: false
+      disclaimer_accepted: false,
+      website_url: ""
     }
   });
 
   const watchedValues = useWatch({ control });
   const currentStep = STEPS[currentStepIndex];
+
+  const isStep2 = currentStep.id === 'calibration';
 
   const handlePainToggle = (value: string) => {
     const currentPains = (watchedValues.revenue_pain || []) as { value: string; severity: number }[];
@@ -194,15 +197,27 @@ export default function Assessment() {
 
       case 'business_name':
         return (
-          <div className="space-y-2 w-full">
-            <GlassLabel htmlFor="business_name">Business Name or Website</GlassLabel>
-            <GlassInput 
-              id="business_name" 
-              placeholder="Acme HVAC or acmehvac.com" 
-              {...register('business_name')} 
-              data-testid="input-business-name"
-            />
-            {errors.business_name && <p className="text-cyan-400 text-xs">{errors.business_name.message}</p>}
+          <div className="space-y-4 w-full">
+            <div className="space-y-2">
+              <GlassLabel htmlFor="business_name">Company Name</GlassLabel>
+              <GlassInput 
+                id="business_name" 
+                placeholder="e.g. Acme Services" 
+                {...register('business_name')} 
+                data-testid="input-business-name"
+              />
+              {errors.business_name && <p className="text-cyan-400 text-xs">{errors.business_name.message}</p>}
+            </div>
+            <div className="space-y-2">
+              <GlassLabel htmlFor="website_url">Website URL (Optional)</GlassLabel>
+              <GlassInput 
+                id="website_url" 
+                placeholder="e.g. https://acme.com" 
+                {...register('website_url')} 
+                data-testid="input-website-url"
+              />
+              {errors.website_url && <p className="text-cyan-400 text-xs">{errors.website_url.message}</p>}
+            </div>
           </div>
         );
 
@@ -780,9 +795,18 @@ export default function Assessment() {
             transition={{ duration: 0.3 }}
           >
             <GlassCard className="p-8">
-              <div className="space-y-2 mb-8">
-                <h2 className="text-2xl font-heading font-bold text-white">{currentStep.title}</h2>
-                <p className="text-slate-400">{currentStep.description}</p>
+              <div className="mb-8">
+                {isStep2 && (
+                  <span className="text-[10px] font-bold tracking-[0.2em] text-cyan-400 uppercase block mb-2">
+                    DIAGNOSTIC CALIBRATION
+                  </span>
+                )}
+                <h2 className="text-2xl md:text-3xl font-heading font-bold text-white mb-3">
+                  {currentStep.title}
+                </h2>
+                <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+                  {currentStep.description}
+                </p>
               </div>
 
               <div className="space-y-6">
