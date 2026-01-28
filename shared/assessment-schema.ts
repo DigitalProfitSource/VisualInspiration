@@ -167,7 +167,7 @@ export const OperationalComplexitySchema = z.enum([
 
 export const AssessmentDataSchema = z.object({
   business_name: z.string().min(1, "Company name is required"),
-  website_url: z.string().url("Please enter a valid URL").or(z.literal("")),
+  website_url: z.string().regex(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/, "Please enter a valid URL").or(z.literal("")),
   revenue_pain: RevenuePainSchema,
   industry: IndustrySchema,
   niche_specificity: z.string().min(1),
