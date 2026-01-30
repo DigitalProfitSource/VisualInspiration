@@ -88,6 +88,3 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
-
-/* Hide the default LeadConnector floating widget - we have a custom trigger button */
-/* The widget will still open when triggered via the API */

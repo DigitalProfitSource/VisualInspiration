@@ -1,6 +1,7 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "wouter";
+import { X } from "lucide-react";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
   Accordion,
@@ -911,35 +912,35 @@ export default function Home() {
   const heroBgScale = useTransform(scrollY, [0, 600], [1, 1.1]);
   const circuitY = useTransform(scrollY, [0, 600], [0, 80]);
   const contentY = useTransform(scrollY, [0, 600], [0, 50]);
-  const [widgetReady, setWidgetReady] = useState(false);
+
+  const [showFloatingCta, setShowFloatingCta] = useState(false);
+  const [floatingCtaDismissed, setFloatingCtaDismissed] = useState(false);
 
   useEffect(() => {
-    const handleWidgetLoaded = () => {
-      setWidgetReady(true);
-      console.log('LeadConnector widget loaded and ready');
-    };
-
-    window.addEventListener('LC_chatWidgetLoaded', handleWidgetLoaded);
-
-    if ((window as any).leadConnector?.chatWidget) {
-      setWidgetReady(true);
-    }
-
-    return () => {
-      window.removeEventListener('LC_chatWidgetLoaded', handleWidgetLoaded);
-    };
-  }, []);
-
-  const openVoiceDemo = () => {
-    try {
-      if ((window as any).leadConnector?.chatWidget) {
-        (window as any).leadConnector.chatWidget.openWidget();
-      } else {
-        console.log('Widget not ready yet');
+    const handleScroll = () => {
+      const scrollThreshold = window.innerHeight * 4;
+      if (window.scrollY > scrollThreshold && !floatingCtaDismissed) {
+        setShowFloatingCta(true);
+      } else if (window.scrollY <= scrollThreshold) {
+        setShowFloatingCta(false);
       }
-    } catch (e) {
-      console.error('Error opening widget:', e);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [floatingCtaDismissed]);
+
+  const handleFloatingCtaClick = () => {
+    const w = window as any;
+    if (w.openLeadConnectorChat) {
+      w.openLeadConnectorChat();
     }
+  };
+
+  const handleDismissFloatingCta = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFloatingCtaDismissed(true);
+    setShowFloatingCta(false);
   };
 
   return (
@@ -1012,35 +1013,40 @@ export default function Home() {
         
         {/* Mobile CTA removed from hero - now appears as floating button after scroll */}
 
-        {/* Voice Widget CTA - responsive for all screen sizes */}
+        {/* Desktop CTA - positioned with content */}
         <motion.div 
           style={{ y: contentY }}
           initial="initial"
           animate="animate"
           variants={stagger}
-          className="container mx-auto px-6 absolute bottom-24 md:bottom-32 left-0 right-0 z-10"
+          className="hidden md:block container mx-auto px-6 absolute bottom-32 left-0 right-0 z-10"
         >
-          <motion.div variants={fadeIn} className="flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center max-w-3xl">
-            {/* Voice Demo trigger button with glowing effect */}
-            <div className="relative group" data-testid="widget-hero-samantha">
-              <div className="absolute -inset-2 bg-gradient-to-r from-primary/40 to-cyan-400/40 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <button
-                onClick={openVoiceDemo}
-                data-testid="button-open-voice-demo"
-                className="relative flex items-center gap-3 rounded-xl border border-primary/30 bg-zinc-900/80 px-5 py-3 shadow-2xl shadow-primary/20 backdrop-blur-xl hover:bg-zinc-800/80 transition-all duration-300 cursor-pointer"
+          <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
+              <button 
+                data-testid="button-hero-cta"
+                onClick={() => {
+                  const w = window as any;
+                  if (w.openLeadConnectorChat) {
+                    w.openLeadConnectorChat();
+                  }
+                }}
+                className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full py-3.5 px-8 relative shadow-2xl backdrop-blur-xl"
               >
-                <span className="inline-block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
-                <span className="text-sm font-medium text-foreground">
-                  {widgetReady ? '(Live Demo)' : 'Loading Demo...'}
-                </span>
-                <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
+                <div className="relative z-10 flex items-center justify-center gap-3">
+                  <p className="group-hover:text-white transition-colors duration-300 text-base font-bold text-white font-sans drop-shadow-sm whitespace-nowrap">Talk to Samantha (Live Demo)</p>
+                  <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
+                      <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
+                    </svg>
+                  </div>
+                </div>
               </button>
             </div>
-            <p className="text-sm text-muted-foreground font-medium">
-              Don't just guess. Hear exactly how we handle your missed calls and capture revenue.
-            </p>
+            <p className="text-sm text-muted-foreground font-medium">Don't just guess. Hear exactly how we handle your missed calls and capture revenue.</p>
           </motion.div>
         </motion.div>
         
@@ -1512,6 +1518,97 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+      {/* Final CTA */}
+      <section className="py-16 md:py-24 text-center relative overflow-hidden">
+         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.h2 
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="text-4xl md:text-7xl font-medium mb-8 md:mb-12 tracking-tight"
+          >
+            Hear it <span className="text-primary">for yourself.</span>
+          </motion.h2>
+          <motion.div 
+             initial={{ opacity: 0, y: 20 }}
+             whileInView={{ opacity: 1, y: 0 }}
+             viewport={{ once: true }}
+             transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            <button 
+              onClick={() => {
+                const w = window as any;
+                if (w.openLeadConnectorChat) {
+                  w.openLeadConnectorChat();
+                }
+              }}
+              data-testid="button-bottom-cta"
+              className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-2xl py-4 px-6 md:rounded-full md:pt-4 md:pr-8 md:pb-4 md:pl-9 relative shadow-2xl backdrop-blur-xl inline-block max-w-sm md:max-w-none"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+              <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
+              <div className="relative z-10 flex items-center justify-between md:justify-center gap-3">
+                <div className="text-left">
+                  <p className="group-hover:text-white transition-colors duration-300 text-base md:text-xl font-bold text-white font-sans drop-shadow-sm">Talk to Samantha</p>
+                  <p className="text-xs md:text-sm text-zinc-400 mt-0.5 md:mt-1">Live demo of our AI voice assistant</p>
+                </div>
+                <div className="flex-shrink-0 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                  <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
+                    <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
+                  </svg>
+                </div>
+              </div>
+            </button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Floating CTA for Mobile - appears after scrolling */}
+      <AnimatePresence>
+        {showFloatingCta && !floatingCtaDismissed && (
+          <motion.div
+            initial={{ opacity: 0, y: 100, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 100, scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="fixed bottom-6 left-4 right-4 z-50 md:hidden"
+          >
+            <div className="relative">
+              {/* Dismiss button */}
+              <button
+                onClick={handleDismissFloatingCta}
+                className="absolute -top-2 -right-2 z-10 w-8 h-8 bg-zinc-800 border border-zinc-600 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors shadow-lg"
+                aria-label="Dismiss"
+                data-testid="button-dismiss-floating-cta"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Main floating button */}
+              <button
+                onClick={handleFloatingCtaClick}
+                data-testid="button-floating-cta"
+                className="w-full group hover:shadow-sky-500/30 hover:shadow-2xl active:scale-[0.98] transition-all duration-300 cursor-pointer overflow-hidden bg-gradient-to-br from-sky-900/90 via-zinc-900/95 to-black/90 border-sky-500/40 border-2 rounded-2xl py-4 px-6 relative shadow-2xl backdrop-blur-xl"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                <div className="relative z-10 flex items-center justify-between gap-3">
+                  <div className="flex flex-col items-start">
+                    <p className="text-base font-bold text-white">Talk to Samantha (Live Demo)</p>
+                    <p className="text-xs text-zinc-400 mt-0.5">Hear how we handle your missed calls</p>
+                  </div>
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-sky-400">
+                      <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
+                    </svg>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 }
