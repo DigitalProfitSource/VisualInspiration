@@ -990,11 +990,14 @@ export default function Home() {
           variants={stagger}
           className="hidden md:block container mx-auto px-6 absolute bottom-32 left-0 right-0 z-10"
         >
-          <motion.div variants={fadeIn} className="flex flex-row gap-4 items-center max-w-3xl">
-            <div className="flex items-center gap-3 py-3 px-5 rounded-full bg-zinc-900/80 border border-white/10 backdrop-blur-xl">
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-              <p className="text-sm text-white font-medium">Talk to Samantha - our AI voice assistant is live in the corner</p>
-            </div>
+          <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
+            <div 
+              data-chat-widget
+              data-widget-id="696fd454572f85432b83c7bf"
+              data-location-id="g9gg2U35jlB8ZBalHoO9"
+              data-testid="widget-hero-samantha"
+            />
+            <p className="text-sm text-muted-foreground font-medium">Don't just guess. Hear exactly how we handle your missed calls and capture revenue.</p>
           </motion.div>
         </motion.div>
         
@@ -1484,10 +1487,13 @@ export default function Home() {
              whileInView={{ opacity: 1, y: 0 }}
              viewport={{ once: true }}
              transition={{ delay: 0.2, duration: 0.6 }}
-             className="inline-flex items-center gap-3 py-4 px-6 rounded-full bg-zinc-900/80 border border-primary/30 backdrop-blur-xl"
           >
-            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-            <p className="text-lg text-white font-medium">Click "Live Demo" in the corner to talk to Samantha</p>
+            <div 
+              data-chat-widget
+              data-widget-id="696fd454572f85432b83c7bf"
+              data-location-id="g9gg2U35jlB8ZBalHoO9"
+              data-testid="widget-bottom-samantha"
+            />
           </motion.div>
         </div>
       </section>
