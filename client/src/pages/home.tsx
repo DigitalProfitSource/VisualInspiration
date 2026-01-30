@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "wouter";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
@@ -912,6 +912,38 @@ export default function Home() {
   const circuitY = useTransform(scrollY, [0, 600], [0, 80]);
   const contentY = useTransform(scrollY, [0, 600], [0, 50]);
 
+  const widgetContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = widgetContainerRef.current;
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    const chatWidget = document.createElement('chat-widget');
+    chatWidget.setAttribute('location-id', 'g9gg2U35jlB8ZBalHoO9');
+    chatWidget.setAttribute('style', '--chat-widget-primary-color: #93C5FD; --chat-widget-active-color: #67E8F9;');
+    container.appendChild(chatWidget);
+
+    const existingScript = document.querySelector('script[src*="leadconnectorhq.com/loader.js"]');
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.src = 'https://widgets.leadconnectorhq.com/loader.js';
+      script.setAttribute('data-resources-url', 'https://widgets.leadconnectorhq.com/chat-widget/loader.js');
+      script.async = true;
+      script.onload = () => {
+        console.log('LeadConnector widget script loaded');
+      };
+      document.body.appendChild(script);
+    }
+
+    return () => {
+      if (container) {
+        container.innerHTML = '';
+      }
+    };
+  }, []);
+
   return (
     <Layout>
       <SEO 
@@ -982,19 +1014,23 @@ export default function Home() {
         
         {/* Mobile CTA removed from hero - now appears as floating button after scroll */}
 
-        {/* Desktop CTA - positioned with content */}
+        {/* Voice Widget CTA - responsive for all screen sizes */}
         <motion.div 
           style={{ y: contentY }}
           initial="initial"
           animate="animate"
           variants={stagger}
-          className="hidden md:block container mx-auto px-6 absolute bottom-32 left-0 right-0 z-10"
+          className="container mx-auto px-6 absolute bottom-24 md:bottom-32 left-0 right-0 z-10"
         >
-          <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
-            <p className="text-sm text-muted-foreground font-medium bg-zinc-900/60 backdrop-blur-sm py-2 px-4 rounded-full border border-white/10">
-              <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></span>
-              Try our AI voice assistant — click the widget in the corner
-            </p>
+          <motion.div variants={fadeIn} className="flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center max-w-3xl">
+            <div className="relative group" data-testid="widget-hero-samantha">
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary/40 to-cyan-400/40 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div 
+                ref={widgetContainerRef}
+                className="relative rounded-xl border border-primary/30 bg-zinc-900/80 p-1 shadow-2xl shadow-primary/20 backdrop-blur-xl min-w-[200px] min-h-[60px]"
+              />
+            </div>
+            <p className="text-sm text-muted-foreground font-medium">Don't just guess. Hear exactly how we handle your missed calls and capture revenue.</p>
           </motion.div>
         </motion.div>
         
