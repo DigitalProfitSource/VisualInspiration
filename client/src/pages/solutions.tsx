@@ -17,6 +17,10 @@ import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { GridBeam } from "@/components/ui/grid-beam";
 import { SEO } from "@/components/seo";
 import { Layout } from "@/components/layout";
+import { ArchitectFlowDiagram } from "@/components/ui/architect-flow-diagram";
+import { DiagnoseFrictionDiagram } from "@/components/ui/diagnose-friction-diagram";
+import { MapSequencesDiagram } from "@/components/ui/map-sequences-diagram";
+import { LocateLeverageDiagram } from "@/components/ui/locate-leverage-diagram";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -366,6 +370,124 @@ export default function Solutions() {
                 isReversed={index % 2 === 0}
               />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How We Deploy - The SimpleSequence Method */}
+      <section id="method" className="py-24 relative overflow-hidden border-t border-white/5">
+        <GridBeam />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(var(--primary),0.03),transparent)] pointer-events-none" />
+        
+        <div className="container mx-auto px-6">
+          <motion.div 
+            initial={fadeInUp.initial}
+            whileInView={fadeInUp.whileInView}
+            viewport={fadeInUp.viewport}
+            transition={fadeInUp.transition}
+            className="text-center max-w-2xl mx-auto mb-24"
+          >
+            <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block">How We Deploy</span>
+            <h2 className="text-4xl md:text-5xl font-display font-medium mb-6">The SimpleSequence Method</h2>
+            <p className="text-slate-400 text-lg">A clear, structured process that moves you from confusion to a predictable, AI-ready flow — in weeks, not months.</p>
+          </motion.div>
+
+          <div className="relative max-w-6xl mx-auto">
+            <div className="space-y-16 md:space-y-20 relative z-10">
+              {[
+                { step: "01", title: "Diagnose Friction", desc: "We find exactly where things break down — the hidden drag you've been feeling but couldn't name.", component: DiagnoseFrictionDiagram },
+                { step: "02", title: "Map Sequences", desc: "We document the workflows that actually drive revenue and expose what's unclear or broken.", component: MapSequencesDiagram },
+                { step: "03", title: "Locate Leverage", desc: "We identify where AI creates real lift — triage, routing, and follow-up — and where your team's judgment still matters most, not shiny distractions.", component: LocateLeverageDiagram },
+                { step: "04", title: "Architect the Flow", desc: "We don't just stack tools; we engineer a unified operating system. We take fragmented channels and forge them into a single, intelligent core that processes every interaction with precision.", component: ArchitectFlowDiagram }
+              ].map((item, i) => {
+                const VisualComponent = item.component;
+                const isReversed = i % 2 === 1;
+                
+                return (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.7 }}
+                    className="group"
+                  >
+                    {/* Mobile: Stacked layout */}
+                    <div className="md:hidden">
+                      <div className="inline-flex items-center gap-2 text-primary/50 font-mono mb-3">
+                        <span>STEP</span>
+                        <span className="text-xl font-bold text-primary">{item.step}</span>
+                      </div>
+                      <h3 className="text-2xl font-medium mb-3 group-hover:text-primary transition-colors duration-300">{item.title}</h3>
+                      <p className="text-slate-400 text-base leading-relaxed mb-6">{item.desc}</p>
+                      <div className="relative">
+                        <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-cyan-500/10 rounded-2xl blur-xl opacity-40" />
+                        <div className="relative w-full max-w-sm" data-testid={`component-step-${item.step}`}>
+                          <VisualComponent />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Desktop: 3-column grid with center timeline */}
+                    <div className="hidden md:grid md:grid-cols-[1fr_80px_1fr] md:items-center md:gap-4">
+                      {/* Left Column */}
+                      <div className={isReversed ? 'order-3' : 'order-1'}>
+                        {!isReversed ? (
+                          <div className="text-right pr-6">
+                            <h3 className="text-2xl lg:text-3xl font-medium mb-3 group-hover:text-primary transition-colors duration-300">{item.title}</h3>
+                            <p className="text-slate-400 text-base lg:text-lg leading-relaxed">{item.desc}</p>
+                          </div>
+                        ) : (
+                          <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="relative flex justify-end"
+                          >
+                            <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-cyan-500/10 rounded-2xl blur-xl opacity-40" />
+                            <div className="relative w-full max-w-md" data-testid={`component-step-${item.step}`}>
+                              <VisualComponent />
+                            </div>
+                          </motion.div>
+                        )}
+                      </div>
+                      
+                      {/* Center Column - Timeline with Step Indicator */}
+                      <div className="order-2 flex flex-col items-center justify-center relative">
+                        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-primary/10 via-primary/30 to-primary/10" />
+                        <div className="relative z-10 w-14 h-14 rounded-full bg-zinc-900 border-2 border-primary/50 flex items-center justify-center shadow-[0_0_25px_rgba(103,232,249,0.4)]">
+                          <span className="text-base font-bold text-primary">{item.step}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Right Column */}
+                      <div className={isReversed ? 'order-1' : 'order-3'}>
+                        {isReversed ? (
+                          <div className="text-left pl-6">
+                            <h3 className="text-2xl lg:text-3xl font-medium mb-3 group-hover:text-primary transition-colors duration-300">{item.title}</h3>
+                            <p className="text-slate-400 text-base lg:text-lg leading-relaxed">{item.desc}</p>
+                          </div>
+                        ) : (
+                          <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="relative"
+                          >
+                            <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-cyan-500/10 rounded-2xl blur-xl opacity-40" />
+                            <div className="relative w-full max-w-md" data-testid={`component-step-${item.step}`}>
+                              <VisualComponent />
+                            </div>
+                          </motion.div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
