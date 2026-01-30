@@ -123,8 +123,47 @@
         </footer>
       </article>
     </div>
+    
+    <!-- LeadConnector Embedded Widget Container - Fixed position in bottom right -->
+    <div id="samantha-widget-container" style="
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+    ">
+      <div style="
+        position: relative;
+      ">
+        <!-- Glow effect -->
+        <div style="
+          position: absolute;
+          inset: -8px;
+          background: linear-gradient(135deg, rgba(147, 197, 253, 0.4), rgba(103, 232, 249, 0.4));
+          border-radius: 24px;
+          filter: blur(16px);
+          opacity: 0.6;
+        "></div>
+        <!-- Widget wrapper with border -->
+        <div style="
+          position: relative;
+          border-radius: 16px;
+          border: 1px solid rgba(147, 197, 253, 0.3);
+          background: rgba(24, 24, 27, 0.9);
+          padding: 4px;
+          box-shadow: 0 25px 50px -12px rgba(147, 197, 253, 0.2);
+          backdrop-filter: blur(12px);
+        ">
+          <div 
+            data-chat-widget
+            data-widget-id="696fd454572f85432b83c7bf"
+            data-location-id="g9gg2U35jlB8ZBalHoO9"
+          ></div>
+        </div>
+      </div>
+    </div>
+    
     <script type="module" src="/src/main.tsx"></script>
-    <!-- LeadConnector Chat Widget - Embedded/Inline mode - renders where data-chat-widget divs are placed -->
+    <!-- LeadConnector Chat Widget Script -->
     <script 
       src="https://widgets.leadconnectorhq.com/loader.js"  
       data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" 

@@ -991,18 +991,10 @@ export default function Home() {
           className="hidden md:block container mx-auto px-6 absolute bottom-32 left-0 right-0 z-10"
         >
           <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
-            <div className="relative group">
-              <div className="absolute -inset-2 bg-gradient-to-r from-primary/40 to-cyan-400/40 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative rounded-xl border border-primary/30 bg-zinc-900/80 p-1 shadow-2xl shadow-primary/20 backdrop-blur-xl">
-                <div 
-                  data-chat-widget
-                  data-widget-id="696fd454572f85432b83c7bf"
-                  data-location-id="g9gg2U35jlB8ZBalHoO9"
-                  data-testid="widget-hero-samantha"
-                ></div>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground font-medium">Don't just guess. Hear exactly how we handle your missed calls and capture revenue.</p>
+            <p className="text-sm text-muted-foreground font-medium bg-zinc-900/60 backdrop-blur-sm py-2 px-4 rounded-full border border-white/10">
+              <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></span>
+              Try our AI voice assistant — click the widget in the corner
+            </p>
           </motion.div>
         </motion.div>
         
