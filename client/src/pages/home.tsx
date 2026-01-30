@@ -1026,6 +1026,7 @@ export default function Home() {
               <div className="absolute -inset-2 bg-gradient-to-r from-primary/40 to-cyan-400/40 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
               <button
                 onClick={openVoiceDemo}
+                data-testid="button-open-voice-demo"
                 className="relative flex items-center gap-3 rounded-xl border border-primary/30 bg-zinc-900/80 px-5 py-3 shadow-2xl shadow-primary/20 backdrop-blur-xl hover:bg-zinc-800/80 transition-all duration-300 cursor-pointer"
               >
                 <span className="inline-block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
