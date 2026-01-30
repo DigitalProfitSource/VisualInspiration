@@ -124,99 +124,11 @@
       </article>
     </div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- LeadConnector Chat Widget - visible in bottom right corner -->
     <script 
       src="https://widgets.leadconnectorhq.com/loader.js"  
       data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" 
       data-widget-id="696fd454572f85432b83c7bf">
-    </script>
-    <style>
-      /* Hide chat widget by default */
-      chat-widget:not(.lc-active) {
-        position: fixed !important;
-        bottom: -9999px !important;
-        right: -9999px !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        visibility: hidden !important;
-        z-index: -1 !important;
-      }
-      chat-widget.lc-active {
-        position: fixed !important;
-        bottom: 20px !important;
-        right: 20px !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        visibility: visible !important;
-        z-index: 999999 !important;
-      }
-    </style>
-    <script>
-      (function() {
-        // Simple periodic check to ensure widget stays hidden (no MutationObserver)
-        function hideWidget() {
-          var chatWidget = document.querySelector('chat-widget');
-          if (chatWidget && !chatWidget.classList.contains('lc-active')) {
-            chatWidget.style.cssText = 'position: fixed !important; bottom: -9999px !important; right: -9999px !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; z-index: -1 !important;';
-          }
-        }
-        
-        // Check periodically for first 10 seconds only
-        var checkCount = 0;
-        var hideInterval = setInterval(function() {
-          checkCount++;
-          hideWidget();
-          if (checkCount > 40) {
-            clearInterval(hideInterval);
-          }
-        }, 250);
-        
-        // Also check on load
-        window.addEventListener('load', function() {
-          hideWidget();
-          setTimeout(hideWidget, 1000);
-          setTimeout(hideWidget, 3000);
-        });
-        
-        // Open chat widget
-        window.openLeadConnectorChat = function() {
-          var chatWidget = document.querySelector('chat-widget');
-          if (chatWidget) {
-            chatWidget.classList.add('lc-active');
-            chatWidget.style.cssText = 'position: fixed !important; bottom: 20px !important; right: 20px !important; opacity: 1 !important; pointer-events: auto !important; visibility: visible !important; z-index: 999999 !important;';
-          }
-          
-          // Stop the hide interval
-          clearInterval(hideInterval);
-          
-          // Open via API
-          var attempts = 0;
-          function tryOpen() {
-            attempts++;
-            if (window.leadConnector && window.leadConnector.chatWidget && window.leadConnector.chatWidget.isLoaded) {
-              window.leadConnector.chatWidget.openWidget();
-              return;
-            }
-            if (attempts < 20) {
-              setTimeout(tryOpen, 200);
-            }
-          }
-          tryOpen();
-        };
-        
-        // Close on Escape
-        document.addEventListener('keydown', function(e) {
-          if (e.key === 'Escape') {
-            var chatWidget = document.querySelector('chat-widget');
-            if (chatWidget && chatWidget.classList.contains('lc-active')) {
-              if (window.leadConnector && window.leadConnector.chatWidget && window.leadConnector.chatWidget.closeWidget) {
-                window.leadConnector.chatWidget.closeWidget();
-              }
-              chatWidget.classList.remove('lc-active');
-              chatWidget.style.cssText = 'position: fixed !important; bottom: -9999px !important; right: -9999px !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; z-index: -1 !important;';
-            }
-          }
-        });
-      })();
     </script>
   </body>
 </html>
