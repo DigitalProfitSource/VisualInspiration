@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "wouter";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
@@ -911,7 +911,36 @@ export default function Home() {
   const heroBgScale = useTransform(scrollY, [0, 600], [1, 1.1]);
   const circuitY = useTransform(scrollY, [0, 600], [0, 80]);
   const contentY = useTransform(scrollY, [0, 600], [0, 50]);
+  const [widgetReady, setWidgetReady] = useState(false);
 
+  useEffect(() => {
+    const handleWidgetLoaded = () => {
+      setWidgetReady(true);
+      console.log('LeadConnector widget loaded and ready');
+    };
+
+    window.addEventListener('LC_chatWidgetLoaded', handleWidgetLoaded);
+
+    if ((window as any).leadConnector?.chatWidget) {
+      setWidgetReady(true);
+    }
+
+    return () => {
+      window.removeEventListener('LC_chatWidgetLoaded', handleWidgetLoaded);
+    };
+  }, []);
+
+  const openVoiceDemo = () => {
+    try {
+      if ((window as any).leadConnector?.chatWidget) {
+        (window as any).leadConnector.chatWidget.openWidget();
+      } else {
+        console.log('Widget not ready yet');
+      }
+    } catch (e) {
+      console.error('Error opening widget:', e);
+    }
+  };
 
   return (
     <Layout>
@@ -992,9 +1021,24 @@ export default function Home() {
           className="container mx-auto px-6 absolute bottom-24 md:bottom-32 left-0 right-0 z-10"
         >
           <motion.div variants={fadeIn} className="flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center max-w-3xl">
-            <p className="text-sm text-muted-foreground font-medium bg-zinc-900/60 backdrop-blur-sm py-2 px-4 rounded-full border border-white/10" data-testid="widget-hero-samantha">
-              <span className="inline-block w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></span>
-              Don't just guess. Hear exactly how we handle your missed calls and capture revenue. Try the voice demo below.
+            {/* Voice Demo trigger button with glowing effect */}
+            <div className="relative group" data-testid="widget-hero-samantha">
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary/40 to-cyan-400/40 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <button
+                onClick={openVoiceDemo}
+                className="relative flex items-center gap-3 rounded-xl border border-primary/30 bg-zinc-900/80 px-5 py-3 shadow-2xl shadow-primary/20 backdrop-blur-xl hover:bg-zinc-800/80 transition-all duration-300 cursor-pointer"
+              >
+                <span className="inline-block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+                <span className="text-sm font-medium text-foreground">
+                  {widgetReady ? '(Live Demo)' : 'Loading Demo...'}
+                </span>
+                <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+              </button>
+            </div>
+            <p className="text-sm text-muted-foreground font-medium">
+              Don't just guess. Hear exactly how we handle your missed calls and capture revenue.
             </p>
           </motion.div>
         </motion.div>
