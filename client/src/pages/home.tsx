@@ -991,12 +991,17 @@ export default function Home() {
           className="hidden md:block container mx-auto px-6 absolute bottom-32 left-0 right-0 z-10"
         >
           <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
-            <div 
-              data-chat-widget
-              data-widget-id="696fd454572f85432b83c7bf"
-              data-location-id="g9gg2U35jlB8ZBalHoO9"
-              data-testid="widget-hero-samantha"
-            />
+            <div className="relative group">
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary/40 to-cyan-400/40 rounded-2xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative rounded-xl border border-primary/30 bg-zinc-900/80 p-1 shadow-2xl shadow-primary/20 backdrop-blur-xl">
+                <div 
+                  data-chat-widget
+                  data-widget-id="696fd454572f85432b83c7bf"
+                  data-location-id="g9gg2U35jlB8ZBalHoO9"
+                  data-testid="widget-hero-samantha"
+                ></div>
+              </div>
+            </div>
             <p className="text-sm text-muted-foreground font-medium">Don't just guess. Hear exactly how we handle your missed calls and capture revenue.</p>
           </motion.div>
         </motion.div>
@@ -1466,34 +1471,6 @@ export default function Home() {
                 </div>
               </div>
             </motion.div>
-          </motion.div>
-        </div>
-      </section>
-      {/* Final CTA */}
-      <section className="py-16 md:py-24 text-center relative overflow-hidden">
-         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.h2 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="text-4xl md:text-7xl font-medium mb-8 md:mb-12 tracking-tight"
-          >
-            Hear it <span className="text-primary">for yourself.</span>
-          </motion.h2>
-          <motion.div 
-             initial={{ opacity: 0, y: 20 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-             transition={{ delay: 0.2, duration: 0.6 }}
-          >
-            <div 
-              data-chat-widget
-              data-widget-id="696fd454572f85432b83c7bf"
-              data-location-id="g9gg2U35jlB8ZBalHoO9"
-              data-testid="widget-bottom-samantha"
-            />
           </motion.div>
         </div>
       </section>
