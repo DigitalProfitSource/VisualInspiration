@@ -1,7 +1,6 @@
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "wouter";
-import { X } from "lucide-react";
 import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Snail, TriangleAlert, Unplug, FlagOff, CloudOff, Frown, Stethoscope, Map, Target, Blocks, Quote, MessageSquareQuote, Route, RefreshCw, BookOpen, Handshake, Database, TrendingUp, Star, FileText, Globe, Cog, Clock, Skull, CircleOff, ThumbsDown, MousePointerClick, Flame, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
   Accordion,
@@ -19,7 +18,6 @@ import { AnimatedMetric } from "@/components/ui/slot-counter";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
-import { SamanthaWidget } from "@/components/ui/samantha-widget";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 import triageRoutingDiagram from "@assets/generated_images/intelligent_triage_routing_workflow_diagram.png";
 import followUpDiagram from "@assets/generated_images/follow-up_automation_sequence_diagram.png";
@@ -914,36 +912,6 @@ export default function Home() {
   const circuitY = useTransform(scrollY, [0, 600], [0, 80]);
   const contentY = useTransform(scrollY, [0, 600], [0, 50]);
 
-  const [showFloatingCta, setShowFloatingCta] = useState(false);
-  const [floatingCtaDismissed, setFloatingCtaDismissed] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollThreshold = window.innerHeight * 4;
-      if (window.scrollY > scrollThreshold && !floatingCtaDismissed) {
-        setShowFloatingCta(true);
-      } else if (window.scrollY <= scrollThreshold) {
-        setShowFloatingCta(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [floatingCtaDismissed]);
-
-  const handleFloatingCtaClick = () => {
-    const w = window as any;
-    if (w.openLeadConnectorChat) {
-      w.openLeadConnectorChat();
-    }
-  };
-
-  const handleDismissFloatingCta = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setFloatingCtaDismissed(true);
-    setShowFloatingCta(false);
-  };
-
   return (
     <Layout>
       <SEO 
@@ -1023,8 +991,17 @@ export default function Home() {
           className="hidden md:block container mx-auto px-6 absolute bottom-32 left-0 right-0 z-10"
         >
           <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
-            <SamanthaWidget />
-            <p className="text-sm text-muted-foreground font-medium">Don't just guess. Hear exactly how we handle your missed calls and capture revenue.</p>
+            <Link href="/assessment">
+              <Button 
+                size="lg" 
+                className="group bg-gradient-to-r from-primary/90 to-cyan-500/90 hover:from-primary hover:to-cyan-400 text-black font-bold px-8 py-6 text-lg rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300"
+                data-testid="button-hero-cta"
+              >
+                <span>Get Your AI Clarity Score</span>
+                <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Button>
+            </Link>
+            <p className="text-sm text-muted-foreground font-medium">Free diagnostic. No sales pitch. Just clarity on where AI fits in your business.</p>
           </motion.div>
         </motion.div>
         
@@ -1515,38 +1492,19 @@ export default function Home() {
              viewport={{ once: true }}
              transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <SamanthaWidget />
+            <Link href="/assessment">
+              <Button 
+                size="lg" 
+                className="group bg-gradient-to-r from-primary/90 to-cyan-500/90 hover:from-primary hover:to-cyan-400 text-black font-bold px-8 py-6 text-lg rounded-full shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300"
+                data-testid="button-bottom-cta"
+              >
+                <span>Get Your AI Clarity Score</span>
+                <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>
-
-      {/* Floating CTA for Mobile - appears after scrolling */}
-      <AnimatePresence>
-        {showFloatingCta && !floatingCtaDismissed && (
-          <motion.div
-            initial={{ opacity: 0, y: 100, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.8 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="fixed bottom-6 left-4 right-4 z-50 md:hidden"
-          >
-            <div className="relative">
-              {/* Dismiss button */}
-              <button
-                onClick={handleDismissFloatingCta}
-                className="absolute -top-2 -right-2 z-10 w-8 h-8 bg-zinc-800 border border-zinc-600 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors shadow-lg"
-                aria-label="Dismiss"
-                data-testid="button-dismiss-floating-cta"
-              >
-                <X className="w-4 h-4" />
-              </button>
-
-              {/* Main floating button */}
-              <SamanthaWidget variant="compact" className="w-full" />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </Layout>
   );
 }
