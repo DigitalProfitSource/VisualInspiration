@@ -1,7 +1,8 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { serveStatic } from "./static";
+import { serveStatic, serveBotHtml } from "./static";
 import { createServer } from "http";
+import { isBot } from "./bot-detector";
 
 const app = express();
 const httpServer = createServer(app);
@@ -76,6 +77,15 @@ app.use((req, res, next) => {
   if (process.env.NODE_ENV === "production") {
     serveStatic(app);
   } else {
+    // In development, serve bot HTML directly for crawlers before Vite handles it
+    app.use((req, res, next) => {
+      const userAgent = req.headers["user-agent"];
+      if (isBot(userAgent) && !req.path.startsWith("/api") && !req.path.includes(".")) {
+        return serveBotHtml(req, res, next);
+      }
+      next();
+    });
+    
     const { setupVite } = await import("./vite");
     await setupVite(httpServer, app);
   }
