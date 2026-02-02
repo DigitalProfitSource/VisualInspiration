@@ -1487,15 +1487,6 @@ export default function Home() {
       <section className="py-16 md:py-24 text-center relative overflow-hidden">
          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
         <div className="container mx-auto px-6 relative z-10">
-          <motion.h2 
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="text-4xl md:text-7xl font-medium mb-8 md:mb-12 tracking-tight"
-          >
-            Hear it <span className="text-primary">for yourself.</span>
-          </motion.h2>
           <motion.div 
              initial={{ opacity: 0, y: 20 }}
              whileInView={{ opacity: 1, y: 0 }}
