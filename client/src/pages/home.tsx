@@ -19,6 +19,7 @@ import { AnimatedMetric } from "@/components/ui/slot-counter";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
+import { SamanthaWidget } from "@/components/ui/samantha-widget";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 import triageRoutingDiagram from "@assets/generated_images/intelligent_triage_routing_workflow_diagram.png";
 import followUpDiagram from "@assets/generated_images/follow-up_automation_sequence_diagram.png";
@@ -1022,30 +1023,7 @@ export default function Home() {
           className="hidden md:block container mx-auto px-6 absolute bottom-32 left-0 right-0 z-10"
         >
           <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
-              <button 
-                data-testid="button-hero-cta"
-                onClick={() => {
-                  const w = window as any;
-                  if (w.openLeadConnectorChat) {
-                    w.openLeadConnectorChat();
-                  }
-                }}
-                className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full py-3.5 px-8 relative shadow-2xl backdrop-blur-xl"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
-                <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
-                <div className="relative z-10 flex items-center justify-center gap-3">
-                  <p className="group-hover:text-white transition-colors duration-300 text-base font-bold text-white font-sans drop-shadow-sm whitespace-nowrap">Talk to Samantha (Live Demo)</p>
-                  <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
-                    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
-                      <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
-                    </svg>
-                  </div>
-                </div>
-              </button>
-            </div>
+            <SamanthaWidget />
             <p className="text-sm text-muted-foreground font-medium">Don't just guess. Hear exactly how we handle your missed calls and capture revenue.</p>
           </motion.div>
         </motion.div>
@@ -1537,30 +1515,7 @@ export default function Home() {
              viewport={{ once: true }}
              transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <button 
-              onClick={() => {
-                const w = window as any;
-                if (w.openLeadConnectorChat) {
-                  w.openLeadConnectorChat();
-                }
-              }}
-              data-testid="button-bottom-cta"
-              className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-2xl py-4 px-6 md:rounded-full md:pt-4 md:pr-8 md:pb-4 md:pl-9 relative shadow-2xl backdrop-blur-xl inline-block max-w-sm md:max-w-none"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
-              <div className="group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-sky-500/10 via-sky-400/20 to-sky-500/10 opacity-0 rounded-2xl absolute top-0 right-0 bottom-0 left-0"></div>
-              <div className="relative z-10 flex items-center justify-between md:justify-center gap-3">
-                <div className="text-left">
-                  <p className="group-hover:text-white transition-colors duration-300 text-base md:text-xl font-bold text-white font-sans drop-shadow-sm">Talk to Samantha</p>
-                  <p className="text-xs md:text-sm text-zinc-400 mt-0.5 md:mt-1">Live demo of our AI voice assistant</p>
-                </div>
-                <div className="flex-shrink-0 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
-                  <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-white">
-                    <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
-                  </svg>
-                </div>
-              </div>
-            </button>
+            <SamanthaWidget />
           </motion.div>
         </div>
       </section>
@@ -1587,24 +1542,7 @@ export default function Home() {
               </button>
 
               {/* Main floating button */}
-              <button
-                onClick={handleFloatingCtaClick}
-                data-testid="button-floating-cta"
-                className="w-full group hover:shadow-sky-500/30 hover:shadow-2xl active:scale-[0.98] transition-all duration-300 cursor-pointer overflow-hidden bg-gradient-to-br from-sky-900/90 via-zinc-900/95 to-black/90 border-sky-500/40 border-2 rounded-2xl py-4 px-6 relative shadow-2xl backdrop-blur-xl"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
-                <div className="relative z-10 flex items-center justify-between gap-3">
-                  <div className="flex flex-col items-start">
-                    <p className="text-base font-bold text-white">Talk to Samantha (Live Demo)</p>
-                    <p className="text-xs text-zinc-400 mt-0.5">Hear how we handle your missed calls</p>
-                  </div>
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center">
-                    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" className="w-5 h-5 text-sky-400">
-                      <path d="M9 5l7 7-7 7" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"></path>
-                    </svg>
-                  </div>
-                </div>
-              </button>
+              <SamanthaWidget variant="compact" className="w-full" />
             </div>
           </motion.div>
         )}
