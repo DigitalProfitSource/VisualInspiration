@@ -111,8 +111,19 @@ function Header() {
                     <X className="w-6 h-6" />
                   </button>
                 </div>
+
+                <div className="p-6 pb-2">
+                  <Link
+                    href="/assessment"
+                    onClick={closeMobileMenu}
+                    className="block w-full py-3 px-4 bg-gradient-to-r from-primary to-cyan-400 text-black font-bold text-center rounded-lg hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
+                    data-testid="mobile-nav-assessment"
+                  >
+                    Get Your AI Clarity Score
+                  </Link>
+                </div>
                 
-                <nav className="flex-1 p-6" aria-label="Mobile navigation">
+                <nav className="flex-1 p-6 pt-2" aria-label="Mobile navigation">
                   <ul className="space-y-2">
                     <li>
                       <Link
@@ -146,17 +157,6 @@ function Header() {
                     ))}
                   </ul>
                 </nav>
-                
-                <div className="p-6 border-t border-white/5">
-                  <Link
-                    href="/assessment"
-                    onClick={closeMobileMenu}
-                    className="block w-full py-3 px-4 bg-gradient-to-r from-primary to-cyan-400 text-black font-bold text-center rounded-lg hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
-                    data-testid="mobile-nav-assessment"
-                  >
-                    Get Your AI Clarity Score
-                  </Link>
-                </div>
               </div>
             </motion.div>
           </>
