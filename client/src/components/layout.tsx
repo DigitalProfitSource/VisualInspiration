@@ -45,7 +45,7 @@ function Header() {
       >
         <nav className="container mx-auto px-6 h-20 flex items-center justify-between" role="navigation" aria-label="Main navigation">
           <Link href="/" className="flex items-center" aria-label="SimpleSequence Home">
-            <img src={logoImage} alt="SimpleSequence" className="h-8 md:h-10 w-auto" />
+            <img src={logoImage} alt="SimpleSequence" className="h-10 md:h-14 w-auto" />
           </Link>
           
           <div className="hidden md:flex gap-10 text-sm font-medium text-muted-foreground">
@@ -98,7 +98,7 @@ function Header() {
             >
               <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between p-6 border-b border-white/5">
-                  <img src={logoImage} alt="SimpleSequence" className="h-7 w-auto" />
+                  <img src={logoImage} alt="SimpleSequence" className="h-9 w-auto" />
                   <button
                     onClick={closeMobileMenu}
                     className="p-2 -mr-2 text-muted-foreground hover:text-white transition-colors"
