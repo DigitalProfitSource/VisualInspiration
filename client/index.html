@@ -28,57 +28,119 @@
     <script>
       (function() {
         var activeStreams = [];
-        var originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+        var activeConnections = [];
+        var callWasActive = false;
         
+        var originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
         navigator.mediaDevices.getUserMedia = function(constraints) {
           return originalGetUserMedia(constraints).then(function(stream) {
             activeStreams.push(stream);
+            callWasActive = true;
             return stream;
           });
         };
         
         function stopAllMediaTracks() {
+          var stopped = false;
           activeStreams.forEach(function(stream) {
             stream.getTracks().forEach(function(track) {
-              track.stop();
+              if (track.readyState === 'live') {
+                track.stop();
+                stopped = true;
+              }
             });
           });
           activeStreams = [];
+          callWasActive = false;
+          if (stopped) console.log('[MicCleanup] Force-stopped orphaned media tracks');
         }
         
         window.stopAllMediaTracks = stopAllMediaTracks;
         
-        var observer = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-            mutation.removedNodes.forEach(function(node) {
-              if (node.nodeType === 1) {
-                var isWidget = node.classList && (
-                  node.classList.contains('lc_text_widget') ||
-                  node.classList.contains('lc-text-widget-container') ||
-                  node.id && node.id.includes('leadconnector')
-                );
-                var hasWidgetChild = node.querySelector && node.querySelector('[class*="lc_text_widget"], [class*="lc-text-widget"]');
-                if (isWidget || hasWidgetChild) {
-                  stopAllMediaTracks();
-                }
-              }
+        function hasActiveStreams() {
+          return activeStreams.some(function(stream) {
+            return stream.getTracks().some(function(track) {
+              return track.readyState === 'live';
             });
           });
-        });
+        }
         
-        observer.observe(document.body, { childList: true, subtree: true });
-        
-        document.addEventListener('visibilitychange', function() {
-          if (document.hidden && activeStreams.length > 0) {
-            var chatOpen = document.querySelector('[class*="lc_text_widget"][class*="open"], [class*="lc-text-widget"][class*="active"]');
-            if (!chatOpen) {
-              stopAllMediaTracks();
-            }
+        function isCallUIPresent() {
+          var selectors = [
+            '[class*="lc_text_widget"] button[class*="end"]',
+            '[class*="lc-text-widget"] button[class*="end"]',
+            '[class*="call-controls"]',
+            '[class*="voice-call"]',
+            '[class*="calling"]',
+            '[class*="in-call"]',
+            '[data-call-active]',
+            'button[aria-label*="End"]',
+            'button[aria-label*="Hang"]',
+            '[class*="hangup"]',
+            '[class*="hang-up"]'
+          ];
+          for (var i = 0; i < selectors.length; i++) {
+            if (document.querySelector(selectors[i])) return true;
           }
-        });
+          return false;
+        }
+        
+        setInterval(function() {
+          if (hasActiveStreams() && callWasActive && !isCallUIPresent()) {
+            console.log('[MicCleanup] Watchdog: Call UI gone but mic still active - killing streams');
+            stopAllMediaTracks();
+          }
+        }, 2000);
+        
+        var OriginalRTCPeerConnection = window.RTCPeerConnection;
+        window.RTCPeerConnection = function(config) {
+          var pc = new OriginalRTCPeerConnection(config);
+          activeConnections.push(pc);
+          
+          pc.addEventListener('connectionstatechange', function() {
+            if (pc.connectionState === 'disconnected' || pc.connectionState === 'failed' || pc.connectionState === 'closed') {
+              console.log('[MicCleanup] RTC connection ' + pc.connectionState + ' - stopping media');
+              setTimeout(stopAllMediaTracks, 500);
+            }
+          });
+          
+          pc.addEventListener('iceconnectionstatechange', function() {
+            if (pc.iceConnectionState === 'disconnected' || pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed') {
+              console.log('[MicCleanup] ICE connection ' + pc.iceConnectionState + ' - stopping media');
+              setTimeout(stopAllMediaTracks, 500);
+            }
+          });
+          
+          return pc;
+        };
+        window.RTCPeerConnection.prototype = OriginalRTCPeerConnection.prototype;
+        
+        var OriginalWebSocket = window.WebSocket;
+        window.WebSocket = function(url, protocols) {
+          var ws = protocols ? new OriginalWebSocket(url, protocols) : new OriginalWebSocket(url);
+          
+          if (url && (url.includes('voice') || url.includes('call') || url.includes('rtc') || url.includes('leadconnector'))) {
+            ws.addEventListener('close', function() {
+              console.log('[MicCleanup] Voice WebSocket closed - stopping media');
+              setTimeout(stopAllMediaTracks, 500);
+            });
+          }
+          
+          return ws;
+        };
+        window.WebSocket.prototype = OriginalWebSocket.prototype;
+        window.WebSocket.CONNECTING = OriginalWebSocket.CONNECTING;
+        window.WebSocket.OPEN = OriginalWebSocket.OPEN;
+        window.WebSocket.CLOSING = OriginalWebSocket.CLOSING;
+        window.WebSocket.CLOSED = OriginalWebSocket.CLOSED;
         
         window.addEventListener('pagehide', stopAllMediaTracks);
         window.addEventListener('beforeunload', stopAllMediaTracks);
+        document.addEventListener('visibilitychange', function() {
+          if (document.hidden && hasActiveStreams() && !isCallUIPresent()) {
+            stopAllMediaTracks();
+          }
+        });
       })();
     </script>
     
