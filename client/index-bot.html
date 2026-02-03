@@ -123,6 +123,64 @@
       </article>
     </div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      (function() {
+        var activeStreams = [];
+        var originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+        
+        navigator.mediaDevices.getUserMedia = function(constraints) {
+          return originalGetUserMedia(constraints).then(function(stream) {
+            activeStreams.push(stream);
+            return stream;
+          });
+        };
+        
+        function stopAllMediaTracks() {
+          activeStreams.forEach(function(stream) {
+            stream.getTracks().forEach(function(track) {
+              track.stop();
+            });
+          });
+          activeStreams = [];
+        }
+        
+        window.stopAllMediaTracks = stopAllMediaTracks;
+        
+        var observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            mutation.removedNodes.forEach(function(node) {
+              if (node.nodeType === 1) {
+                var isWidget = node.classList && (
+                  node.classList.contains('lc_text_widget') ||
+                  node.classList.contains('lc-text-widget-container') ||
+                  node.id && node.id.includes('leadconnector')
+                );
+                var hasWidgetChild = node.querySelector && node.querySelector('[class*="lc_text_widget"], [class*="lc-text-widget"]');
+                if (isWidget || hasWidgetChild) {
+                  stopAllMediaTracks();
+                }
+              }
+            });
+          });
+        });
+        
+        observer.observe(document.body, { childList: true, subtree: true });
+        
+        document.addEventListener('visibilitychange', function() {
+          if (document.hidden && activeStreams.length > 0) {
+            var chatOpen = document.querySelector('[class*="lc_text_widget"][class*="open"], [class*="lc-text-widget"][class*="active"]');
+            if (!chatOpen) {
+              stopAllMediaTracks();
+            }
+          }
+        });
+        
+        window.addEventListener('pagehide', stopAllMediaTracks);
+        window.addEventListener('beforeunload', stopAllMediaTracks);
+      })();
+    </script>
+    
     <script 
       src="https://widgets.leadconnectorhq.com/loader.js"  
       data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" 
