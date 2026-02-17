@@ -20,6 +20,7 @@ import { SEO, organizationSchema, softwareApplicationSchema } from "@/components
 import { Layout } from "@/components/layout";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 import automatedGrowthEngine from "@assets/automated-growth-engine_1771344359572.webp";
+import aiReadyWebConversion from "@assets/Ai-Ready-Web-Conversion_1771370273472.webp";
 import triageRoutingDiagram from "@assets/generated_images/intelligent_triage_routing_workflow_diagram.png";
 import followUpDiagram from "@assets/generated_images/follow-up_automation_sequence_diagram.png";
 import educationFaqDiagram from "@assets/generated_images/education_faq_knowledge_base_diagram.png";
@@ -82,7 +83,7 @@ const revenueFeatures = [
   {
     icon: Globe,
     title: "AI-Ready Web Conversion Layer",
-    image: educationFaqDiagram,
+    image: aiReadyWebConversion,
     frontDescription: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
     impact: "Your website becomes a 24/7 sales assistant",
     backIntro: "Simple Sequence turns passive traffic into active conversations and booked appointments—even when you're offline.",
