@@ -1,0 +1,45 @@
+Homepage "Profit Loop" Circuit Deployment
+Role: Act as a Senior UI/UX Architect and Conversion Copywriter.
+Project: Homepage Overhaul (Phase 1).
+Objective: Completely replace the three sections currently following the Hero—"What’s really costing you time, revenue, and sanity," "Scale Your Operations, Not Your Headcount," and "We Align Your Entire Customer Journey Into One Intelligent Flow"—with a single, unified 6-node circuit.
+
+1. BRAND VIBE & AESTHETIC
+
+Consistency: Maintain the existing SimpleSequence premium dark-mode aesthetic.
+
+UI Style: Utilize high-end glassmorphism for all node cards (semi-transparent, blurred backgrounds with subtle glowing borders).
+
+Visual Language: Replace all "pillar" imagery with a logic-based automation workflow. Connect all six nodes with a single, pulsing "Energy Line" that completes a full circle.
+
+2. SECTION HEADERS (The Hook)
+Replace the existing headers with this two-part narrative:
+
+Primary Headline: You’re getting leads. You just don’t have a system to maximize your marketing ROI.
+
+Secondary Headline: We align your entire customer journey into one intelligent flow.
+
+3. DESKTOP: THE 6-NODE PROFIT LOOP
+Layout: Construct a horizontal, sequential N8N-style workflow.
+
+Interaction: Implement Parallax Scroll. As the user scrolls through the section, the connecting line glows sequentially from Node 01 to Node 06, then loops back to Node 01.
+
+Node Expansion (Hover): Set nodes to expand slightly on hover to reveal specific capabilities:
+
+Node 01: Universal Capture Hub (Expansion Detail): Deploy a 24/7 intelligent intake layer across all storefronts. Include: AI-Ready SEO for search engines, AI Receptionists for website and Google Profile (GMB), 24/7 AI Phone Answering, and Social Media/DM automation.
+
+Node 02: Instant Greeting: Trigger automated SMS/Voice response in under 60 seconds for every new prospect.
+
+Node 03: Operational Hub Sync: Connect CRM, calendars, and billing to eliminate manual data entry and "admin glue".
+
+Node 04: Persistent Follow-Up: Automate intelligent nurture sequences for no-shows and stale quotes until they book or buy.
+
+Node 05: Authority Guard: Automate 5-star review collection and privately intercept negative feedback.
+
+Node 06: Revenue Injection: Re-engage your existing database to trigger immediate cash flow with zero additional ad spend.
+
+4. MOBILE: THE SEQUENTIAL STACK
+Layout: Rotate the circuit 90 degrees into a Vertical Workflow Stack.
+
+Navigation: The glowing "Energy Line" must run down the left margin, activating as the user scrolls.
+
+Interaction: Replace hover with "Tap-to-Expand" Accordion Drawers. This ensures the robust information in Node 01 remains clean and legible on narrow screens.
