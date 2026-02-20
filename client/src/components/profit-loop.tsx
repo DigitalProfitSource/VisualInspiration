@@ -1,89 +1,78 @@
 import { motion, AnimatePresence, useScroll, useTransform, useInView, PanInfo } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Radio, Zap, Cog, RefreshCw, Star, Database, ChevronDown } from "lucide-react";
+import { Radio, Zap, RefreshCw, Star, Database } from "lucide-react";
 
 const TEAL = "#6EE0F7";
 const TEAL_DIM = "rgba(110,224,247,0.15)";
 const TEAL_GLOW = "rgba(110,224,247,0.6)";
 const OBSIDIAN = "#0A0A0A";
 
+const NODE_COUNT = 5;
+
 const profitNodes = [
   {
     id: "01",
     title: "Universal Capture Hub",
-    subtitle: "The Trigger",
-    context: "Replaces the passive front desk with a 24/7 intelligent intake layer.",
+    subtitle: "24/7 Intelligent Intake",
+    context: "Replaces the passive front desk with a 24/7 intelligent intake layer across every channel.",
     icon: Radio,
     specs: [
-      "AI Receptionists for Website & Google Profile (GMB)",
-      "24/7 AI Phone Answering",
-      "AI-Ready SEO for search engines",
-      "Automated Social Media / DM intake"
+      "24/7 AI Reception (Web & Google Business)",
+      "AI-Ready SEO for search engine optimization",
+      "24/7 AI Voice Phone Answering",
+      "Omnichannel Social Media & DM Intake"
     ],
   },
   {
     id: "02",
-    title: "Instant Greeting",
-    subtitle: "Sub-60 Second Engagement",
-    context: "Every new prospect gets immediate, personalized contact — no lead goes cold.",
+    title: "Automation & Implementation",
+    subtitle: "Zero-Manual Architecture",
+    context: "Your CRM, calendars, and billing sync instantly — zero manual data entry, sub-60s lead response.",
     icon: Zap,
     specs: [
-      "Automated SMS/Voice response triggered on lead entry",
-      "Personalized greeting based on lead source",
-      "AI voice callback within 60 seconds",
-      "Warm handoff to human when needed"
+      "Instant CRM & Calendar Synchronization",
+      "Sub-60s \"Speed-to-Lead\" SMS/Voice Engagement",
+      "Automated Billing & Invoice Integration",
+      "Zero-Manual Data Entry Architecture"
     ],
   },
   {
     id: "03",
-    title: "Operational Hub Sync",
-    subtitle: "Eliminating Human-Glue Tasks",
-    context: "Your CRM, calendars, and billing talk to each other — zero manual data entry.",
-    icon: Cog,
-    specs: [
-      "Instant CRM synchronization from every touchpoint",
-      "Team calendar auto-coordination",
-      "Billing and invoice automation",
-      "Zero duplicate data entry or admin overhead"
-    ],
-  },
-  {
-    id: "04",
     title: "Persistent Follow-Up",
     subtitle: "Recovering Lost Revenue",
     context: "Automated nurture sequences that chase no-shows and stale quotes until they book or buy.",
     icon: RefreshCw,
     specs: [
-      "Multi-step SMS and email nurture sequences",
-      "Win-back campaigns for no-shows",
-      "Stale quote re-engagement automation",
-      "Behavior-based timing optimization"
+      "Automated Nurture for No-Shows and Canceled Appointments",
+      "Intelligent Quote Follow-Up Sequences",
+      "Behavior-Based Re-engagement Timing",
+      "Expired Estimate Recovery"
+    ],
+  },
+  {
+    id: "04",
+    title: "Reputation Flywheel",
+    subtitle: "Bulletproofing Your Brand",
+    context: "Automated 5-star review collection with internal interception of negative feedback.",
+    icon: Star,
+    specs: [
+      "Automated 5-Star Review Collection",
+      "Internal Sentiment Detection (Intercept Negative Feedback)",
+      "Reputation Velocity Tracking",
+      "Automated Response Templates"
     ],
   },
   {
     id: "05",
-    title: "Authority Guard",
-    subtitle: "Bulletproofing Your Reputation",
-    context: "Automated 5-star review collection with private interception of negative feedback.",
-    icon: Star,
-    specs: [
-      "Automated post-service review requests",
-      "Smart routing: happy → public, unhappy → private",
-      "Review response templates and alerts",
-      "Reputation dashboard with real-time monitoring"
-    ],
-  },
-  {
-    id: "06",
     title: "Revenue Injection",
-    subtitle: "Immediate Cash Flow",
-    context: "Re-engage your existing database to trigger revenue with zero additional ad spend.",
+    subtitle: "Database Reactivation",
+    context: "Re-engage your existing database to trigger immediate cash flow with zero additional ad spend.",
     icon: Database,
     specs: [
-      "Dormant contact reactivation campaigns",
-      "Past-client re-engagement sequences",
-      "Seasonal and lifecycle-based offers",
-      "Revenue tracking per reactivation cohort"
+      "Database Reactivation Campaigns (Win-Backs)",
+      "Dormant Contact Re-engagement",
+      "Seasonal & Lifecycle-Based Offers",
+      "Immediate Cash Flow Generation from Existing Assets"
     ],
   }
 ];
@@ -181,31 +170,28 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
   const getNodeCenter = (offset: number) => {
     const isCenter = offset === 0;
     const isAdj = Math.abs(offset) === 1;
-    const isBackAdj = Math.abs(offset) === 2;
 
     let x: number, y: number, scale: number;
     if (isCenter) {
       x = 0; y = -60; scale = 1.15;
     } else if (isAdj) {
       x = offset * 340; y = -60; scale = 0.82;
-    } else if (isBackAdj) {
-      x = (offset > 0 ? 1 : -1) * 220; y = 180; scale = 0.45;
     } else {
-      x = 0; y = 220; scale = 0.38;
+      x = (offset > 0 ? 1 : -1) * 180; y = 190; scale = 0.45;
     }
     return { cx: centerX + x, cy: centerY + y, scale };
   };
 
   const getOffset = (index: number) => {
     let offset = index - activeIndex;
-    if (offset > 3) offset -= 6;
-    if (offset < -3) offset += 6;
+    if (offset > 2) offset -= NODE_COUNT;
+    if (offset < -2) offset += NODE_COUNT;
     return offset;
   };
 
   const segments: { fromIdx: number; toIdx: number; fromOffset: number; toOffset: number }[] = [];
-  for (let i = 0; i < 6; i++) {
-    const nextI = (i + 1) % 6;
+  for (let i = 0; i < NODE_COUNT; i++) {
+    const nextI = (i + 1) % NODE_COUNT;
     segments.push({
       fromIdx: i,
       toIdx: nextI,
@@ -306,6 +292,7 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
         const opacityVal = isActive ? 0.6 : 0.12;
 
         const pathD = `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`;
+        const pulseId = `pulse-path-${fromIdx}-${toIdx}`;
 
         return (
           <g key={`${fromIdx}-${toIdx}`}>
@@ -321,6 +308,32 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
                 filter: isActive ? "url(#connectorGlow)" : "none",
               }}
             />
+            {isActive && (
+              <>
+                <path id={pulseId} d={pathD} fill="none" stroke="none" />
+                <circle r="3" fill={TEAL} opacity="0.9" filter="url(#connectorGlow)">
+                  <animateMotion
+                    dur="2.5s"
+                    repeatCount="indefinite"
+                    begin={`${fromIdx * 0.4}s`}
+                  >
+                    <mpath href={`#${pulseId}`} />
+                  </animateMotion>
+                  <animate
+                    attributeName="opacity"
+                    values="0.3;1;0.3"
+                    dur="2.5s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="r"
+                    values="2;4;2"
+                    dur="2.5s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+              </>
+            )}
             <motion.circle
               cx={startX}
               cy={startY}
@@ -350,16 +363,15 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
   );
 }
 
-function DesktopCarousel() {
-  const [activeIndex, setActiveIndex] = useState(0);
+function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number; setActiveIndex: React.Dispatch<React.SetStateAction<number>> }) {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [showHint, setShowHint] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const carouselAreaRef = useRef<HTMLDivElement>(null);
 
   const navigate = useCallback((newDirection: number) => {
-    setActiveIndex(prev => wrap(0, 6, prev + newDirection));
-  }, []);
+    setActiveIndex(prev => wrap(0, NODE_COUNT, prev + newDirection));
+  }, [setActiveIndex]);
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -384,16 +396,14 @@ function DesktopCarousel() {
 
   const getNodeProps = (index: number) => {
     let offset = index - activeIndex;
-    if (offset > 3) offset -= 6;
-    if (offset < -3) offset += 6;
+    if (offset > 2) offset -= NODE_COUNT;
+    if (offset < -2) offset += NODE_COUNT;
 
     const isCenter = offset === 0;
     const isAdj = Math.abs(offset) === 1;
-    const isBackAdj = Math.abs(offset) === 2;
-    const isBackCenter = Math.abs(offset) === 3;
 
     const isFrontRow = isCenter || isAdj;
-    const isBackRow = isBackAdj || isBackCenter;
+    const isBackRow = !isFrontRow;
 
     let x: number, y: number, scale: number, opacity: number, zIndex: number, blur: number;
 
@@ -401,10 +411,8 @@ function DesktopCarousel() {
       x = 0; y = -60; scale = 1.15; opacity = 1; zIndex = 50; blur = 0;
     } else if (isAdj) {
       x = offset * 340; y = -60; scale = 0.82; opacity = 0.8; zIndex = 30; blur = 0.5;
-    } else if (isBackAdj) {
-      x = (offset > 0 ? 1 : -1) * 220; y = 180; scale = 0.45; opacity = 0.4; zIndex = 10; blur = 2;
     } else {
-      x = 0; y = 220; scale = 0.38; opacity = 0.3; zIndex = 5; blur = 3;
+      x = (offset > 0 ? 1 : -1) * 180; y = 190; scale = 0.45; opacity = 0.4; zIndex = 10; blur = 2;
     }
 
     return {
@@ -420,7 +428,7 @@ function DesktopCarousel() {
   return (
     <div
       ref={containerRef}
-      className="hidden md:block relative"
+      className="relative"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
       data-testid="profit-loop-desktop"
@@ -471,8 +479,8 @@ function DesktopCarousel() {
                 onClick={() => {
                   if (!props.isCenter) {
                     let o = index - activeIndex;
-                    if (o > 3) o -= 6;
-                    if (o < -3) o += 6;
+                    if (o > 2) o -= NODE_COUNT;
+                    if (o < -2) o += NODE_COUNT;
                     navigate(o);
                     setIsAutoPlaying(false);
                     setShowHint(false);
@@ -555,45 +563,6 @@ function DesktopCarousel() {
                       <p className="text-xs leading-relaxed flex-shrink-0 text-slate-400">
                         {node.context}
                       </p>
-
-                      <AnimatePresence>
-                        {props.isCenter && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                            className="overflow-hidden mt-auto"
-                          >
-                            <div className="pt-3 border-t" style={{ borderColor: "rgba(110,224,247,0.1)" }}>
-                              <span
-                                className="text-[9px] font-mono tracking-[0.2em] uppercase block mb-2 text-zinc-500"
-                              >
-                                Specifications
-                              </span>
-                              <ul className="space-y-1.5">
-                                {node.specs.map((spec, i) => (
-                                  <motion.li
-                                    key={i}
-                                    className="flex items-start gap-1.5"
-                                    initial={{ opacity: 0, x: -8 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.1 + i * 0.06 }}
-                                  >
-                                    <motion.div
-                                      className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0"
-                                      style={{ backgroundColor: TEAL }}
-                                      animate={{ opacity: [0.4, 1, 0.4] }}
-                                      transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.15 }}
-                                    />
-                                    <span className="text-[11px] leading-relaxed text-slate-300">{spec}</span>
-                                  </motion.li>
-                                ))}
-                              </ul>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
                     </div>
                   </motion.div>
                 </div>
@@ -603,38 +572,144 @@ function DesktopCarousel() {
         </motion.div>
       </div>
 
-      <motion.div
-        className="flex items-center justify-center gap-2 mt-4"
-        animate={{ opacity: [0.25, 0.6, 0.25] }}
-        transition={{ duration: 3.5, repeat: Infinity }}
-      >
-        <RefreshCw className="w-3.5 h-3.5" style={{ color: TEAL }} />
-        <span
-          className="font-mono text-[10px] tracking-[0.2em] text-zinc-500"
-        >
-          LOOP REPEATS · COMPOUNDS REVENUE
-        </span>
-      </motion.div>
     </div>
+  );
+}
+
+function DesktopCarouselWithFooter() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  return (
+    <div className="hidden md:block">
+      <DesktopCarousel activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+      <SpecFooter activeIndex={activeIndex} />
+    </div>
+  );
+}
+
+function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
+  const [displayed, setDisplayed] = useState("");
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    setDisplayed("");
+    setStarted(false);
+    const startTimer = setTimeout(() => setStarted(true), delay * 1000);
+    return () => clearTimeout(startTimer);
+  }, [text, delay]);
+
+  useEffect(() => {
+    if (!started) return;
+    if (displayed.length >= text.length) return;
+    const timer = setTimeout(() => {
+      setDisplayed(text.slice(0, displayed.length + 1));
+    }, 18);
+    return () => clearTimeout(timer);
+  }, [started, displayed, text]);
+
+  return (
+    <span>
+      {displayed}
+      {displayed.length < text.length && (
+        <motion.span
+          className="inline-block w-[2px] h-[1em] ml-0.5 align-text-bottom"
+          style={{ backgroundColor: TEAL }}
+          animate={{ opacity: [1, 0, 1] }}
+          transition={{ duration: 0.6, repeat: Infinity }}
+        />
+      )}
+    </span>
+  );
+}
+
+function SpecFooter({ activeIndex }: { activeIndex: number }) {
+  const node = profitNodes[activeIndex];
+  const prevIndexRef = useRef(activeIndex);
+  const [key, setKey] = useState(0);
+
+  useEffect(() => {
+    if (activeIndex !== prevIndexRef.current) {
+      prevIndexRef.current = activeIndex;
+      setKey(k => k + 1);
+    }
+  }, [activeIndex]);
+
+  return (
+    <motion.div
+      className="mt-6 max-w-3xl mx-auto"
+      data-testid="spec-footer"
+    >
+      <div
+        className="rounded-xl border p-6 backdrop-blur-sm"
+        style={{
+          backgroundColor: "rgba(10,10,10,0.9)",
+          borderColor: "rgba(110,224,247,0.12)",
+        }}
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <motion.div
+            className="w-2 h-2 rounded-full flex-shrink-0"
+            style={{ backgroundColor: TEAL }}
+            animate={{
+              boxShadow: [`0 0 4px ${TEAL_GLOW}`, `0 0 12px ${TEAL_GLOW}`, `0 0 4px ${TEAL_GLOW}`],
+            }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={activeIndex}
+              className="text-[10px] font-mono tracking-[0.2em] uppercase text-zinc-400"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+            >
+              Module {node.id} — {node.title}
+            </motion.span>
+          </AnimatePresence>
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={key}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2.5">
+              {node.specs.map((spec, i) => (
+                <li key={`${key}-${i}`} className="flex items-start gap-2">
+                  <motion.div
+                    className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
+                    style={{ backgroundColor: TEAL }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: i * 0.12 }}
+                  />
+                  <span className="text-sm leading-relaxed text-slate-300">
+                    <TypewriterText text={spec} delay={i * 0.15} />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </motion.div>
   );
 }
 
 function MobileCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [expandedNode, setExpandedNode] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
   const [showHint, setShowHint] = useState(true);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 50;
     if (info.offset.x < -threshold) {
-      setActiveIndex(prev => wrap(0, 6, prev + 1));
-      setExpandedNode(null);
+      setActiveIndex(prev => wrap(0, NODE_COUNT, prev + 1));
     } else if (info.offset.x > threshold) {
-      setActiveIndex(prev => wrap(0, 6, prev - 1));
-      setExpandedNode(null);
+      setActiveIndex(prev => wrap(0, NODE_COUNT, prev - 1));
     }
-    setIsDragging(false);
     setShowHint(false);
   };
 
@@ -643,190 +718,179 @@ function MobileCarousel() {
 
   return (
     <div className="md:hidden relative" data-testid="profit-loop-mobile">
-      <div
-        className="absolute left-0 right-0 h-[2px] pointer-events-none z-[4]"
-        style={{
-          top: "calc(50% - 40px)",
-          backgroundColor: "rgba(110,224,247,0.06)",
-        }}
-      >
-        <motion.div
-          className="absolute top-0 left-0 h-full"
-          animate={{ width: `${((activeIndex + 1) / 6) * 100}%` }}
-          transition={{ type: "spring", stiffness: 80, damping: 20 }}
-          style={{
-            background: `linear-gradient(90deg, ${TEAL}, ${TEAL})`,
-            boxShadow: `0 0 10px ${TEAL_GLOW}`,
-          }}
-        />
-      </div>
-
-      <div className="relative px-4">
-        <div className="relative z-10 flex justify-center">
-          <AnimatePresence mode="wait">
+      <div className="flex gap-4 pl-3 pr-4">
+        <div className="flex flex-col items-center pt-2 pb-2 flex-shrink-0">
+          <div
+            className="relative w-[3px] rounded-full flex-1"
+            style={{ backgroundColor: "rgba(110,224,247,0.08)" }}
+          >
             <motion.div
-              key={activeIndex}
-              initial={{ opacity: 0, x: 50, scale: 0.95 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -50, scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.12}
-              onDragStart={() => setIsDragging(true)}
-              onDragEnd={handleDragEnd}
-              className="w-full max-w-[320px]"
-              style={{ aspectRatio: "1 / 1" }}
-            >
-              <div className="relative w-full h-full">
-                <Port side="in" isActive={true} />
-                <Port side="out" isActive={true} />
-
-                <div
-                  className="w-full h-full rounded-xl border overflow-hidden relative"
-                  style={{
-                    borderColor: "rgba(110,224,247,0.4)",
-                    backgroundColor: OBSIDIAN,
-                    backdropFilter: "blur(24px)",
-                    WebkitBackdropFilter: "blur(24px)",
-                  }}
-                >
-                  <motion.div
-                    className="absolute inset-0 rounded-xl pointer-events-none"
-                    animate={{ opacity: [0.15, 0.3, 0.15] }}
-                    transition={{ duration: 2.5, repeat: Infinity }}
-                    style={{
-                      boxShadow: `inset 0 0 40px rgba(110,224,247,0.05), 0 0 30px rgba(110,224,247,0.08)`,
-                    }}
-                  />
-
-                  <div className="relative z-10 p-5 h-full flex flex-col">
-                    <div className="flex items-center justify-between mb-3">
-                      <span
-                        className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-500"
-                      >
-                        Node {node.id} / 06
-                      </span>
-                      <motion.div
-                        className="w-2 h-2 rounded-full"
-                        style={{ backgroundColor: TEAL }}
-                        animate={{ boxShadow: [`0 0 6px ${TEAL_GLOW}`, `0 0 14px ${TEAL_GLOW}`, `0 0 6px ${TEAL_GLOW}`] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      />
-                    </div>
-
-                    <motion.div
-                      className="w-11 h-11 rounded-lg flex items-center justify-center mb-3 border"
-                      style={{
-                        backgroundColor: "rgba(110,224,247,0.1)",
-                        borderColor: "rgba(110,224,247,0.3)",
-                        boxShadow: `0 0 20px rgba(110,224,247,0.15)`,
-                      }}
-                    >
-                      <Icon className="w-5 h-5" style={{ color: TEAL }} />
-                    </motion.div>
-
-                    <h4 className="text-base font-display font-semibold mb-0.5 text-white">
-                      {node.title}
-                    </h4>
-                    <span
-                      className="text-[10px] font-mono block mb-2 text-slate-400"
-                    >
-                      {node.subtitle}
-                    </span>
-                    <p className="text-xs leading-relaxed mb-3 text-slate-400">
-                      {node.context}
-                    </p>
-
-                    <motion.button
-                      className="flex items-center gap-1.5 text-[10px] font-mono tracking-[0.15em] uppercase mt-auto text-zinc-400"
-                      onClick={() => {
-                        if (!isDragging) {
-                          setExpandedNode(expandedNode === activeIndex ? null : activeIndex);
-                        }
-                      }}
-                      whileTap={{ scale: 0.97 }}
-                      data-testid={`profit-node-mobile-expand-${node.id}`}
-                    >
-                      <span>Specifications</span>
-                      <motion.div
-                        animate={{ rotate: expandedNode === activeIndex ? 180 : 0 }}
-                        transition={{ duration: 0.25 }}
-                      >
-                        <ChevronDown className="w-3.5 h-3.5" />
-                      </motion.div>
-                    </motion.button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {showHint && (
-              <SwipeHint onComplete={() => setShowHint(false)} />
-            )}
-          </AnimatePresence>
+              className="absolute top-0 left-0 w-full rounded-full"
+              animate={{
+                height: `${((activeIndex + 1) / NODE_COUNT) * 100}%`,
+              }}
+              transition={{ type: "spring", stiffness: 80, damping: 20 }}
+              style={{
+                background: `linear-gradient(180deg, ${TEAL}, rgba(110,224,247,0.3))`,
+                boxShadow: `0 0 8px ${TEAL_GLOW}`,
+              }}
+            />
+            {profitNodes.map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full cursor-pointer"
+                style={{
+                  top: `${(i / (NODE_COUNT - 1)) * 100}%`,
+                  transform: "translate(-50%, -50%)",
+                }}
+                animate={{
+                  backgroundColor: i <= activeIndex ? TEAL : "rgba(110,224,247,0.15)",
+                  scale: i === activeIndex ? 1.6 : 1,
+                  boxShadow: i === activeIndex ? `0 0 10px ${TEAL_GLOW}` : "none",
+                }}
+                onClick={() => setActiveIndex(i)}
+                data-testid={`profit-node-mobile-${profitNodes[i].id}`}
+              />
+            ))}
+          </div>
         </div>
 
-        <AnimatePresence>
-          {expandedNode !== null && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="overflow-hidden max-w-[320px] mx-auto mt-3"
-            >
-              <div
-                className="rounded-lg border p-4"
-                style={{
-                  borderColor: "rgba(110,224,247,0.15)",
-                  backgroundColor: "rgba(10,10,10,0.95)",
-                }}
+        <div className="flex-1 min-w-0">
+          <div className="relative z-10 flex justify-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, x: 50, scale: 0.95 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -50, scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.12}
+                onDragEnd={handleDragEnd}
+                className="w-full"
               >
-                <ul className="space-y-2.5">
-                  {profitNodes[expandedNode].specs.map((spec, i) => (
-                    <motion.li
-                      key={i}
-                      className="flex items-start gap-2"
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.08 + i * 0.05 }}
-                    >
-                      <motion.div
-                        className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
-                        style={{ backgroundColor: TEAL }}
-                        animate={{ opacity: [0.4, 1, 0.4] }}
-                        transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
-                      />
-                      <span className="text-sm leading-relaxed text-slate-300">{spec}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <div className="relative w-full" style={{ aspectRatio: "1 / 1" }}>
+                  <Port side="in" isActive={true} />
+                  <Port side="out" isActive={true} />
 
-        <div className="flex items-center justify-center gap-3 mt-5">
-          {profitNodes.map((_, index) => (
-            <motion.button
-              key={index}
-              className="w-2 h-2 rounded-full"
-              animate={{
-                backgroundColor: index === activeIndex ? TEAL : "rgba(110,224,247,0.12)",
-                scale: index === activeIndex ? 1.4 : 1,
-                boxShadow: index === activeIndex ? `0 0 8px ${TEAL_GLOW}` : "none",
-              }}
-              onClick={() => {
-                setActiveIndex(index);
-                setExpandedNode(null);
-              }}
-              aria-label={`Go to node ${index + 1}`}
-              data-testid={`profit-node-mobile-${profitNodes[index].id}`}
-            />
-          ))}
+                  <div
+                    className="w-full h-full rounded-xl border overflow-hidden relative"
+                    style={{
+                      borderColor: "rgba(110,224,247,0.4)",
+                      backgroundColor: OBSIDIAN,
+                      backdropFilter: "blur(24px)",
+                      WebkitBackdropFilter: "blur(24px)",
+                    }}
+                  >
+                    <motion.div
+                      className="absolute inset-0 rounded-xl pointer-events-none"
+                      animate={{ opacity: [0.15, 0.3, 0.15] }}
+                      transition={{ duration: 2.5, repeat: Infinity }}
+                      style={{
+                        boxShadow: `inset 0 0 40px rgba(110,224,247,0.05), 0 0 30px rgba(110,224,247,0.08)`,
+                      }}
+                    />
+
+                    <div className="relative z-10 p-5 h-full flex flex-col">
+                      <div className="flex items-center justify-between mb-3">
+                        <span
+                          className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-500"
+                        >
+                          Node {node.id} / 05
+                        </span>
+                        <motion.div
+                          className="w-2 h-2 rounded-full"
+                          style={{ backgroundColor: TEAL }}
+                          animate={{ boxShadow: [`0 0 6px ${TEAL_GLOW}`, `0 0 14px ${TEAL_GLOW}`, `0 0 6px ${TEAL_GLOW}`] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        />
+                      </div>
+
+                      <motion.div
+                        className="w-11 h-11 rounded-lg flex items-center justify-center mb-3 border"
+                        style={{
+                          backgroundColor: "rgba(110,224,247,0.1)",
+                          borderColor: "rgba(110,224,247,0.3)",
+                          boxShadow: `0 0 20px rgba(110,224,247,0.15)`,
+                        }}
+                      >
+                        <Icon className="w-5 h-5" style={{ color: TEAL }} />
+                      </motion.div>
+
+                      <h4 className="text-base font-display font-semibold mb-0.5 text-white">
+                        {node.title}
+                      </h4>
+                      <span
+                        className="text-[10px] font-mono block mb-2 text-slate-400"
+                      >
+                        {node.subtitle}
+                      </span>
+                      <p className="text-xs leading-relaxed text-slate-400">
+                        {node.context}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25, delay: 0.1 }}
+                    className="mt-3"
+                  >
+                    <div
+                      className="rounded-lg border p-4"
+                      style={{
+                        borderColor: "rgba(110,224,247,0.12)",
+                        backgroundColor: "rgba(10,10,10,0.9)",
+                      }}
+                    >
+                      <div className="flex items-center gap-2 mb-3">
+                        <motion.div
+                          className="w-1.5 h-1.5 rounded-full"
+                          style={{ backgroundColor: TEAL }}
+                          animate={{
+                            boxShadow: [`0 0 3px ${TEAL_GLOW}`, `0 0 8px ${TEAL_GLOW}`, `0 0 3px ${TEAL_GLOW}`],
+                          }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        />
+                        <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-zinc-500">
+                          Specifications
+                        </span>
+                      </div>
+                      <ul className="space-y-2">
+                        {node.specs.map((spec, i) => (
+                          <motion.li
+                            key={i}
+                            className="flex items-start gap-2"
+                            initial={{ opacity: 0, x: -6 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.15 + i * 0.05 }}
+                          >
+                            <motion.div
+                              className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0"
+                              style={{ backgroundColor: TEAL }}
+                            />
+                            <span className="text-xs leading-relaxed text-slate-300">{spec}</span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            </AnimatePresence>
+
+            <AnimatePresence>
+              {showHint && (
+                <SwipeHint onComplete={() => setShowHint(false)} />
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>
@@ -949,7 +1013,7 @@ export function ProfitLoopSection() {
           </div>
         </motion.div>
 
-        <DesktopCarousel />
+        <DesktopCarouselWithFooter />
         <MobileCarousel />
 
         <MetricsStrip />
