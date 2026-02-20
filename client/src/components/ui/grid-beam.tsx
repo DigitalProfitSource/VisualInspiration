@@ -81,8 +81,8 @@ export function GridBeam({ className, showCenterBeam = true, gridOpacity = 0.15 
         className="absolute inset-0" 
         style={{
           opacity: gridOpacity,
-          backgroundImage: 'linear-gradient(to right, rgba(128, 128, 128, 0.4) 1px, transparent 1px), linear-gradient(to bottom, rgba(128, 128, 128, 0.4) 1px, transparent 1px)',
-          backgroundSize: '25px 25px'
+          backgroundImage: 'linear-gradient(to right, rgba(110, 224, 247, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(110, 224, 247, 0.25) 1px, transparent 1px)',
+          backgroundSize: '18px 18px'
         }}
       />
 
