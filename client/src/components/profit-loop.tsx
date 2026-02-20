@@ -923,7 +923,7 @@ export function ProfitLoopSection() {
         </motion.div>
 
         <motion.div
-          className="flex justify-center mb-6"
+          className="flex justify-center -mb-4 relative z-20"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
