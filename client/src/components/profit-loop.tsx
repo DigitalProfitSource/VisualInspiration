@@ -1,6 +1,11 @@
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring, PanInfo } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, PanInfo } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Radio, Zap, Cog, RefreshCw, Star, Database, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
+import { Radio, Zap, Cog, RefreshCw, Star, Database, ChevronDown } from "lucide-react";
+
+const TEAL = "#00F2FF";
+const TEAL_DIM = "rgba(0,242,255,0.15)";
+const TEAL_GLOW = "rgba(0,242,255,0.6)";
+const OBSIDIAN = "#0A0A0A";
 
 const profitNodes = [
   {
@@ -15,7 +20,6 @@ const profitNodes = [
       "AI-Ready SEO for search engines",
       "Automated Social Media / DM intake"
     ],
-    color: "#67E8F9"
   },
   {
     id: "02",
@@ -29,7 +33,6 @@ const profitNodes = [
       "AI voice callback within 60 seconds",
       "Warm handoff to human when needed"
     ],
-    color: "#93C5FD"
   },
   {
     id: "03",
@@ -43,7 +46,6 @@ const profitNodes = [
       "Billing and invoice automation",
       "Zero duplicate data entry or admin overhead"
     ],
-    color: "#A78BFA"
   },
   {
     id: "04",
@@ -57,7 +59,6 @@ const profitNodes = [
       "Stale quote re-engagement automation",
       "Behavior-based timing optimization"
     ],
-    color: "#F472B6"
   },
   {
     id: "05",
@@ -71,7 +72,6 @@ const profitNodes = [
       "Review response templates and alerts",
       "Reputation dashboard with real-time monitoring"
     ],
-    color: "#FBBF24"
   },
   {
     id: "06",
@@ -85,7 +85,6 @@ const profitNodes = [
       "Seasonal and lifecycle-based offers",
       "Revenue tracking per reactivation cohort"
     ],
-    color: "#34D399"
   }
 ];
 
@@ -94,33 +93,102 @@ function wrap(min: number, max: number, v: number): number {
   return ((((v - min) % range) + range) % range) + min;
 }
 
+function Port({ side, isActive }: { side: "in" | "out"; isActive: boolean }) {
+  return (
+    <motion.div
+      className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 z-20"
+      style={{
+        [side === "in" ? "left" : "right"]: "-7px",
+      }}
+      animate={{
+        borderColor: isActive ? TEAL : "rgba(0,242,255,0.25)",
+        backgroundColor: isActive ? TEAL : "rgba(0,242,255,0.05)",
+        boxShadow: isActive
+          ? `0 0 12px ${TEAL_GLOW}, 0 0 24px rgba(0,242,255,0.3)`
+          : "none",
+      }}
+      transition={{ duration: 0.4 }}
+    />
+  );
+}
+
+function SwipeHint({ onComplete }: { onComplete: () => void }) {
+  useEffect(() => {
+    const timer = setTimeout(onComplete, 3500);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  return (
+    <motion.div
+      className="absolute inset-0 flex items-center justify-center z-[60] pointer-events-none"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div
+        className="flex flex-col items-center gap-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.7, 0.7, 0] }}
+        transition={{ duration: 3.5, times: [0, 0.15, 0.75, 1] }}
+      >
+        <motion.svg
+          width="48"
+          height="48"
+          viewBox="0 0 48 48"
+          fill="none"
+          animate={{ x: [0, 40, 0] }}
+          transition={{ duration: 2, repeat: 1, ease: "easeInOut" }}
+        >
+          <path
+            d="M24 4C20 4 17 7 17 11V22L14 19C12.5 17.5 10 17.5 8.5 19C7 20.5 7 23 8.5 24.5L19 35C20 36 21.5 37 23.5 37H32C36.4 37 40 33.4 40 29V20C40 18 38.5 16.5 36.5 16.5C35.5 16.5 34.7 16.9 34 17.5V15.5C34 13.5 32.5 12 30.5 12C29.5 12 28.7 12.4 28 13V11C28 9 26.5 7.5 24.5 7.5C24.3 7.5 24.2 7.5 24 7.6V11"
+            stroke={TEAL}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.6"
+          />
+        </motion.svg>
+        <span className="text-[11px] font-mono tracking-[0.2em] uppercase" style={{ color: `${TEAL}80` }}>
+          Swipe to navigate
+        </span>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 function DesktopCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [direction, setDirection] = useState(0);
+  const [showHint, setShowHint] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const navigate = useCallback((newDirection: number) => {
-    setDirection(newDirection);
     setActiveIndex(prev => wrap(0, 6, prev + newDirection));
   }, []);
 
   useEffect(() => {
     if (!isAutoPlaying) return;
-    const interval = setInterval(() => navigate(1), 4500);
+    const interval = setInterval(() => navigate(1), 5000);
     return () => clearInterval(interval);
   }, [isAutoPlaying, navigate]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") { navigate(-1); setIsAutoPlaying(false); }
-      if (e.key === "ArrowRight") { navigate(1); setIsAutoPlaying(false); }
+      if (e.key === "ArrowLeft") { navigate(-1); setIsAutoPlaying(false); setShowHint(false); }
+      if (e.key === "ArrowRight") { navigate(1); setIsAutoPlaying(false); setShowHint(false); }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigate]);
 
-  const getCardProps = (index: number) => {
+  const handleDragEnd = (_: any, info: PanInfo) => {
+    const threshold = 60;
+    if (info.offset.x < -threshold) { navigate(1); setIsAutoPlaying(false); setShowHint(false); }
+    else if (info.offset.x > threshold) { navigate(-1); setIsAutoPlaying(false); setShowHint(false); }
+  };
+
+  const getNodeProps = (index: number) => {
     let offset = index - activeIndex;
     if (offset > 3) offset -= 6;
     if (offset < -3) offset += 6;
@@ -131,22 +199,16 @@ function DesktopCarousel() {
     const isHidden = Math.abs(offset) > 2;
 
     return {
-      x: offset * 320,
-      scale: isCenter ? 1.15 : isAdj ? 0.88 : isFar ? 0.72 : 0.6,
-      opacity: isCenter ? 1 : isAdj ? 0.7 : isFar ? 0.35 : 0,
+      x: offset * 340,
+      scale: isCenter ? 1 : isAdj ? 0.78 : isFar ? 0.6 : 0.45,
+      opacity: isCenter ? 1 : isAdj ? 0.55 : isFar ? 0.2 : 0,
       zIndex: isCenter ? 50 : isAdj ? 30 : isFar ? 10 : 0,
-      filter: isCenter ? "blur(0px)" : isAdj ? "blur(1px)" : "blur(3px)",
+      blur: isCenter ? 0 : isAdj ? 2 : isFar ? 4 : 6,
       pointerEvents: (isHidden ? "none" : "auto") as "none" | "auto",
       isCenter,
+      offset,
     };
   };
-
-  const energyProgress = useMotionValue(0);
-  const smoothProgress = useSpring(energyProgress, { stiffness: 60, damping: 20 });
-
-  useEffect(() => {
-    energyProgress.set((activeIndex + 1) / 6);
-  }, [activeIndex, energyProgress]);
 
   return (
     <div
@@ -156,246 +218,219 @@ function DesktopCarousel() {
       onMouseLeave={() => setIsAutoPlaying(true)}
       data-testid="profit-loop-desktop"
     >
-      <svg
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] pointer-events-none z-[5]"
-        viewBox="0 0 1000 60"
-        fill="none"
-        style={{ height: "60px" }}
-      >
-        <path
-          d="M 0 30 Q 83 5, 166 30 Q 250 55, 333 30 Q 416 5, 500 30 Q 583 55, 666 30 Q 750 5, 833 30 Q 916 55, 1000 30"
-          stroke="rgba(103,232,249,0.08)"
-          strokeWidth="2"
-          strokeDasharray="6 4"
-        />
-        <motion.path
-          d="M 0 30 Q 83 5, 166 30 Q 250 55, 333 30 Q 416 5, 500 30 Q 583 55, 666 30 Q 750 5, 833 30 Q 916 55, 1000 30"
-          stroke="url(#desktopEnergyGrad)"
-          strokeWidth="3"
-          strokeLinecap="round"
+      <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 h-[2px] z-[4] pointer-events-none">
+        <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,242,255,0.06)" }} />
+        <motion.div
+          className="absolute top-0 left-0 h-full"
+          animate={{ width: `${((activeIndex + 1) / 6) * 100}%` }}
+          transition={{ type: "spring", stiffness: 80, damping: 20 }}
           style={{
-            pathLength: smoothProgress,
-            filter: "drop-shadow(0 0 10px rgba(103,232,249,0.7))"
+            background: `linear-gradient(90deg, transparent, ${TEAL})`,
+            boxShadow: `0 0 12px ${TEAL_GLOW}, 0 0 30px rgba(0,242,255,0.2)`,
           }}
         />
-        <defs>
-          <linearGradient id="desktopEnergyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#67E8F9" />
-            <stop offset="50%" stopColor="#93C5FD" />
-            <stop offset="100%" stopColor="#67E8F9" />
-          </linearGradient>
-        </defs>
-      </svg>
+        <motion.div
+          className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full"
+          animate={{
+            left: `${((activeIndex + 0.5) / 6) * 100}%`,
+          }}
+          transition={{ type: "spring", stiffness: 80, damping: 20 }}
+          style={{
+            backgroundColor: TEAL,
+            boxShadow: `0 0 16px ${TEAL_GLOW}, 0 0 40px rgba(0,242,255,0.3)`,
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      </div>
 
-      <div className="relative h-[520px] mt-8 overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
+      <div className="relative h-[440px] overflow-hidden">
+        <AnimatePresence>
+          {showHint && (
+            <SwipeHint onComplete={() => setShowHint(false)} />
+          )}
+        </AnimatePresence>
+
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.1}
+          onDragEnd={handleDragEnd}
+        >
           {profitNodes.map((node, index) => {
-            const props = getCardProps(index);
+            const props = getNodeProps(index);
             const Icon = node.icon;
 
             return (
               <motion.div
                 key={node.id}
-                className="absolute w-[280px] cursor-pointer"
+                className="absolute"
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  pointerEvents: props.pointerEvents,
+                }}
                 animate={{
                   x: props.x,
                   scale: props.scale,
                   opacity: props.opacity,
                   zIndex: props.zIndex,
-                  filter: props.filter,
+                  filter: `blur(${props.blur}px)`,
                 }}
                 transition={{
                   type: "spring",
-                  stiffness: 200,
-                  damping: 28,
-                  mass: 0.8,
+                  stiffness: 180,
+                  damping: 26,
+                  mass: 0.9,
                 }}
-                style={{ pointerEvents: props.pointerEvents }}
                 onClick={() => {
                   if (!props.isCenter) {
-                    let offset = index - activeIndex;
-                    if (offset > 3) offset -= 6;
-                    if (offset < -3) offset += 6;
-                    setDirection(offset > 0 ? 1 : -1);
-                    setActiveIndex(index);
+                    let o = index - activeIndex;
+                    if (o > 3) o -= 6;
+                    if (o < -3) o += 6;
+                    navigate(o);
                     setIsAutoPlaying(false);
+                    setShowHint(false);
                   }
                 }}
                 data-testid={`profit-node-${node.id}`}
               >
-                <motion.div
-                  className="rounded-2xl border overflow-hidden relative"
-                  animate={{
-                    borderColor: props.isCenter ? "rgba(103,232,249,0.5)" : "rgba(255,255,255,0.08)",
-                    backgroundColor: props.isCenter ? "rgba(103,232,249,0.06)" : "rgba(24,24,27,0.7)",
-                  }}
-                  style={{
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                  }}
-                >
-                  {props.isCenter && (
-                    <>
-                      <motion.div
-                        className="absolute inset-0 rounded-2xl pointer-events-none"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        style={{
-                          boxShadow: "inset 0 0 60px rgba(103,232,249,0.08), 0 0 40px rgba(103,232,249,0.15), 0 0 80px rgba(103,232,249,0.05)",
-                        }}
-                      />
-                      <motion.div
-                        className="absolute -inset-[1px] rounded-2xl pointer-events-none"
-                        animate={{ opacity: [0.3, 0.7, 0.3] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                        style={{
-                          background: "linear-gradient(135deg, rgba(103,232,249,0.2), transparent, rgba(147,197,253,0.2))",
-                        }}
-                      />
-                    </>
-                  )}
+                <div className="relative w-full h-full">
+                  <Port side="in" isActive={props.isCenter} />
+                  <Port side="out" isActive={props.isCenter} />
 
-                  <div className="relative z-10 p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-mono text-primary/50 tracking-[0.2em] uppercase">
-                        Node {node.id}
-                      </span>
-                      <motion.div
-                        className="w-2 h-2 rounded-full"
-                        animate={{
-                          backgroundColor: props.isCenter ? node.color : "rgba(103,232,249,0.2)",
-                          boxShadow: props.isCenter ? `0 0 12px ${node.color}` : "none",
-                        }}
-                      />
-                    </div>
-
-                    <motion.div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 border"
-                      animate={{
-                        backgroundColor: props.isCenter ? "rgba(103,232,249,0.15)" : "rgba(103,232,249,0.05)",
-                        borderColor: props.isCenter ? "rgba(103,232,249,0.4)" : "rgba(103,232,249,0.1)",
-                        boxShadow: props.isCenter ? "0 0 20px rgba(103,232,249,0.3)" : "none",
-                      }}
-                    >
-                      <Icon className="w-6 h-6 text-primary" />
-                    </motion.div>
-
-                    <h4 className="text-base font-display font-semibold text-white mb-1 leading-tight">
-                      {node.title}
-                    </h4>
-                    <span className="text-xs font-mono text-primary/60 block mb-3">
-                      {node.subtitle}
-                    </span>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {node.context}
-                    </p>
-
-                    <AnimatePresence>
-                      {props.isCenter && (
+                  <motion.div
+                    className="w-full h-full rounded-xl border overflow-hidden relative"
+                    animate={{
+                      borderColor: props.isCenter ? "rgba(0,242,255,0.5)" : "rgba(0,242,255,0.08)",
+                    }}
+                    style={{
+                      backgroundColor: OBSIDIAN,
+                      backdropFilter: "blur(24px)",
+                      WebkitBackdropFilter: "blur(24px)",
+                    }}
+                  >
+                    {props.isCenter && (
+                      <>
                         <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                          className="overflow-hidden"
+                          className="absolute inset-0 rounded-xl pointer-events-none"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          style={{
+                            boxShadow: `inset 0 0 50px rgba(0,242,255,0.06), 0 0 40px rgba(0,242,255,0.12), 0 0 80px rgba(0,242,255,0.04)`,
+                          }}
+                        />
+                        <motion.div
+                          className="absolute inset-0 rounded-xl pointer-events-none"
+                          animate={{ opacity: [0.15, 0.35, 0.15] }}
+                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                          style={{
+                            background: `linear-gradient(135deg, rgba(0,242,255,0.1), transparent 50%, rgba(0,242,255,0.08))`,
+                          }}
+                        />
+                      </>
+                    )}
+
+                    <div className="relative z-10 p-5 h-full flex flex-col">
+                      <div className="flex items-center justify-between mb-3">
+                        <span
+                          className="text-[10px] font-mono tracking-[0.25em] uppercase"
+                          style={{ color: "rgba(0,242,255,0.45)" }}
                         >
-                          <div className="mt-4 pt-4 border-t border-white/10">
-                            <span className="text-[10px] font-mono text-primary/70 tracking-[0.15em] uppercase block mb-3">
-                              Specifications
-                            </span>
-                            <ul className="space-y-2.5">
-                              {node.specs.map((spec, i) => (
-                                <motion.li
-                                  key={i}
-                                  className="flex items-start gap-2"
-                                  initial={{ opacity: 0, x: -12 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.15 + i * 0.07 }}
-                                >
-                                  <motion.div
-                                    className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
-                                    style={{ backgroundColor: node.color }}
-                                    animate={{ opacity: [0.5, 1, 0.5] }}
-                                    transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
-                                  />
-                                  <span className="text-xs text-slate-300 leading-relaxed">{spec}</span>
-                                </motion.li>
-                              ))}
-                            </ul>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </motion.div>
+                          Node {node.id}
+                        </span>
+                        <motion.div
+                          className="w-2 h-2 rounded-full"
+                          animate={{
+                            backgroundColor: props.isCenter ? TEAL : TEAL_DIM,
+                            boxShadow: props.isCenter ? `0 0 10px ${TEAL_GLOW}` : "none",
+                          }}
+                        />
+                      </div>
+
+                      <motion.div
+                        className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 border"
+                        animate={{
+                          backgroundColor: props.isCenter ? "rgba(0,242,255,0.12)" : "rgba(0,242,255,0.04)",
+                          borderColor: props.isCenter ? "rgba(0,242,255,0.4)" : "rgba(0,242,255,0.1)",
+                          boxShadow: props.isCenter ? `0 0 16px rgba(0,242,255,0.25)` : "none",
+                        }}
+                      >
+                        <Icon className="w-5 h-5" style={{ color: TEAL }} />
+                      </motion.div>
+
+                      <h4 className="text-sm font-display font-semibold mb-0.5 leading-tight" style={{ color: "rgba(0,242,255,0.9)" }}>
+                        {node.title}
+                      </h4>
+                      <span
+                        className="text-[10px] font-mono block mb-2"
+                        style={{ color: "rgba(0,242,255,0.5)" }}
+                      >
+                        {node.subtitle}
+                      </span>
+                      <p className="text-xs leading-relaxed flex-shrink-0" style={{ color: "rgba(0,242,255,0.4)" }}>
+                        {node.context}
+                      </p>
+
+                      <AnimatePresence>
+                        {props.isCenter && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                            className="overflow-hidden mt-auto"
+                          >
+                            <div className="pt-3 border-t" style={{ borderColor: "rgba(0,242,255,0.1)" }}>
+                              <span
+                                className="text-[9px] font-mono tracking-[0.2em] uppercase block mb-2"
+                                style={{ color: "rgba(0,242,255,0.5)" }}
+                              >
+                                Specifications
+                              </span>
+                              <ul className="space-y-1.5">
+                                {node.specs.map((spec, i) => (
+                                  <motion.li
+                                    key={i}
+                                    className="flex items-start gap-1.5"
+                                    initial={{ opacity: 0, x: -8 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.1 + i * 0.06 }}
+                                  >
+                                    <motion.div
+                                      className="w-1 h-1 rounded-full mt-1.5 flex-shrink-0"
+                                      style={{ backgroundColor: TEAL }}
+                                      animate={{ opacity: [0.4, 1, 0.4] }}
+                                      transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.15 }}
+                                    />
+                                    <span className="text-[11px] leading-relaxed" style={{ color: "rgba(0,242,255,0.55)" }}>{spec}</span>
+                                  </motion.li>
+                                ))}
+                              </ul>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </motion.div>
+                </div>
               </motion.div>
             );
           })}
-        </div>
-      </div>
-
-      <div className="flex items-center justify-center gap-6 mt-4">
-        <motion.button
-          className="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/80 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-primary/40 transition-colors"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => { navigate(-1); setIsAutoPlaying(false); }}
-          aria-label="Previous node"
-          data-testid="carousel-prev"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </motion.button>
-
-        <div className="flex items-center gap-2">
-          {profitNodes.map((_, index) => (
-            <motion.button
-              key={index}
-              className="relative w-8 h-1 rounded-full overflow-hidden cursor-pointer"
-              onClick={() => {
-                setDirection(index > activeIndex ? 1 : -1);
-                setActiveIndex(index);
-                setIsAutoPlaying(false);
-              }}
-              whileHover={{ scale: 1.3 }}
-              aria-label={`Go to node ${index + 1}`}
-            >
-              <div className="absolute inset-0 bg-white/10 rounded-full" />
-              <motion.div
-                className="absolute inset-0 rounded-full"
-                animate={{
-                  scaleX: index === activeIndex ? 1 : 0,
-                  backgroundColor: index === activeIndex ? "#67E8F9" : "rgba(255,255,255,0.1)",
-                }}
-                style={{
-                  originX: 0,
-                  boxShadow: index === activeIndex ? "0 0 8px rgba(103,232,249,0.6)" : "none",
-                }}
-                transition={{ duration: 0.4 }}
-              />
-            </motion.button>
-          ))}
-        </div>
-
-        <motion.button
-          className="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/80 backdrop-blur-sm flex items-center justify-center text-white/60 hover:text-white hover:border-primary/40 transition-colors"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => { navigate(1); setIsAutoPlaying(false); }}
-          aria-label="Next node"
-          data-testid="carousel-next"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </motion.button>
+        </motion.div>
       </div>
 
       <motion.div
-        className="flex items-center justify-center gap-2 mt-6 text-sm text-primary/50"
-        animate={{ opacity: [0.3, 0.8, 0.3] }}
-        transition={{ duration: 3, repeat: Infinity }}
+        className="flex items-center justify-center gap-2 mt-4"
+        animate={{ opacity: [0.25, 0.6, 0.25] }}
+        transition={{ duration: 3.5, repeat: Infinity }}
       >
-        <RefreshCw className="w-4 h-4" />
-        <span className="font-mono text-xs tracking-[0.15em]">
+        <RefreshCw className="w-3.5 h-3.5" style={{ color: TEAL }} />
+        <span
+          className="font-mono text-[10px] tracking-[0.2em]"
+          style={{ color: "rgba(0,242,255,0.4)" }}
+        >
           LOOP REPEATS · COMPOUNDS REVENUE
         </span>
       </motion.div>
@@ -406,8 +441,8 @@ function DesktopCarousel() {
 function MobileCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [expandedNode, setExpandedNode] = useState<number | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [showHint, setShowHint] = useState(true);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 50;
@@ -419,178 +454,192 @@ function MobileCarousel() {
       setExpandedNode(null);
     }
     setIsDragging(false);
+    setShowHint(false);
   };
-
-  const energyProgress = useMotionValue(0);
-  const smoothEnergy = useSpring(energyProgress, { stiffness: 80, damping: 20 });
-
-  useEffect(() => {
-    energyProgress.set((activeIndex + 1) / 6);
-  }, [activeIndex, energyProgress]);
 
   const node = profitNodes[activeIndex];
   const Icon = node.icon;
 
   return (
     <div className="md:hidden relative" data-testid="profit-loop-mobile">
-      <div className="absolute left-4 top-0 bottom-0 w-[3px] rounded-full overflow-hidden">
-        <div className="absolute inset-0 bg-white/5" />
+      <div
+        className="absolute left-0 right-0 h-[2px] pointer-events-none z-[4]"
+        style={{
+          top: "calc(50% - 40px)",
+          backgroundColor: "rgba(0,242,255,0.06)",
+        }}
+      >
         <motion.div
-          className="absolute top-0 left-0 w-full rounded-full origin-top"
+          className="absolute top-0 left-0 h-full"
+          animate={{ width: `${((activeIndex + 1) / 6) * 100}%` }}
+          transition={{ type: "spring", stiffness: 80, damping: 20 }}
           style={{
-            scaleY: smoothEnergy,
-            background: "linear-gradient(to bottom, #67E8F9, #93C5FD, #A78BFA, #F472B6, #FBBF24, #34D399)",
-            filter: "drop-shadow(0 0 8px rgba(103,232,249,0.6))",
-            height: "100%",
+            background: `linear-gradient(90deg, ${TEAL}, ${TEAL})`,
+            boxShadow: `0 0 10px ${TEAL_GLOW}`,
           }}
         />
-        {profitNodes.map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 z-10"
-            style={{ top: `${(i / 5) * 100}%` }}
-            animate={{
-              borderColor: i <= activeIndex ? "#67E8F9" : "rgba(255,255,255,0.15)",
-              backgroundColor: i <= activeIndex ? "#67E8F9" : "rgba(24,24,27,1)",
-              boxShadow: i === activeIndex ? "0 0 12px rgba(103,232,249,0.6)" : "none",
-              scale: i === activeIndex ? 1.3 : 1,
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          />
-        ))}
       </div>
 
-      <div className="pl-10 pr-4 min-h-[420px] relative">
-        <AnimatePresence mode="wait" custom={activeIndex}>
-          <motion.div
-            key={activeIndex}
-            custom={activeIndex}
-            initial={{ opacity: 0, x: 60, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -60, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.15}
-            onDragStart={() => setIsDragging(true)}
-            onDragEnd={handleDragEnd}
-          >
+      <div className="relative px-4">
+        <div className="relative z-10 flex justify-center">
+          <AnimatePresence mode="wait">
             <motion.div
-              className="rounded-2xl border border-primary/30 overflow-hidden relative"
-              style={{
-                backdropFilter: "blur(20px)",
-                WebkitBackdropFilter: "blur(20px)",
-                backgroundColor: "rgba(24,24,27,0.8)",
-              }}
+              key={activeIndex}
+              initial={{ opacity: 0, x: 50, scale: 0.95 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: -50, scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.12}
+              onDragStart={() => setIsDragging(true)}
+              onDragEnd={handleDragEnd}
+              className="w-full max-w-[320px]"
+              style={{ aspectRatio: "1 / 1" }}
             >
-              <motion.div
-                className="absolute inset-0 rounded-2xl pointer-events-none"
-                animate={{ opacity: [0.2, 0.5, 0.2] }}
-                transition={{ duration: 2.5, repeat: Infinity }}
-                style={{
-                  boxShadow: `inset 0 0 40px rgba(103,232,249,0.06), 0 0 30px rgba(103,232,249,0.1)`,
-                }}
-              />
+              <div className="relative w-full h-full">
+                <Port side="in" isActive={true} />
+                <Port side="out" isActive={true} />
 
-              <div className="relative z-10 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[10px] font-mono text-primary/50 tracking-[0.2em] uppercase">
-                    Node {node.id} of 06
-                  </span>
-                  <motion.div
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: node.color }}
-                    animate={{ boxShadow: [`0 0 6px ${node.color}`, `0 0 16px ${node.color}`, `0 0 6px ${node.color}`] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  />
-                </div>
-
-                <motion.div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 border border-primary/30"
+                <div
+                  className="w-full h-full rounded-xl border overflow-hidden relative"
                   style={{
-                    backgroundColor: "rgba(103,232,249,0.12)",
-                    boxShadow: "0 0 24px rgba(103,232,249,0.2)",
+                    borderColor: "rgba(0,242,255,0.4)",
+                    backgroundColor: OBSIDIAN,
+                    backdropFilter: "blur(24px)",
+                    WebkitBackdropFilter: "blur(24px)",
                   }}
                 >
-                  <Icon className="w-7 h-7 text-primary" />
-                </motion.div>
-
-                <h4 className="text-xl font-display font-semibold text-white mb-1">
-                  {node.title}
-                </h4>
-                <span className="text-xs font-mono text-primary/60 block mb-3">
-                  {node.subtitle}
-                </span>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  {node.context}
-                </p>
-
-                <motion.button
-                  className="flex items-center gap-2 text-xs font-mono text-primary/70 tracking-wider uppercase"
-                  onClick={() => {
-                    if (!isDragging) {
-                      setExpandedNode(expandedNode === activeIndex ? null : activeIndex);
-                    }
-                  }}
-                  whileTap={{ scale: 0.97 }}
-                  data-testid={`profit-node-mobile-expand-${node.id}`}
-                >
-                  <span>View Specifications</span>
                   <motion.div
-                    animate={{ rotate: expandedNode === activeIndex ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ChevronDown className="w-4 h-4" />
-                  </motion.div>
-                </motion.button>
+                    className="absolute inset-0 rounded-xl pointer-events-none"
+                    animate={{ opacity: [0.15, 0.3, 0.15] }}
+                    transition={{ duration: 2.5, repeat: Infinity }}
+                    style={{
+                      boxShadow: `inset 0 0 40px rgba(0,242,255,0.05), 0 0 30px rgba(0,242,255,0.08)`,
+                    }}
+                  />
 
-                <AnimatePresence>
-                  {expandedNode === activeIndex && (
+                  <div className="relative z-10 p-5 h-full flex flex-col">
+                    <div className="flex items-center justify-between mb-3">
+                      <span
+                        className="text-[10px] font-mono tracking-[0.25em] uppercase"
+                        style={{ color: "rgba(0,242,255,0.45)" }}
+                      >
+                        Node {node.id} / 06
+                      </span>
+                      <motion.div
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: TEAL }}
+                        animate={{ boxShadow: [`0 0 6px ${TEAL_GLOW}`, `0 0 14px ${TEAL_GLOW}`, `0 0 6px ${TEAL_GLOW}`] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
+                    </div>
+
                     <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                      className="overflow-hidden"
+                      className="w-11 h-11 rounded-lg flex items-center justify-center mb-3 border"
+                      style={{
+                        backgroundColor: "rgba(0,242,255,0.1)",
+                        borderColor: "rgba(0,242,255,0.3)",
+                        boxShadow: `0 0 20px rgba(0,242,255,0.15)`,
+                      }}
                     >
-                      <div className="mt-4 pt-4 border-t border-white/10">
-                        <ul className="space-y-3">
-                          {node.specs.map((spec, i) => (
-                            <motion.li
-                              key={i}
-                              className="flex items-start gap-2"
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.1 + i * 0.06 }}
-                            >
-                              <motion.div
-                                className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
-                                style={{ backgroundColor: node.color }}
-                                animate={{ opacity: [0.5, 1, 0.5] }}
-                                transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
-                              />
-                              <span className="text-sm text-slate-300 leading-relaxed">{spec}</span>
-                            </motion.li>
-                          ))}
-                        </ul>
-                      </div>
+                      <Icon className="w-5 h-5" style={{ color: TEAL }} />
                     </motion.div>
-                  )}
-                </AnimatePresence>
+
+                    <h4 className="text-base font-display font-semibold mb-0.5" style={{ color: "rgba(0,242,255,0.9)" }}>
+                      {node.title}
+                    </h4>
+                    <span
+                      className="text-[10px] font-mono block mb-2"
+                      style={{ color: "rgba(0,242,255,0.5)" }}
+                    >
+                      {node.subtitle}
+                    </span>
+                    <p className="text-xs leading-relaxed mb-3" style={{ color: "rgba(0,242,255,0.4)" }}>
+                      {node.context}
+                    </p>
+
+                    <motion.button
+                      className="flex items-center gap-1.5 text-[10px] font-mono tracking-[0.15em] uppercase mt-auto"
+                      style={{ color: "rgba(0,242,255,0.6)" }}
+                      onClick={() => {
+                        if (!isDragging) {
+                          setExpandedNode(expandedNode === activeIndex ? null : activeIndex);
+                        }
+                      }}
+                      whileTap={{ scale: 0.97 }}
+                      data-testid={`profit-node-mobile-expand-${node.id}`}
+                    >
+                      <span>Specifications</span>
+                      <motion.div
+                        animate={{ rotate: expandedNode === activeIndex ? 180 : 0 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <ChevronDown className="w-3.5 h-3.5" />
+                      </motion.div>
+                    </motion.button>
+                  </div>
+                </div>
               </div>
             </motion.div>
-          </motion.div>
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {showHint && (
+              <SwipeHint onComplete={() => setShowHint(false)} />
+            )}
+          </AnimatePresence>
+        </div>
+
+        <AnimatePresence>
+          {expandedNode !== null && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="overflow-hidden max-w-[320px] mx-auto mt-3"
+            >
+              <div
+                className="rounded-lg border p-4"
+                style={{
+                  borderColor: "rgba(0,242,255,0.15)",
+                  backgroundColor: "rgba(10,10,10,0.95)",
+                }}
+              >
+                <ul className="space-y-2.5">
+                  {profitNodes[expandedNode].specs.map((spec, i) => (
+                    <motion.li
+                      key={i}
+                      className="flex items-start gap-2"
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.08 + i * 0.05 }}
+                    >
+                      <motion.div
+                        className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
+                        style={{ backgroundColor: TEAL }}
+                        animate={{ opacity: [0.4, 1, 0.4] }}
+                        transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+                      />
+                      <span className="text-sm leading-relaxed" style={{ color: "rgba(0,242,255,0.55)" }}>{spec}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          )}
         </AnimatePresence>
 
-        <div className="flex items-center justify-center gap-3 mt-6">
+        <div className="flex items-center justify-center gap-3 mt-5">
           {profitNodes.map((_, index) => (
             <motion.button
               key={index}
               className="w-2 h-2 rounded-full"
               animate={{
-                backgroundColor: index === activeIndex ? "#67E8F9" : "rgba(255,255,255,0.15)",
-                scale: index === activeIndex ? 1.5 : 1,
-                boxShadow: index === activeIndex ? "0 0 8px rgba(103,232,249,0.5)" : "none",
+                backgroundColor: index === activeIndex ? TEAL : "rgba(0,242,255,0.12)",
+                scale: index === activeIndex ? 1.4 : 1,
+                boxShadow: index === activeIndex ? `0 0 8px ${TEAL_GLOW}` : "none",
               }}
               onClick={() => {
                 setActiveIndex(index);
@@ -601,14 +650,6 @@ function MobileCarousel() {
             />
           ))}
         </div>
-
-        <motion.p
-          className="text-center text-xs text-primary/40 font-mono tracking-wider mt-4"
-          animate={{ opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 2.5, repeat: Infinity }}
-        >
-          SWIPE TO NAVIGATE · TAP TO EXPAND
-        </motion.p>
       </div>
     </div>
   );
@@ -621,8 +662,8 @@ export function ProfitLoopSection() {
     offset: ["start end", "end start"]
   });
 
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const gridOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 0.06, 0.06, 0]);
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const gridOpacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 0.04, 0.04, 0]);
 
   return (
     <section
@@ -638,38 +679,40 @@ export function ProfitLoopSection() {
           className="absolute inset-0"
           style={{ opacity: gridOpacity }}
         >
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.4)_1px,transparent_1px)] bg-[size:40px_40px]" />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `linear-gradient(rgba(0,242,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,242,255,0.3) 1px, transparent 1px)`,
+              backgroundSize: "48px 48px",
+            }}
+          />
         </motion.div>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px]">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px]">
           <motion.div
             className="w-full h-full rounded-full"
             animate={{
               background: [
-                "radial-gradient(circle, rgba(103,232,249,0.04) 0%, transparent 70%)",
-                "radial-gradient(circle, rgba(147,197,253,0.06) 0%, transparent 70%)",
-                "radial-gradient(circle, rgba(103,232,249,0.04) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(0,242,255,0.03) 0%, transparent 65%)",
+                "radial-gradient(circle, rgba(0,242,255,0.05) 0%, transparent 65%)",
+                "radial-gradient(circle, rgba(0,242,255,0.03) 0%, transparent 65%)",
               ],
             }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            style={{ filter: "blur(80px)" }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            style={{ filter: "blur(60px)" }}
           />
         </div>
 
         <motion.div
           className="absolute top-0 left-0 w-full h-px"
-          style={{
-            background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.2), transparent)",
-          }}
-          animate={{ opacity: [0.3, 0.8, 0.3] }}
+          style={{ background: `linear-gradient(90deg, transparent, rgba(0,242,255,0.15), transparent)` }}
+          animate={{ opacity: [0.2, 0.6, 0.2] }}
           transition={{ duration: 4, repeat: Infinity }}
         />
         <motion.div
           className="absolute bottom-0 left-0 w-full h-px"
-          style={{
-            background: "linear-gradient(90deg, transparent, rgba(103,232,249,0.2), transparent)",
-          }}
-          animate={{ opacity: [0.3, 0.8, 0.3] }}
+          style={{ background: `linear-gradient(90deg, transparent, rgba(0,242,255,0.15), transparent)` }}
+          animate={{ opacity: [0.2, 0.6, 0.2] }}
           transition={{ duration: 4, repeat: Infinity, delay: 2 }}
         />
       </motion.div>
@@ -683,41 +726,45 @@ export function ProfitLoopSection() {
           className="text-center max-w-4xl mx-auto mb-16 md:mb-20"
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/30 bg-primary/5 text-xs font-mono text-primary mb-8 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-xs font-mono mb-8 backdrop-blur-sm"
+            style={{
+              borderColor: "rgba(0,242,255,0.25)",
+              backgroundColor: "rgba(0,242,255,0.04)",
+              color: TEAL,
+            }}
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
             <motion.span
-              className="w-2 h-2 rounded-full bg-primary"
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: TEAL }}
               animate={{
-                boxShadow: ["0 0 4px #67E8F9", "0 0 12px #67E8F9", "0 0 4px #67E8F9"],
+                boxShadow: [`0 0 4px ${TEAL}`, `0 0 14px ${TEAL}`, `0 0 4px ${TEAL}`],
               }}
               transition={{ duration: 1.5, repeat: Infinity }}
             />
             The SimpleSequence™ Profit Loop
           </motion.div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 leading-tight text-white">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 leading-tight" style={{ color: "rgba(0,242,255,0.9)" }}>
             You're getting leads. You just don't have a system to{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-300 to-cyan-300 animate-gradient-x">
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage: `linear-gradient(90deg, ${TEAL}, #67E8F9, ${TEAL})`,
+                backgroundSize: "200% 200%",
+                animation: "gradient-x 4s ease infinite",
+              }}
+            >
               maximize your marketing ROI.
             </span>
           </h2>
 
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto" style={{ color: "rgba(0,242,255,0.45)" }}>
             We align your entire customer journey into one intelligent flow.
           </p>
-
-          <motion.div
-            className="mt-8 flex items-center justify-center gap-2 text-primary/50"
-            animate={{ opacity: [0.3, 0.8, 0.3] }}
-            transition={{ duration: 2.5, repeat: Infinity }}
-          >
-            <span className="font-mono text-xs tracking-[0.15em] hidden md:inline">USE ARROWS OR CLICK TO NAVIGATE</span>
-            <span className="font-mono text-xs tracking-[0.15em] md:hidden">SWIPE TO EXPLORE THE LOOP</span>
-          </motion.div>
         </motion.div>
 
         <DesktopCarousel />
