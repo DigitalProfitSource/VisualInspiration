@@ -185,13 +185,13 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
 
     let x: number, y: number, scale: number;
     if (isCenter) {
-      x = 0; y = -40; scale = 1.15;
+      x = 0; y = -60; scale = 1.15;
     } else if (isAdj) {
-      x = offset * 340; y = -40; scale = 0.82;
+      x = offset * 340; y = -60; scale = 0.82;
     } else if (isBackAdj) {
-      x = (offset > 0 ? 1 : -1) * 240; y = 140; scale = 0.55;
+      x = (offset > 0 ? 1 : -1) * 220; y = 180; scale = 0.45;
     } else {
-      x = 0; y = 170; scale = 0.48;
+      x = 0; y = 220; scale = 0.38;
     }
     return { cx: centerX + x, cy: centerY + y, scale };
   };
@@ -398,13 +398,13 @@ function DesktopCarousel() {
     let x: number, y: number, scale: number, opacity: number, zIndex: number, blur: number;
 
     if (isCenter) {
-      x = 0; y = -40; scale = 1.15; opacity = 1; zIndex = 50; blur = 0;
+      x = 0; y = -60; scale = 1.15; opacity = 1; zIndex = 50; blur = 0;
     } else if (isAdj) {
-      x = offset * 340; y = -40; scale = 0.82; opacity = 0.6; zIndex = 30; blur = 1.5;
+      x = offset * 340; y = -60; scale = 0.82; opacity = 0.6; zIndex = 30; blur = 1.5;
     } else if (isBackAdj) {
-      x = (offset > 0 ? 1 : -1) * 240; y = 140; scale = 0.55; opacity = 0.35; zIndex = 10; blur = 2;
+      x = (offset > 0 ? 1 : -1) * 220; y = 180; scale = 0.45; opacity = 0.2; zIndex = 10; blur = 4;
     } else {
-      x = 0; y = 170; scale = 0.48; opacity = 0.25; zIndex = 5; blur = 3;
+      x = 0; y = 220; scale = 0.38; opacity = 0.15; zIndex = 5; blur = 5;
     }
 
     return {
@@ -425,7 +425,7 @@ function DesktopCarousel() {
       onMouseLeave={() => setIsAutoPlaying(true)}
       data-testid="profit-loop-desktop"
     >
-      <div ref={carouselAreaRef} className="relative h-[620px] overflow-hidden">
+      <div ref={carouselAreaRef} className="relative h-[700px] overflow-hidden">
         <ConnectorLines activeIndex={activeIndex} containerRef={carouselAreaRef} />
 
         <AnimatePresence>
@@ -901,31 +901,8 @@ export function ProfitLoopSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="text-center max-w-4xl mx-auto mb-16 md:mb-20"
+          className="text-center max-w-4xl mx-auto mb-10 md:mb-12"
         >
-          <motion.div
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-xs font-mono mb-8 backdrop-blur-sm"
-            style={{
-              borderColor: "rgba(0,242,255,0.25)",
-              backgroundColor: "rgba(0,242,255,0.04)",
-              color: TEAL,
-            }}
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            <motion.span
-              className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: TEAL }}
-              animate={{
-                boxShadow: [`0 0 4px ${TEAL}`, `0 0 14px ${TEAL}`, `0 0 4px ${TEAL}`],
-              }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            />
-            The SimpleSequence™ Profit Loop
-          </motion.div>
-
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 leading-tight text-white">
             You're getting leads. You just don't have a system to{" "}
             <span
@@ -943,6 +920,33 @@ export function ProfitLoopSection() {
           <p className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-slate-400">
             We align your entire customer journey into one intelligent flow.
           </p>
+        </motion.div>
+
+        <motion.div
+          className="flex justify-center mb-6"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+        >
+          <div
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-xs font-mono backdrop-blur-sm"
+            style={{
+              borderColor: "rgba(0,242,255,0.25)",
+              backgroundColor: "rgba(0,242,255,0.04)",
+              color: TEAL,
+            }}
+          >
+            <motion.span
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: TEAL }}
+              animate={{
+                boxShadow: [`0 0 4px ${TEAL}`, `0 0 14px ${TEAL}`, `0 0 4px ${TEAL}`],
+              }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+            Sequential Profit Loop™
+          </div>
         </motion.div>
 
         <DesktopCarousel />
