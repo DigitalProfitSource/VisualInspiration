@@ -2,9 +2,9 @@ import { motion, AnimatePresence, useScroll, useTransform, useInView, PanInfo } 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Radio, Zap, Cog, RefreshCw, Star, Database, ChevronDown } from "lucide-react";
 
-const TEAL = "#00F2FF";
-const TEAL_DIM = "rgba(0,242,255,0.15)";
-const TEAL_GLOW = "rgba(0,242,255,0.6)";
+const TEAL = "#6EE0F7";
+const TEAL_DIM = "rgba(110,224,247,0.15)";
+const TEAL_GLOW = "rgba(110,224,247,0.6)";
 const OBSIDIAN = "#0A0A0A";
 
 const profitNodes = [
@@ -101,10 +101,10 @@ function Port({ side, isActive }: { side: "in" | "out"; isActive: boolean }) {
         [side === "in" ? "left" : "right"]: "-7px",
       }}
       animate={{
-        borderColor: isActive ? TEAL : "rgba(0,242,255,0.25)",
-        backgroundColor: isActive ? TEAL : "rgba(0,242,255,0.05)",
+        borderColor: isActive ? TEAL : "rgba(110,224,247,0.25)",
+        backgroundColor: isActive ? TEAL : "rgba(110,224,247,0.05)",
         boxShadow: isActive
-          ? `0 0 12px ${TEAL_GLOW}, 0 0 24px rgba(0,242,255,0.3)`
+          ? `0 0 12px ${TEAL_GLOW}, 0 0 24px rgba(110,224,247,0.3)`
           : "none",
       }}
       transition={{ duration: 0.4 }}
@@ -487,7 +487,7 @@ function DesktopCarousel() {
                   <motion.div
                     className="w-full h-full rounded-xl border overflow-hidden relative"
                     animate={{
-                      borderColor: props.isCenter ? "rgba(0,242,255,0.5)" : "rgba(0,242,255,0.08)",
+                      borderColor: props.isCenter ? "rgba(110,224,247,0.5)" : "rgba(110,224,247,0.08)",
                     }}
                     style={{
                       backgroundColor: OBSIDIAN,
@@ -503,7 +503,7 @@ function DesktopCarousel() {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           style={{
-                            boxShadow: `inset 0 0 50px rgba(0,242,255,0.06), 0 0 40px rgba(0,242,255,0.12), 0 0 80px rgba(0,242,255,0.04)`,
+                            boxShadow: `inset 0 0 50px rgba(110,224,247,0.06), 0 0 40px rgba(110,224,247,0.12), 0 0 80px rgba(110,224,247,0.04)`,
                           }}
                         />
                         <motion.div
@@ -511,7 +511,7 @@ function DesktopCarousel() {
                           animate={{ opacity: [0.15, 0.35, 0.15] }}
                           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                           style={{
-                            background: `linear-gradient(135deg, rgba(0,242,255,0.1), transparent 50%, rgba(0,242,255,0.08))`,
+                            background: `linear-gradient(135deg, rgba(110,224,247,0.1), transparent 50%, rgba(110,224,247,0.08))`,
                           }}
                         />
                       </>
@@ -536,9 +536,9 @@ function DesktopCarousel() {
                       <motion.div
                         className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 border"
                         animate={{
-                          backgroundColor: props.isCenter ? "rgba(0,242,255,0.12)" : "rgba(0,242,255,0.04)",
-                          borderColor: props.isCenter ? "rgba(0,242,255,0.4)" : "rgba(0,242,255,0.1)",
-                          boxShadow: props.isCenter ? `0 0 16px rgba(0,242,255,0.25)` : "none",
+                          backgroundColor: props.isCenter ? "rgba(110,224,247,0.12)" : "rgba(110,224,247,0.04)",
+                          borderColor: props.isCenter ? "rgba(110,224,247,0.4)" : "rgba(110,224,247,0.1)",
+                          boxShadow: props.isCenter ? `0 0 16px rgba(110,224,247,0.25)` : "none",
                         }}
                       >
                         <Icon className="w-5 h-5" style={{ color: TEAL }} />
@@ -565,7 +565,7 @@ function DesktopCarousel() {
                             transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
                             className="overflow-hidden mt-auto"
                           >
-                            <div className="pt-3 border-t" style={{ borderColor: "rgba(0,242,255,0.1)" }}>
+                            <div className="pt-3 border-t" style={{ borderColor: "rgba(110,224,247,0.1)" }}>
                               <span
                                 className="text-[9px] font-mono tracking-[0.2em] uppercase block mb-2 text-zinc-500"
                               >
@@ -647,7 +647,7 @@ function MobileCarousel() {
         className="absolute left-0 right-0 h-[2px] pointer-events-none z-[4]"
         style={{
           top: "calc(50% - 40px)",
-          backgroundColor: "rgba(0,242,255,0.06)",
+          backgroundColor: "rgba(110,224,247,0.06)",
         }}
       >
         <motion.div
@@ -685,7 +685,7 @@ function MobileCarousel() {
                 <div
                   className="w-full h-full rounded-xl border overflow-hidden relative"
                   style={{
-                    borderColor: "rgba(0,242,255,0.4)",
+                    borderColor: "rgba(110,224,247,0.4)",
                     backgroundColor: OBSIDIAN,
                     backdropFilter: "blur(24px)",
                     WebkitBackdropFilter: "blur(24px)",
@@ -696,7 +696,7 @@ function MobileCarousel() {
                     animate={{ opacity: [0.15, 0.3, 0.15] }}
                     transition={{ duration: 2.5, repeat: Infinity }}
                     style={{
-                      boxShadow: `inset 0 0 40px rgba(0,242,255,0.05), 0 0 30px rgba(0,242,255,0.08)`,
+                      boxShadow: `inset 0 0 40px rgba(110,224,247,0.05), 0 0 30px rgba(110,224,247,0.08)`,
                     }}
                   />
 
@@ -718,9 +718,9 @@ function MobileCarousel() {
                     <motion.div
                       className="w-11 h-11 rounded-lg flex items-center justify-center mb-3 border"
                       style={{
-                        backgroundColor: "rgba(0,242,255,0.1)",
-                        borderColor: "rgba(0,242,255,0.3)",
-                        boxShadow: `0 0 20px rgba(0,242,255,0.15)`,
+                        backgroundColor: "rgba(110,224,247,0.1)",
+                        borderColor: "rgba(110,224,247,0.3)",
+                        boxShadow: `0 0 20px rgba(110,224,247,0.15)`,
                       }}
                     >
                       <Icon className="w-5 h-5" style={{ color: TEAL }} />
@@ -781,7 +781,7 @@ function MobileCarousel() {
               <div
                 className="rounded-lg border p-4"
                 style={{
-                  borderColor: "rgba(0,242,255,0.15)",
+                  borderColor: "rgba(110,224,247,0.15)",
                   backgroundColor: "rgba(10,10,10,0.95)",
                 }}
               >
@@ -815,7 +815,7 @@ function MobileCarousel() {
               key={index}
               className="w-2 h-2 rounded-full"
               animate={{
-                backgroundColor: index === activeIndex ? TEAL : "rgba(0,242,255,0.12)",
+                backgroundColor: index === activeIndex ? TEAL : "rgba(110,224,247,0.12)",
                 scale: index === activeIndex ? 1.4 : 1,
                 boxShadow: index === activeIndex ? `0 0 8px ${TEAL_GLOW}` : "none",
               }}
@@ -860,7 +860,7 @@ export function ProfitLoopSection() {
           <div
             className="absolute inset-0"
             style={{
-              backgroundImage: `linear-gradient(rgba(0,242,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(0,242,255,0.3) 1px, transparent 1px)`,
+              backgroundImage: `linear-gradient(rgba(110,224,247,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(110,224,247,0.3) 1px, transparent 1px)`,
               backgroundSize: "48px 48px",
             }}
           />
@@ -871,9 +871,9 @@ export function ProfitLoopSection() {
             className="w-full h-full rounded-full"
             animate={{
               background: [
-                "radial-gradient(circle, rgba(0,242,255,0.03) 0%, transparent 65%)",
-                "radial-gradient(circle, rgba(0,242,255,0.05) 0%, transparent 65%)",
-                "radial-gradient(circle, rgba(0,242,255,0.03) 0%, transparent 65%)",
+                "radial-gradient(circle, rgba(110,224,247,0.03) 0%, transparent 65%)",
+                "radial-gradient(circle, rgba(110,224,247,0.05) 0%, transparent 65%)",
+                "radial-gradient(circle, rgba(110,224,247,0.03) 0%, transparent 65%)",
               ],
             }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
@@ -883,13 +883,13 @@ export function ProfitLoopSection() {
 
         <motion.div
           className="absolute top-0 left-0 w-full h-px"
-          style={{ background: `linear-gradient(90deg, transparent, rgba(0,242,255,0.15), transparent)` }}
+          style={{ background: `linear-gradient(90deg, transparent, rgba(110,224,247,0.15), transparent)` }}
           animate={{ opacity: [0.2, 0.6, 0.2] }}
           transition={{ duration: 4, repeat: Infinity }}
         />
         <motion.div
           className="absolute bottom-0 left-0 w-full h-px"
-          style={{ background: `linear-gradient(90deg, transparent, rgba(0,242,255,0.15), transparent)` }}
+          style={{ background: `linear-gradient(90deg, transparent, rgba(110,224,247,0.15), transparent)` }}
           animate={{ opacity: [0.2, 0.6, 0.2] }}
           transition={{ duration: 4, repeat: Infinity, delay: 2 }}
         />
@@ -932,8 +932,8 @@ export function ProfitLoopSection() {
           <div
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-xs font-mono backdrop-blur-sm"
             style={{
-              borderColor: "rgba(0,242,255,0.25)",
-              backgroundColor: "rgba(0,242,255,0.04)",
+              borderColor: "rgba(110,224,247,0.25)",
+              backgroundColor: "rgba(110,224,247,0.04)",
               color: TEAL,
             }}
           >
@@ -1028,15 +1028,15 @@ function MetricsStrip() {
             className="rounded-xl border p-6 md:p-8 text-center"
             style={{
               backgroundColor: OBSIDIAN,
-              borderColor: "rgba(0,242,255,0.1)",
+              borderColor: "rgba(110,224,247,0.1)",
             }}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 + i * 0.15 }}
             whileHover={{
-              borderColor: "rgba(0,242,255,0.3)",
-              boxShadow: "0 0 30px rgba(0,242,255,0.06)",
+              borderColor: "rgba(110,224,247,0.3)",
+              boxShadow: "0 0 30px rgba(110,224,247,0.06)",
             }}
             data-testid={`metric-card-${i}`}
           >
