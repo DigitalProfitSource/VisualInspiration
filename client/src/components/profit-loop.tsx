@@ -901,7 +901,7 @@ export function ProfitLoopSection() {
   });
 
   const bgY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const gridOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.08, 0.25, 0.25, 0.08]);
+  const gridOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.05, 0.18, 0.18, 0.05]);
 
   return (
     <section
@@ -920,8 +920,8 @@ export function ProfitLoopSection() {
           <div
             className="absolute inset-0"
             style={{
-              backgroundImage: `linear-gradient(rgba(110,224,247,0.45) 1px, transparent 1px), linear-gradient(90deg, rgba(110,224,247,0.45) 1px, transparent 1px)`,
-              backgroundSize: "20px 20px",
+              backgroundImage: `linear-gradient(rgba(110,224,247,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(110,224,247,0.3) 1px, transparent 1px)`,
+              backgroundSize: "22px 22px",
             }}
           />
         </motion.div>
