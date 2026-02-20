@@ -173,11 +173,11 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
 
     let x: number, y: number, scale: number;
     if (isCenter) {
-      x = 0; y = -60; scale = 1.15;
+      x = 0; y = 60; scale = 1.15;
     } else if (isAdj) {
-      x = offset * 340; y = -60; scale = 0.82;
+      x = offset * 340; y = 60; scale = 0.82;
     } else {
-      x = (offset > 0 ? 1 : -1) * 180; y = 190; scale = 0.45;
+      x = (offset > 0 ? 1 : -1) * 180; y = -180; scale = 0.45;
     }
     return { cx: centerX + x, cy: centerY + y, scale };
   };
@@ -242,24 +242,20 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
           cp2x = endX - gap * 0.3;
           cp2y = endY - curveH;
         } else if (fromFront && !toFront) {
-          startX = from.cx + (fromOffset >= 0 ? fromW + 7 : 0);
-          startY = from.cy + fromH;
+          startX = from.cx + (fromOffset >= 0 ? fromW * 0.7 : -fromW * 0.7);
+          startY = from.cy - fromH;
           endX = to.cx + (toOffset > 0 ? toW + 5 : toOffset < 0 ? -toW - 5 : 0);
-          endY = to.cy - toH;
-          if (fromOffset >= 0) {
-            startX = from.cx + fromW * 0.7;
-            startY = from.cy + fromH;
-          }
-          cp1x = startX + (endX - startX) * 0.1;
+          endY = to.cy + toH;
+          cp1x = startX + (endX - startX) * 0.15;
           cp1y = startY + (endY - startY) * 0.5;
-          cp2x = endX - (endX - startX) * 0.1;
+          cp2x = endX - (endX - startX) * 0.15;
           cp2y = endY - (endY - startY) * 0.3;
         } else if (!fromFront && !toFront) {
           if (fromOffset > 0 && toOffset <= 0) {
             startX = from.cx - fromW - 5;
-            startY = from.cy + fromH * 0.3;
+            startY = from.cy - fromH * 0.3;
             endX = to.cx + toW + 5;
-            endY = to.cy + toH * 0.3;
+            endY = to.cy - toH * 0.3;
           } else if (fromOffset <= 0 && toOffset < 0) {
             startX = from.cx - fromW - 5;
             startY = from.cy;
@@ -272,20 +268,20 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
             endY = to.cy;
           }
           const midX = (startX + endX) / 2;
-          const midY = Math.max(startY, endY) + 30;
+          const midY = Math.min(startY, endY) - 30;
           cp1x = midX;
           cp1y = midY;
           cp2x = midX;
           cp2y = midY;
         } else {
           startX = from.cx - fromW * 0.7;
-          startY = from.cy - fromH;
+          startY = from.cy + fromH;
           endX = to.cx - toW - 7;
-          endY = to.cy + toH * 0.5;
-          cp1x = startX - (startX - endX) * 0.1;
-          cp1y = startY - (startY - endY) * 0.5;
-          cp2x = endX + (startX - endX) * 0.1;
-          cp2y = endY + (startY - endY) * 0.3;
+          endY = to.cy - toH * 0.5;
+          cp1x = startX + (endX - startX) * 0.15;
+          cp1y = startY + (endY - startY) * 0.5;
+          cp2x = endX - (endX - startX) * 0.15;
+          cp2y = endY - (endY - startY) * 0.3;
         }
 
         const isActive = fromIdx === activeIndex || toIdx === activeIndex;
@@ -408,11 +404,11 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
     let x: number, y: number, scale: number, opacity: number, zIndex: number, blur: number;
 
     if (isCenter) {
-      x = 0; y = -60; scale = 1.15; opacity = 1; zIndex = 50; blur = 0;
+      x = 0; y = 60; scale = 1.15; opacity = 1; zIndex = 50; blur = 0;
     } else if (isAdj) {
-      x = offset * 340; y = -60; scale = 0.82; opacity = 0.8; zIndex = 30; blur = 0.5;
+      x = offset * 340; y = 60; scale = 0.82; opacity = 0.8; zIndex = 30; blur = 0.5;
     } else {
-      x = (offset > 0 ? 1 : -1) * 180; y = 190; scale = 0.45; opacity = 0.4; zIndex = 10; blur = 2;
+      x = (offset > 0 ? 1 : -1) * 180; y = -180; scale = 0.45; opacity = 0.4; zIndex = 10; blur = 2;
     }
 
     return {
