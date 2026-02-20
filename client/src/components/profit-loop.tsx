@@ -149,11 +149,135 @@ function SwipeHint({ onComplete }: { onComplete: () => void }) {
             opacity="0.6"
           />
         </motion.svg>
-        <span className="text-[11px] font-mono tracking-[0.2em] uppercase" style={{ color: `${TEAL}80` }}>
+        <span className="text-[11px] font-mono tracking-[0.2em] uppercase" style={{ color: "rgba(0,242,255,0.5)" }}>
           Swipe to navigate
         </span>
       </motion.div>
     </motion.div>
+  );
+}
+
+function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; containerRef: React.RefObject<HTMLDivElement | null> }) {
+  const [dims, setDims] = useState({ w: 0, h: 0 });
+  const NODE_BASE = 300;
+  const SPACING = 340;
+
+  useEffect(() => {
+    const el = containerRef?.current;
+    if (!el) return;
+    const update = () => {
+      const rect = el.getBoundingClientRect();
+      setDims({ w: rect.width, h: rect.height });
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [containerRef]);
+
+  if (dims.w === 0) return null;
+
+  const getScale = (offset: number) => {
+    if (offset === 0) return 1.15;
+    if (Math.abs(offset) === 1) return 0.82;
+    if (Math.abs(offset) === 2) return 0.62;
+    return 0;
+  };
+
+  const getNodeProps = (index: number) => {
+    let offset = index - activeIndex;
+    if (offset > 3) offset -= 6;
+    if (offset < -3) offset += 6;
+    const isHidden = Math.abs(offset) > 2;
+    return { offset, isHidden };
+  };
+
+  const connectors: { fromOffset: number; toOffset: number; fromIdx: number; toIdx: number }[] = [];
+  for (let i = 0; i < 6; i++) {
+    const nextI = (i + 1) % 6;
+    const fromProps = getNodeProps(i);
+    const toProps = getNodeProps(nextI);
+    if (!fromProps.isHidden && !toProps.isHidden && toProps.offset === fromProps.offset + 1) {
+      connectors.push({
+        fromOffset: fromProps.offset,
+        toOffset: toProps.offset,
+        fromIdx: i,
+        toIdx: nextI,
+      });
+    }
+  }
+
+  const centerX = dims.w / 2;
+  const centerY = dims.h / 2;
+
+  return (
+    <svg
+      className="absolute inset-0 w-full h-full pointer-events-none z-[3]"
+      viewBox={`0 0 ${dims.w} ${dims.h}`}
+      style={{ overflow: "visible" }}
+    >
+      <defs>
+        <filter id="connectorGlow">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      {connectors.map(({ fromOffset, toOffset, fromIdx, toIdx }) => {
+        const fromScale = getScale(fromOffset);
+        const toScale = getScale(toOffset);
+        const fromRightPort = centerX + fromOffset * SPACING + (NODE_BASE * fromScale) / 2 + 7;
+        const toLeftPort = centerX + toOffset * SPACING - (NODE_BASE * toScale) / 2 - 7;
+
+        const gap = toLeftPort - fromRightPort;
+        const curveH = Math.min(gap * 0.4, 45);
+
+        const isActive = fromIdx === activeIndex || toIdx === activeIndex;
+        const opacityVal = isActive ? 0.7 : 0.2;
+
+        const pathD = `M ${fromRightPort} ${centerY} C ${fromRightPort + gap * 0.3} ${centerY - curveH}, ${toLeftPort - gap * 0.3} ${centerY - curveH}, ${toLeftPort} ${centerY}`;
+
+        return (
+          <g key={`${fromIdx}-${toIdx}`}>
+            <motion.path
+              d={pathD}
+              fill="none"
+              stroke={TEAL}
+              strokeWidth="1.5"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: opacityVal }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              style={{
+                filter: isActive ? "url(#connectorGlow)" : "none",
+              }}
+            />
+            <motion.circle
+              cx={fromRightPort}
+              cy={centerY}
+              r={isActive ? 4.5 : 3}
+              fill={TEAL}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: opacityVal }}
+              style={{
+                filter: isActive ? "url(#connectorGlow)" : "none",
+              }}
+            />
+            <motion.circle
+              cx={toLeftPort}
+              cy={centerY}
+              r={isActive ? 4.5 : 3}
+              fill={TEAL}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: opacityVal }}
+              style={{
+                filter: isActive ? "url(#connectorGlow)" : "none",
+              }}
+            />
+          </g>
+        );
+      })}
+    </svg>
   );
 }
 
@@ -162,6 +286,7 @@ function DesktopCarousel() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [showHint, setShowHint] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const carouselAreaRef = useRef<HTMLDivElement>(null);
 
   const navigate = useCallback((newDirection: number) => {
     setActiveIndex(prev => wrap(0, 6, prev + newDirection));
@@ -200,10 +325,10 @@ function DesktopCarousel() {
 
     return {
       x: offset * 340,
-      scale: isCenter ? 1 : isAdj ? 0.78 : isFar ? 0.6 : 0.45,
-      opacity: isCenter ? 1 : isAdj ? 0.55 : isFar ? 0.2 : 0,
+      scale: isCenter ? 1.15 : isAdj ? 0.82 : isFar ? 0.62 : 0.45,
+      opacity: isCenter ? 1 : isAdj ? 0.6 : isFar ? 0.22 : 0,
       zIndex: isCenter ? 50 : isAdj ? 30 : isFar ? 10 : 0,
-      blur: isCenter ? 0 : isAdj ? 2 : isFar ? 4 : 6,
+      blur: isCenter ? 0 : isAdj ? 1.5 : isFar ? 4 : 6,
       pointerEvents: (isHidden ? "none" : "auto") as "none" | "auto",
       isCenter,
       offset,
@@ -218,32 +343,9 @@ function DesktopCarousel() {
       onMouseLeave={() => setIsAutoPlaying(true)}
       data-testid="profit-loop-desktop"
     >
-      <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 h-[2px] z-[4] pointer-events-none">
-        <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,242,255,0.06)" }} />
-        <motion.div
-          className="absolute top-0 left-0 h-full"
-          animate={{ width: `${((activeIndex + 1) / 6) * 100}%` }}
-          transition={{ type: "spring", stiffness: 80, damping: 20 }}
-          style={{
-            background: `linear-gradient(90deg, transparent, ${TEAL})`,
-            boxShadow: `0 0 12px ${TEAL_GLOW}, 0 0 30px rgba(0,242,255,0.2)`,
-          }}
-        />
-        <motion.div
-          className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full"
-          animate={{
-            left: `${((activeIndex + 0.5) / 6) * 100}%`,
-          }}
-          transition={{ type: "spring", stiffness: 80, damping: 20 }}
-          style={{
-            backgroundColor: TEAL,
-            boxShadow: `0 0 16px ${TEAL_GLOW}, 0 0 40px rgba(0,242,255,0.3)`,
-            transform: "translate(-50%, -50%)",
-          }}
-        />
-      </div>
+      <div ref={carouselAreaRef} className="relative h-[480px] overflow-hidden">
+        <ConnectorLines activeIndex={activeIndex} containerRef={carouselAreaRef} />
 
-      <div className="relative h-[440px] overflow-hidden">
         <AnimatePresence>
           {showHint && (
             <SwipeHint onComplete={() => setShowHint(false)} />
@@ -269,13 +371,13 @@ function DesktopCarousel() {
                   width: "300px",
                   height: "300px",
                   pointerEvents: props.pointerEvents,
+                  filter: `blur(${props.blur}px)`,
                 }}
                 animate={{
                   x: props.x,
                   scale: props.scale,
                   opacity: props.opacity,
                   zIndex: props.zIndex,
-                  filter: `blur(${props.blur}px)`,
                 }}
                 transition={{
                   type: "spring",
