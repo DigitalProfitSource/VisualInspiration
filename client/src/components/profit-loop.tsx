@@ -160,7 +160,6 @@ function SwipeHint({ onComplete }: { onComplete: () => void }) {
 function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; containerRef: React.RefObject<HTMLDivElement | null> }) {
   const [dims, setDims] = useState({ w: 0, h: 0 });
   const NODE_BASE = 300;
-  const SPACING = 340;
 
   useEffect(() => {
     const el = containerRef?.current;
@@ -176,38 +175,44 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
 
   if (dims.w === 0) return null;
 
-  const getScale = (offset: number) => {
-    if (offset === 0) return 1.15;
-    if (Math.abs(offset) === 1) return 0.82;
-    if (Math.abs(offset) === 2) return 0.62;
-    return 0;
+  const centerX = dims.w / 2;
+  const centerY = dims.h / 2;
+
+  const getNodeCenter = (offset: number) => {
+    const isCenter = offset === 0;
+    const isAdj = Math.abs(offset) === 1;
+    const isBackAdj = Math.abs(offset) === 2;
+
+    let x: number, y: number, scale: number;
+    if (isCenter) {
+      x = 0; y = -40; scale = 1.15;
+    } else if (isAdj) {
+      x = offset * 340; y = -40; scale = 0.82;
+    } else if (isBackAdj) {
+      x = (offset > 0 ? 1 : -1) * 240; y = 140; scale = 0.55;
+    } else {
+      x = 0; y = 170; scale = 0.48;
+    }
+    return { cx: centerX + x, cy: centerY + y, scale };
   };
 
-  const getNodeProps = (index: number) => {
+  const getOffset = (index: number) => {
     let offset = index - activeIndex;
     if (offset > 3) offset -= 6;
     if (offset < -3) offset += 6;
-    const isHidden = Math.abs(offset) > 2;
-    return { offset, isHidden };
+    return offset;
   };
 
-  const connectors: { fromOffset: number; toOffset: number; fromIdx: number; toIdx: number }[] = [];
+  const segments: { fromIdx: number; toIdx: number; fromOffset: number; toOffset: number }[] = [];
   for (let i = 0; i < 6; i++) {
     const nextI = (i + 1) % 6;
-    const fromProps = getNodeProps(i);
-    const toProps = getNodeProps(nextI);
-    if (!fromProps.isHidden && !toProps.isHidden && toProps.offset === fromProps.offset + 1) {
-      connectors.push({
-        fromOffset: fromProps.offset,
-        toOffset: toProps.offset,
-        fromIdx: i,
-        toIdx: nextI,
-      });
-    }
+    segments.push({
+      fromIdx: i,
+      toIdx: nextI,
+      fromOffset: getOffset(i),
+      toOffset: getOffset(nextI),
+    });
   }
-
-  const centerX = dims.w / 2;
-  const centerY = dims.h / 2;
 
   return (
     <svg
@@ -224,19 +229,83 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
           </feMerge>
         </filter>
       </defs>
-      {connectors.map(({ fromOffset, toOffset, fromIdx, toIdx }) => {
-        const fromScale = getScale(fromOffset);
-        const toScale = getScale(toOffset);
-        const fromRightPort = centerX + fromOffset * SPACING + (NODE_BASE * fromScale) / 2 + 7;
-        const toLeftPort = centerX + toOffset * SPACING - (NODE_BASE * toScale) / 2 - 7;
+      {segments.map(({ fromIdx, toIdx, fromOffset, toOffset }) => {
+        const from = getNodeCenter(fromOffset);
+        const to = getNodeCenter(toOffset);
 
-        const gap = toLeftPort - fromRightPort;
-        const curveH = Math.min(gap * 0.4, 45);
+        const fromW = (NODE_BASE * from.scale) / 2;
+        const toW = (NODE_BASE * to.scale) / 2;
+        const fromH = (NODE_BASE * from.scale) / 2;
+        const toH = (NODE_BASE * to.scale) / 2;
+
+        let startX: number, startY: number, endX: number, endY: number;
+        let cp1x: number, cp1y: number, cp2x: number, cp2y: number;
+
+        const fromFront = Math.abs(fromOffset) <= 1;
+        const toFront = Math.abs(toOffset) <= 1;
+
+        if (fromFront && toFront) {
+          startX = from.cx + fromW + 7;
+          startY = from.cy;
+          endX = to.cx - toW - 7;
+          endY = to.cy;
+          const gap = endX - startX;
+          const curveH = Math.min(Math.abs(gap) * 0.35, 40);
+          cp1x = startX + gap * 0.3;
+          cp1y = startY - curveH;
+          cp2x = endX - gap * 0.3;
+          cp2y = endY - curveH;
+        } else if (fromFront && !toFront) {
+          startX = from.cx + (fromOffset >= 0 ? fromW + 7 : 0);
+          startY = from.cy + fromH;
+          endX = to.cx + (toOffset > 0 ? toW + 5 : toOffset < 0 ? -toW - 5 : 0);
+          endY = to.cy - toH;
+          if (fromOffset >= 0) {
+            startX = from.cx + fromW * 0.7;
+            startY = from.cy + fromH;
+          }
+          cp1x = startX + (endX - startX) * 0.1;
+          cp1y = startY + (endY - startY) * 0.5;
+          cp2x = endX - (endX - startX) * 0.1;
+          cp2y = endY - (endY - startY) * 0.3;
+        } else if (!fromFront && !toFront) {
+          if (fromOffset > 0 && toOffset <= 0) {
+            startX = from.cx - fromW - 5;
+            startY = from.cy + fromH * 0.3;
+            endX = to.cx + toW + 5;
+            endY = to.cy + toH * 0.3;
+          } else if (fromOffset <= 0 && toOffset < 0) {
+            startX = from.cx - fromW - 5;
+            startY = from.cy;
+            endX = to.cx + toW + 5;
+            endY = to.cy;
+          } else {
+            startX = from.cx + fromW + 5;
+            startY = from.cy;
+            endX = to.cx - toW - 5;
+            endY = to.cy;
+          }
+          const midX = (startX + endX) / 2;
+          const midY = Math.max(startY, endY) + 30;
+          cp1x = midX;
+          cp1y = midY;
+          cp2x = midX;
+          cp2y = midY;
+        } else {
+          startX = from.cx - fromW * 0.7;
+          startY = from.cy - fromH;
+          endX = to.cx - toW - 7;
+          endY = to.cy + toH * 0.5;
+          cp1x = startX - (startX - endX) * 0.1;
+          cp1y = startY - (startY - endY) * 0.5;
+          cp2x = endX + (startX - endX) * 0.1;
+          cp2y = endY + (startY - endY) * 0.3;
+        }
 
         const isActive = fromIdx === activeIndex || toIdx === activeIndex;
-        const opacityVal = isActive ? 0.7 : 0.2;
+        const opacityVal = isActive ? 0.6 : 0.12;
 
-        const pathD = `M ${fromRightPort} ${centerY} C ${fromRightPort + gap * 0.3} ${centerY - curveH}, ${toLeftPort - gap * 0.3} ${centerY - curveH}, ${toLeftPort} ${centerY}`;
+        const pathD = `M ${startX} ${startY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${endX} ${endY}`;
 
         return (
           <g key={`${fromIdx}-${toIdx}`}>
@@ -244,7 +313,7 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
               d={pathD}
               fill="none"
               stroke={TEAL}
-              strokeWidth="1.5"
+              strokeWidth={isActive ? 1.5 : 1}
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: opacityVal }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -253,9 +322,9 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
               }}
             />
             <motion.circle
-              cx={fromRightPort}
-              cy={centerY}
-              r={isActive ? 4.5 : 3}
+              cx={startX}
+              cy={startY}
+              r={isActive ? 4 : 2.5}
               fill={TEAL}
               initial={{ opacity: 0 }}
               animate={{ opacity: opacityVal }}
@@ -264,9 +333,9 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
               }}
             />
             <motion.circle
-              cx={toLeftPort}
-              cy={centerY}
-              r={isActive ? 4.5 : 3}
+              cx={endX}
+              cy={endY}
+              r={isActive ? 4 : 2.5}
               fill={TEAL}
               initial={{ opacity: 0 }}
               animate={{ opacity: opacityVal }}
@@ -320,17 +389,30 @@ function DesktopCarousel() {
 
     const isCenter = offset === 0;
     const isAdj = Math.abs(offset) === 1;
-    const isFar = Math.abs(offset) === 2;
-    const isHidden = Math.abs(offset) > 2;
+    const isBackAdj = Math.abs(offset) === 2;
+    const isBackCenter = Math.abs(offset) === 3;
+
+    const isFrontRow = isCenter || isAdj;
+    const isBackRow = isBackAdj || isBackCenter;
+
+    let x: number, y: number, scale: number, opacity: number, zIndex: number, blur: number;
+
+    if (isCenter) {
+      x = 0; y = -40; scale = 1.15; opacity = 1; zIndex = 50; blur = 0;
+    } else if (isAdj) {
+      x = offset * 340; y = -40; scale = 0.82; opacity = 0.6; zIndex = 30; blur = 1.5;
+    } else if (isBackAdj) {
+      x = (offset > 0 ? 1 : -1) * 240; y = 140; scale = 0.55; opacity = 0.35; zIndex = 10; blur = 2;
+    } else {
+      x = 0; y = 170; scale = 0.48; opacity = 0.25; zIndex = 5; blur = 3;
+    }
 
     return {
-      x: offset * 340,
-      scale: isCenter ? 1.15 : isAdj ? 0.82 : isFar ? 0.62 : 0.45,
-      opacity: isCenter ? 1 : isAdj ? 0.6 : isFar ? 0.22 : 0,
-      zIndex: isCenter ? 50 : isAdj ? 30 : isFar ? 10 : 0,
-      blur: isCenter ? 0 : isAdj ? 1.5 : isFar ? 4 : 6,
-      pointerEvents: (isHidden ? "none" : "auto") as "none" | "auto",
+      x, y, scale, opacity, zIndex, blur,
+      pointerEvents: "auto" as "none" | "auto",
       isCenter,
+      isFrontRow,
+      isBackRow,
       offset,
     };
   };
@@ -343,7 +425,7 @@ function DesktopCarousel() {
       onMouseLeave={() => setIsAutoPlaying(true)}
       data-testid="profit-loop-desktop"
     >
-      <div ref={carouselAreaRef} className="relative h-[480px] overflow-hidden">
+      <div ref={carouselAreaRef} className="relative h-[620px] overflow-hidden">
         <ConnectorLines activeIndex={activeIndex} containerRef={carouselAreaRef} />
 
         <AnimatePresence>
@@ -375,6 +457,7 @@ function DesktopCarousel() {
                 }}
                 animate={{
                   x: props.x,
+                  y: props.y,
                   scale: props.scale,
                   opacity: props.opacity,
                   zIndex: props.zIndex,
