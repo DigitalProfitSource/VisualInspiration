@@ -1,0 +1,90 @@
+Profit Loop" Overhaul
+Role: Act as a Senior UI/UX Architect and High-Ticket Conversion Copywriter.
+Project: Homepage Reconstruction (Phase 1).
+Objective: Completely replace the three sections currently following the Hero—"What’s really costing you time...", "Scale Your Operations...", and "We Align Your Entire Customer Journey..."—with a single, unified SimpleSequence™ Profit Loop Focus-Center Carousel.
+
+1. BRAND AESTHETIC & INTERACTION LOGIC
+Vibe: Maintain the premium SimpleSequence dark-mode aesthetic. Use high-end glassmorphism (semi-transparent, blurred backgrounds with subtle glowing borders).
+
+The Energy Line: A single, pulsing teal line must thread through every node. This line represents the logic flow; it must visually connect the "Out" port of one node to the "In" port of the next.
+
+Carousel Function: Implement an Infinite Focus-Center Carousel.
+
+The Active State (Center): The node currently in the center of the viewport must scale up by 20%, glow intensely, and expand its content area to reveal deep-dive specifications.
+
+The Loop: The carousel must be infinite. When Node 06 passes center, the Energy Line must loop back to Node 01, representing a "Rinse and Repeat" revenue cycle.
+
+2. HEADLINES (The Hook)
+Replace all current section headers with:
+
+Primary Headline: You’re getting leads. You just don’t have a system to maximize your marketing ROI.
+
+Secondary Headline: We align your entire customer journey into one intelligent flow.
+
+3. NODE-BY-NODE SPECIFICATIONS
+Ensure each node contains the following data upon expansion:
+
+Node 01: Universal Capture Hub (The Trigger)
+
+Context: Replaces the passive front desk with a 24/7 intelligent intake layer.
+
+Specs: Deploy AI Receptionists for Website and Google Profile (GMB), 24/7 AI Phone Answering, AI-Ready SEO for search engines, and automated Social Media/DM intake.
+
+Node 02: Instant Greeting
+
+
+Context: Sub-60 second engagement.
++1
+
+
+Specs: Automated SMS/Voice response triggered the moment a lead enters the hub.
+
+Node 03: Operational Hub Sync
+
+
+Context: Eliminating "human-glue" tasks.
+
+
+Specs: Instant synchronization of CRM, team calendars, and billing to remove manual data entry.
++1
+
+Node 04: Persistent Follow-Up
+
+
+Context: Recovering lost revenue.
++1
+
+
+Specs: Automated nurture sequences for no-shows and stale quotes that continue until they book or buy.
+
+Node 05: Authority Guard
+
+
+Context: Bulletproofing your reputation.
++1
+
+
+Specs: Automated review collection and private internal interception of negative feedback.
+
+Node 06: Revenue Injection
+
+
+Context: Immediate cash flow from existing assets.
++1
+
+
+Specs: Database reactivation campaigns that mine your legacy lists for new business with zero ad spend.
+
+4. MOBILE-SPECIFIC ADAPTATION
+Layout: One large card visible at a time.
+
+Interaction: Swipe-to-Focus. Swiping snaps the next card into center view.
+
+Visual: The Energy Line runs vertically down the left margin, lighting up as the user swipes through the nodes.
+
+Expansion: Use Tap-to-Expand Drawer Logic to show the detailed specifications without moving the user's scroll position.
+
+5. SEARCH & AI INDEXABILITY (SEO)
+Constraint: All content for all 6 nodes (including the hidden/expandable text) must be rendered in the index-bot.html file or as structured data.
+
+Goal: Ensure LLMs and search engines can fully index your entire "Digital Backbone" architecture, not just the visual elements.
