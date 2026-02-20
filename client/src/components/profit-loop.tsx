@@ -400,11 +400,11 @@ function DesktopCarousel() {
     if (isCenter) {
       x = 0; y = -60; scale = 1.15; opacity = 1; zIndex = 50; blur = 0;
     } else if (isAdj) {
-      x = offset * 340; y = -60; scale = 0.82; opacity = 0.6; zIndex = 30; blur = 1.5;
+      x = offset * 340; y = -60; scale = 0.82; opacity = 0.8; zIndex = 30; blur = 0.5;
     } else if (isBackAdj) {
-      x = (offset > 0 ? 1 : -1) * 220; y = 180; scale = 0.45; opacity = 0.2; zIndex = 10; blur = 4;
+      x = (offset > 0 ? 1 : -1) * 220; y = 180; scale = 0.45; opacity = 0.4; zIndex = 10; blur = 2;
     } else {
-      x = 0; y = 220; scale = 0.38; opacity = 0.15; zIndex = 5; blur = 5;
+      x = 0; y = 220; scale = 0.38; opacity = 0.3; zIndex = 5; blur = 3;
     }
 
     return {
