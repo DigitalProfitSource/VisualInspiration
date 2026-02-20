@@ -406,9 +406,9 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
     if (isCenter) {
       x = 0; y = 60; scale = 1.15; opacity = 1; zIndex = 50; blur = 0;
     } else if (isAdj) {
-      x = offset * 340; y = 60; scale = 0.82; opacity = 0.8; zIndex = 30; blur = 0.5;
+      x = offset * 340; y = 60; scale = 0.82; opacity = 0.8; zIndex = 30; blur = 0.2;
     } else {
-      x = (offset > 0 ? 1 : -1) * 180; y = -180; scale = 0.45; opacity = 0.4; zIndex = 10; blur = 2;
+      x = (offset > 0 ? 1 : -1) * 180; y = -180; scale = 0.45; opacity = 0.4; zIndex = 10; blur = 0.8;
     }
 
     return {
