@@ -1,0 +1,75 @@
+The current draft feels like a generic marketing slider because it lacks the engineering "ports" and the horizontal logic that makes a workflow look like a workflow. We need to move away from "marketing cards" and back to "system components."
+
+Here is the plan to fix the visual identity, the aspect ratio, and the interaction cues to match the SimpleSequence™ brand.
+
+The "Profit Loop" Component Re-Architecture
+1. Visual Correction: From Cards to Nodes
+1:1 Aspect Ratio: The active node must be a perfect square. This makes it look like an integrated component or a "chip" rather than a blurb of text.
+
+Logic Ports: Every node must have a visible Input Port on the left edge and an Output Port on the right edge (small glowing circles).
+
+The Energy Line: No more "waves." The line must be a clean, horizontal logic path that connects directly into the ports of the active node. When you move to the next node, the line should appear to "flow" through the ports.
+
+Strict Palette: Use only Deep Obsidian for backgrounds and Neon Teal/Cyan for all glowing elements, lines, and ports. Remove any "weird" purple or off-brand gradients.
+
+2. Interaction: The "Ghost Gesture"
+Remove UI Clutter: Delete the arrows and the navigation lines at the bottom.
+
+Interactive Hint: On load, display a subtle, semi-transparent "hand" icon performing a swipe gesture across the node. This should fade out after 3 seconds, letting the system speak for itself.
+
+3. Mobile Fix: The "Focused Component"
+Single Node Focus: On mobile, the 1:1 square node should sit front and center.
+
+Seamless Flow: The horizontal line should enter from the left screen edge and exit to the right, signifying that this is one piece of a larger horizontal loop.
+
+Final Unified AI Builder Prompt: The Engineered Profit Loop
+Role: Senior UI/UX Architect.
+Objective: Complete overhaul of the Homepage section below the Hero. Replace all previous iterations with this "Engineered Component" logic.
+
+1. Copy & Placement:
+
+Primary Headline: You’re getting leads. You just don’t have a system to maximize your marketing ROI.
+
+Secondary Headline: We align your entire customer journey into one intelligent flow.
+
+2. Node UI (The Sequential Component):
+
+Shape: Force a strict 1:1 Square aspect ratio for the active (center) node.
+
+Architecture: Include visible Input (left) and Output (right) ports on each node. The ports must glow in the brand's neon teal.
+
+Styling: Premium Glassmorphism. Deep Obsidian blurred background, thin teal borders.
+
+Color Palette: Strictly Teal/Cyan (#00F2FF) and Obsidian (#0A0A0A). No other colors allowed.
+
+3. Workflow Mechanics:
+
+The Connector: A single, horizontal Energy Line that connects to the ports. It should be straight and precise, not wavy.
+
+Infinite Carousel: The nodes must swipe horizontally. When the active node is focused, it expands slightly while maintaining its square proportions.
+
+Interaction Hint: Implement a temporary "Swipe Gesture" animation (a fading hand/finger) on page load instead of using arrows or navigation bars.
+
+4. Node Content (Expanded Specs):
+
+Node 01: AI-Ready SEO, 24/7 AI Reception (Web/GMB), AI Voice Phone Answering, Social/DM Automation.
+
+
+Node 02: <60s SMS/Voice response.
++1
+
+
+Node 03: CRM, Calendar, and Billing sync.
++1
+
+
+Node 04: Automated nurture for no-shows/stale quotes.
++1
+
+
+Node 05: Automated reviews and private feedback loop.
++1
+
+
+Node 06: Database win-back campaigns.
++1
