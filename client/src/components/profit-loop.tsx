@@ -149,7 +149,7 @@ function SwipeHint({ onComplete }: { onComplete: () => void }) {
             opacity="0.6"
           />
         </motion.svg>
-        <span className="text-[11px] font-mono tracking-[0.2em] uppercase" style={{ color: "rgba(0,242,255,0.5)" }}>
+        <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-zinc-500">
           Swipe to navigate
         </span>
       </motion.div>
@@ -437,8 +437,7 @@ function DesktopCarousel() {
                     <div className="relative z-10 p-5 h-full flex flex-col">
                       <div className="flex items-center justify-between mb-3">
                         <span
-                          className="text-[10px] font-mono tracking-[0.25em] uppercase"
-                          style={{ color: "rgba(0,242,255,0.45)" }}
+                          className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-500"
                         >
                           Node {node.id}
                         </span>
@@ -462,16 +461,15 @@ function DesktopCarousel() {
                         <Icon className="w-5 h-5" style={{ color: TEAL }} />
                       </motion.div>
 
-                      <h4 className="text-sm font-display font-semibold mb-0.5 leading-tight" style={{ color: "rgba(0,242,255,0.9)" }}>
+                      <h4 className="text-sm font-display font-semibold mb-0.5 leading-tight text-white">
                         {node.title}
                       </h4>
                       <span
-                        className="text-[10px] font-mono block mb-2"
-                        style={{ color: "rgba(0,242,255,0.5)" }}
+                        className="text-[10px] font-mono block mb-2 text-slate-400"
                       >
                         {node.subtitle}
                       </span>
-                      <p className="text-xs leading-relaxed flex-shrink-0" style={{ color: "rgba(0,242,255,0.4)" }}>
+                      <p className="text-xs leading-relaxed flex-shrink-0 text-slate-400">
                         {node.context}
                       </p>
 
@@ -486,8 +484,7 @@ function DesktopCarousel() {
                           >
                             <div className="pt-3 border-t" style={{ borderColor: "rgba(0,242,255,0.1)" }}>
                               <span
-                                className="text-[9px] font-mono tracking-[0.2em] uppercase block mb-2"
-                                style={{ color: "rgba(0,242,255,0.5)" }}
+                                className="text-[9px] font-mono tracking-[0.2em] uppercase block mb-2 text-zinc-500"
                               >
                                 Specifications
                               </span>
@@ -506,7 +503,7 @@ function DesktopCarousel() {
                                       animate={{ opacity: [0.4, 1, 0.4] }}
                                       transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.15 }}
                                     />
-                                    <span className="text-[11px] leading-relaxed" style={{ color: "rgba(0,242,255,0.55)" }}>{spec}</span>
+                                    <span className="text-[11px] leading-relaxed text-slate-300">{spec}</span>
                                   </motion.li>
                                 ))}
                               </ul>
@@ -530,8 +527,7 @@ function DesktopCarousel() {
       >
         <RefreshCw className="w-3.5 h-3.5" style={{ color: TEAL }} />
         <span
-          className="font-mono text-[10px] tracking-[0.2em]"
-          style={{ color: "rgba(0,242,255,0.4)" }}
+          className="font-mono text-[10px] tracking-[0.2em] text-zinc-500"
         >
           LOOP REPEATS · COMPOUNDS REVENUE
         </span>
@@ -624,8 +620,7 @@ function MobileCarousel() {
                   <div className="relative z-10 p-5 h-full flex flex-col">
                     <div className="flex items-center justify-between mb-3">
                       <span
-                        className="text-[10px] font-mono tracking-[0.25em] uppercase"
-                        style={{ color: "rgba(0,242,255,0.45)" }}
+                        className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-500"
                       >
                         Node {node.id} / 06
                       </span>
@@ -648,22 +643,20 @@ function MobileCarousel() {
                       <Icon className="w-5 h-5" style={{ color: TEAL }} />
                     </motion.div>
 
-                    <h4 className="text-base font-display font-semibold mb-0.5" style={{ color: "rgba(0,242,255,0.9)" }}>
+                    <h4 className="text-base font-display font-semibold mb-0.5 text-white">
                       {node.title}
                     </h4>
                     <span
-                      className="text-[10px] font-mono block mb-2"
-                      style={{ color: "rgba(0,242,255,0.5)" }}
+                      className="text-[10px] font-mono block mb-2 text-slate-400"
                     >
                       {node.subtitle}
                     </span>
-                    <p className="text-xs leading-relaxed mb-3" style={{ color: "rgba(0,242,255,0.4)" }}>
+                    <p className="text-xs leading-relaxed mb-3 text-slate-400">
                       {node.context}
                     </p>
 
                     <motion.button
-                      className="flex items-center gap-1.5 text-[10px] font-mono tracking-[0.15em] uppercase mt-auto"
-                      style={{ color: "rgba(0,242,255,0.6)" }}
+                      className="flex items-center gap-1.5 text-[10px] font-mono tracking-[0.15em] uppercase mt-auto text-zinc-400"
                       onClick={() => {
                         if (!isDragging) {
                           setExpandedNode(expandedNode === activeIndex ? null : activeIndex);
@@ -724,7 +717,7 @@ function MobileCarousel() {
                         animate={{ opacity: [0.4, 1, 0.4] }}
                         transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
                       />
-                      <span className="text-sm leading-relaxed" style={{ color: "rgba(0,242,255,0.55)" }}>{spec}</span>
+                      <span className="text-sm leading-relaxed text-slate-300">{spec}</span>
                     </motion.li>
                   ))}
                 </ul>
@@ -850,7 +843,7 @@ export function ProfitLoopSection() {
             The SimpleSequence™ Profit Loop
           </motion.div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 leading-tight" style={{ color: "rgba(0,242,255,0.9)" }}>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 leading-tight text-white">
             You're getting leads. You just don't have a system to{" "}
             <span
               className="bg-clip-text text-transparent"
@@ -864,7 +857,7 @@ export function ProfitLoopSection() {
             </span>
           </h2>
 
-          <p className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto" style={{ color: "rgba(0,242,255,0.45)" }}>
+          <p className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto text-slate-400">
             We align your entire customer journey into one intelligent flow.
           </p>
         </motion.div>
