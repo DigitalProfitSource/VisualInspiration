@@ -13,6 +13,7 @@ import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { ProfitLoopSection } from "@/components/profit-loop";
+import { IndustryCaseStudies } from "@/components/industry-case-studies";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
@@ -720,6 +721,8 @@ export default function Home() {
       <TechTicker />
       {/* Profit Loop Circuit */}
       <ProfitLoopSection />
+      {/* Industry Case Studies */}
+      <IndustryCaseStudies />
       {/* Revenue-Focused System Section */}
       <RevenueSystemSection />
       {/* Industry Results Carousel */}
