@@ -37,7 +37,6 @@ const BOT_USER_AGENTS = [
   'chrome-lighthouse',
   'telegrambot',
   'integration-test',
-  'headlesschrome',
   'phantomjs',
   'prerender',
 ];
