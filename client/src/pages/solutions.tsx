@@ -51,7 +51,7 @@ const modules: Module[] = [
   {
     number: "01",
     title: "Universal Capture Hub",
-    subtitle: "Your front door is leaking. Leads hit your website, call after hours, or message on social — and disappear because nobody's there. We install a 24/7 intelligent intake layer across every channel so nothing slips through.",
+    subtitle: "Your business shouldn't depend on who is sitting at the front desk when a prospect reaches out. We replace passive contact forms and unmonitored inboxes with an active, 24/7 capture architecture that standardizes every inquiry across Web, Voice, and Social.",
     icon: Radio,
     delivers: [
       "AI-Ready Web Optimization — re-architect your web presence for next-gen AI search engines (ChatGPT, Perplexity, Google AI Overviews) so you're found before competitors",
