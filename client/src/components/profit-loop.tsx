@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useScroll, useTransform, PanInfo } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useInView, PanInfo } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Radio, Zap, Cog, RefreshCw, Star, Database, ChevronDown } from "lucide-react";
 
@@ -951,7 +951,109 @@ export function ProfitLoopSection() {
 
         <DesktopCarousel />
         <MobileCarousel />
+
+        <MetricsStrip />
       </div>
     </section>
+  );
+}
+
+function useCountUp(end: number, duration: number, inView: boolean) {
+  const [count, setCount] = useState(0);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (!inView || hasAnimated.current) return;
+    hasAnimated.current = true;
+    const startTime = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / (duration * 1000), 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * end));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [inView, end, duration]);
+
+  return count;
+}
+
+const metrics = [
+  {
+    value: 90,
+    prefix: "40–",
+    suffix: "hrs/mo",
+    description: "Time typically regained once lead, follow-up, and front-desk loops are clarified.",
+  },
+  {
+    value: 82,
+    prefix: "",
+    suffix: "%",
+    description: "Average perceived reduction in friction across lead handling and ops sequences reported by clients.",
+  },
+  {
+    value: 3,
+    prefix: "",
+    suffix: "× faster",
+    description: "How much faster teams gain adoption clarity and make confident system decisions once the new flow is mapped.",
+  },
+];
+
+function MetricsStrip() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  const count0 = useCountUp(metrics[0].value, 2, inView);
+  const count1 = useCountUp(metrics[1].value, 2.2, inView);
+  const count2 = useCountUp(metrics[2].value, 1.5, inView);
+  const counts = [count0, count1, count2];
+
+  return (
+    <div ref={ref} className="mt-16 md:mt-20" data-testid="profit-loop-metrics">
+      <motion.p
+        className="text-center text-[11px] font-mono tracking-[0.25em] uppercase text-zinc-500 mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        Clarity Delivered. Efficiency Unlocked.
+      </motion.p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
+        {metrics.map((metric, i) => (
+          <motion.div
+            key={i}
+            className="rounded-xl border p-6 md:p-8 text-center"
+            style={{
+              backgroundColor: OBSIDIAN,
+              borderColor: "rgba(0,242,255,0.1)",
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 + i * 0.15 }}
+            whileHover={{
+              borderColor: "rgba(0,242,255,0.3)",
+              boxShadow: "0 0 30px rgba(0,242,255,0.06)",
+            }}
+            data-testid={`metric-card-${i}`}
+          >
+            <div className="mb-3">
+              <span className="text-4xl md:text-5xl font-display font-bold text-white">
+                {metric.prefix}{counts[i]}
+              </span>
+              <span className="text-lg md:text-xl font-display text-slate-400 ml-1">
+                {metric.suffix}
+              </span>
+            </div>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              {metric.description}
+            </p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
   );
 }
