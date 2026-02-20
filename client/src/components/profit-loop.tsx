@@ -1082,11 +1082,12 @@ function MetricsStrip() {
         </motion.span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto px-4">
+      <div className="flex flex-col gap-6 max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {metrics.map((metric, i) => (
           <motion.div
             key={i}
-            className="group relative rounded-2xl border p-8 md:p-10 text-center transition-all duration-500 overflow-hidden"
+            className="group relative rounded-xl border p-5 md:p-6 text-center transition-all duration-500 overflow-hidden"
             style={{
               backgroundColor: "rgba(10,10,10,0.8)",
               borderColor: "rgba(110,224,247,0.08)",
@@ -1098,24 +1099,23 @@ function MetricsStrip() {
             whileHover={{
               borderColor: "rgba(110,224,247,0.25)",
               backgroundColor: "rgba(10,10,10,0.95)",
-              y: -5
+              y: -3
             }}
             data-testid={`metric-card-${i}`}
           >
             <div className="relative z-10">
-              <div className="mb-4 flex items-baseline justify-center gap-1">
-                <span className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight">
+              <div className="mb-2 flex items-baseline justify-center gap-1">
+                <span className="text-xl md:text-2xl font-display font-bold text-white tracking-tight">
                   {metric.prefix}{counts[i]}
                 </span>
-                <span className="text-xl md:text-2xl font-display font-medium text-[#6EE0F7]">
+                <span className="text-xs md:text-sm font-display font-medium text-[#6EE0F7]">
                   {metric.suffix}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 leading-relaxed max-w-[240px] mx-auto">
+              <p className="text-sm md:text-base text-slate-300 leading-relaxed max-w-none mx-auto">
                 {metric.description}
               </p>
             </div>
-
             <motion.div
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
               style={{
@@ -1124,6 +1124,7 @@ function MetricsStrip() {
             />
           </motion.div>
         ))}
+        </div>
       </div>
     </div>
   );
