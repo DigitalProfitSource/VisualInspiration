@@ -1,0 +1,64 @@
+Homepage "Profit Loop" Circuit Overhaul
+Role: Act as a Senior UI/UX Architect and Systems-Driven Conversion Specialist.
+Project: Homepage Reconstruction (Phase 1).
+Objective: Replace the three sections following the Hero—"What’s really costing you time...", "Scale Your Operations...", and "We Align Your Entire Customer Journey..."—with a single, 5-module SimpleSequence™ Profit Loop Focus-Center Carousel.
+
+1. BRAND IDENTITY & VISUAL SYSTEM
+Consistency: Maintain the existing SimpleSequence premium dark-mode brand vibe. Ensure all new elements feel like a native extension of the current design.
+
+Node Architecture: Design the modules as strict 1:1 Square glassmorphism components.
+
+Engineering Details: Each square node must feature a visible Input Port (left) and Output Port (right).
+
+The Connector: A single, horizontal Energy Line must thread through these ports. Implement a subtle, glowing "pulse" that travels along the line to signify a live, active system.
+
+Imagery: Center a stylized technical icon or image within each 1:1 node that represents the specific module's function.
+
+2. SECTION HEADERS
+Primary Headline: You’re getting leads. You just don’t have a system to maximize your marketing ROI.
+
+Secondary Headline: We align your entire customer journey into one intelligent flow.
+
+3. DESKTOP INTERACTION: FOCUS-CENTER CAROUSEL
+Mechanics: Implement an infinite horizontal carousel where the Center Node is the "Active" node.
+
+Active State: The center node should scale up by 20%, increase in brightness/glow, and trigger the update of the Spec Footer below.
+
+Interaction Hint: On initial page load, display a temporary, semi-transparent "fading finger" swipe gesture to indicate interactivity. Remove all traditional arrows or navigation dots.
+
+4. THE DYNAMIC SPEC FOOTER
+Placement: Create a dedicated horizontal area at the bottom of the section (where the "loop repeats" text currently sits).
+
+Logic: This area must dynamically update its content to match the module currently in center focus.
+
+Content Style: Present the specifications as a clean, categorized checklist.
+
+Animation: Use a Typewriter Effect for the text reveal when a new node enters focus to reinforce the "Systems-Driven" brand.
+
+5. MOBILE ADAPTATION
+Layout: Display a Sequential Stack where one 1:1 node is centered in the viewport at a time.
+
+Interaction: Users swipe to navigate. The Energy Line should run vertically down the left margin, lighting up as the user swipes.
+
+Spec Card: On mobile, place the detailed specification checklist card directly beneath the focused node rather than in a fixed footer.
+
+6. THE 5-MODULE PROFIT LOOP CONTENT
+Module 01: Universal Capture Hub
+
+Checklist: 24/7 AI Reception (Web & Google Business), AI-Ready SEO for search engine optimization, 24/7 AI Voice Phone Answering, Omnichannel Social Media & DM Intake.
+
+Module 02: Automation & Implementation
+
+Checklist: Instant CRM & Calendar Synchronization, Sub-60s "Speed-to-Lead" SMS/Voice Engagement, Automated Billing & Invoice Integration, Zero-Manual Data Entry Architecture.
+
+Module 03: Persistent Follow-Up
+
+Checklist: Automated Nurture for No-Shows and Canceled Appointments, Intelligent Quote Follow-Up Sequences, Behavior-Based Re-engagement Timing, Expired Estimate Recovery.
+
+Module 04: Reputation Flywheel
+
+Checklist: Automated 5-Star Review Collection, Internal Sentiment Detection (Intercept Negative Feedback), Reputation Velocity Tracking, Automated Response Templates.
+
+Module 05: Revenue Injection (DBR)
+
+Checklist: Database Reactivation Campaigns (Win-Backs), Dormant Contact Re-engagement, Seasonal & Lifecycle-Based Offers, Immediate Cash Flow Generation from Existing Assets.
