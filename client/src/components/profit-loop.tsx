@@ -1048,21 +1048,21 @@ const metrics = [
   },
   {
     value: 82,
-    prefix: "",
     suffix: "%",
+    prefix: "",
     description: "Average perceived reduction in friction across lead handling and ops sequences reported by clients.",
   },
   {
     value: 3,
-    prefix: "",
     suffix: "× faster",
+    prefix: "",
     description: "How much faster teams gain adoption clarity and make confident system decisions once the new flow is mapped.",
   },
 ];
 
 function MetricsStrip() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
   const count0 = useCountUp(metrics[0].value, 2, inView);
   const count1 = useCountUp(metrics[1].value, 2.2, inView);
@@ -1070,47 +1070,58 @@ function MetricsStrip() {
   const counts = [count0, count1, count2];
 
   return (
-    <div ref={ref} className="mt-16 md:mt-20" data-testid="profit-loop-metrics">
-      <motion.p
-        className="text-center text-[11px] font-mono tracking-[0.25em] uppercase text-zinc-500 mb-8"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        Clarity Delivered. Efficiency Unlocked.
-      </motion.p>
+    <div ref={ref} className="mt-20 md:mt-24" data-testid="profit-loop-metrics">
+      <div className="text-center mb-10">
+        <motion.span 
+          className="text-[10px] font-mono tracking-[0.3em] uppercase text-[#6EE0F7] opacity-90"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Clarity Delivered. Efficiency Unlocked.
+        </motion.span>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto px-4">
         {metrics.map((metric, i) => (
           <motion.div
             key={i}
-            className="rounded-xl border p-6 md:p-8 text-center"
+            className="group relative rounded-2xl border p-8 md:p-10 text-center transition-all duration-500 overflow-hidden"
             style={{
-              backgroundColor: OBSIDIAN,
-              borderColor: "rgba(110,224,247,0.1)",
+              backgroundColor: "rgba(10,10,10,0.8)",
+              borderColor: "rgba(110,224,247,0.08)",
             }}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 + i * 0.15 }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
             whileHover={{
-              borderColor: "rgba(110,224,247,0.3)",
-              boxShadow: "0 0 30px rgba(110,224,247,0.06)",
+              borderColor: "rgba(110,224,247,0.25)",
+              backgroundColor: "rgba(10,10,10,0.95)",
+              y: -5
             }}
             data-testid={`metric-card-${i}`}
           >
-            <div className="mb-3">
-              <span className="text-4xl md:text-5xl font-display font-bold text-white">
-                {metric.prefix}{counts[i]}
-              </span>
-              <span className="text-lg md:text-xl font-display text-slate-400 ml-1">
-                {metric.suffix}
-              </span>
+            <div className="relative z-10">
+              <div className="mb-4 flex items-baseline justify-center gap-1">
+                <span className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight">
+                  {metric.prefix}{counts[i]}
+                </span>
+                <span className="text-xl md:text-2xl font-display font-medium text-[#6EE0F7]">
+                  {metric.suffix}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 leading-relaxed max-w-[240px] mx-auto">
+                {metric.description}
+              </p>
             </div>
-            <p className="text-sm text-slate-400 leading-relaxed">
-              {metric.description}
-            </p>
+
+            <motion.div
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              style={{
+                background: "radial-gradient(circle at center, rgba(110,224,247,0.03) 0%, transparent 70%)"
+              }}
+            />
           </motion.div>
         ))}
       </div>
