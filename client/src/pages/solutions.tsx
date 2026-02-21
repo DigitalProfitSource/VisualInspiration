@@ -54,7 +54,7 @@ const modules: Module[] = [
     subtitle: "Your business shouldn't depend on who is sitting at the front desk when a prospect reaches out. We replace passive contact forms and unmonitored inboxes with an active, 24/7 capture architecture that standardizes every inquiry across Web, Voice, and Social.",
     icon: Radio,
     delivers: [
-      "AI-Ready Web-Presence Optimization — re-architect your web presence for next-gen AI search engines (ChatGPT, Perplexity, Google AI Overviews) so you're found before competitors",
+      "AI-Ready Web Optimization — re-architect your web presence for next-gen AI search engines (ChatGPT, Perplexity, Google AI Overviews) so you're found before competitors",
       "Omnichannel Intake across web forms, Google Business, social DMs, and SMS — every channel funnels into one system",
       "24/7 AI Receptionist that qualifies visitors, answers FAQs, and books appointments while you sleep",
       "AI Voice Phone Answering for after-hours and overflow calls with intelligent routing",
@@ -122,7 +122,7 @@ const modules: Module[] = [
   },
   {
     number: "05",
-    title: "Revenue Reactivation (DBR)",
+    title: "Revenue Injection",
     subtitle: "Your CRM is full of leads you've already paid for — sitting dormant. We mine your existing database to generate immediate cash flow from people who already know your name, with zero additional ad spend.",
     icon: Database,
     delivers: [
@@ -227,7 +227,7 @@ export default function Solutions() {
     <Layout>
       <SEO 
         title="Sequential Revenue™ | SimpleSequence"
-        description="The 5-Module Profit Loop for Service Businesses. Universal Capture Hub, Automation & Implementation, Persistent Follow-Up, Reputation Flywheel, and Revenue Reactivation (DBR)."
+        description="The 5-Module Profit Loop for Service Businesses. Universal Capture Hub, Automation & Implementation, Persistent Follow-Up, Reputation Flywheel, and Revenue Injection."
         jsonLd={solutionsSchema}
       />
 
@@ -246,27 +246,16 @@ export default function Solutions() {
             <h1 className="text-4xl md:text-6xl font-display font-medium mb-8 tracking-tight">
               Sequential <span className="text-primary">Revenue</span>™
             </h1>
-            <p className="text-xl md:text-2xl text-slate-300 leading-relaxed mb-8 max-w-3xl mx-auto">
-              Your business is currently losing revenue to friction you can't see. Fragmented tools, manual follow-up, and unmonitored channels are creating a "hidden drag" that slows your growth.
+            <p className="text-xl md:text-2xl text-slate-300 leading-relaxed mb-4 max-w-3xl mx-auto">
+              The 5-Module Profit Loop for Service Businesses
             </p>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="relative inline-block"
-            >
-              <div className="absolute -inset-4 bg-primary/20 blur-2xl rounded-full opacity-50" />
-              <div className="relative px-8 py-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl">
-                <p className="text-lg md:text-xl font-display text-white">
-                  Sequential <span className="text-primary font-semibold">Revenue</span>™ is the architecture that fixes it.
-                </p>
-              </div>
-            </motion.div>
-
-            <div className="mt-12">
-              <p className="text-lg text-slate-400 leading-relaxed max-w-3xl mx-auto">
-                This isn't a menu of disconnected services — it's an engineered system designed to eliminate the hidden drag on your operations and turn your entire customer journey into one intelligent flow. Every lead captured, every follow-up fired, every dollar of ad spend compounding instead of evaporating.
+            <p className="text-lg text-slate-400 leading-relaxed mb-8 max-w-3xl mx-auto">
+              Most service businesses don't have a marketing problem — they have a flow problem. Leads arrive and vanish. Follow-ups fall through. Revenue leaks from gaps nobody mapped.
+            </p>
+            <div className="p-6 rounded-2xl border border-white/10 bg-white/[0.02] max-w-2xl mx-auto">
+              <p className="text-slate-300 leading-relaxed">
+                <span className="text-white font-medium">Sequential Revenue™ is the architecture that fixes it.</span><br />
+                Five interconnected modules that eliminate the hidden drag on your operations and replace it with an intelligent flow — where every lead is captured, every follow-up fires, and every dollar of ad spend compounds instead of evaporating.
               </p>
             </div>
           </motion.div>
@@ -291,7 +280,7 @@ export default function Solutions() {
               Five Modules. <span className="text-primary">One Intelligent System.</span>
             </h2>
             <p className="text-lg text-slate-400 leading-relaxed">
-              This is not a menu of disconnected services — it's an engineered system. Each module reinforces the others. Capture feeds Automation. Follow-Up converts what Capture caught. Reputation compounds the results. Revenue Reactivation (DBR) mines what's already yours. Together, they create an operational engine that runs whether you're there or not.
+              This is not a menu of disconnected services — it's an engineered system. Each module reinforces the others. Capture feeds Automation. Follow-Up converts what Capture caught. Reputation compounds the results. Revenue Injection mines what's already yours. Together, they create an operational engine that runs whether you're there or not.
             </p>
           </motion.div>
 

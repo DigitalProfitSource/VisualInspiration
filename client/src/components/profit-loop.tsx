@@ -18,7 +18,7 @@ const profitNodes = [
     icon: Radio,
     specs: [
       "24/7 AI Reception (Web & Google Business)",
-      "AI-Ready Web-Presence Optimization for next-gen AI search engines",
+      "AI-Ready SEO for search engine optimization",
       "24/7 AI Voice Phone Answering",
       "Omnichannel Social Media & DM Intake"
     ],
@@ -64,7 +64,7 @@ const profitNodes = [
   },
   {
     id: "05",
-    title: "Revenue Reactivation (DBR)",
+    title: "Revenue Injection",
     subtitle: "Database Reactivation",
     context: "Re-engage your existing database to trigger immediate cash flow with zero additional ad spend.",
     icon: Database,
@@ -103,7 +103,7 @@ function Port({ side, isActive }: { side: "in" | "out"; isActive: boolean }) {
 
 function SwipeHint({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
-    const timer = setTimeout(onComplete, 5000);
+    const timer = setTimeout(onComplete, 3500);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
@@ -113,34 +113,33 @@ function SwipeHint({ onComplete }: { onComplete: () => void }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.5 }}
     >
       <motion.div
-        className="flex flex-col items-center gap-4 px-6 py-4 rounded-2xl"
-        style={{ backgroundColor: "rgba(10,10,10,0.6)", backdropFilter: "blur(8px)" }}
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: [0, 0.95, 0.95, 0], scale: [0.9, 1, 1, 0.95] }}
-        transition={{ duration: 5, times: [0, 0.12, 0.8, 1] }}
+        className="flex flex-col items-center gap-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.7, 0.7, 0] }}
+        transition={{ duration: 3.5, times: [0, 0.15, 0.75, 1] }}
       >
         <motion.svg
-          width="56"
-          height="56"
+          width="48"
+          height="48"
           viewBox="0 0 48 48"
           fill="none"
-          animate={{ x: [0, 50, 0] }}
+          animate={{ x: [0, 40, 0] }}
           transition={{ duration: 2, repeat: 1, ease: "easeInOut" }}
         >
           <path
             d="M24 4C20 4 17 7 17 11V22L14 19C12.5 17.5 10 17.5 8.5 19C7 20.5 7 23 8.5 24.5L19 35C20 36 21.5 37 23.5 37H32C36.4 37 40 33.4 40 29V20C40 18 38.5 16.5 36.5 16.5C35.5 16.5 34.7 16.9 34 17.5V15.5C34 13.5 32.5 12 30.5 12C29.5 12 28.7 12.4 28 13V11C28 9 26.5 7.5 24.5 7.5C24.3 7.5 24.2 7.5 24 7.6V11"
             stroke={TEAL}
-            strokeWidth="2"
+            strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            opacity="0.8"
+            opacity="0.6"
           />
         </motion.svg>
-        <span className="text-xs font-mono tracking-[0.2em] uppercase" style={{ color: TEAL, opacity: 0.8 }}>
-          Swipe to explore the loop
+        <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-zinc-500">
+          Swipe to navigate
         </span>
       </motion.div>
     </motion.div>
