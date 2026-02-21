@@ -246,12 +246,29 @@ export default function Solutions() {
             <h1 className="text-4xl md:text-6xl font-display font-medium mb-8 tracking-tight">
               Sequential <span className="text-primary">Revenue</span>™
             </h1>
-            <p className="text-xl md:text-2xl text-slate-300 leading-relaxed mb-4 max-w-3xl mx-auto">
-              The 5-Module Profit Loop for Service Businesses
+            <p className="text-xl md:text-2xl text-slate-300 leading-relaxed mb-8 max-w-3xl mx-auto">
+              Your business is currently losing revenue to friction you can't see. Fragmented tools, manual follow-up, and unmonitored channels are creating a "hidden drag" that slows your growth.
             </p>
-            <p className="text-lg text-slate-400 leading-relaxed mb-8 max-w-3xl mx-auto">
-              This isn't a menu of disconnected services — it's an engineered system designed to eliminate the hidden drag on your operations and turn your entire customer journey into one intelligent flow. Every lead captured, every follow-up fired, every dollar of ad spend compounding instead of evaporating.
-            </p>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="relative inline-block"
+            >
+              <div className="absolute -inset-4 bg-primary/20 blur-2xl rounded-full opacity-50" />
+              <div className="relative px-8 py-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl">
+                <p className="text-lg md:text-xl font-display text-white">
+                  Sequential <span className="text-primary font-semibold">Revenue</span>™ is the architecture that fixes it.
+                </p>
+              </div>
+            </motion.div>
+
+            <div className="mt-12">
+              <p className="text-lg text-slate-400 leading-relaxed max-w-3xl mx-auto">
+                This isn't a menu of disconnected services — it's an engineered system designed to eliminate the hidden drag on your operations and turn your entire customer journey into one intelligent flow. Every lead captured, every follow-up fired, every dollar of ad spend compounding instead of evaporating.
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
