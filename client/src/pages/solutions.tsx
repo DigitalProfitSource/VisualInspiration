@@ -302,7 +302,7 @@ export default function Solutions() {
               variants={fadeIn}
               className="relative p-6 rounded-2xl border border-white/10 bg-white/[0.02] max-w-2xl mx-auto overflow-hidden group"
             >
-              <BorderBeam size={200} duration={12} delay={9} colorFrom="#93C5FD" colorTo="#67E8F9" />
+              <BorderBeam size={400} duration={8} delay={0} colorFrom="#93C5FD" colorTo="#67E8F9" />
               <p className="text-slate-300 leading-relaxed relative z-10">
                 <span className="text-white font-medium">Sequential Revenue™ is the architecture that fixes it.</span><br />
                 Five interconnected modules that eliminate the hidden drag on your operations and replace it with an intelligent flow — where every lead is captured, every follow-up fires, and every dollar of ad spend compounds instead of evaporating.
