@@ -659,7 +659,7 @@ export default function Home() {
             </motion.div>
             
             <motion.h1 variants={fadeIn} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-medium tracking-tight mb-4 md:mb-6 leading-[1.1] text-balance">
-              Practical AI for <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Service Businesses</span>
+              Turn Your Disconnected Tools Into a <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Single Profit Engine</span>
             </motion.h1>
 
             <motion.p variants={fadeIn} className="text-base md:text-lg text-primary/80 mb-3 md:mb-4 font-medium">Empowering Service Businesses with Intelligent Automation</motion.p>
