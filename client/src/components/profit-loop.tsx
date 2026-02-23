@@ -1,6 +1,6 @@
 import { motion, AnimatePresence, useScroll, useTransform, useInView, PanInfo } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Radio, Zap, RefreshCw, Star, Database } from "lucide-react";
+import { Globe, Zap, RefreshCw, Star, Database } from "lucide-react";
 
 const TEAL = "#6EE0F7";
 const TEAL_DIM = "rgba(110,224,247,0.15)";
@@ -12,15 +12,15 @@ const NODE_COUNT = 5;
 const profitNodes = [
   {
     id: "01",
-    title: "Universal Capture Hub",
-    subtitle: "24/7 Intelligent Intake",
-    context: "Replaces the passive front desk with a 24/7 intelligent intake layer across every channel.",
-    icon: Radio,
+    title: "AI-Powered Presence",
+    subtitle: "Machine-Readable Standard",
+    context: "Re-architecting your web presence for the generative search era — so AI agents recommend you, not just rank you.",
+    icon: Globe,
     specs: [
-      "24/7 AI Reception (Web & Google Business)",
-      "AI-Ready SEO for search engine optimization",
-      "24/7 AI Voice Phone Answering",
-      "Omnichannel Social Media & DM Intake"
+      "AI-Ready Web-Presence Optimization (ChatGPT, Perplexity, Google AI Overviews)",
+      "Omnichannel Intake Architecture (GMB, Web, SMS, Social DMs)",
+      "24/7 AI Receptionist — Multimodal intent qualification & instant booking",
+      "AI Voice Phone Answering — Intelligent after-hours & overflow routing"
     ],
   },
   {
@@ -64,7 +64,7 @@ const profitNodes = [
   },
   {
     id: "05",
-    title: "Revenue Injection",
+    title: "Revenue Reactivation (DBR)",
     subtitle: "Database Reactivation",
     context: "Re-engage your existing database to trigger immediate cash flow with zero additional ad spend.",
     icon: Database,

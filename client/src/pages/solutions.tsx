@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { 
-  Radio, 
+  Globe, 
   Zap, 
   RefreshCw, 
   Star, 
@@ -50,20 +50,19 @@ interface Module {
 const modules: Module[] = [
   {
     number: "01",
-    title: "Universal Capture Hub",
-    subtitle: "Your business shouldn't depend on who is sitting at the front desk when a prospect reaches out. We replace passive contact forms and unmonitored inboxes with an active, 24/7 capture architecture that standardizes every inquiry across Web, Voice, and Social.",
-    icon: Radio,
+    title: "AI-Powered Presence",
+    subtitle: "Your business shouldn't depend on who is sitting at the front desk when a prospect reaches out. We re-architect your entire web presence for the generative search era — making your business machine-readable so AI agents recommend you, not just rank you.",
+    icon: Globe,
     delivers: [
-      "AI-Ready Web Optimization — re-architect your web presence for next-gen AI search engines (ChatGPT, Perplexity, Google AI Overviews) so you're found before competitors",
-      "Omnichannel Intake across web forms, Google Business, social DMs, and SMS — every channel funnels into one system",
-      "24/7 AI Receptionist that qualifies visitors, answers FAQs, and books appointments while you sleep",
-      "AI Voice Phone Answering for after-hours and overflow calls with intelligent routing",
-      "Lead enrichment with context and intent scoring before handoff to your team"
+      "AI-Ready Web-Presence Optimization — re-architect your site data to be \"Machine-Readable\" for ChatGPT, Perplexity, and Google AI Overviews so you're prioritized and recommended",
+      "Omnichannel Intake Architecture — consolidating GMB, Web, SMS, and Social DMs into a single logical stream",
+      "24/7 AI Receptionist — multimodal agents that qualify intent and book appointments instantly",
+      "AI Voice Phone Answering — intelligent routing for after-hours and overflow calls"
     ],
     outcomes: [
-      { title: "Stop Losing Leads", desc: "Every inquiry gets captured and responded to — no more silent drop-offs" },
+      { title: "The Machine-Readable Standard", desc: "Your business is not just ranked on Google — it's prioritized and recommended by AI search agents" },
       { title: "Always-On Coverage", desc: "24/7 intelligent response without adding headcount" },
-      { title: "AI-Visible Presence", desc: "Your business surfaces in AI-powered search results, not just traditional Google" }
+      { title: "Every Channel Captured", desc: "No inquiry falls through — Web, Voice, and Social all funnel into one system" }
     ]
   },
   {
@@ -122,7 +121,7 @@ const modules: Module[] = [
   },
   {
     number: "05",
-    title: "Revenue Injection",
+    title: "Revenue Reactivation (DBR)",
     subtitle: "Your CRM is full of leads you've already paid for — sitting dormant. We mine your existing database to generate immediate cash flow from people who already know your name, with zero additional ad spend.",
     icon: Database,
     delivers: [
@@ -227,7 +226,7 @@ export default function Solutions() {
     <Layout>
       <SEO 
         title="Sequential Revenue™ | SimpleSequence"
-        description="The 5-Module Profit Loop for Service Businesses. Universal Capture Hub, Automation & Implementation, Persistent Follow-Up, Reputation Flywheel, and Revenue Injection."
+        description="The 5-Module Profit Loop for Service Businesses. AI-Powered Presence, Automation & Implementation, Persistent Follow-Up, Reputation Flywheel, and Revenue Reactivation (DBR)."
         jsonLd={solutionsSchema}
       />
 
@@ -280,7 +279,7 @@ export default function Solutions() {
               Five Modules. <span className="text-primary">One Intelligent System.</span>
             </h2>
             <p className="text-lg text-slate-400 leading-relaxed">
-              This is not a menu of disconnected services — it's an engineered system. Each module reinforces the others. Capture feeds Automation. Follow-Up converts what Capture caught. Reputation compounds the results. Revenue Injection mines what's already yours. Together, they create an operational engine that runs whether you're there or not.
+              This is not a menu of disconnected services — it's an engineered system. Each module reinforces the others. Presence feeds Automation. Follow-Up converts what Presence caught. Reputation compounds the results. Revenue Reactivation mines what's already yours. Together, they create an operational engine that runs whether you're there or not.
             </p>
           </motion.div>
 

@@ -6,13 +6,13 @@ SimpleSequence is a consulting service website for an Operational AI Advisor hel
 
 **Site Pages:**
 - **Home** (`/`) - Landing page with hero, tech ticker, friction grid, customer journey, method (4 steps: Diagnose Friction, Map Sequences, Locate Leverage, Architect the Flow), industry carousel, AI Clarity Assessment, FAQ, testimonials, and founder section
-- **Solutions** (`/solutions`) - Sequential Revenue™ 5-Module Profit Loop: Universal Capture Hub, Automation & Implementation, Persistent Follow-Up, Reputation Flywheel, Revenue Injection — rendered in one continuous section with circuit beam effects and grid visualizations
+- **Solutions** (`/solutions`) - Sequential Revenue™ 5-Module Profit Loop: AI-Powered Presence, Automation & Implementation, Persistent Follow-Up, Reputation Flywheel, Revenue Reactivation (DBR) — rendered in one continuous section with circuit beam effects and grid visualizations
 - **Industries** (`/industries`) - 5 industry-specific sections with bidirectional scroll animations, varied card sizes, and jackpot-style number counters
 - **Process** (`/process`) - Client journey with three phases (Diagnostic & Audit, Build & Deploy, Optimize & Scale), "What Happens" vs "What You Experience" columns, Six Pillars reference section linking to Solutions, and FAQ accordion
 - **Offers** (`/offers`) - AI Clarity Assessment and full 5-tier pricing section (Blueprint, Tune-Up, Growth Architecture, Operating System, Ongoing Optimization Partner)
 
 **Content Alignment:**
-- **Six Pillars** are the core deliverables (Speed-to-Lead, AI Web Conversion, Database Reactivation, Ops Automation, Follow-Up Engine, Reputation Flywheel) — now rebranded on the Solutions page as the **Sequential Revenue™ 5-Module Profit Loop** (Universal Capture Hub, Automation & Implementation, Persistent Follow-Up, Reputation Flywheel, Revenue Injection)
+- **Six Pillars** are the core deliverables (Speed-to-Lead, AI Web Conversion, Database Reactivation, Ops Automation, Follow-Up Engine, Reputation Flywheel) — now rebranded on the Solutions page as the **Sequential Revenue™ 5-Module Profit Loop** (AI-Powered Presence, Automation & Implementation, Persistent Follow-Up, Reputation Flywheel, Revenue Reactivation (DBR))
 - **Process page** focuses on client journey (how we work with you)
 - **Solutions page** focuses on deliverables (what we deploy)
 - **Home Method section** bridges the conceptual approach with the Six Pillars
