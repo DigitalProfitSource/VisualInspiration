@@ -8,6 +8,7 @@ import {
   Database,
   CheckCircle2,
 } from "lucide-react";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { SEO } from "@/components/seo";
 import { Layout } from "@/components/layout";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
@@ -237,27 +238,76 @@ export default function Solutions() {
         <CircuitBeams className="opacity-50" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={{
+              initial: {},
+              animate: {
+                transition: {
+                  staggerChildren: 0.2
+                }
+              }
+            }}
             className="max-w-4xl mx-auto text-center"
           >
-            <span className="text-sm font-mono text-primary mb-6 block">THE 5-MODULE PROFIT LOOP</span>
-            <h1 className="text-4xl md:text-6xl font-display font-medium mb-8 tracking-tight">
-              Sequential <span className="text-primary">Revenue</span>™
-            </h1>
-            <p className="text-xl md:text-2xl text-slate-300 leading-relaxed mb-4 max-w-3xl mx-auto">
+            <motion.span 
+              variants={fadeIn}
+              className="text-sm font-mono text-primary mb-6 block uppercase tracking-widest"
+            >
+              THE 5-MODULE PROFIT LOOP
+            </motion.span>
+            <motion.h1 
+              variants={fadeIn}
+              className="relative inline-block text-4xl md:text-6xl font-display font-medium mb-8 tracking-tight"
+            >
+              <span className="relative z-10">Sequential </span>
+              <span className="relative z-10 text-primary">Revenue</span>
+              <span className="relative z-10">™</span>
+              <motion.div 
+                className="absolute -inset-x-4 -inset-y-2 bg-primary/5 blur-2xl rounded-full -z-10"
+                animate={{ 
+                  opacity: [0.3, 0.6, 0.3],
+                  scale: [0.95, 1.05, 0.95]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </motion.h1>
+            
+            <motion.p 
+              variants={fadeIn}
+              className="text-xl md:text-2xl text-slate-300 leading-relaxed mb-4 max-w-3xl mx-auto"
+            >
               The 5-Module Profit Loop for Service Businesses
-            </p>
-            <p className="text-lg text-slate-400 leading-relaxed mb-8 max-w-3xl mx-auto">
-              Most service businesses don't have a marketing problem — they have a flow problem. Leads arrive and vanish. Follow-ups fall through. Revenue leaks from gaps nobody mapped.
-            </p>
-            <div className="p-6 rounded-2xl border border-white/10 bg-white/[0.02] max-w-2xl mx-auto">
-              <p className="text-slate-300 leading-relaxed">
+            </motion.p>
+            
+            <motion.p 
+              variants={fadeIn}
+              className="text-lg text-slate-400 leading-relaxed mb-8 max-w-3xl mx-auto"
+            >
+              {["Most service businesses don't have a marketing problem —", "they have a flow problem.", "Leads arrive and vanish.", "Follow-ups fall through.", "Revenue leaks from gaps nobody mapped."].map((phrase, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, filter: "blur(0px)" }}
+                  transition={{ delay: 1 + (i * 0.2), duration: 0.5 }}
+                  className={i > 1 ? "block md:inline md:ml-1 text-slate-300 font-medium" : ""}
+                >
+                  {phrase}{" "}
+                </motion.span>
+              ))}
+            </motion.p>
+            
+            <motion.div 
+              variants={fadeIn}
+              className="relative p-6 rounded-2xl border border-white/10 bg-white/[0.02] max-w-2xl mx-auto overflow-hidden group"
+            >
+              <BorderBeam size={200} duration={12} delay={9} colorFrom="#93C5FD" colorTo="#67E8F9" />
+              <p className="text-slate-300 leading-relaxed relative z-10">
                 <span className="text-white font-medium">Sequential Revenue™ is the architecture that fixes it.</span><br />
                 Five interconnected modules that eliminate the hidden drag on your operations and replace it with an intelligent flow — where every lead is captured, every follow-up fires, and every dollar of ad spend compounds instead of evaporating.
               </p>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
