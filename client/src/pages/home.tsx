@@ -665,9 +665,7 @@ export default function Home() {
             <motion.p variants={fadeIn} className="text-base md:text-lg text-primary/80 mb-3 md:mb-4 font-medium">Empowering Service Businesses with Intelligent Automation</motion.p>
             
             {/* Hide on mobile, show on desktop */}
-            <motion.p variants={fadeIn} className="hidden md:block text-lg md:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">
-              Seamlessly integrate AI to boost productivity, not replace your people. Experience the future of collaborative work.
-            </motion.p>
+            <motion.p variants={fadeIn} className="hidden md:block text-lg md:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">We don’t just advise. We architect the digital backbone that aligns your entire customer journey into one intelligent, automated flow</motion.p>
           </motion.div>
         </motion.div>
         
