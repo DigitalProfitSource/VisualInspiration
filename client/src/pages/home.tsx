@@ -655,7 +655,7 @@ export default function Home() {
           >
             <motion.div variants={fadeIn} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono text-primary mb-6 md:mb-8 backdrop-blur-md shadow-[0_0_20px_-5px_rgba(var(--primary),0.3)]">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_var(--color-primary)]" />
-              Operational AI Advisor™
+              AI Implementation Advisor™
             </motion.div>
             
             <motion.h1 variants={fadeIn} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-medium tracking-tight mb-4 md:mb-6 leading-[1.1] text-balance">
@@ -1017,11 +1017,11 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-display font-semibold text-white">The Founder</h3>
-                  <p className="text-sm font-mono text-primary">OPERATIONAL AI ADVISOR™</p>
+                  <p className="text-sm font-mono text-primary">AI IMPLEMENTATION ADVISOR™</p>
                 </div>
               </div>
               <p className="text-slate-400 leading-relaxed mb-6">
-                Operational AI Advisor™ with a background in operations, performance, and AI adoption.
+                AI Implementation Advisor™ with a background in operations, performance, and AI adoption.
               </p>
               <div className="flex flex-wrap gap-3">
                 <div className="flex items-center gap-2 text-sm text-slate-300">
