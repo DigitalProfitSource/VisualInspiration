@@ -141,7 +141,7 @@ const modules: Module[] = [
 
 function ModuleCard({ module, index }: { module: Module; index: number }) {
   const Icon = module.icon;
-  const isReversed = index % 2 === 1;
+  const isReversed = index % 2 === 0;
   
   return (
     <motion.div
@@ -263,7 +263,7 @@ export default function Solutions() {
       </section>
 
       {/* Modules Section */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="pt-32 pb-24 relative overflow-hidden">
         <div className="absolute inset-0">
           <GridBeam showCenterBeam={true} gridOpacity={0.08} />
         </div>
