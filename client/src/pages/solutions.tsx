@@ -158,12 +158,12 @@ function ModuleCard({ module, index }: { module: Module; index: number }) {
           className={`lg:col-span-7 ${isReversed ? '' : 'lg:col-start-6'}`}
         >
           <div className="flex items-baseline gap-4 mb-4">
-            <div className="group w-14 h-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:scale-110 hover:border-primary/50 transition-all duration-300">
-              <span className="text-xl font-mono font-bold text-primary group-hover:drop-shadow-[0_0_8px_rgba(103,232,249,0.5)]">{module.number}</span>
-            </div>
+            <span className="text-xl font-mono font-bold text-primary/60">{module.number}</span>
             <div className="flex items-center gap-3">
               <h2 className="text-2xl md:text-3xl font-display font-medium text-white">{module.title}</h2>
-              <Icon className="w-6 h-6 text-primary/60" />
+              <div className="group w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:scale-110 hover:border-primary/50 transition-all duration-300">
+                <Icon className="w-5 h-5 text-primary group-hover:drop-shadow-[0_0_8px_rgba(103,232,249,0.5)]" />
+              </div>
             </div>
           </div>
           <p className="text-lg text-slate-400 leading-relaxed mb-8">

@@ -523,16 +523,7 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
 
                     <div className="relative z-10 p-5 h-full flex flex-col">
                       <div className="flex items-center justify-between mb-3">
-                        <motion.div
-                          className="w-10 h-10 rounded-lg flex items-center justify-center border"
-                          animate={{
-                            backgroundColor: props.isCenter ? "rgba(110,224,247,0.12)" : "rgba(110,224,247,0.04)",
-                            borderColor: props.isCenter ? "rgba(110,224,247,0.4)" : "rgba(110,224,247,0.1)",
-                            boxShadow: props.isCenter ? `0 0 16px rgba(110,224,247,0.25)` : "none",
-                          }}
-                        >
-                          <span className="text-sm font-mono font-bold" style={{ color: TEAL }}>{node.id}</span>
-                        </motion.div>
+                        <span className="text-sm font-mono font-bold text-zinc-500">{node.id}</span>
                         <motion.div
                           className="w-2 h-2 rounded-full"
                           animate={{
@@ -546,7 +537,16 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
                         <h4 className="text-sm font-display font-semibold leading-tight text-white">
                           {node.title}
                         </h4>
-                        <Icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "rgba(110,224,247,0.6)" }} />
+                        <motion.div
+                          className="w-7 h-7 rounded-md flex items-center justify-center border flex-shrink-0"
+                          animate={{
+                            backgroundColor: props.isCenter ? "rgba(110,224,247,0.12)" : "rgba(110,224,247,0.04)",
+                            borderColor: props.isCenter ? "rgba(110,224,247,0.4)" : "rgba(110,224,247,0.1)",
+                            boxShadow: props.isCenter ? `0 0 16px rgba(110,224,247,0.25)` : "none",
+                          }}
+                        >
+                          <Icon className="w-3.5 h-3.5" style={{ color: TEAL }} />
+                        </motion.div>
                       </div>
                       <span
                         className="text-[10px] font-mono block mb-2 text-slate-400"
