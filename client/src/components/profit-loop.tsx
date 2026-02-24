@@ -1,6 +1,8 @@
 import { motion, AnimatePresence, useScroll, useTransform, useInView, PanInfo } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Globe, Zap, RefreshCw, Star, Database } from "lucide-react";
+import aiPoweredPresenceImg from "@assets/AI_Powered_Precence_1771960529215.webp";
+import automationImplementationImg from "@assets/Automation_Implementation_1771968107967.webp";
 
 const TEAL = "#6EE0F7";
 const TEAL_DIM = "rgba(110,224,247,0.15)";
@@ -16,6 +18,7 @@ const profitNodes = [
     subtitle: "Machine-Readable Standard",
     context: "Re-architecting your web presence for the generative search era — so AI agents recommend you, not just rank you.",
     icon: Globe,
+    image: aiPoweredPresenceImg,
     specs: [
       "AI-Ready Web-Presence Optimization (ChatGPT, Perplexity, Google AI Overviews)",
       "Omnichannel Intake Architecture (GMB, Web, SMS, Social DMs)",
@@ -29,6 +32,7 @@ const profitNodes = [
     subtitle: "Zero-Manual Architecture",
     context: "Your CRM, calendars, and billing sync instantly — zero manual data entry, sub-60s lead response.",
     icon: Zap,
+    image: automationImplementationImg,
     specs: [
       "Instant CRM & Calendar Synchronization",
       "Sub-60s \"Speed-to-Lead\" SMS/Voice Engagement",
@@ -521,42 +525,71 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
                       </>
                     )}
 
-                    <div className="relative z-10 p-5 h-full flex flex-col">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-sm font-mono font-bold text-zinc-500">{node.id}</span>
-                        <motion.div
-                          className="w-2 h-2 rounded-full"
-                          animate={{
-                            backgroundColor: props.isCenter ? TEAL : TEAL_DIM,
-                            boxShadow: props.isCenter ? `0 0 10px ${TEAL_GLOW}` : "none",
-                          }}
+                    {node.image ? (
+                      <div className="relative z-10 w-full h-full">
+                        <img
+                          src={node.image}
+                          alt={node.title}
+                          className="w-full h-full object-cover"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+                        <div className="absolute top-3 left-4 flex items-center gap-2">
+                          <span className="text-sm font-mono font-bold text-zinc-400">{node.id}</span>
+                          <motion.div
+                            className="w-2 h-2 rounded-full"
+                            animate={{
+                              backgroundColor: props.isCenter ? TEAL : TEAL_DIM,
+                              boxShadow: props.isCenter ? `0 0 10px ${TEAL_GLOW}` : "none",
+                            }}
+                          />
+                        </div>
+                        <div className="absolute bottom-3 left-4 right-4">
+                          <h4 className="text-sm font-display font-semibold leading-tight text-white drop-shadow-lg">
+                            {node.title}
+                          </h4>
+                          <span className="text-[10px] font-mono text-slate-300/80 drop-shadow-lg">
+                            {node.subtitle}
+                          </span>
+                        </div>
                       </div>
+                    ) : (
+                      <div className="relative z-10 p-5 h-full flex flex-col">
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="text-sm font-mono font-bold text-zinc-500">{node.id}</span>
+                          <motion.div
+                            className="w-2 h-2 rounded-full"
+                            animate={{
+                              backgroundColor: props.isCenter ? TEAL : TEAL_DIM,
+                              boxShadow: props.isCenter ? `0 0 10px ${TEAL_GLOW}` : "none",
+                            }}
+                          />
+                        </div>
 
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <h4 className="text-sm font-display font-semibold leading-tight text-white">
-                          {node.title}
-                        </h4>
-                        <motion.div
-                          className="w-7 h-7 rounded-md flex items-center justify-center border flex-shrink-0"
-                          animate={{
-                            backgroundColor: props.isCenter ? "rgba(110,224,247,0.12)" : "rgba(110,224,247,0.04)",
-                            borderColor: props.isCenter ? "rgba(110,224,247,0.4)" : "rgba(110,224,247,0.1)",
-                            boxShadow: props.isCenter ? `0 0 16px rgba(110,224,247,0.25)` : "none",
-                          }}
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <h4 className="text-sm font-display font-semibold leading-tight text-white">
+                            {node.title}
+                          </h4>
+                          <motion.div
+                            className="w-7 h-7 rounded-md flex items-center justify-center border flex-shrink-0"
+                            animate={{
+                              backgroundColor: props.isCenter ? "rgba(110,224,247,0.12)" : "rgba(110,224,247,0.04)",
+                              borderColor: props.isCenter ? "rgba(110,224,247,0.4)" : "rgba(110,224,247,0.1)",
+                              boxShadow: props.isCenter ? `0 0 16px rgba(110,224,247,0.25)` : "none",
+                            }}
+                          >
+                            <Icon className="w-3.5 h-3.5" style={{ color: TEAL }} />
+                          </motion.div>
+                        </div>
+                        <span
+                          className="text-[10px] font-mono block mb-2 text-slate-400"
                         >
-                          <Icon className="w-3.5 h-3.5" style={{ color: TEAL }} />
-                        </motion.div>
+                          {node.subtitle}
+                        </span>
+                        <p className="text-xs leading-relaxed flex-shrink-0 text-slate-400">
+                          {node.context}
+                        </p>
                       </div>
-                      <span
-                        className="text-[10px] font-mono block mb-2 text-slate-400"
-                      >
-                        {node.subtitle}
-                      </span>
-                      <p className="text-xs leading-relaxed flex-shrink-0 text-slate-400">
-                        {node.context}
-                      </p>
-                    </div>
+                    )}
                   </motion.div>
                 </div>
               </motion.div>
@@ -785,44 +818,74 @@ function MobileCarousel() {
                       }}
                     />
 
-                    <div className="relative z-10 p-5 h-full flex flex-col">
-                      <div className="flex items-center justify-between mb-3">
-                        <span
-                          className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-500"
-                        >
-                          Node {node.id} / 05
-                        </span>
-                        <motion.div
-                          className="w-2 h-2 rounded-full"
-                          style={{ backgroundColor: TEAL }}
-                          animate={{ boxShadow: [`0 0 6px ${TEAL_GLOW}`, `0 0 14px ${TEAL_GLOW}`, `0 0 6px ${TEAL_GLOW}`] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
+                    {node.image ? (
+                      <div className="relative z-10 w-full h-full">
+                        <img
+                          src={node.image}
+                          alt={node.title}
+                          className="w-full h-full object-cover"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+                        <div className="absolute top-3 left-4 flex items-center gap-2">
+                          <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-400">
+                            Node {node.id} / 05
+                          </span>
+                          <motion.div
+                            className="w-2 h-2 rounded-full"
+                            style={{ backgroundColor: TEAL }}
+                            animate={{ boxShadow: [`0 0 6px ${TEAL_GLOW}`, `0 0 14px ${TEAL_GLOW}`, `0 0 6px ${TEAL_GLOW}`] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          />
+                        </div>
+                        <div className="absolute bottom-3 left-4 right-4">
+                          <h4 className="text-base font-display font-semibold mb-0.5 text-white drop-shadow-lg">
+                            {node.title}
+                          </h4>
+                          <span className="text-[10px] font-mono text-slate-300/80 drop-shadow-lg">
+                            {node.subtitle}
+                          </span>
+                        </div>
                       </div>
+                    ) : (
+                      <div className="relative z-10 p-5 h-full flex flex-col">
+                        <div className="flex items-center justify-between mb-3">
+                          <span
+                            className="text-[10px] font-mono tracking-[0.25em] uppercase text-zinc-500"
+                          >
+                            Node {node.id} / 05
+                          </span>
+                          <motion.div
+                            className="w-2 h-2 rounded-full"
+                            style={{ backgroundColor: TEAL }}
+                            animate={{ boxShadow: [`0 0 6px ${TEAL_GLOW}`, `0 0 14px ${TEAL_GLOW}`, `0 0 6px ${TEAL_GLOW}`] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          />
+                        </div>
 
-                      <motion.div
-                        className="w-11 h-11 rounded-lg flex items-center justify-center mb-3 border"
-                        style={{
-                          backgroundColor: "rgba(110,224,247,0.1)",
-                          borderColor: "rgba(110,224,247,0.3)",
-                          boxShadow: `0 0 20px rgba(110,224,247,0.15)`,
-                        }}
-                      >
-                        <Icon className="w-5 h-5" style={{ color: TEAL }} />
-                      </motion.div>
+                        <motion.div
+                          className="w-11 h-11 rounded-lg flex items-center justify-center mb-3 border"
+                          style={{
+                            backgroundColor: "rgba(110,224,247,0.1)",
+                            borderColor: "rgba(110,224,247,0.3)",
+                            boxShadow: `0 0 20px rgba(110,224,247,0.15)`,
+                          }}
+                        >
+                          <Icon className="w-5 h-5" style={{ color: TEAL }} />
+                        </motion.div>
 
-                      <h4 className="text-base font-display font-semibold mb-0.5 text-white">
-                        {node.title}
-                      </h4>
-                      <span
-                        className="text-[10px] font-mono block mb-2 text-slate-400"
-                      >
-                        {node.subtitle}
-                      </span>
-                      <p className="text-xs leading-relaxed text-slate-400">
-                        {node.context}
-                      </p>
-                    </div>
+                        <h4 className="text-base font-display font-semibold mb-0.5 text-white">
+                          {node.title}
+                        </h4>
+                        <span
+                          className="text-[10px] font-mono block mb-2 text-slate-400"
+                        >
+                          {node.subtitle}
+                        </span>
+                        <p className="text-xs leading-relaxed text-slate-400">
+                          {node.context}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
 
