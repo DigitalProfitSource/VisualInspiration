@@ -158,7 +158,7 @@ function SwipeHint({ onComplete }: { onComplete: () => void }) {
 
 function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; containerRef: React.RefObject<HTMLDivElement | null> }) {
   const [dims, setDims] = useState({ w: 0, h: 0 });
-  const NODE_BASE = 300;
+  const NODE_BASE = 370;
 
   useEffect(() => {
     const el = containerRef?.current;
@@ -185,9 +185,9 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
     if (isCenter) {
       x = 0; y = 60; scale = 1.15;
     } else if (isAdj) {
-      x = offset * 340; y = 60; scale = 0.82;
+      x = offset * 410; y = 60; scale = 0.82;
     } else {
-      x = (offset > 0 ? 1 : -1) * 180; y = -180; scale = 0.45;
+      x = (offset > 0 ? 1 : -1) * 220; y = -210; scale = 0.45;
     }
     return { cx: centerX + x, cy: centerY + y, scale };
   };
@@ -416,9 +416,9 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
     if (isCenter) {
       x = 0; y = 60; scale = 1.15; opacity = 1; zIndex = 50; blur = 0;
     } else if (isAdj) {
-      x = offset * 340; y = 60; scale = 0.82; opacity = 0.85; zIndex = 30; blur = 0;
+      x = offset * 410; y = 60; scale = 0.82; opacity = 0.85; zIndex = 30; blur = 0;
     } else {
-      x = (offset > 0 ? 1 : -1) * 180; y = -180; scale = 0.45; opacity = 0.55; zIndex = 10; blur = 0;
+      x = (offset > 0 ? 1 : -1) * 220; y = -210; scale = 0.45; opacity = 0.55; zIndex = 10; blur = 0;
     }
 
     return {
@@ -439,7 +439,7 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
       onMouseLeave={() => setIsAutoPlaying(true)}
       data-testid="profit-loop-desktop"
     >
-      <div ref={carouselAreaRef} className="relative h-[700px] overflow-hidden">
+      <div ref={carouselAreaRef} className="relative h-[820px] overflow-hidden">
         <ConnectorLines activeIndex={activeIndex} containerRef={carouselAreaRef} />
 
         <AnimatePresence>
@@ -464,8 +464,8 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
                 key={node.id}
                 className="absolute"
                 style={{
-                  width: "300px",
-                  height: "300px",
+                  width: "370px",
+                  height: "370px",
                   pointerEvents: props.pointerEvents,
                   filter: `blur(${props.blur}px)`,
                 }}
@@ -667,7 +667,7 @@ function SpecFooter({ activeIndex }: { activeIndex: number }) {
 
   return (
     <motion.div
-      className="mt-6 max-w-3xl mx-auto"
+      className="mt-2 max-w-3xl mx-auto"
       data-testid="spec-footer"
     >
       <div
