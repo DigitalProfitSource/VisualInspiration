@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
 import { 
   Smile, 
   Calculator, 
@@ -183,12 +184,14 @@ export function IndustryCarousel() {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <Button 
-            variant="outline" 
-            className="border-white/10 hover:border-primary/30 hover:bg-white/5 text-white px-8 h-12 rounded-full font-medium"
-          >
-            View All Case Studies <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
+          <Link href="/industries">
+            <Button 
+              variant="outline" 
+              className="border-white/10 hover:border-primary/30 hover:bg-white/5 text-white px-8 h-12 rounded-full font-medium"
+            >
+              View All Case Studies <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
