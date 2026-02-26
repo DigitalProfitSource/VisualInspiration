@@ -667,7 +667,7 @@ function SpecFooter({ activeIndex }: { activeIndex: number }) {
 
   return (
     <motion.div
-      className="mt-2 max-w-3xl mx-auto"
+      className="-mt-4 max-w-3xl mx-auto"
       data-testid="spec-footer"
     >
       <div
