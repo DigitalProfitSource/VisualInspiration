@@ -342,7 +342,6 @@ export default function Solutions() {
         description="Capture. Convert. Compound. The 3-Pillar Revenue Loop for Service Businesses. An AI-powered revenue engine that captures every lead, converts them automatically, and turns existing customers into compounding revenue."
         jsonLd={solutionsSchema}
       />
-
       {/* SECTION 1: Hero */}
       <section className="pt-40 pb-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary),0.08),transparent_50%)]" />
@@ -417,7 +416,6 @@ export default function Solutions() {
           </motion.div>
         </div>
       </section>
-
       {/* SECTION 2: Loop Visual */}
       <section className="py-16 relative">
         <div className="container mx-auto px-6 relative z-10">
@@ -431,7 +429,6 @@ export default function Solutions() {
           </motion.div>
         </div>
       </section>
-
       {/* SECTION 3: What We Install */}
       <section className="pt-16 pb-8 relative">
         <div className="container mx-auto px-6 relative z-10">
@@ -452,7 +449,6 @@ export default function Solutions() {
           </motion.div>
         </div>
       </section>
-
       {/* SECTION 4: The 3 Pillars */}
       <section className="pb-24 relative overflow-hidden">
         <div className="absolute inset-0">
@@ -466,7 +462,6 @@ export default function Solutions() {
           </div>
         </div>
       </section>
-
       {/* SECTION 5: The Qualifier */}
       <section className="py-24 relative border-t border-white/5">
         <div className="container mx-auto px-6 max-w-3xl text-center relative z-10">
@@ -485,7 +480,6 @@ export default function Solutions() {
           </motion.div>
         </div>
       </section>
-
       {/* SECTION 6: The Guarantee */}
       <section className="py-24 relative">
         <div className="container mx-auto px-6 max-w-3xl relative z-10">
@@ -521,7 +515,6 @@ export default function Solutions() {
           </motion.div>
         </div>
       </section>
-
       {/* SECTION 7: The Compound Effect */}
       <section className="py-24 relative border-t border-white/5">
         <div className="container mx-auto px-6 max-w-2xl relative z-10">
@@ -564,7 +557,6 @@ export default function Solutions() {
           </div>
         </div>
       </section>
-
       {/* SECTION 8: CTA */}
       <section className="py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
@@ -576,7 +568,7 @@ export default function Solutions() {
             transition={fadeInUp.transition}
           >
             <h2 className="text-4xl md:text-5xl font-display font-medium mb-8">
-              Ready to stop <span className="text-primary">leaking revenue</span>?
+              Ready to stop <span className="text-primary">losing revenue</span>?
             </h2>
             <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
               Book a free Sequential Revenue&trade; audit. We'll show you exactly where your leads are falling through &mdash; and how much &ldquo;found money&rdquo; is sitting in your database.
