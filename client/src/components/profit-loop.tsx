@@ -4,6 +4,8 @@ import { Globe, Zap, RefreshCw, Star, Database } from "lucide-react";
 import aiPoweredPresenceImg from "@assets/AI_Powered_Precence_1771960529215.webp";
 import automationImplementationImg from "@assets/Automation_Implementation_1771968107967.webp";
 import persistentFollowUpImg from "@assets/Persistent_Follow-Up_1772071745452.webp";
+import reputationFlywheelImg from "@assets/Reputation_Flywheel_1772072730522.webp";
+import revenueReactivationImg from "@assets/Revenue_Reactivation_1772074531525.webp";
 
 const TEAL = "#6EE0F7";
 const TEAL_DIM = "rgba(110,224,247,0.15)";
@@ -61,6 +63,7 @@ const profitNodes = [
     subtitle: "Bulletproofing Your Brand",
     context: "Automated 5-star review collection with internal interception of negative feedback.",
     icon: Star,
+    image: reputationFlywheelImg,
     specs: [
       "Automated 5-Star Review Collection",
       "Internal Sentiment Detection (Intercept Negative Feedback)",
@@ -74,6 +77,7 @@ const profitNodes = [
     subtitle: "Database Reactivation",
     context: "Re-engage your existing database to trigger immediate cash flow with zero additional ad spend.",
     icon: Database,
+    image: revenueReactivationImg,
     specs: [
       "Database Reactivation Campaigns (Win-Backs)",
       "Dormant Contact Re-engagement",
