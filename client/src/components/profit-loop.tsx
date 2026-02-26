@@ -3,6 +3,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { Globe, Zap, RefreshCw, Star, Database } from "lucide-react";
 import aiPoweredPresenceImg from "@assets/AI_Powered_Precence_1771960529215.webp";
 import automationImplementationImg from "@assets/Automation_Implementation_1771968107967.webp";
+import persistentFollowUpImg from "@assets/Persistent_Follow-Up_1772071745452.webp";
 
 const TEAL = "#6EE0F7";
 const TEAL_DIM = "rgba(110,224,247,0.15)";
@@ -46,6 +47,7 @@ const profitNodes = [
     subtitle: "Recovering Lost Revenue",
     context: "Automated nurture sequences that chase no-shows and stale quotes until they book or buy.",
     icon: RefreshCw,
+    image: persistentFollowUpImg,
     specs: [
       "Automated Nurture for No-Shows and Canceled Appointments",
       "Intelligent Quote Follow-Up Sequences",
