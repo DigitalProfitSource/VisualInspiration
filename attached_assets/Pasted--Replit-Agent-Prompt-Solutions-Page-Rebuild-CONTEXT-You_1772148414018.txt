@@ -1,0 +1,291 @@
+# Replit Agent Prompt — Solutions Page Rebuild
+
+## CONTEXT
+
+You are rebuilding the "Solutions" page for SimpleSequence (simplesequence.com). This page currently uses a 5-module structure that is being consolidated into a 3-pillar "Capture → Convert → Compound" loop. The site uses a dark theme (near-black backgrounds), teal/cyan accent color, clean sans-serif typography, and a professional SaaS aesthetic. Preserve the existing design system, color palette, fonts, spacing conventions, nav bar, and footer exactly. We are only changing the content and layout of the Solutions page body.
+
+Do NOT touch the Home page, Offers page, Industries page, Process page, nav bar, or footer. Only modify the Solutions page content area.
+
+---
+
+## CURRENT STATE (What exists now — remove all of this)
+
+The current Solutions page has:
+- A top section with eyebrow text "THE 5-MODULE PROFIT LOOP", an h1 "Sequential Revenue™", a subtitle "The 5-Module Profit Loop for Service Businesses", a paragraph about flow problems, and a dark card explaining the system
+- A "WHAT WE DEPLOY" section with heading "Five Modules. One Intelligent System." and a paragraph explaining how modules reinforce each other
+- Five numbered module sections (01–05), each with:
+  - A module title and icon
+  - A description paragraph
+  - A "WHAT WE DELIVER" list of 4–5 technical bullet points
+  - A "YOUR OUTCOMES" sidebar card with 3 outcomes each
+- The five modules are: AI-Powered Presence, Automation & Implementation, Persistent Follow-Up, Reputation Flywheel, Revenue Reactivation (DBR)
+
+**Delete all of this content.** We are replacing it entirely with the structure below.
+
+---
+
+## NEW PAGE STRUCTURE (Build this top-to-bottom)
+
+### SECTION 1: Hero / Hook
+
+**Layout:** Centered text, full-width, generous vertical padding (consistent with current hero spacing).
+
+- **Eyebrow text** (small, uppercase, teal/cyan, tracked-out — same style as current "THE 5-MODULE PROFIT LOOP"):
+  `THE SEQUENTIAL REVENUE™ SYSTEM`
+
+- **Headline h1** (large, bold, white — same styling as current "Sequential Revenue™" headline):
+  `Capture. Convert. Compound.`
+
+- **Subtitle** (medium weight, white or light gray, below the headline — same style as current subtitle):
+  `The 3-Pillar Revenue Loop for Service Businesses`
+
+- **Body paragraph** (centered, max-width ~700px, light gray text, same style as existing body paragraph):
+  `Most service businesses don't have a marketing problem — they have a flow problem. Leads arrive and vanish. Follow-ups fall through. Revenue leaks from gaps nobody mapped.`
+
+- **Dark card/box** (same style as the existing dark bordered card):
+  `We install an invisible, AI-powered revenue engine that captures every lead, converts them automatically, and turns your existing customers into compounding revenue — so your business grows whether you're there or not.`
+
+---
+
+### SECTION 2: The Loop Visual
+
+**Layout:** Centered, below the hero, with comfortable vertical spacing.
+
+Create a simple, clean visual diagram showing the 3-pillar loop. This should be an SVG or CSS-based graphic (not an image file) styled to match the dark theme with teal/cyan accents. The concept:
+
+```
+[ CAPTURE ] ——→ [ CONVERT ] ——→ [ COMPOUND ]
+      ↑                                |
+      └────────────────────────────────┘
+```
+
+- Three nodes/circles/rounded rectangles labeled "CAPTURE", "CONVERT", "COMPOUND"
+- Directional arrows connecting them left-to-right
+- A return arrow from COMPOUND back to CAPTURE (completing the loop)
+- Use teal/cyan for the nodes or their borders, white text for labels
+- Keep it minimal and elegant — this is a diagram, not an infographic
+- Below the diagram, a single centered line in light gray italic or muted text:
+  `Every customer compounds into new leads. The loop never stops.`
+
+---
+
+### SECTION 3: "What We Install" Intro
+
+**Layout:** Left-aligned or centered, same style as the current "WHAT WE DEPLOY" section.
+
+- **Eyebrow text** (same teal uppercase style): `WHAT WE INSTALL`
+- **Heading h2**: `Three Pillars. One Intelligent Loop.`
+- **Body paragraph** (max-width ~700px):
+  `This is not a menu of disconnected services — it's a single, integrated system. Each pillar feeds the next. Capture fills your pipeline. Convert squeezes every dollar from it. Compound turns results into more results. Together, they create a revenue loop that runs whether you're there or not.`
+
+---
+
+### SECTION 4: The 3 Pillars (This is the main content area)
+
+**Layout:** Each pillar gets a full section, alternating layout like the current modules do (content left / outcomes right, then swapped). Use the same card styling, spacing, and visual rhythm as the current 5-module sections — just with 3 sections instead of 5.
+
+Each pillar section contains:
+1. A pillar number + title + icon area
+2. An "Old Way vs. New Reality" contrast block (NEW — replaces the old "WHAT WE DELIVER" bullets)
+3. A "YOUR OUTCOMES" sidebar card (same style as current)
+4. A "Micro-Proof" stat line (NEW — a single bold proof point below the contrast block)
+5. A collapsible/expandable "Under the Hood" section listing technical deliverables (for prospects who want detail)
+
+---
+
+#### PILLAR 01: CAPTURE — The 24/7 AI Front Door
+
+**Pillar number + title:**
+- Number: `01` (teal, same style as current)
+- Title: `The 24/7 AI Front Door`
+- Subtitle/tagline (small, light gray): `Never miss a dollar.`
+
+**"Old Way vs. New Reality" block:**
+Use a two-column or stacked layout with clear visual distinction (e.g., the "Old Way" in a slightly muted/dim style, the "New Reality" in brighter/teal-accented style). This replaces the old bullet list.
+
+- **The Old Way:**
+  `Leads trickle in through your website, Google, text, and social. You reply hours later — if you reply at all. By then, they've already hired your competitor.`
+
+- **The New Reality:**
+  `The moment a prospect reaches out — anywhere, anytime — our AI qualifies them and books the appointment directly onto your calendar. Under 60 seconds. 24/7. No new hires needed.`
+
+**Bold summary line** (teal or white, slightly larger):
+  `You stop losing leads you're already paying for.`
+
+**Micro-Proof stat** (small, teal accent, positioned below the summary line):
+  `The average service business loses 40–60% of inbound leads to slow response times.`
+
+**"YOUR OUTCOMES" card** (same dark card style as current):
+- **Always-On Coverage** — 24/7 intelligent response without adding headcount
+- **Every Channel Captured** — Web, Voice, SMS, and Social all funnel into one system
+- **Sub-60 Second Response** — Leads engaged before they click away to a competitor
+
+**"Under the Hood" expandable/collapsible section:**
+Label: `Under the Hood →` (clickable, expands to show)
+When expanded, show these as a clean list:
+- AI-ready web presence optimization for ChatGPT, Perplexity, and Google AI Overviews
+- Omnichannel intake consolidation — GMB, Web, SMS, Social DMs into one stream
+- 24/7 AI receptionist — qualifies intent and books appointments instantly
+- AI voice phone answering — intelligent routing for after-hours and overflow
+
+---
+
+#### PILLAR 02: CONVERT — The Invisible Sales Rep
+
+**Pillar number + title:**
+- Number: `02` (teal)
+- Title: `The Invisible Sales Rep`
+- Subtitle/tagline: `Squeeze every dollar from your pipeline.`
+
+**"Old Way vs. New Reality" block:**
+
+- **The Old Way:**
+  `You send a quote, follow up once or twice, and forget about it. No-shows ghost you. Old estimates expire. Thousands of dollars sit rotting in your CRM — leads you already paid to acquire.`
+
+- **The New Reality:**
+  `Automation takes over the moment a lead enters your system. Instant engagement. Persistent follow-up. Quote recovery. No-show chasing. The system runs every sequence until the lead books, buys, or says no — and knows exactly when to hand off to a human.`
+
+**Bold summary line:**
+  `You stop doing follow-up manually — and close more because of it.`
+
+**Micro-Proof stat:**
+  `The average business leaves 30–40% of revenue on the table from inconsistent follow-up.`
+
+**"YOUR OUTCOMES" card:**
+- **No Lead Left Behind** — Every opportunity gets persistent, intelligent follow-up
+- **Recovered Revenue** — Win back no-shows, stale quotes, and dead leads automatically
+- **Zero Admin Burden** — Follow-up runs whether you're busy, on vacation, or asleep
+
+**"Under the Hood" expandable:**
+- Instant CRM & calendar synchronization
+- Sub-60s speed-to-lead SMS/voice engagement
+- Automated nurture sequences for no-shows and canceled appointments
+- Intelligent quote follow-up until they say yes, no, or not now
+- Behavior-based re-engagement timing
+- Expired estimate recovery campaigns
+- Human vs. AI decision points for smart escalation
+
+---
+
+#### PILLAR 03: COMPOUND — The Autopilot Flywheel
+
+**Pillar number + title:**
+- Number: `03` (teal)
+- Title: `The Compounding Engine`
+- Subtitle/tagline: `Turn past customers into future revenue.`
+
+*(Note: We are using "The Compounding Engine" instead of "The Autopilot Flywheel" to avoid naming collision with the old "Reputation Flywheel" module.)*
+
+**"Old Way vs. New Reality" block:**
+
+- **The Old Way:**
+  `You do great work, but asking for reviews feels awkward. Timing is off. Meanwhile, your CRM is full of past customers and old leads collecting dust — people who already know your name but haven't heard from you in months.`
+
+- **The New Reality:**
+  `Our system automatically drives 5-star reviews at the perfect post-service moment and intercepts negative feedback before it goes public. Simultaneously, targeted database reactivation campaigns turn dormant contacts into immediate cash — with zero additional ad spend.`
+
+**Bold summary line:**
+  `You stop ignoring the most profitable asset you already own — your existing customers and leads.`
+
+**Micro-Proof stat:**
+  `Reactivated leads convert at 3–5x the rate of cold prospects and cost a fraction to close.`
+
+**"YOUR OUTCOMES" card:**
+- **More 5-Star Reviews** — Consistent asks at the right time = consistent results
+- **Immediate Cash Flow** — Revenue from leads and customers you've already paid to acquire
+- **Compounding Growth** — Social proof and reactivation feed new leads back into Capture
+
+**"Under the Hood" expandable:**
+- Automated 5-star review collection triggered at optimal post-service moments
+- Internal sentiment detection — routes unhappy clients to resolution before public posting
+- Multi-platform review support (Google, Yelp, Facebook, industry-specific)
+- Database reactivation campaigns targeting high-value dormant contacts
+- Dormancy segmentation to identify who's most likely to re-engage
+- Seasonal and lifecycle-based reactivation offers
+- Multi-touch outreach: email, SMS, and ringless voicemail sequences
+- Automated billing and invoice integration tied to pipeline stage
+
+---
+
+### SECTION 5: The Qualifier
+
+**Layout:** Full-width section, centered text, with a subtle background change (slightly lighter dark, or a very subtle teal-tinted dark card) to visually separate it from the pillars above.
+
+- **Heading h2:** `Is This For You?`
+
+- **Body text** (centered, max-width ~650px):
+  `Sequential Revenue™ is specifically built for established service businesses with an active flow of leads and a history of past customers. If you're doing $50K+/month and have a database of past leads gathering dust, this system will pay for itself. If you don't have lead flow yet, we can't fix your flow — but if you have leads coming in that you're too busy to chase, we're your missing piece.`
+
+---
+
+### SECTION 6: The Guarantee
+
+**Layout:** Full-width, centered, slightly more visual prominence (perhaps a subtle teal border or glow on the card, consistent with the existing card at the top of the current page).
+
+- **Eyebrow text:** `OUR GUARANTEE`
+
+- **Heading h2:** `The "Found Money" Guarantee`
+
+- **Body text** (centered, max-width ~650px):
+  `We don't want your money if we haven't found yours first. Within the first 14 days of activation, we run a targeted Database Reactivation campaign on your existing contacts. If the revenue opportunity we surface doesn't cover our setup fee, you don't pay us a dime for the implementation — and you keep the lead intelligence report we generated. You either get a self-funding system, or you get a free audit of your database. You literally cannot lose.`
+
+---
+
+### SECTION 7: The Compound Effect (Future Vision)
+
+**Layout:** Centered text section, clean and simple, with a subtle timeline or milestone feel.
+
+- **Heading h2:** `The Compound Effect`
+
+- **Body text or a simple stacked timeline:**
+
+  `Month 1` — The system pays for itself. Dead leads reactivate. Your calendar fills.
+
+  `Month 3` — Your review count doubles. Your pipeline runs without you touching it.
+
+  `Month 6` — You're getting inbound leads from AI search your competitors don't even know exists.
+
+  `Month 12` — You've built a revenue engine that compounds every month. Your only regret is not starting sooner.
+
+Style this as a clean vertical timeline or a simple stacked list with teal accent numbers/markers. Keep it elegant and minimal — not a complex infographic.
+
+---
+
+### SECTION 8: CTA
+
+**Layout:** Full-width, centered, generous padding. Strong visual weight.
+
+- **Heading:** `Ready to stop leaking revenue?`
+- **Subtext:** `Book a free Sequential Revenue™ audit. We'll show you exactly where your leads are falling through — and how much "found money" is sitting in your database.`
+- **CTA Button** (teal/cyan background, dark text, same button style used elsewhere on the site): `Book Your Free Audit`
+
+Link the button to whatever booking/calendar link is currently used on the site. If no booking link exists yet, use `#book` as a placeholder anchor.
+
+---
+
+## IMPORTANT IMPLEMENTATION NOTES
+
+1. **Preserve the existing design system exactly.** Match colors, fonts, spacing, card styles, background treatments, and responsive behavior from the current site. This is a content restructure, not a redesign.
+
+2. **The "Under the Hood" sections must be collapsible.** Default state = collapsed, showing only the "Under the Hood →" label. On click, it expands to reveal the technical deliverable list with a smooth animation. This keeps the page clean for skimmers while giving detail-seekers what they want.
+
+3. **The "Old Way / New Reality" blocks need clear visual contrast.** Consider: muted/dim text or a subtle red-ish tint for "Old Way", and brighter/teal-accented text for "New Reality". Or use left-right columns with distinct background shading. The goal is the prospect instantly feels the contrast without reading a word.
+
+4. **The loop visual (Section 2) should be responsive.** On mobile, it can stack vertically with arrows pointing down, and the return arrow wrapping from bottom back to top.
+
+5. **Smooth scroll behavior.** If the page is long, consider anchor links from the nav or a sticky sub-nav within the page for "Capture | Convert | Compound" — but only if the site already uses this pattern elsewhere.
+
+6. **Do not create separate CSS/JS files if the current site uses a single-file or component-based architecture.** Match whatever pattern the codebase uses.
+
+7. **Test that the page renders correctly on mobile.** The alternating left-right layout of the pillars should stack cleanly on small screens.
+
+---
+
+## WHAT NOT TO DO
+
+- Do NOT change the nav bar, footer, or any other page
+- Do NOT change the site's color palette, fonts, or design tokens
+- Do NOT add any new dependencies or libraries unless absolutely required for the collapsible sections (and even then, prefer CSS-only or vanilla JS)
+- Do NOT use stock images or placeholder images — this page is text-and-diagram driven
+- Do NOT add pricing to this page — pricing lives on the Offers page (we'll build that separately)
+- Do NOT fabricate specific client names or company names in the micro-proof stats — keep them as industry-level statistics
