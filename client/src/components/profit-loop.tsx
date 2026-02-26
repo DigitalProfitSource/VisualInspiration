@@ -371,7 +371,6 @@ function ConnectorLines({ activeIndex, containerRef }: { activeIndex: number; co
 
 function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number; setActiveIndex: React.Dispatch<React.SetStateAction<number>> }) {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [showHint, setShowHint] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const carouselAreaRef = useRef<HTMLDivElement>(null);
 
@@ -387,8 +386,8 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") { navigate(-1); setIsAutoPlaying(false); setShowHint(false); }
-      if (e.key === "ArrowRight") { navigate(1); setIsAutoPlaying(false); setShowHint(false); }
+      if (e.key === "ArrowLeft") { navigate(-1); setIsAutoPlaying(false); }
+      if (e.key === "ArrowRight") { navigate(1); setIsAutoPlaying(false); }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -396,8 +395,8 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 60;
-    if (info.offset.x < -threshold) { navigate(1); setIsAutoPlaying(false); setShowHint(false); }
-    else if (info.offset.x > threshold) { navigate(-1); setIsAutoPlaying(false); setShowHint(false); }
+    if (info.offset.x < -threshold) { navigate(1); setIsAutoPlaying(false); }
+    else if (info.offset.x > threshold) { navigate(-1); setIsAutoPlaying(false); }
   };
 
   const getNodeProps = (index: number) => {
@@ -441,12 +440,6 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
     >
       <div ref={carouselAreaRef} className="relative h-[820px] overflow-hidden">
         <ConnectorLines activeIndex={activeIndex} containerRef={carouselAreaRef} />
-
-        <AnimatePresence>
-          {showHint && (
-            <SwipeHint onComplete={() => setShowHint(false)} />
-          )}
-        </AnimatePresence>
 
         <motion.div
           className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing"
@@ -613,7 +606,7 @@ function DesktopCarouselWithFooter() {
   return (
     <div className="hidden md:block">
       <DesktopCarousel activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
-      <SpecFooter activeIndex={activeIndex} />
+      <SpecFooter activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
     </div>
   );
 }
@@ -653,7 +646,7 @@ function TypewriterText({ text, delay = 0 }: { text: string; delay?: number }) {
   );
 }
 
-function SpecFooter({ activeIndex }: { activeIndex: number }) {
+function SpecFooter({ activeIndex, setActiveIndex }: { activeIndex: number; setActiveIndex: React.Dispatch<React.SetStateAction<number>> }) {
   const node = profitNodes[activeIndex];
   const prevIndexRef = useRef(activeIndex);
   const [key, setKey] = useState(0);
@@ -726,6 +719,23 @@ function SpecFooter({ activeIndex }: { activeIndex: number }) {
             </ul>
           </motion.div>
         </AnimatePresence>
+      </div>
+
+      <div className="flex justify-center gap-3 mt-5">
+        {profitNodes.map((_, i) => (
+          <motion.button
+            key={i}
+            className="w-2.5 h-2.5 rounded-full cursor-pointer"
+            animate={{
+              backgroundColor: i === activeIndex ? TEAL : "rgba(110,224,247,0.15)",
+              scale: i === activeIndex ? 1.3 : 1,
+              boxShadow: i === activeIndex ? `0 0 10px ${TEAL_GLOW}` : "none",
+            }}
+            transition={{ duration: 0.3 }}
+            onClick={() => setActiveIndex(i)}
+            data-testid={`profit-dot-${i}`}
+          />
+        ))}
       </div>
     </motion.div>
   );
