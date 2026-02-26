@@ -11,7 +11,6 @@ import {
 import { TechTicker } from "@/components/ui/tech-ticker";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
-import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { ProfitLoopSection } from "@/components/profit-loop";
 import { IndustryCaseStudies } from "@/components/industry-case-studies";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
@@ -721,8 +720,6 @@ export default function Home() {
       <IndustryCaseStudies />
       {/* Revenue-Focused System Section */}
       <RevenueSystemSection />
-      {/* Industry Results Carousel */}
-      <IndustryCarousel />
       {/* Revenue Friction Analysis */}
       <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />

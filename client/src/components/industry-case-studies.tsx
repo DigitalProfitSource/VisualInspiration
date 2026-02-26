@@ -90,7 +90,7 @@ export function IndustryCaseStudies() {
         </div>
 
         <div className="flex justify-center">
-          <Link href="/case-studies">
+          <Link href="/industries">
             <button className="group flex items-center gap-2 px-8 py-3 rounded-full border border-zinc-800 text-sm font-medium text-white hover:bg-white/5 transition-colors">
               View All Case Studies
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
