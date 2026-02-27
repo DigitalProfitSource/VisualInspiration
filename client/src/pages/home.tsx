@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "wouter";
-import { Activity, Layers, Zap, Brain, ShieldCheck, LayoutTemplate, ChevronDown, Quote, Route, RefreshCw, Handshake, TrendingUp, FileText, Globe, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, Shield, LayoutTemplate, ChevronDown, Quote, Route, RefreshCw, Handshake, TrendingUp, FileText, Globe, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -40,6 +40,13 @@ const fadeInUpViewport = {
   viewport: { once: true, margin: "-100px" } as const,
   transition: { duration: 0.7 }
 };
+
+const compoundTimeline = [
+  { month: "Month 1", text: "The system pays for itself. Dead leads reactivate. Your calendar fills." },
+  { month: "Month 3", text: "Your review count doubles. Your pipeline runs without you touching it." },
+  { month: "Month 6", text: "You're getting inbound leads from AI search your competitors don't even know exists." },
+  { month: "Month 12", text: "You've built a revenue engine that compounds every month. Your only regret is not starting sooner." },
+];
 
 const revenueFeatures = [
   {
@@ -900,6 +907,82 @@ export default function Home() {
       </section>
       {/* Industry Results Carousel */}
       <IndustryCarousel />
+      {/* "Found Money" Guarantee */}
+      <section className="py-24 relative">
+        <div className="container mx-auto px-6 max-w-3xl relative z-10">
+          <motion.div
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="text-center"
+          >
+            <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block">Our Guarantee</span>
+            <h2 className="text-3xl md:text-4xl font-display font-medium mb-8 text-white" data-testid="text-found-money-guarantee">
+              The &ldquo;Found Money&rdquo; Guarantee
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="relative p-8 rounded-2xl border border-primary/20 bg-primary/[0.02] overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <div className="flex items-start gap-4 mb-4">
+              <Shield className="w-8 h-8 text-primary flex-shrink-0 mt-1" />
+              <p className="text-slate-300 leading-relaxed">
+                We don't want your money if we haven't found yours first. Within the first 14 days of activation, we run a targeted Database Reactivation campaign on your existing contacts. If the revenue opportunity we surface doesn't cover our setup fee, you don't pay us a dime for the implementation &mdash; and you keep the lead intelligence report we generated.
+              </p>
+            </div>
+            <p className="text-white font-medium text-center mt-4">
+              You either get a self-funding system, or you get a free audit of your database. You literally cannot lose.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+      {/* The Compound Effect Timeline */}
+      <section className="py-24 relative border-t border-white/5">
+        <div className="container mx-auto px-6 max-w-2xl relative z-10">
+          <motion.div
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-display font-medium text-white" data-testid="text-compound-effect">
+              The Compound Effect
+            </h2>
+          </motion.div>
+          <div className="relative">
+            <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-primary/40 via-primary/20 to-transparent" />
+            <div className="space-y-10">
+              {compoundTimeline.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15, duration: 0.5 }}
+                  className="flex items-start gap-6 pl-1"
+                >
+                  <div className="relative flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-zinc-900 border-2 border-primary/40 flex items-center justify-center shadow-[0_0_15px_rgba(110,224,247,0.2)]">
+                      <span className="text-xs font-mono font-bold text-primary">{item.month.split(" ")[1]}</span>
+                    </div>
+                  </div>
+                  <div className="pt-2">
+                    <span className="text-xs font-mono text-primary/60 uppercase tracking-widest">{item.month}</span>
+                    <p className="text-slate-300 leading-relaxed mt-1">{item.text}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Section E: Loop CTA */}
       <section className="py-24 md:py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.06),transparent_50%)]" />
@@ -926,7 +1009,7 @@ export default function Home() {
                 See How It Works →
               </Link>
             </div>
-            <p className="text-sm text-muted-foreground mt-4">Full breakdown of all three pillars and our "Found Money" Guarantee.</p>
+            <p className="text-sm text-muted-foreground mt-4">See the full system on our Solutions page.</p>
           </motion.div>
         </div>
       </section>
