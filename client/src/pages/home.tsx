@@ -1,7 +1,7 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "wouter";
-import { Activity, Layers, Zap, Brain, ShieldCheck, Shield, LayoutTemplate, ChevronDown, Quote, Route, RefreshCw, Handshake, TrendingUp, FileText, Globe, ChevronRight, ArrowUpRight, Sparkles } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, Shield, LayoutTemplate, ChevronDown, Quote, Route, RefreshCw, Handshake, TrendingUp, FileText, Globe, ChevronRight, ArrowUpRight, Sparkles, Star } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -466,6 +466,287 @@ function StickyFeatureCard({ feature, index }: { feature: typeof revenueFeatures
   );
 }
 
+const bentoCards = [
+  {
+    icon: Globe,
+    title: "Lead Capture Architecture",
+    short: "Turn every visitor, caller, and message into a captured lead — automatically, 24/7.",
+    bullets: [
+      "AI-Ready Web Presence optimized for ChatGPT, Perplexity & AI Overviews",
+      "Omnichannel intake: web forms, GMB, SMS, social DMs — one pipeline",
+      "24/7 AI receptionist with instant qualification & booking",
+      "AI Voice answering for after-hours & overflow calls",
+    ],
+    outcome: "Every lead that touches your business gets captured and qualified — no more leads slipping through the cracks.",
+  },
+  {
+    icon: Zap,
+    title: "Automated Sales Pipeline",
+    short: "Turn captured leads into booked jobs with zero manual chasing.",
+    bullets: [
+      "Sub-60-second speed-to-lead engagement via SMS & voice",
+      "Automated quote follow-ups until they book or buy",
+      "CRM & calendar sync — zero manual data entry",
+      "Intelligent triage routes each lead to the right person instantly",
+    ],
+    outcome: "Your pipeline runs itself — leads get followed up, quotes get chased, and jobs get booked without your team lifting a finger.",
+  },
+  {
+    icon: RefreshCw,
+    title: "Persistent Follow-Up Engine",
+    short: "No more leads going cold because someone forgot. Consistent follow-up that actually happens.",
+    bullets: [
+      "Automated nurture for no-shows, canceled jobs & stale quotes",
+      "Behavior-based re-engagement timing across SMS, email & voice",
+      "Database reactivation campaigns to surface dormant revenue",
+      "Human + automation touchpoints aligned so nothing feels robotic",
+    ],
+    outcome: "Every qualified lead has a path from first contact to decision — not just a single reply that dies in someone's inbox.",
+  },
+  {
+    icon: Star,
+    title: "Reputation & Compounding Engine",
+    short: "Turn completed jobs into 5-star reviews, referrals, and repeat revenue — automatically.",
+    tags: ["Review Automation", "Revenue Compounding"],
+    bullets: [
+      "Automated 5-star review collection with negative sentiment interception",
+      "Seasonal & lifecycle-based re-engagement offers",
+      "Win-back campaigns for dormant customers",
+      "Reputation velocity tracking that feeds back into lead capture",
+    ],
+    outcome: "Your best customers become your best marketing channel — compounding your results month over month.",
+  },
+];
+
+const bentoMetrics = [
+  {
+    value: 90,
+    prefix: "40–",
+    suffix: "hrs/mo",
+    description: "Time typically regained once lead, follow-up, and front-desk loops are clarified.",
+  },
+  {
+    value: 82,
+    suffix: "%",
+    prefix: "",
+    description: "Average perceived reduction in friction across lead handling and ops sequences reported by clients.",
+  },
+  {
+    value: 3,
+    suffix: "× faster",
+    prefix: "",
+    description: "How much faster teams gain adoption clarity and make confident system decisions once the new flow is mapped.",
+  },
+];
+
+function useCountUp(end: number, duration: number, inView: boolean) {
+  const [count, setCount] = useState(0);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (!inView || hasAnimated.current) return;
+    hasAnimated.current = true;
+    const startTime = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / (duration * 1000), 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * end));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [inView, end, duration]);
+
+  return count;
+}
+
+function BentoCard({ card, index }: { card: typeof bentoCards[0]; index: number }) {
+  const [expanded, setExpanded] = useState(false);
+  const Icon = card.icon;
+
+  return (
+    <motion.div
+      className="relative rounded-xl border border-primary/10 bg-[#0A0A0A] overflow-hidden cursor-pointer group transition-colors duration-300 hover:border-primary/30"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      onClick={() => setExpanded(!expanded)}
+      onMouseEnter={() => setExpanded(true)}
+      onMouseLeave={() => setExpanded(false)}
+      data-testid={`bento-card-${index}`}
+    >
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        animate={{ opacity: expanded ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          background: "radial-gradient(ellipse at top left, rgba(110,224,247,0.04), transparent 60%)",
+        }}
+      />
+
+      <div className="relative z-10 p-6 md:p-8">
+        <div className="w-10 h-10 rounded-lg border border-primary/20 bg-primary/[0.06] flex items-center justify-center mb-5">
+          <Icon className="w-5 h-5 text-primary" />
+        </div>
+
+        <h3 className="text-lg md:text-xl font-display font-semibold text-white mb-2" data-testid={`bento-title-${index}`}>
+          {card.title}
+        </h3>
+
+        <p className="text-sm text-slate-400 leading-relaxed mb-4">
+          {card.short}
+        </p>
+
+        {(card as any).tags && !expanded && (
+          <div className="flex flex-wrap gap-2">
+            {(card as any).tags.map((tag: string, i: number) => (
+              <span key={i} className="text-xs font-mono px-3 py-1 rounded-full border border-primary/15 bg-primary/[0.04] text-slate-300">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <motion.div
+          initial={false}
+          animate={{
+            height: expanded ? "auto" : 0,
+            opacity: expanded ? 1 : 0,
+          }}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
+          className="overflow-hidden"
+        >
+          <div className="pt-2 border-t border-white/5">
+            <ul className="space-y-2.5 mt-4">
+              {card.bullets.map((bullet, i) => (
+                <motion.li
+                  key={i}
+                  className="flex items-start gap-2.5 text-sm text-slate-300"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={expanded ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+                  transition={{ delay: expanded ? i * 0.08 : 0, duration: 0.3 }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-2 flex-shrink-0" />
+                  {bullet}
+                </motion.li>
+              ))}
+            </ul>
+            <p className="mt-5 text-sm font-medium">
+              <span className="text-primary">Outcome:</span>{" "}
+              <span className="text-slate-300">{card.outcome}</span>
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+function BentoGridSection() {
+  const metricsRef = useRef<HTMLDivElement>(null);
+  const metricsInView = useInView(metricsRef, { once: true, margin: "-100px" });
+
+  const count0 = useCountUp(bentoMetrics[0].value, 2, metricsInView);
+  const count1 = useCountUp(bentoMetrics[1].value, 2.2, metricsInView);
+  const count2 = useCountUp(bentoMetrics[2].value, 1.5, metricsInView);
+  const counts = [count0, count1, count2];
+
+  return (
+    <section className="py-24 md:py-32 relative overflow-hidden" data-testid="bento-grid-section">
+      <div className="absolute inset-0 bg-white/[0.02]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.03),transparent_60%)]" />
+
+      <div className="container mx-auto px-6 relative z-10">
+        <motion.div
+          className="text-center max-w-4xl mx-auto mb-16"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+        >
+          <p className="text-lg md:text-xl text-slate-400 leading-relaxed max-w-3xl mx-auto mb-10">
+            Instead of scattered tools and manual workarounds, you get a clear map of how people, systems, and AI should work together from first touch to repeat business — therefore your operations run smoother and scale without extra headcount.
+          </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-white leading-tight" data-testid="text-bento-headline">
+            We Align Your Entire Customer Journey Into One{" "}
+            <span className="bg-gradient-to-r from-primary to-cyan-300 bg-clip-text text-transparent">
+              Intelligent Flow.
+            </span>
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-5 max-w-6xl mx-auto">
+          <div className="md:col-span-2">
+            <BentoCard card={bentoCards[0]} index={0} />
+          </div>
+          <div className="md:col-span-3">
+            <BentoCard card={bentoCards[1]} index={1} />
+          </div>
+          <div className="md:col-span-3">
+            <BentoCard card={bentoCards[2]} index={2} />
+          </div>
+          <div className="md:col-span-2">
+            <BentoCard card={bentoCards[3]} index={3} />
+          </div>
+        </div>
+
+        <div ref={metricsRef} className="mt-20 md:mt-24">
+          <div className="text-center mb-10">
+            <motion.span
+              className="text-[10px] font-mono tracking-[0.3em] uppercase text-primary opacity-90"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              Clarity Delivered. Efficiency Unlocked.
+            </motion.span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {bentoMetrics.map((metric, i) => (
+              <motion.div
+                key={i}
+                className="group relative rounded-xl border p-5 md:p-6 text-center transition-all duration-500 overflow-hidden"
+                style={{
+                  backgroundColor: "rgba(10,10,10,0.8)",
+                  borderColor: "rgba(110,224,247,0.08)",
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                whileHover={{
+                  borderColor: "rgba(110,224,247,0.25)",
+                  backgroundColor: "rgba(10,10,10,0.95)",
+                  y: -3,
+                }}
+                data-testid={`bento-metric-${i}`}
+              >
+                <div className="relative z-10">
+                  <div className="mb-2 flex items-baseline justify-center gap-1">
+                    <span className="text-xl md:text-2xl font-display font-bold text-white tracking-tight">
+                      {metric.prefix}{counts[i]}
+                    </span>
+                    <span className="text-xs md:text-sm font-display font-medium text-primary">
+                      {metric.suffix}
+                    </span>
+                  </div>
+                  <p className="text-sm md:text-base text-slate-300 leading-relaxed">
+                    {metric.description}
+                  </p>
+                </div>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "radial-gradient(circle at center, rgba(110,224,247,0.03) 0%, transparent 70%)" }} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function RevenueSystemSection() {
   const sectionRef = useRef<HTMLElement>(null);
   
@@ -905,6 +1186,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* Bento Grid — "We Align Your Entire Customer Journey" */}
+      <BentoGridSection />
       {/* Industry Results Carousel */}
       <IndustryCarousel />
       {/* "Found Money" Guarantee */}
