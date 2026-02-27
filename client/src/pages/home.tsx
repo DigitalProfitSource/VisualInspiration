@@ -647,7 +647,7 @@ function BentoGridSection() {
     <section className="py-24 md:py-32 relative" data-testid="bento-grid-section">
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          className="rounded-2xl border border-white/[0.06] bg-white/[0.015] p-8 md:p-12 lg:p-14 max-w-6xl mx-auto"
+          className="rounded-2xl border border-white/[0.06] bg-white/[0.015] p-8 md:p-12 lg:p-14"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -679,49 +679,49 @@ function BentoGridSection() {
               <BentoCard card={bentoCards[3]} index={3} />
             </div>
           </div>
-        </motion.div>
 
-        <div ref={metricsRef} className="mt-20 md:mt-24 max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <motion.span
-              className="text-[10px] font-mono tracking-[0.3em] uppercase text-primary opacity-90"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              Clarity Delivered. Efficiency Unlocked.
-            </motion.span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {bentoMetrics.map((metric, i) => (
-              <motion.div
-                key={i}
-                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 md:p-6 text-center transition-all duration-500 overflow-hidden hover:border-white/[0.12]"
-                initial={{ opacity: 0, y: 20 }}
+          <div ref={metricsRef} className="mt-10 pt-10 border-t border-white/[0.06]">
+            <div className="text-center mb-10">
+              <motion.span
+                className="text-[10px] font-mono tracking-[0.3em] uppercase text-primary opacity-90"
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                data-testid={`bento-metric-${i}`}
               >
-                <div className="relative z-10">
-                  <div className="mb-2 flex items-baseline justify-center gap-1">
-                    <span className="text-xl md:text-2xl font-display font-bold text-white tracking-tight">
-                      {metric.prefix}{counts[i]}
-                    </span>
-                    <span className="text-xs md:text-sm font-display font-medium text-primary">
-                      {metric.suffix}
-                    </span>
+                Clarity Delivered. Efficiency Unlocked.
+              </motion.span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {bentoMetrics.map((metric, i) => (
+                <motion.div
+                  key={i}
+                  className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 md:p-6 text-center transition-all duration-500 overflow-hidden hover:border-white/[0.12]"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  data-testid={`bento-metric-${i}`}
+                >
+                  <div className="relative z-10">
+                    <div className="mb-2 flex items-baseline justify-center gap-1">
+                      <span className="text-xl md:text-2xl font-display font-bold text-white tracking-tight">
+                        {metric.prefix}{counts[i]}
+                      </span>
+                      <span className="text-xs md:text-sm font-display font-medium text-primary">
+                        {metric.suffix}
+                      </span>
+                    </div>
+                    <p className="text-sm md:text-base text-slate-300 leading-relaxed">
+                      {metric.description}
+                    </p>
                   </div>
-                  <p className="text-sm md:text-base text-slate-300 leading-relaxed">
-                    {metric.description}
-                  </p>
-                </div>
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "radial-gradient(circle at center, rgba(110,224,247,0.03) 0%, transparent 70%)" }} />
-              </motion.div>
-            ))}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ background: "radial-gradient(circle at center, rgba(110,224,247,0.03) 0%, transparent 70%)" }} />
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
