@@ -768,7 +768,7 @@ export default function Home() {
               className="order-1 lg:order-2"
             >
               <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 01 · CAPTURE</span>
-              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-capture">The 24/7 AI Front Door</h3>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-capture">The 24/7 AI-Presence</h3>
               <p className="text-primary font-medium mb-4">Never miss a dollar.</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 Your marketing works, but your capture system is leaking. Leads reach out through your website, Google, text, and social — and get silence. By the time you reply, they've hired your competitor. We install an always-on AI layer that responds in under 60 seconds, qualifies intent, and books the appointment — 24/7, without adding staff.
