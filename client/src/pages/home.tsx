@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { TechTicker } from "@/components/ui/tech-ticker";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
-import { ContactFormDialog } from "@/components/contact-form-dialog";
+
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
@@ -390,7 +390,7 @@ export default function Home() {
           <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
-              <Link href="/assessment">
+              <Link href="/book">
                 <button 
                   data-testid="button-hero-cta"
                   className="group hover:shadow-sky-500/30 hover:shadow-2xl hover:scale-[1.02] hover:-translate-y-1 active:scale-95 transition-all duration-500 ease-out cursor-pointer hover:border-sky-400/60 overflow-hidden bg-gradient-to-br from-sky-900/40 via-black-900/60 to-black/80 border-sky-500/30 border-2 rounded-full py-3.5 px-8 relative shadow-2xl backdrop-blur-xl"
@@ -774,7 +774,7 @@ export default function Home() {
             <div className="relative group inline-block">
               <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500" />
               <Link
-                href="/assessment"
+                href="/book"
                 data-testid="button-loop-cta"
                 className="relative inline-flex items-center justify-center gap-2 bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
               >

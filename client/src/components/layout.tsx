@@ -143,12 +143,12 @@ function Header() {
                     ))}
                     <li className="pt-4">
                       <Link
-                        href="/assessment"
+                        href="/book"
                         onClick={closeMobileMenu}
                         className="block w-full py-3 px-4 bg-gradient-to-r from-primary to-cyan-400 text-black font-bold text-center rounded-lg hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
-                        data-testid="mobile-nav-assessment"
+                        data-testid="mobile-nav-book"
                       >
-                        Get Your AI Clarity Score
+                        Book Your Discovery Call
                       </Link>
                     </li>
                   </ul>

@@ -8,7 +8,7 @@ import {
   CheckCircle2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ContactFormDialog } from "@/components/contact-form-dialog";
+import { Link } from "wouter";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { SEO } from "@/components/seo";
 import { Layout } from "@/components/layout";
@@ -398,20 +398,15 @@ export default function Industries() {
             <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
               If you're a service business losing leads, struggling with follow-up, or feeling like operations could be smoother — we can help.
             </p>
-            <ContactFormDialog
-              source="industries-cta"
-              title="Schedule a Discovery Call"
-              description="Tell us about your business and we'll help you understand where operational clarity can make the biggest impact."
-              trigger={
-                <Button 
-                  size="lg"
-                  className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
-                  data-testid="button-industries-cta"
-                >
-                  Schedule a Discovery Call
-                </Button>
-              }
-            />
+            <Link href="/book">
+              <Button 
+                size="lg"
+                className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
+                data-testid="button-industries-cta"
+              >
+                Book Your Discovery Call
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>

@@ -13,6 +13,7 @@ import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import Assessment from "@/pages/assessment";
 import Results from "@/pages/results";
+import Book from "@/pages/book";
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/assessment" component={Assessment} />
       <Route path="/results" component={Results} />
+      <Route path="/book" component={Book} />
       <Route component={NotFound} />
     </Switch>
   );

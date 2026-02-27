@@ -10,6 +10,7 @@ SimpleSequence is a consulting service website for an AI Implementation Advisor 
 - **Industries** (`/industries`) - 5 industry-specific sections with bidirectional scroll animations, varied card sizes, and jackpot-style number counters
 - **Process** (`/process`) - Client journey with three phases (Diagnostic & Audit, Build & Deploy, Optimize & Scale), "What Happens" vs "What You Experience" columns, Six Pillars reference section linking to Solutions, and FAQ accordion
 - **Offers** (`/offers`) - AI Clarity Assessment and full 5-tier pricing section (Blueprint, Tune-Up, Growth Architecture, Operating System, Ongoing Optimization Partner)
+- **Book** (`/book`) - Discovery call booking page with inline contact form as placeholder (ready for calendar embed — Calendly, GHL, etc.)
 
 **Content Alignment:**
 - **Sequential Revenue™** is the core framework, now structured as a **3-Pillar Revenue Loop**: Capture (The 24/7 AI Front Door), Convert (The 24/7 Sales Rep), Compound (The Compounding Engine)

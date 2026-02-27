@@ -17,7 +17,7 @@ import {
   Star
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ContactFormDialog } from "@/components/contact-form-dialog";
+
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { GridBeam } from "@/components/ui/grid-beam";
 import { SEO, createFAQSchema } from "@/components/seo";
@@ -527,20 +527,15 @@ export default function Process() {
             <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
               It starts with a conversation. Tell us about your business and we'll show you what's possible.
             </p>
-            <ContactFormDialog
-              source="process-cta"
-              title="Start Your Journey"
-              description="Tell us about your business and we'll help you understand where to begin."
-              trigger={
-                <Button 
-                  size="lg"
-                  className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
-                  data-testid="button-process-cta"
-                >
-                  Schedule a Discovery Call
-                </Button>
-              }
-            />
+            <Link href="/book">
+              <Button 
+                size="lg"
+                className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
+                data-testid="button-process-cta"
+              >
+                Book Your Discovery Call
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>
