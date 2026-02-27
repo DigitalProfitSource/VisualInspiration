@@ -566,8 +566,8 @@ function BentoCard({ card, index }: { card: typeof bentoCards[0]; index: number 
 
   return (
     <motion.div
-      className="relative rounded-xl border border-primary/10 bg-[#0A0A0A] overflow-hidden cursor-pointer group transition-colors duration-300 hover:border-primary/30"
-      initial={{ opacity: 0, y: 30 }}
+      className="relative h-full rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden cursor-pointer transition-colors duration-300 hover:border-white/[0.12]"
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -576,33 +576,23 @@ function BentoCard({ card, index }: { card: typeof bentoCards[0]; index: number 
       onMouseLeave={() => setExpanded(false)}
       data-testid={`bento-card-${index}`}
     >
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{ opacity: expanded ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
-        style={{
-          background: "radial-gradient(ellipse at top left, rgba(110,224,247,0.04), transparent 60%)",
-        }}
-      />
-
-      <div className="relative z-10 p-6 md:p-8">
-        <div className="w-10 h-10 rounded-lg border border-primary/20 bg-primary/[0.06] flex items-center justify-center mb-5">
+      <div className="relative z-10 p-7 md:p-8">
+        <div className="w-10 h-10 rounded-lg border border-primary/20 bg-primary/[0.06] flex items-center justify-center mb-6">
           <Icon className="w-5 h-5 text-primary" />
         </div>
 
-        <h3 className="text-lg md:text-xl font-display font-semibold text-white mb-2" data-testid={`bento-title-${index}`}>
+        <h3 className="text-base md:text-lg font-display font-bold text-white mb-2" data-testid={`bento-title-${index}`}>
           {card.title}
         </h3>
 
-        <p className="text-sm text-slate-400 leading-relaxed mb-4">
+        <p className="text-sm text-slate-400 leading-relaxed">
           {card.short}
         </p>
 
         {(card as any).tags && !expanded && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mt-5">
             {(card as any).tags.map((tag: string, i: number) => (
-              <span key={i} className="text-xs font-mono px-3 py-1 rounded-full border border-primary/15 bg-primary/[0.04] text-slate-300">
+              <span key={i} className="text-xs font-mono px-3 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] text-slate-300">
                 {tag}
               </span>
             ))}
@@ -618,8 +608,8 @@ function BentoCard({ card, index }: { card: typeof bentoCards[0]; index: number 
           transition={{ duration: 0.35, ease: "easeInOut" }}
           className="overflow-hidden"
         >
-          <div className="pt-2 border-t border-white/5">
-            <ul className="space-y-2.5 mt-4">
+          <div className="pt-4 mt-4 border-t border-white/[0.06]">
+            <ul className="space-y-2.5">
               {card.bullets.map((bullet, i) => (
                 <motion.li
                   key={i}
@@ -654,45 +644,44 @@ function BentoGridSection() {
   const counts = [count0, count1, count2];
 
   return (
-    <section className="py-24 md:py-32 relative overflow-hidden" data-testid="bento-grid-section">
-      <div className="absolute inset-0 bg-white/[0.02]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.03),transparent_60%)]" />
-
+    <section className="py-24 md:py-32 relative" data-testid="bento-grid-section">
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
-          className="text-center max-w-4xl mx-auto mb-16"
+          className="rounded-2xl border border-white/[0.06] bg-white/[0.015] p-8 md:p-12 lg:p-14 max-w-6xl mx-auto"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7 }}
         >
-          <p className="text-lg md:text-xl text-slate-400 leading-relaxed max-w-3xl mx-auto mb-10">
-            Instead of scattered tools and manual workarounds, you get a clear map of how people, systems, and AI should work together from first touch to repeat business — therefore your operations run smoother and scale without extra headcount.
-          </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-white leading-tight" data-testid="text-bento-headline">
-            We Align Your Entire Customer Journey Into One{" "}
-            <span className="bg-gradient-to-r from-primary to-cyan-300 bg-clip-text text-transparent">
-              Intelligent Flow.
-            </span>
-          </h2>
+          <div className="text-center max-w-4xl mx-auto mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-white leading-tight mb-6" data-testid="text-bento-headline">
+              We Align Your Entire Customer Journey Into One{" "}
+              <span className="bg-gradient-to-r from-primary to-cyan-300 bg-clip-text text-transparent">
+                Intelligent Flow.
+              </span>
+            </h2>
+            <p className="text-base md:text-lg text-slate-400 leading-relaxed max-w-3xl mx-auto">
+              Instead of scattered tools and manual workarounds, you get a clear map of how people, systems, and AI should work together from first touch to repeat business—therefore your operations run smoother and scale without extra headcount.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-8 gap-4">
+            <div className="md:col-span-3">
+              <BentoCard card={bentoCards[0]} index={0} />
+            </div>
+            <div className="md:col-span-5">
+              <BentoCard card={bentoCards[1]} index={1} />
+            </div>
+            <div className="md:col-span-5">
+              <BentoCard card={bentoCards[2]} index={2} />
+            </div>
+            <div className="md:col-span-3">
+              <BentoCard card={bentoCards[3]} index={3} />
+            </div>
+          </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-5 max-w-6xl mx-auto">
-          <div className="md:col-span-2">
-            <BentoCard card={bentoCards[0]} index={0} />
-          </div>
-          <div className="md:col-span-3">
-            <BentoCard card={bentoCards[1]} index={1} />
-          </div>
-          <div className="md:col-span-3">
-            <BentoCard card={bentoCards[2]} index={2} />
-          </div>
-          <div className="md:col-span-2">
-            <BentoCard card={bentoCards[3]} index={3} />
-          </div>
-        </div>
-
-        <div ref={metricsRef} className="mt-20 md:mt-24">
+        <div ref={metricsRef} className="mt-20 md:mt-24 max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <motion.span
               className="text-[10px] font-mono tracking-[0.3em] uppercase text-primary opacity-90"
@@ -704,24 +693,15 @@ function BentoGridSection() {
             </motion.span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {bentoMetrics.map((metric, i) => (
               <motion.div
                 key={i}
-                className="group relative rounded-xl border p-5 md:p-6 text-center transition-all duration-500 overflow-hidden"
-                style={{
-                  backgroundColor: "rgba(10,10,10,0.8)",
-                  borderColor: "rgba(110,224,247,0.08)",
-                }}
+                className="group relative rounded-xl border border-white/[0.06] bg-white/[0.02] p-5 md:p-6 text-center transition-all duration-500 overflow-hidden hover:border-white/[0.12]"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                whileHover={{
-                  borderColor: "rgba(110,224,247,0.25)",
-                  backgroundColor: "rgba(10,10,10,0.95)",
-                  y: -3,
-                }}
                 data-testid={`bento-metric-${i}`}
               >
                 <div className="relative z-10">
