@@ -5,15 +5,15 @@
 SimpleSequence is a consulting service website for an Operational AI Advisor helping service-based businesses adopt AI strategically. The platform provides diagnostic clarity on operational friction, workflow mapping, and AI implementation guidance without selling tools or services. The site features a modern, dark-themed design with animated components, lead capture functionality, and industry-specific case studies showcasing business transformation metrics.
 
 **Site Pages:**
-- **Home** (`/`) - Landing page with hero (Sequential Revenue™ badge, "Single Profit Engine" headline), tech ticker, 3-pillar section (Capture/Convert/Compound with alternating two-column layouts and image placeholders), loop CTA, industry carousel, revenue system deep-dive, AI Clarity Assessment, FAQ, testimonials, and founder section
-- **Solutions** (`/solutions`) - Sequential Revenue™ 3-Pillar Revenue Loop: Capture (The 24/7 AI Front Door), Convert (The 24/7 Sales Rep), Compound (The Compounding Engine) — with Old Way/New Reality contrast blocks, collapsible "Under the Hood" sections, loop visual diagram, qualifier, "Found Money" Guarantee, Compound Effect timeline, and CTA
+- **Home** (`/`) - Landing page with hero (Sequential Revenue™ badge, "Single Profit Engine" headline), tech ticker, 3-pillar section (Capture/Convert/Compound with alternating two-column layouts and image placeholders), loop CTA, bento grid, industry carousel, Found Money Guarantee, Compound Effect timeline, Revenue Friction Analysis, AI Clarity Assessment, FAQ, testimonials, and founder section
+- **Solutions** (`/solutions`) - Sequential Revenue™ 3-Pillar Revenue Loop: Capture (The 24/7 AI-Presence), Convert (The 24/7 Sales Rep), Compound (The Compounding Engine) — with Old Way/New Reality contrast blocks, collapsible "Under the Hood" sections, loop visual diagram, qualifier, "Beyond Basic Automation" section (moved from Home — 4 sticky feature cards with diagrams), and CTA
 - **Industries** (`/industries`) - 5 industry-specific sections with bidirectional scroll animations, varied card sizes, and jackpot-style number counters
 - **Process** (`/process`) - Client journey with three phases (Diagnostic & Audit, Build & Deploy, Optimize & Scale), "What Happens" vs "What You Experience" columns, Six Pillars reference section linking to Solutions, and FAQ accordion
 - **Offers** (`/offers`) - AI Clarity Assessment and full 5-tier pricing section (Blueprint, Tune-Up, Growth Architecture, Operating System, Ongoing Optimization Partner)
 
 **Content Alignment:**
 - **Sequential Revenue™** is the core framework, now structured as a **3-Pillar Revenue Loop**: Capture (The 24/7 AI Front Door), Convert (The 24/7 Sales Rep), Compound (The Compounding Engine)
-- **Solutions page** focuses on the 3 pillars with Old Way/New Reality contrast, collapsible "Under the Hood" technical details, the "Found Money" Guarantee, and a Compound Effect timeline
+- **Solutions page** focuses on the 3 pillars with Old Way/New Reality contrast, collapsible "Under the Hood" technical details, and the "Beyond Basic Automation" deep-dive (4 sticky feature cards with diagrams). Pillars: Capture (The 24/7 AI-Presence), Convert (The 24/7 Sales Rep), Compound (The Compounding Engine).
 - **Process page** focuses on client journey (how we work with you)
 - **Home Profit Loop carousel** still shows the 5-module view as an operational detail layer
 - **Home Method section** bridges the conceptual approach (Diagnose, Map, Locate, Architect)

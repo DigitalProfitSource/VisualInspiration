@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "wouter";
 import { 
   Radio, 
@@ -7,20 +7,21 @@ import {
   TrendingUp,
   ChevronDown,
   CheckCircle2,
-  Shield,
   ArrowRight,
+  Route,
+  RefreshCw,
+  Globe,
+  Handshake,
 } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { SEO } from "@/components/seo";
 import { Layout } from "@/components/layout";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { GridBeam } from "@/components/ui/grid-beam";
+import aiReadyWebConversion from "@assets/Ai-Ready-Web-Conversion_1771370273472.webp";
+import triageRoutingDiagram from "@assets/generated_images/intelligent_triage_routing_workflow_diagram.png";
+import followUpDiagram from "@assets/generated_images/follow-up_automation_sequence_diagram.png";
+import integrationRoiDiagram from "@assets/generated_images/integration_roi_dashboard_diagram.png";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -59,7 +60,7 @@ interface Pillar {
 const pillars: Pillar[] = [
   {
     number: "01",
-    title: "The 24/7 AI Front Door",
+    title: "The 24/7 AI-Presence",
     tagline: "Never miss a dollar.",
     icon: Radio,
     oldWay: "Leads trickle in through your website, Google, and social. You reply hours later\u2014if at all. By the time you pick up the phone, they've already hired the competitor who answered first. You are literally paying for leads just to hand them to the guy down the street.",
@@ -317,12 +318,528 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
   );
 }
 
-const compoundTimeline = [
-  { month: "Month 1", text: "Database reactivation generates qualified responses. Past customers re-engage. Your calendar starts filling — helping offset your setup costs from day one." },
-  { month: "Month 3", text: "Your review count climbs. Your pipeline runs without you touching it. Early maintenance costs are being offset by reactivated revenue." },
-  { month: "Month 6", text: "You're getting inbound leads from AI search your competitors don't even know exists. The system compounds." },
-  { month: "Month 12", text: "You've built a revenue engine that compounds every month. Your only regret is not starting sooner." },
+const revenueFeatures = [
+  {
+    icon: Route,
+    title: "Intelligent Triage & Routing",
+    image: triageRoutingDiagram,
+    frontDescription: "Automatically classifies every inbound touchpoint—from phone calls and texts to web forms, funnels, and social DMs—and routes urgency so humans only handle high-value conversations.",
+    impact: "Every lead and call triaged before it hits your team",
+    backIntro: "Simple Sequence listens first, then decides what should happen next. Every call, message, or form fill is classified and routed through rules tuned to your business.",
+    backBullets: [
+      "Intake from phone, SMS, web chat, GHL funnels/forms, and social DMs",
+      "Detects new leads vs existing clients vs junk in real time",
+      "Flags urgent issues (same-day requests, emergencies, escalations)",
+      "Sends routine questions to AI and only escalates what truly needs a human",
+      "Logs every interaction back into your CRM/EMR or GoHighLevel so nothing slips through"
+    ],
+    backOutcome: "Fewer interruptions, faster response times, therefore a calmer front desk that still captures every opportunity across all channels."
+  },
+  {
+    icon: RefreshCw,
+    title: "Follow-Up & Rebooking Engine",
+    image: followUpDiagram,
+    frontDescription: "Your team means well—but follow-up depends on memory and mood. No-shows vanish. Estimates expire. Old leads rot.",
+    impact: "Every no-show, stale quote, and missed opportunity re-engaged automatically",
+    backIntro: "Simple Sequence keeps chasing—politely, automatically, and on your behalf—until they book or say no.",
+    backBullets: [
+      "Multi-step SMS and email sequences for every lead stage",
+      "Win-back campaigns for 'never booked' and no-show leads",
+      "Automatic estimate follow-up before they go cold",
+      "Personalized timing based on behavior and engagement",
+      "Logs every interaction back into your CRM"
+    ],
+    backOutcome: "Predictable cash flow, silent churn eliminated, and revenue recovered without adding headcount."
+  },
+  {
+    icon: Globe,
+    title: "AI-Ready Web Conversion Layer",
+    image: aiReadyWebConversion,
+    frontDescription: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
+    impact: "Your website becomes a 24/7 sales assistant",
+    backIntro: "Simple Sequence turns passive traffic into active conversations and booked appointments—even when you're offline.",
+    backBullets: [
+      "AI chat that qualifies and books appointments instantly",
+      "Captures intent from visitors who would otherwise bounce",
+      "Answers common questions without human involvement",
+      "Routes complex inquiries to the right team member",
+      "Works after hours when competitors are offline"
+    ],
+    backOutcome: "More conversions from existing traffic, paid ad ROI that actually compounds, and zero missed after-hours opportunities."
+  },
+  {
+    icon: Handshake,
+    title: "White-Glove Integration & ROI",
+    image: integrationRoiDiagram,
+    frontDescription: "We handle the plumbing—phones, calendars, CRM/EMR, and automation—so critical workflows run in the background, held together by your people, not duct tape.",
+    impact: "Critical workflows running consistently with human oversight maintained",
+    backIntro: "You don't need another disconnected tool. You need a system that reduces manual load while keeping human judgment where it matters most.",
+    backBullets: [
+      "Done-for-you setup across phone systems, chat widgets, GHL pipelines, calendars, and EMR/CRMs",
+      "Critical workflows running consistently in the background with zero intervention",
+      "Reduced manual load so your team focuses on judgment calls, not data entry",
+      "Dashboards that track calls handled, leads captured, show-rate, and projected revenue",
+      "System oversight preserved—humans stay in control of what matters"
+    ],
+    backOutcome: "A front desk you can actually measure and improve, with workflows that don't break when you step away—and real-time visibility into what's working."
+  }
 ];
+
+function RevenueFeatureRow({ feature, index }: { feature: typeof revenueFeatures[0]; index: number }) {
+  const isReversed = index % 2 === 1;
+  
+  return (
+    <section 
+      className="w-full relative"
+      data-testid={`feature-section-${index}`}
+    >
+      <div className={`hidden md:flex items-start gap-12 lg:gap-20 ${isReversed ? 'flex-row-reverse' : ''}`}>
+        <div className="flex-1 space-y-6">
+          <div className="flex items-center gap-4">
+            <motion.div 
+              className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
+              animate={{ 
+                boxShadow: [
+                  "0 0 20px rgba(103,232,249,0.2)",
+                  "0 0 35px rgba(103,232,249,0.4)",
+                  "0 0 20px rgba(103,232,249,0.2)"
+                ]
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <feature.icon className="w-7 h-7 text-primary" />
+            </motion.div>
+            <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
+              {feature.title}
+            </h3>
+          </div>
+          
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            {feature.frontDescription}
+          </p>
+          
+          <div className="pt-4 border-t border-white/10">
+            <div className="flex items-center gap-2 mb-2">
+              <motion.div 
+                className="w-2.5 h-2.5 rounded-full bg-primary"
+                animate={{ 
+                  scale: [1, 1.5, 1],
+                  boxShadow: [
+                    "0 0 5px rgba(103,232,249,0.5)",
+                    "0 0 15px rgba(103,232,249,1)",
+                    "0 0 5px rgba(103,232,249,0.5)"
+                  ]
+                }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+              <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+            </div>
+            <p className="text-primary font-medium text-lg">{feature.impact}</p>
+          </div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              {feature.backIntro}
+            </p>
+          </motion.div>
+          
+          <motion.ul 
+            className="space-y-2"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            {feature.backBullets.map((bullet, i) => (
+              <motion.li 
+                key={i} 
+                className="flex items-start gap-2 text-sm text-slate-300"
+                variants={{
+                  hidden: { opacity: 0, x: -15 },
+                  visible: { 
+                    opacity: 1, 
+                    x: 0,
+                    transition: { delay: i * 0.1, duration: 0.4 }
+                  }
+                }}
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
+                <span>{bullet}</span>
+              </motion.li>
+            ))}
+          </motion.ul>
+          
+          <motion.div 
+            className="pt-3 border-t border-primary/20"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <p className="text-sm text-primary/90 font-medium leading-relaxed">
+              <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+            </p>
+          </motion.div>
+        </div>
+        
+        <div className="flex-1 relative">
+          <div className="sticky top-24">
+            <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50">
+              <motion.div 
+                className="absolute inset-0 bg-primary/10 blur-[40px] rounded-full"
+                animate={{ 
+                  opacity: [0.3, 0.6, 0.3],
+                  scale: [0.9, 1.05, 0.9]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <img 
+                src={feature.image} 
+                alt={feature.title}
+                className="relative z-10 w-full h-auto object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="md:hidden">
+        <div className="w-full p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-900/70 to-zinc-950/90 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 blur-[60px] rounded-full pointer-events-none" />
+          
+          <div className="relative mb-5 rounded-xl overflow-hidden border border-white/10">
+            <img 
+              src={feature.image} 
+              alt={feature.title}
+              className="w-full h-auto"
+            />
+          </div>
+          
+          <div className="w-12 h-12 mb-4 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30">
+            <feature.icon className="w-6 h-6 text-primary" />
+          </div>
+          
+          <h3 className="text-lg font-display font-semibold mb-3 text-white relative z-10">
+            {feature.title}
+          </h3>
+          <p className="text-muted-foreground leading-relaxed mb-4 relative z-10 text-sm">
+            {feature.frontDescription}
+          </p>
+          
+          <div className="pt-3 border-t border-white/10 relative z-10 mb-5">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(103,232,249,0.8)]" />
+              <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+            </div>
+            <p className="text-primary font-medium text-sm">{feature.impact}</p>
+          </div>
+          
+          <p className="text-muted-foreground text-sm leading-relaxed mb-4 relative z-10">
+            {feature.backIntro}
+          </p>
+          
+          <ul className="space-y-2 mb-4 relative z-10">
+            {feature.backBullets.map((bullet, i) => (
+              <li 
+                key={i} 
+                className="flex items-start gap-2 text-sm text-slate-300"
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+          
+          <div className="pt-3 border-t border-primary/20 relative z-10">
+            <p className="text-sm text-primary/90 font-medium leading-relaxed">
+              <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+function StickyFeatureCard({ feature, index }: { feature: typeof revenueFeatures[0]; index: number }) {
+  const isReversed = index % 2 === 1;
+  
+  return (
+    <div 
+      className="relative py-16 lg:py-24"
+      data-testid={`sticky-feature-${index}`}
+    >
+      <div className="container mx-auto px-6 lg:px-12">
+        <div className={`flex gap-8 lg:gap-16 items-start ${isReversed ? 'flex-row-reverse' : ''}`}>
+          <div className="flex-1 py-8">
+            <div className="max-w-xl space-y-6">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5 }}
+                className="flex items-center gap-4"
+              >
+                <motion.div 
+                  className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center border border-primary/30"
+                  animate={{ 
+                    boxShadow: [
+                      "0 0 20px rgba(103,232,249,0.2)",
+                      "0 0 35px rgba(103,232,249,0.4)",
+                      "0 0 20px rgba(103,232,249,0.2)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <feature.icon className="w-7 h-7 text-primary" />
+                </motion.div>
+                <h3 className="text-2xl lg:text-3xl font-display font-semibold text-white">
+                  {feature.title}
+                </h3>
+              </motion.div>
+              
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-lg text-muted-foreground leading-relaxed"
+              >
+                {feature.frontDescription}
+              </motion.p>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="pt-4 border-t border-white/10"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <motion.div 
+                    className="w-2.5 h-2.5 rounded-full bg-primary"
+                    animate={{ 
+                      scale: [1, 1.5, 1],
+                      boxShadow: [
+                        "0 0 5px rgba(103,232,249,0.5)",
+                        "0 0 15px rgba(103,232,249,1)",
+                        "0 0 5px rgba(103,232,249,0.5)"
+                      ]
+                    }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
+                  <span className="text-xs font-mono text-primary uppercase tracking-wider">Impact</span>
+                </div>
+                <p className="text-primary font-medium text-lg">{feature.impact}</p>
+              </motion.div>
+              
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-muted-foreground text-sm leading-relaxed"
+              >
+                {feature.backIntro}
+              </motion.p>
+              
+              <ul className="space-y-2">
+                {feature.backBullets.map((bullet, i) => (
+                  <motion.li 
+                    key={i} 
+                    className="flex items-start gap-2 text-sm text-slate-300"
+                    initial={{ opacity: 0, x: -15 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-30px" }}
+                    transition={{ delay: 0.25 + i * 0.08, duration: 0.4 }}
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0 shadow-[0_0_6px_rgba(103,232,249,0.8)]" />
+                    <span>{bullet}</span>
+                  </motion.li>
+                ))}
+              </ul>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="pt-3 border-t border-primary/20"
+              >
+                <p className="text-sm text-primary/90 font-medium leading-relaxed">
+                  <span className="text-primary font-semibold">Outcome:</span> {feature.backOutcome}
+                </p>
+              </motion.div>
+            </div>
+          </div>
+          
+          <div className="flex-1 relative">
+            <div className="sticky top-32 pt-8">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6 }}
+                className="relative"
+              >
+                <motion.div 
+                  className="absolute inset-0 bg-primary/20 blur-[60px] rounded-full"
+                  animate={{ 
+                    opacity: [0.3, 0.6, 0.3],
+                    scale: [0.95, 1.05, 0.95]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/50">
+                  <img 
+                    src={feature.image} 
+                    alt={feature.title}
+                    className="relative z-10 w-full h-auto object-cover"
+                  />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RevenueSystemSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  return (
+    <section ref={sectionRef} className="relative py-20 lg:py-32">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 opacity-[0.04]">
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.4)_1px,transparent_1px)] bg-[size:24px_24px]" />
+        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.04),transparent_50%)]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px]">
+          <div className="w-full h-full bg-primary/[0.03] blur-[150px] rounded-full" />
+        </div>
+        <CircuitBeams className="opacity-20" />
+      </div>
+      
+      <div className="hidden md:block relative z-10">
+        <div className="py-20 lg:py-32">
+          <motion.div 
+            initial={{ opacity: 0, y: 60, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, type: "spring", stiffness: 80 }}
+            className="text-center max-w-5xl mx-auto px-6"
+          >
+            <motion.div 
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/30 bg-primary/10 text-xs font-mono text-primary mb-10"
+              animate={{ 
+                boxShadow: [
+                  "0 0 20px rgba(103,232,249,0.2)",
+                  "0 0 40px rgba(103,232,249,0.4)",
+                  "0 0 20px rgba(103,232,249,0.2)"
+                ]
+              }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <motion.span 
+                className="w-2 h-2 rounded-full bg-primary"
+                animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              />
+              Beyond Basic Automation
+            </motion.div>
+            
+            <h2 className="text-4xl md:text-5xl lg:text-7xl font-display font-semibold tracking-tight mb-8 leading-[1.05]">
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                Not Just an AI Receptionist.
+              </motion.span>
+              <br />
+              <motion.span 
+                className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-300 to-cyan-300 bg-[length:200%_auto]"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                animate={{ backgroundPosition: ["0% center", "200% center"] }}
+                style={{ backgroundSize: "200% auto" }}
+              >
+                A Revenue-Focused System.
+              </motion.span>
+            </h2>
+            
+            <motion.p 
+              className="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+            >
+              Most tools just "pick up." Simple Sequence decides what to do with every interaction—whether it starts as a call, text, web form, chat, or DM—therefore maximizing booking value and protecting your front-desk time.
+            </motion.p>
+            
+            <motion.div 
+              className="mt-12 flex items-center justify-center gap-2 text-sm text-primary/70"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.8 }}
+            >
+              <ChevronDown className="w-5 h-5 animate-bounce" />
+              <span>Scroll to explore our four core capabilities</span>
+            </motion.div>
+          </motion.div>
+        </div>
+        
+        {revenueFeatures.map((feature, index) => (
+          <StickyFeatureCard key={index} feature={feature} index={index} />
+        ))}
+      </div>
+      
+      <div className="md:hidden py-20 px-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-xs font-mono text-primary mb-6">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            Beyond Basic Automation
+          </div>
+          
+          <h2 className="text-3xl font-display font-semibold tracking-tight mb-4 leading-tight">
+            Not Just an AI Receptionist.
+            <br />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-blue-300 to-cyan-300">
+              A Revenue-Focused System.
+            </span>
+          </h2>
+          
+          <p className="text-base text-muted-foreground leading-relaxed">
+            Simple Sequence decides what to do with every interaction—maximizing booking value and protecting your front-desk time.
+          </p>
+        </motion.div>
+        
+        <div className="space-y-8">
+          {revenueFeatures.map((feature, index) => (
+            <RevenueFeatureRow key={index} feature={feature} index={index} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Solutions() {
   const solutionsSchema = {
@@ -486,109 +1003,9 @@ export default function Solutions() {
           </motion.div>
         </div>
       </section>
-      {/* SECTION 6: The Guarantee */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-6 max-w-3xl relative z-10">
-          <motion.div
-            initial={fadeInUp.initial}
-            whileInView={fadeInUp.whileInView}
-            viewport={fadeInUp.viewport}
-            transition={fadeInUp.transition}
-            className="text-center"
-          >
-            <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block">Our Guarantee</span>
-            <h2 className="text-3xl md:text-4xl font-display font-medium mb-8 text-white">
-              The &ldquo;Found Money&rdquo; Guarantee
-            </h2>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative p-8 rounded-2xl border border-primary/20 bg-primary/[0.02] overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-            <div className="flex items-start gap-4 mb-4">
-              <Shield className="w-8 h-8 text-primary flex-shrink-0 mt-1" />
-              <p className="text-slate-300 leading-relaxed">
-                Within your first 30 days on SimpleSequence, we run a targeted Database Reactivation campaign on your existing contacts. If we don&rsquo;t uncover enough revenue opportunities to meaningfully offset your setup and first month&rsquo;s fees, we&rsquo;ll run a second full reactivation campaign at no additional service cost.
-              </p>
-            </div>
-            <p className="text-white font-medium text-center mt-4">
-              You get a system designed to turn past customers into new cash flow &mdash; without increasing your ad spend.
-            </p>
-            <p className="text-xs text-slate-500 text-center mt-3">
-              Guarantee applies to qualified lists and basic follow&#8209;up from your team. See how it works below.
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-6"
-          >
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="how-it-works" className="border-white/[0.06]">
-                <AccordionTrigger className="text-sm font-mono text-slate-400 hover:text-white py-4">
-                  How it works
-                </AccordionTrigger>
-                <AccordionContent className="text-sm text-slate-400 leading-relaxed space-y-4 pb-6">
-                  <p><span className="text-white font-medium">Your list:</span> You provide a permission&#8209;based list with a minimum of 1,000 contacts and valid email and/or mobile numbers.</p>
-                  <p><span className="text-white font-medium">Our goal:</span> Use database reactivation to generate qualified responses and booked appointments that help offset your implementation and early maintenance costs.</p>
-                  <p><span className="text-white font-medium">Your part:</span> You approve the offer and messaging, and your team responds to interested leads in a timely manner so opportunities can turn into revenue.</p>
-                  <p><span className="text-white font-medium">If we fall short:</span> If the initial campaign does not generate a meaningful volume of qualified responses or bookings from your list, we will run a second full reactivation campaign at no additional service fee.</p>
-                  <p><span className="text-white font-medium">Where our responsibility ends:</span> We create conversations and opportunities from the customers and leads you already paid to acquire. You own pricing, close rate, show rate, and fulfillment.</p>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </motion.div>
-        </div>
-      </section>
-      {/* SECTION 7: The Compound Effect */}
-      <section className="py-24 relative border-t border-white/5">
-        <div className="container mx-auto px-6 max-w-2xl relative z-10">
-          <motion.div
-            initial={fadeInUp.initial}
-            whileInView={fadeInUp.whileInView}
-            viewport={fadeInUp.viewport}
-            transition={fadeInUp.transition}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-medium text-white">
-              The Compound Effect
-            </h2>
-          </motion.div>
-
-          <div className="relative">
-            <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-primary/40 via-primary/20 to-transparent" />
-            <div className="space-y-10">
-              {compoundTimeline.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.15, duration: 0.5 }}
-                  className="flex items-start gap-6 pl-1"
-                >
-                  <div className="relative flex-shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-zinc-900 border-2 border-primary/40 flex items-center justify-center shadow-[0_0_15px_rgba(110,224,247,0.2)]">
-                      <span className="text-xs font-mono font-bold text-primary">{item.month.split(" ")[1]}</span>
-                    </div>
-                  </div>
-                  <div className="pt-2">
-                    <span className="text-xs font-mono text-primary/60 uppercase tracking-widest">{item.month}</span>
-                    <p className="text-slate-300 leading-relaxed mt-1">{item.text}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* SECTION 8: CTA */}
+      {/* SECTION 6: Beyond Basic Automation */}
+      <RevenueSystemSection />
+      {/* SECTION 7: CTA */}
       <section className="py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
         <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
