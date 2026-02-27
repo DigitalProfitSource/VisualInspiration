@@ -672,58 +672,100 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-      {/* The Compound Effect Timeline */}
-      <section className="py-24 relative border-t border-white/5">
+      {/* The Compound Effect Timeline + Loop CTA */}
+      <section className="py-24 md:py-32 relative border-t border-white/5 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.03),transparent_60%)]" />
+        <style>{`
+          @keyframes timeline-glow-sweep {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(200%); }
+          }
+          @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 0; }
+          }
+          @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+          }
+        `}</style>
+
         <div className="container mx-auto px-6 max-w-2xl relative z-10">
           <motion.div
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, type: "spring", stiffness: 80 }}
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-display font-medium text-white" data-testid="text-compound-effect">
               The Compound Effect
             </h2>
           </motion.div>
+
           <div className="relative">
-            <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-primary/40 via-primary/20 to-transparent" />
-            <div className="space-y-10">
+            <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-primary/30 via-primary/15 to-primary/5 overflow-hidden">
+              <div
+                className="absolute inset-x-0 h-24 bg-gradient-to-b from-transparent via-primary/80 to-transparent"
+                style={{ animation: "timeline-glow-sweep 3s ease-in-out infinite" }}
+              />
+            </div>
+
+            <div className="space-y-12">
               {compoundTimeline.map((item, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.15, duration: 0.5 }}
-                  className="flex items-start gap-6 pl-1"
+                  initial={{ opacity: 0, x: -30, scale: 0.9, filter: "blur(6px)" }}
+                  whileInView={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ delay: i * 0.12, duration: 0.6, type: "spring", stiffness: 100 }}
+                  className="flex items-start gap-6 pl-1 group"
                 >
                   <div className="relative flex-shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-zinc-900 border-2 border-primary/40 flex items-center justify-center shadow-[0_0_15px_rgba(110,224,247,0.2)]">
+                    <div className="absolute inset-0 rounded-full bg-primary/30" style={{ animation: `pulse-ring ${2 + i * 0.5}s ease-out infinite ${i * 0.3}s` }} />
+                    <motion.div
+                      className="relative w-12 h-12 rounded-full bg-zinc-900 border-2 border-primary/50 flex items-center justify-center"
+                      whileInView={{
+                        boxShadow: [
+                          "0 0 10px rgba(103,232,249,0.2)",
+                          "0 0 25px rgba(103,232,249,0.5)",
+                          "0 0 10px rgba(103,232,249,0.2)"
+                        ]
+                      }}
+                      viewport={{ once: false }}
+                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                    >
                       <span className="text-xs font-mono font-bold text-primary">{item.month.split(" ")[1]}</span>
-                    </div>
+                    </motion.div>
                   </div>
-                  <div className="pt-2">
+                  <motion.div
+                    className="pt-2 flex-1"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.12 + 0.2, duration: 0.5 }}
+                  >
                     <span className="text-xs font-mono text-primary/60 uppercase tracking-widest">{item.month}</span>
-                    <p className="text-slate-300 leading-relaxed mt-1">{item.text}</p>
-                  </div>
+                    <p className="text-slate-300 leading-relaxed mt-1 group-hover:text-white transition-colors duration-300">{item.text}</p>
+                  </motion.div>
                 </motion.div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
-      {/* Section E: Loop CTA */}
-      <section className="py-24 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.06),transparent_50%)]" />
-        <div className="container mx-auto px-6 max-w-3xl text-center relative z-10">
+
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-center mt-16"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 text-white" data-testid="text-loop-cta">
+            <h2
+              className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 bg-gradient-to-r from-white via-primary to-white bg-[length:200%_auto] bg-clip-text text-transparent"
+              style={{ animation: "shimmer 4s linear infinite" }}
+              data-testid="text-loop-cta"
+            >
               The loop never stops.
             </h2>
             <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-xl mx-auto">
@@ -732,14 +774,14 @@ export default function Home() {
             <div className="relative group inline-block">
               <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500" />
               <Link
-                href="/solutions"
+                href="/assessment"
                 data-testid="button-loop-cta"
                 className="relative inline-flex items-center justify-center gap-2 bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
               >
-                See How It Works →
+                Book Your Discovery Call →
               </Link>
             </div>
-            <p className="text-sm text-muted-foreground mt-4">See the full system on our Solutions page.</p>
+            <p className="text-sm text-muted-foreground mt-4">See where your revenue is leaking — in 15 minutes.</p>
           </motion.div>
         </div>
       </section>
