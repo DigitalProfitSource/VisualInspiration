@@ -882,9 +882,15 @@ export default function Solutions() {
           >
             <motion.span
               variants={fadeIn}
-              className="text-sm font-mono text-primary mb-6 block uppercase tracking-widest"
+              className="text-sm font-mono text-primary mb-2 block uppercase tracking-widest"
             >
               THE SEQUENTIAL REVENUE&trade; SYSTEM
+            </motion.span>
+            <motion.span
+              variants={fadeIn}
+              className="text-xs font-mono text-primary/50 mb-6 block uppercase tracking-[0.2em]"
+            >
+              A deeper look inside the engine
             </motion.span>
             <motion.h1
               variants={fadeIn}
