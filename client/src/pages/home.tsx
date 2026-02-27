@@ -898,6 +898,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* Industry Results Carousel */}
+      <IndustryCarousel />
       {/* Section E: Loop CTA */}
       <section className="py-24 md:py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.06),transparent_50%)]" />
@@ -928,8 +930,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-      {/* Industry Results Carousel */}
-      <IndustryCarousel />
       {/* Revenue-Focused System Section */}
       <RevenueSystemSection />
       {/* Revenue Friction Analysis */}
