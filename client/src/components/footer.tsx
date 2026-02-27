@@ -114,7 +114,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-primary/50" />
-              <span className="text-xs text-slate-600 font-mono">Operational AI Advisor™</span>
+              <span className="text-xs text-slate-600 font-mono">AI Implementation Advisor™</span>
             </div>
           </div>
         </div>

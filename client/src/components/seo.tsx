@@ -86,7 +86,7 @@ export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "SimpleSequence",
-  description: "Operational AI Advisor helping service businesses adopt AI with clarity, precision, and real-world leverage.",
+  description: "AI Implementation Advisor helping service businesses adopt AI with clarity, precision, and real-world leverage.",
   url: "https://simplesequence.com",
   logo: "https://simplesequence.com/favicon.png",
   sameAs: [],

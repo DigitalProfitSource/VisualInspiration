@@ -317,7 +317,7 @@ export default function Home() {
     <Layout>
       <SEO 
         title="SimpleSequence | Practical AI for Service Businesses"
-        description="Operational AI Advisor helping service businesses adopt AI with clarity, precision, and real-world leverage. AI-powered front desk and follow-up systems."
+        description="AI Implementation Advisor helping service businesses adopt AI with clarity, precision, and real-world leverage. AI-powered front desk and follow-up systems."
         jsonLd={{
           "@context": "https://schema.org",
           "@graph": [organizationSchema, softwareApplicationSchema]

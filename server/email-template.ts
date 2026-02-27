@@ -226,7 +226,7 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
                 <tr>
                   <td style="text-align: center;">
                     <p style="margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #67E8F9;">SimpleSequence</p>
-                    <p style="margin: 0; font-size: 12px; color: #64748b;">Operational AI Advisory for Service Businesses</p>
+                    <p style="margin: 0; font-size: 12px; color: #64748b;">AI Implementation Advisory for Service Businesses</p>
                     <p style="margin: 16px 0 0; font-size: 11px; color: #475569;">
                       This assessment was generated based on the information you provided. Actual results may vary.
                     </p>

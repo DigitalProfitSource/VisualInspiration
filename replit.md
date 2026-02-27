@@ -1,8 +1,8 @@
-# SimpleSequence - Operational AI Advisor
+# SimpleSequence - AI Implementation Advisor
 
 ## Overview
 
-SimpleSequence is a consulting service website for an Operational AI Advisor helping service-based businesses adopt AI strategically. The platform provides diagnostic clarity on operational friction, workflow mapping, and AI implementation guidance without selling tools or services. The site features a modern, dark-themed design with animated components, lead capture functionality, and industry-specific case studies showcasing business transformation metrics.
+SimpleSequence is a consulting service website for an AI Implementation Advisor helping service-based businesses adopt AI strategically. The platform provides diagnostic clarity on operational friction, workflow mapping, and AI implementation guidance without selling tools or services. The site features a modern, dark-themed design with animated components, lead capture functionality, and industry-specific case studies showcasing business transformation metrics.
 
 **Site Pages:**
 - **Home** (`/`) - Landing page with hero (Sequential Revenue™ badge, "Single Profit Engine" headline), tech ticker, 3-pillar section (Capture/Convert/Compound with alternating two-column layouts and image placeholders), loop CTA, bento grid, industry carousel, Found Money Guarantee, Compound Effect timeline, Revenue Friction Analysis, AI Clarity Assessment, FAQ, testimonials, and founder section
