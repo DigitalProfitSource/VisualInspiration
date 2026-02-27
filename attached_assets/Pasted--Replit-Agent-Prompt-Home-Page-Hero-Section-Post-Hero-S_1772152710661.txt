@@ -1,0 +1,275 @@
+# Replit Agent Prompt — Home Page: Hero Section + Post-Hero Sequential Revenue Section
+
+## CONTEXT
+
+You are modifying the Home page of SimpleSequence (simplesequence.com). The site uses a dark theme (near-black backgrounds), teal/cyan accent color, clean sans-serif typography, and a professional SaaS aesthetic.
+
+We are making TWO changes on this page:
+
+1. **Updating the hero section copy** (keeping the existing layout, background image, and CTA button style)
+2. **Replacing the post-hero section** that currently shows the 5-module "Sequential Profit Loop™" card grid
+
+Do NOT touch the nav bar, footer, or any other page (Solutions, Offers, Industries, Process). Only modify the Home page content described below.
+
+---
+
+## CHANGE 1: HERO SECTION COPY UPDATE
+
+**Keep the existing hero layout exactly** — the badge/pill, large headline, teal subtitle, body paragraph, CTA button with helper text, the background hologram image of the woman, and the floating AI Voice/Chatbot/Scheduling elements. Only change the text content.
+
+### Text replacements:
+
+**Badge/pill** (the small rounded label above the headline):
+- Remove current text ("Operational AI Advisor™" or "AI Implementation Advisor™")
+- Replace with: `Sequential Revenue™`
+
+**Headline h1:**
+- Remove current headline
+- Replace with: `Turn Your Disconnected Tools Into a Single Profit Engine`
+- If the current design applies teal/cyan color to the last word(s) of the headline, apply it to the word `Engine`
+
+**Teal subtitle** (the smaller teal line below the headline):
+- Remove current subtitle
+- Replace with: `Capture. Convert. Compound. — On Autopilot.`
+
+**Body paragraph** (the gray/light text below the subtitle):
+- Remove current body text
+- Replace with: `We connect your lead capture, follow-up, and customer base into one automated loop — so every dollar you spend on marketing compounds instead of evaporating.`
+
+**CTA button and helper text:** Keep as-is. Do not change.
+
+**Everything else in the hero** (background image, floating elements, layout, spacing, animations): Do NOT change.
+
+---
+
+## CHANGE 2: REPLACE THE POST-HERO SECTION
+
+### What currently exists (delete ALL of this):
+
+The section directly below the hero (and below the OPERATIONAL STACK logo ticker if one exists) currently contains:
+
+1. A centered headline: **"You're getting leads. You just don't have a system to maximize your marketing ROI."** (with "maximize your marketing ROI" in teal)
+2. A subtitle: "We align your entire customer journey into one intelligent flow."
+3. A pill/badge button: "Sequential Profit Loop™"
+4. A **5-card interactive grid** showing modules 01–05 as image cards arranged in a cluster layout:
+   - Center/large card: "01 — AI-Powered Presence / Machine-Readable Standard"
+   - Left card: "05 — Revenue Reactivation (DBR) / Database Reactivation"
+   - Right card: "02 — Automation & Implementation / Zero-Manual Architecture"
+   - Top-left card: "04" (Reputation Flywheel)
+   - Top-right card: "03" (Persistent Follow-Up)
+5. A **detail panel** below the cards that shows the selected module's deliverables (e.g., "MODULE 01 — AI-POWERED PRESENCE" with bullet points)
+
+**Delete this entire section** — the headline, subtitle, badge, card grid, detail panel, and any associated interactive/click functionality. Replace it with the new content below.
+
+**Keep the OPERATIONAL STACK logo ticker bar** if it exists between the hero and this section. It should remain in its current position.
+
+---
+
+### What to build (new content, in order top to bottom):
+
+---
+
+#### SECTION A: Sequential Revenue Intro
+
+**Layout:** Full-width, centered text, generous vertical padding (match the vertical rhythm of the deleted section's heading area).
+
+- **Eyebrow text** (small, uppercase, teal, letter-spaced — same style as eyebrow text used elsewhere on the site):
+  `THE SEQUENTIAL REVENUE™ SYSTEM`
+
+- **Heading h2** (large, white, bold — same scale as the deleted "You're getting leads..." headline):
+  `You're getting leads. You just don't have a system to`
+  `make them compound.`
+  
+  Apply teal/cyan color to the words: `make them compound.`
+  
+  *(Note: This preserves the emotional punch of the original headline while aligning it with the new Capture → Convert → Compound framework.)*
+
+- **Subtitle** (light gray, centered, below the heading):
+  `Three pillars. One intelligent loop. Every lead captured, every dollar maximized, every customer compounding your growth.`
+
+---
+
+#### SECTION B: Pillar 1 — CAPTURE
+
+**Layout:** Two-column section — hologram-style image on one side, content on the other. Use the same two-column layout pattern that exists elsewhere on this site (like the "Stop Losing Leads to Speed and Silence" sections if they exist below, or match the general content section pattern from other pages). Image on the LEFT, content on the RIGHT for this first pillar.
+
+**Image side (LEFT):**
+- Use a placeholder container sized to match typical section images on this site (approximately 500–600px wide)
+- Add an HTML comment: `<!-- FOUNDER HOLOGRAM IMAGE: CAPTURE PILLAR - Replace src with custom image -->`
+- If the current codebase has a pattern for section images, follow that pattern. Use a temporary placeholder path: `/images/capture-hologram.png`
+- Alt text: `AI-powered lead capture system`
+- If no image file exists at that path, use a dark placeholder div with a subtle teal border (matching the site's card style) so the layout doesn't break. The founder will replace this with a custom hologram image.
+
+**Content side (RIGHT):**
+
+- **Eyebrow text** (teal, uppercase, small, letter-spaced):
+  `PILLAR 01 · CAPTURE`
+
+- **Heading h3** (white, bold):
+  `The 24/7 AI Front Door`
+
+- **Tagline** (teal, slightly smaller than heading):
+  `Never miss a dollar.`
+
+- **Body paragraph** (light gray, max-width ~500px):
+  `Your marketing works, but your capture system is leaking. Leads reach out through your website, Google, text, and social — and get silence. By the time you reply, they've hired your competitor. We install an always-on AI layer that responds in under 60 seconds, qualifies intent, and books the appointment — 24/7, without adding staff.`
+
+- **Three outcome cards** (use the teal-left-border card style if it exists on the site; if not, create small cards with a teal left border accent, dark background, matching the site's existing card components):
+
+  **Card 1:**
+  - Title (teal/white bold): `Instant Response`
+  - Description (light gray, small): `Every lead — web, phone, text, social — answered in under 60 seconds, automatically.`
+
+  **Card 2:**
+  - Title: `AI Qualification`
+  - Description: `24/7 chat and voice agents that qualify intent and book real appointments, not tire-kickers.`
+
+  **Card 3:**
+  - Title: `AI Search Visibility`
+  - Description: `Your business optimized for ChatGPT, Perplexity, and Google AI Overviews — not just traditional SEO.`
+
+- **Outcome line** (below cards; use a small uppercase label + teal text, consistent with any existing "THE OUTCOME:" pattern on the site):
+  - Label (uppercase, small, muted): `THE OUTCOME:`
+  - Text (teal): `A leakproof front door that captures every lead you're paying for — while you sleep.`
+
+---
+
+#### SECTION C: Pillar 2 — CONVERT
+
+**Layout:** Two-column, ALTERNATING from Pillar 1. Content on the LEFT, image on the RIGHT.
+
+**Image side (RIGHT):**
+- Comment: `<!-- FOUNDER HOLOGRAM IMAGE: CONVERT PILLAR - Replace src with custom image -->`
+- Placeholder path: `/images/convert-hologram.png`
+- Alt text: `Automated follow-up and lead conversion system`
+
+**Content side (LEFT):**
+
+- **Eyebrow text:** `PILLAR 02 · CONVERT`
+
+- **Heading h3:** `The Invisible Sales Rep`
+
+- **Tagline (teal):** `Squeeze every dollar from your pipeline.`
+
+- **Body paragraph:**
+  `You send a quote, follow up once, and forget about it. No-shows ghost you. Old estimates expire. Thousands of dollars rot in your CRM — leads you already paid to acquire. We deploy relentless, intelligent automation that chases every opportunity until it closes, declines, or books — and knows exactly when to hand off to your team.`
+
+- **Three outcome cards:**
+
+  **Card 1:**
+  - Title: `Persistent Follow-Up`
+  - Description: `Automated sequences chase no-shows, recover stale quotes, and revive dead leads — without annoying anyone.`
+
+  **Card 2:**
+  - Title: `Speed-to-Close`
+  - Description: `Sub-60-second engagement the moment a lead enters your system. No more "I'll get to it tomorrow."`
+
+  **Card 3:**
+  - Title: `Smart Escalation`
+  - Description: `AI handles the repetitive follow-up. Humans step in at exactly the right moment to close.`
+
+- **Outcome line:**
+  - Label: `THE OUTCOME:`
+  - Text (teal): `A pipeline that works itself — converting leads you're currently ignoring into booked revenue.`
+
+---
+
+#### SECTION D: Pillar 3 — COMPOUND
+
+**Layout:** Two-column, alternating back — image LEFT, content RIGHT (same as Pillar 1).
+
+**Image side (LEFT):**
+- Comment: `<!-- FOUNDER HOLOGRAM IMAGE: COMPOUND PILLAR - Replace src with custom image -->`
+- Placeholder path: `/images/compound-hologram.png`
+- Alt text: `Revenue compounding through reviews and database reactivation`
+
+**Content side (RIGHT):**
+
+- **Eyebrow text:** `PILLAR 03 · COMPOUND`
+
+- **Heading h3:** `The Compounding Engine`
+
+- **Tagline (teal):** `Turn past customers into future revenue.`
+
+- **Body paragraph:**
+  `You do great work, but you're ignoring the most profitable asset you already own — your existing customers and past leads. We install automated review collection that drives 5-star ratings at the perfect moment, intercept negative feedback before it goes public, and run database reactivation campaigns that turn dormant contacts into immediate cash — with zero additional ad spend.`
+
+- **Three outcome cards:**
+
+  **Card 1:**
+  - Title: `Automated Reviews`
+  - Description: `5-star review requests triggered at the perfect post-service moment. Negative sentiment intercepted before it goes public.`
+
+  **Card 2:**
+  - Title: `Database Reactivation`
+  - Description: `Targeted campaigns that mine your existing contacts for immediate cash flow — from leads you already paid for.`
+
+  **Card 3:**
+  - Title: `The Loop Closes`
+  - Description: `Reviews attract new leads. Reactivated customers refer new business. Compound feeds back into Capture.`
+
+- **Outcome line:**
+  - Label: `THE OUTCOME:`
+  - Text (teal): `A compounding engine that makes your existing customer base and reputation work as hard as your ad budget.`
+
+---
+
+#### SECTION E: Loop CTA (Closing)
+
+**Layout:** Full-width, centered text, generous padding. Serves as visual close to the 3-pillar section.
+
+- **Heading h2** (white, bold):
+  `The loop never stops.`
+
+- **Body paragraph** (centered, max-width ~600px, light gray):
+  `Capture fills your pipeline. Convert squeezes every dollar from it. Compound turns results into more results — and feeds new leads back into Capture. This is Sequential Revenue™.`
+
+- **CTA Button** (same teal/cyan button style used in the hero):
+  Text: `See How It Works →`
+  Link: `/solutions`
+
+- **Helper text** (small, muted, below button):
+  `Full breakdown of all three pillars and our "Found Money" Guarantee.`
+
+---
+
+## IMPORTANT IMPLEMENTATION NOTES
+
+1. **The 5-module card grid has interactive/click behavior** (selecting a card shows its detail panel below). When removing this section, make sure to also remove any associated JavaScript event listeners, state management, or animation code tied to the card grid. Clean removal — no orphaned click handlers or hidden elements.
+
+2. **Image placeholders:** The founder will create custom hologram-style images for each pillar (similar to the existing hologram aesthetic on the site). Use placeholder containers that won't break the layout. If a fallback is needed, use a dark container with subtle teal border matching the site's card style.
+
+3. **Preserve the OPERATIONAL STACK logo ticker bar** between the hero and the new content. Do not move or delete it.
+
+4. **Keep everything BELOW the replaced section intact.** If there are additional sections further down the Home page (testimonials, FAQ, another CTA, footer), do not touch them.
+
+5. **Responsive behavior:** The two-column pillar sections should stack vertically on mobile (image on top, content below). The outcome cards should stack in a single column on small screens.
+
+6. **Match existing component patterns.** Before building new elements, scan the codebase for existing card components, eyebrow text styles, section layouts, and button styles. Reuse existing components and CSS classes wherever possible rather than creating new ones.
+
+7. **Do NOT touch any other pages.** This prompt is exclusively for the Home page.
+
+---
+
+## QUICK REFERENCE: WHAT CHANGES vs. WHAT STAYS
+
+| Element | Action |
+|---------|--------|
+| Nav bar | NO CHANGE |
+| Hero background image & floating elements | NO CHANGE |
+| Hero badge text | CHANGE → "Sequential Revenue™" |
+| Hero headline | CHANGE → "Turn Your Disconnected Tools Into a Single Profit Engine" |
+| Hero subtitle | CHANGE → "Capture. Convert. Compound. — On Autopilot." |
+| Hero body text | CHANGE → new copy (see above) |
+| Hero CTA button + helper text | NO CHANGE |
+| OPERATIONAL STACK ticker | NO CHANGE |
+| "You're getting leads..." headline | DELETE |
+| "Sequential Profit Loop™" badge | DELETE |
+| 5-module card grid (01–05) | DELETE (including all JS/interaction code) |
+| Module detail panel below cards | DELETE |
+| NEW: Sequential Revenue intro section | BUILD (Section A) |
+| NEW: Pillar 1 — Capture | BUILD (Section B) |
+| NEW: Pillar 2 — Convert | BUILD (Section C) |
+| NEW: Pillar 3 — Compound | BUILD (Section D) |
+| NEW: Loop CTA | BUILD (Section E) |
+| Everything below (testimonials, FAQ, footer) | NO CHANGE |
