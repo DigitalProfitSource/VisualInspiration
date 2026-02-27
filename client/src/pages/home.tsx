@@ -809,7 +809,7 @@ export default function Home() {
               className="order-2 lg:order-1"
             >
               <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 02 · CONVERT</span>
-              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-convert">The 24/7 Sales Rep</h3>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-convert">The 24/7 AI-Sales Rep</h3>
               <p className="text-primary font-medium mb-4">Squeeze every dollar from your pipeline.</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 You send a quote, follow up once, and forget about it. No-shows ghost you. Old estimates expire. Thousands of dollars rot in your CRM — leads you already paid to acquire. We deploy relentless, intelligent automation that chases every opportunity until it closes, declines, or books — and knows exactly when to hand off to your team.
