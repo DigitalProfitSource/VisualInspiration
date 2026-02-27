@@ -566,7 +566,7 @@ function BentoCard({ card, index }: { card: typeof bentoCards[0]; index: number 
 
   return (
     <motion.div
-      className="relative h-full rounded-xl border border-white/[0.06] bg-white/[0.02] overflow-hidden cursor-pointer transition-colors duration-300 hover:border-white/[0.12]"
+      className="relative h-full rounded-xl border border-white/[0.08] bg-zinc-900/80 overflow-hidden cursor-pointer transition-colors duration-300 hover:border-white/[0.15] shadow-[0_2px_20px_rgba(0,0,0,0.4)]"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
@@ -705,10 +705,10 @@ function BentoGridSection() {
                 >
                   <div className="relative z-10">
                     <div className="mb-2 flex items-baseline justify-center gap-1">
-                      <span className="text-xl md:text-2xl font-display font-bold text-white tracking-tight">
+                      <span className="text-3xl md:text-4xl font-display font-bold text-white tracking-tight">
                         {metric.prefix}{counts[i]}
                       </span>
-                      <span className="text-xs md:text-sm font-display font-medium text-primary">
+                      <span className="text-sm md:text-base font-display font-medium text-primary">
                         {metric.suffix}
                       </span>
                     </div>
