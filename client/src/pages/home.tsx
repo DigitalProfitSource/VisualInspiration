@@ -367,7 +367,7 @@ export default function Home() {
             </motion.div>
             
             <motion.h1 variants={fadeIn} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-medium tracking-tight mb-4 md:mb-6 leading-[1.1] text-balance">
-              Turn Your Disconnected Tools Into a Single Profit <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-cyan-300 to-primary/50">Engine</span>
+              Turn Your Disconnected Tools Into a Single Profit <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-cyan-300 to-primary/50">Loop</span>
             </motion.h1>
 
             <motion.p variants={fadeIn} className="text-base md:text-lg text-primary/80 mb-3 md:mb-4 font-medium">Capture. Convert. Compound. — On Autopilot.</motion.p>
