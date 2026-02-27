@@ -11,7 +11,6 @@ import {
 import { TechTicker } from "@/components/ui/tech-ticker";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { ContactFormDialog } from "@/components/contact-form-dialog";
-import { ProfitLoopSection } from "@/components/profit-loop";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
@@ -654,17 +653,17 @@ export default function Home() {
           >
             <motion.div variants={fadeIn} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono text-primary mb-6 md:mb-8 backdrop-blur-md shadow-[0_0_20px_-5px_rgba(var(--primary),0.3)]">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_var(--color-primary)]" />
-              AI Implementation Advisor™
+              Sequential Revenue™
             </motion.div>
             
             <motion.h1 variants={fadeIn} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-medium tracking-tight mb-4 md:mb-6 leading-[1.1] text-balance">
-              Turn Your Disconnected Tools Into a <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/50">Single Profit Engine</span>
+              Turn Your Disconnected Tools Into a Single Profit <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-cyan-300 to-primary/50">Engine</span>
             </motion.h1>
 
-            <motion.p variants={fadeIn} className="text-base md:text-lg text-primary/80 mb-3 md:mb-4 font-medium">Empowering Service Businesses with Intelligent Automation</motion.p>
+            <motion.p variants={fadeIn} className="text-base md:text-lg text-primary/80 mb-3 md:mb-4 font-medium">Capture. Convert. Compound. — On Autopilot.</motion.p>
             
             {/* Hide on mobile, show on desktop */}
-            <motion.p variants={fadeIn} className="hidden md:block text-lg md:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">We architect the digital Sequence that aligns your entire customer journey into one seamless flow</motion.p>
+            <motion.p variants={fadeIn} className="hidden md:block text-lg md:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">We connect your lead capture, follow-up, and customer base into one automated loop — so every dollar you spend on marketing compounds instead of evaporating.</motion.p>
           </motion.div>
         </motion.div>
         
@@ -714,8 +713,225 @@ export default function Home() {
       </section>
       {/* Tech Stack Ticker */}
       <TechTicker />
-      {/* Profit Loop Circuit */}
-      <ProfitLoopSection />
+      {/* Section A: Sequential Revenue Intro */}
+      <section className="py-24 md:py-32 relative overflow-hidden">
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <span className="text-sm font-mono text-primary uppercase tracking-widest mb-6 block">
+              THE SEQUENTIAL REVENUE™ SYSTEM
+            </span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 tracking-tight" data-testid="text-sequential-revenue-heading">
+              You're getting leads. You just don't have a system to{" "}
+              <span className="text-primary">make them compound.</span>
+            </h2>
+            <p className="text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto">
+              Three pillars. One intelligent loop. Every lead captured, every dollar maximized, every customer compounding your growth.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Section B: Pillar 1 — CAPTURE */}
+      <section className="py-16 md:py-24 relative overflow-hidden">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7 }}
+              className="order-2 lg:order-1"
+            >
+              {/* FOUNDER HOLOGRAM IMAGE: CAPTURE PILLAR - Replace src with custom image */}
+              <div className="w-full aspect-[4/3] max-w-[600px] mx-auto rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-transparent flex items-center justify-center" data-testid="image-placeholder-capture">
+                <span className="text-primary/30 font-mono text-sm">CAPTURE HOLOGRAM</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7 }}
+              className="order-1 lg:order-2"
+            >
+              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 01 · CAPTURE</span>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-capture">The 24/7 AI Front Door</h3>
+              <p className="text-primary font-medium mb-4">Never miss a dollar.</p>
+              <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
+                Your marketing works, but your capture system is leaking. Leads reach out through your website, Google, text, and social — and get silence. By the time you reply, they've hired your competitor. We install an always-on AI layer that responds in under 60 seconds, qualifies intent, and books the appointment — 24/7, without adding staff.
+              </p>
+
+              <div className="space-y-4 mb-8">
+                <div className="border-l-2 border-primary/60 pl-4 py-2 bg-white/[0.02] rounded-r-lg">
+                  <h4 className="text-white font-medium text-sm mb-1">Instant Response</h4>
+                  <p className="text-slate-500 text-sm">Every lead — web, phone, text, social — answered in under 60 seconds, automatically.</p>
+                </div>
+                <div className="border-l-2 border-primary/60 pl-4 py-2 bg-white/[0.02] rounded-r-lg">
+                  <h4 className="text-white font-medium text-sm mb-1">AI Qualification</h4>
+                  <p className="text-slate-500 text-sm">24/7 chat and voice agents that qualify intent and book real appointments, not tire-kickers.</p>
+                </div>
+                <div className="border-l-2 border-primary/60 pl-4 py-2 bg-white/[0.02] rounded-r-lg">
+                  <h4 className="text-white font-medium text-sm mb-1">AI Search Visibility</h4>
+                  <p className="text-slate-500 text-sm">Your business optimized for ChatGPT, Perplexity, and Google AI Overviews — not just traditional SEO.</p>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-mono tracking-widest uppercase text-slate-600">THE OUTCOME:</span>
+                <p className="text-primary text-sm font-medium mt-1">A leakproof front door that captures every lead you're paying for — while you sleep.</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section C: Pillar 2 — CONVERT */}
+      <section className="py-16 md:py-24 relative overflow-hidden">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7 }}
+              className="order-2 lg:order-1"
+            >
+              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 02 · CONVERT</span>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-convert">The Invisible Sales Rep</h3>
+              <p className="text-primary font-medium mb-4">Squeeze every dollar from your pipeline.</p>
+              <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
+                You send a quote, follow up once, and forget about it. No-shows ghost you. Old estimates expire. Thousands of dollars rot in your CRM — leads you already paid to acquire. We deploy relentless, intelligent automation that chases every opportunity until it closes, declines, or books — and knows exactly when to hand off to your team.
+              </p>
+
+              <div className="space-y-4 mb-8">
+                <div className="border-l-2 border-primary/60 pl-4 py-2 bg-white/[0.02] rounded-r-lg">
+                  <h4 className="text-white font-medium text-sm mb-1">Persistent Follow-Up</h4>
+                  <p className="text-slate-500 text-sm">Automated sequences chase no-shows, recover stale quotes, and revive dead leads — without annoying anyone.</p>
+                </div>
+                <div className="border-l-2 border-primary/60 pl-4 py-2 bg-white/[0.02] rounded-r-lg">
+                  <h4 className="text-white font-medium text-sm mb-1">Speed-to-Close</h4>
+                  <p className="text-slate-500 text-sm">Sub-60-second engagement the moment a lead enters your system. No more "I'll get to it tomorrow."</p>
+                </div>
+                <div className="border-l-2 border-primary/60 pl-4 py-2 bg-white/[0.02] rounded-r-lg">
+                  <h4 className="text-white font-medium text-sm mb-1">Smart Escalation</h4>
+                  <p className="text-slate-500 text-sm">AI handles the repetitive follow-up. Humans step in at exactly the right moment to close.</p>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-mono tracking-widest uppercase text-slate-600">THE OUTCOME:</span>
+                <p className="text-primary text-sm font-medium mt-1">A pipeline that works itself — converting leads you're currently ignoring into booked revenue.</p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7 }}
+              className="order-1 lg:order-2"
+            >
+              {/* FOUNDER HOLOGRAM IMAGE: CONVERT PILLAR - Replace src with custom image */}
+              <div className="w-full aspect-[4/3] max-w-[600px] mx-auto rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-transparent flex items-center justify-center" data-testid="image-placeholder-convert">
+                <span className="text-primary/30 font-mono text-sm">CONVERT HOLOGRAM</span>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section D: Pillar 3 — COMPOUND */}
+      <section className="py-16 md:py-24 relative overflow-hidden">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7 }}
+              className="order-2 lg:order-1"
+            >
+              {/* FOUNDER HOLOGRAM IMAGE: COMPOUND PILLAR - Replace src with custom image */}
+              <div className="w-full aspect-[4/3] max-w-[600px] mx-auto rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-transparent flex items-center justify-center" data-testid="image-placeholder-compound">
+                <span className="text-primary/30 font-mono text-sm">COMPOUND HOLOGRAM</span>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7 }}
+              className="order-1 lg:order-2"
+            >
+              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 03 · COMPOUND</span>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-compound">The Compounding Engine</h3>
+              <p className="text-primary font-medium mb-4">Turn past customers into future revenue.</p>
+              <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
+                You do great work, but you're ignoring the most profitable asset you already own — your existing customers and past leads. We install automated review collection that drives 5-star ratings at the perfect moment, intercept negative feedback before it goes public, and run database reactivation campaigns that turn dormant contacts into immediate cash — with zero additional ad spend.
+              </p>
+
+              <div className="space-y-4 mb-8">
+                <div className="border-l-2 border-primary/60 pl-4 py-2 bg-white/[0.02] rounded-r-lg">
+                  <h4 className="text-white font-medium text-sm mb-1">Automated Reviews</h4>
+                  <p className="text-slate-500 text-sm">5-star review requests triggered at the perfect post-service moment. Negative sentiment intercepted before it goes public.</p>
+                </div>
+                <div className="border-l-2 border-primary/60 pl-4 py-2 bg-white/[0.02] rounded-r-lg">
+                  <h4 className="text-white font-medium text-sm mb-1">Database Reactivation</h4>
+                  <p className="text-slate-500 text-sm">Targeted campaigns that mine your existing contacts for immediate cash flow — from leads you already paid for.</p>
+                </div>
+                <div className="border-l-2 border-primary/60 pl-4 py-2 bg-white/[0.02] rounded-r-lg">
+                  <h4 className="text-white font-medium text-sm mb-1">The Loop Closes</h4>
+                  <p className="text-slate-500 text-sm">Reviews attract new leads. Reactivated customers refer new business. Compound feeds back into Capture.</p>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-mono tracking-widest uppercase text-slate-600">THE OUTCOME:</span>
+                <p className="text-primary text-sm font-medium mt-1">A compounding engine that makes your existing customer base and reputation work as hard as your ad budget.</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section E: Loop CTA */}
+      <section className="py-24 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.06),transparent_50%)]" />
+        <div className="container mx-auto px-6 max-w-3xl text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+          >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium mb-6 text-white" data-testid="text-loop-cta">
+              The loop never stops.
+            </h2>
+            <p className="text-lg text-slate-400 leading-relaxed mb-10 max-w-xl mx-auto">
+              Capture fills your pipeline. Convert squeezes every dollar from it. Compound turns results into more results — and feeds new leads back into Capture. This is Sequential Revenue™.
+            </p>
+            <div className="relative group inline-block">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500" />
+              <Link
+                href="/solutions"
+                data-testid="button-loop-cta"
+                className="relative inline-flex items-center justify-center gap-2 bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
+              >
+                See How It Works →
+              </Link>
+            </div>
+            <p className="text-sm text-muted-foreground mt-4">Full breakdown of all three pillars and our "Found Money" Guarantee.</p>
+          </motion.div>
+        </div>
+      </section>
       {/* Industry Results Carousel */}
       <IndustryCarousel />
       {/* Revenue-Focused System Section */}
