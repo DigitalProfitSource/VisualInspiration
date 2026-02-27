@@ -10,6 +10,12 @@ import {
   Shield,
   ArrowRight,
 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { SEO } from "@/components/seo";
 import { Layout } from "@/components/layout";
@@ -312,9 +318,9 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
 }
 
 const compoundTimeline = [
-  { month: "Month 1", text: "The system pays for itself. Dead leads reactivate. Your calendar fills." },
-  { month: "Month 3", text: "Your review count doubles. Your pipeline runs without you touching it." },
-  { month: "Month 6", text: "You're getting inbound leads from AI search your competitors don't even know exists." },
+  { month: "Month 1", text: "Database reactivation generates qualified responses. Past customers re-engage. Your calendar starts filling — helping offset your setup costs from day one." },
+  { month: "Month 3", text: "Your review count climbs. Your pipeline runs without you touching it. Early maintenance costs are being offset by reactivated revenue." },
+  { month: "Month 6", text: "You're getting inbound leads from AI search your competitors don't even know exists. The system compounds." },
   { month: "Month 12", text: "You've built a revenue engine that compounds every month. Your only regret is not starting sooner." },
 ];
 
@@ -506,12 +512,37 @@ export default function Solutions() {
             <div className="flex items-start gap-4 mb-4">
               <Shield className="w-8 h-8 text-primary flex-shrink-0 mt-1" />
               <p className="text-slate-300 leading-relaxed">
-                We don't want your money if we haven't found yours first. Within the first 14 days of activation, we run a targeted Database Reactivation campaign on your existing contacts. If the revenue opportunity we surface doesn't cover our setup fee, you don't pay us a dime for the implementation &mdash; and you keep the lead intelligence report we generated.
+                Within your first 30 days on SimpleSequence, we run a targeted Database Reactivation campaign on your existing contacts. If we don&rsquo;t uncover enough revenue opportunities to meaningfully offset your setup and first month&rsquo;s fees, we&rsquo;ll run a second full reactivation campaign at no additional service cost.
               </p>
             </div>
             <p className="text-white font-medium text-center mt-4">
-              You either get a self-funding system, or you get a free audit of your database. You literally cannot lose.
+              You get a system designed to turn past customers into new cash flow &mdash; without increasing your ad spend.
             </p>
+            <p className="text-xs text-slate-500 text-center mt-3">
+              Guarantee applies to qualified lists and basic follow&#8209;up from your team. See how it works below.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="mt-6"
+          >
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="how-it-works" className="border-white/[0.06]">
+                <AccordionTrigger className="text-sm font-mono text-slate-400 hover:text-white py-4">
+                  How it works
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-slate-400 leading-relaxed space-y-4 pb-6">
+                  <p><span className="text-white font-medium">Your list:</span> You provide a permission&#8209;based list with a minimum of 1,000 contacts and valid email and/or mobile numbers.</p>
+                  <p><span className="text-white font-medium">Our goal:</span> Use database reactivation to generate qualified responses and booked appointments that help offset your implementation and early maintenance costs.</p>
+                  <p><span className="text-white font-medium">Your part:</span> You approve the offer and messaging, and your team responds to interested leads in a timely manner so opportunities can turn into revenue.</p>
+                  <p><span className="text-white font-medium">If we fall short:</span> If the initial campaign does not generate a meaningful volume of qualified responses or bookings from your list, we will run a second full reactivation campaign at no additional service fee.</p>
+                  <p><span className="text-white font-medium">Where our responsibility ends:</span> We create conversations and opportunities from the customers and leads you already paid to acquire. You own pricing, close rate, show rate, and fulfillment.</p>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </motion.div>
         </div>
       </section>
