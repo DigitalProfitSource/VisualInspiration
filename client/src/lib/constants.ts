@@ -19,47 +19,54 @@ export const STEPS: Step[] = [
     title: "About Your Business",
     description: "Help us understand your business context so we can calibrate our analysis.",
     fields: ["industry", "niche_specificity", "team_size", "avg_job_value", "monthly_lead_volume"],
-    progress: 14
+    progress: 12
   },
   {
     id: "calibration",
     title: "Calibrate Your Efficiency Analysis",
     description: "Select the scenarios that occur most frequently in your daily operations. This helps the AI isolate your primary friction points.",
     fields: ["revenue_pain"],
-    progress: 28
+    progress: 24
   },
   {
     id: "speed",
     title: "The Speed Gap",
     description: "How quickly do leads get a response, and what happens when you're unavailable?",
-    fields: ["first_contact_speed", "unavailability_pct", "phone_unavailable_handling", "digital_unavailable_handling"],
-    progress: 42
+    fields: ["first_contact_speed", "lead_unavailability", "phone_unavailable_handling", "digital_unavailable_handling"],
+    progress: 36
   },
   {
     id: "silence",
     title: "The Silence Gap",
-    description: "What happens after the first conversation - do leads get followed up?",
+    description: "What happens after the first conversation — do leads get followed up?",
     fields: ["no_show_recovery", "quote_followup", "dormant_leads", "no_show_rate"],
-    progress: 56
+    progress: 48
   },
   {
     id: "engagement",
     title: "Channels & Engagement",
-    description: "How do leads reach you, and how do you engage customers?",
-    fields: ["contact_channels", "social_media_activity", "review_request", "close_rate"],
-    progress: 70
+    description: "How do leads find and reach you? How do you build trust after the job is done?",
+    fields: ["contact_channels", "review_request", "close_rate", "ai_search_frequency", "ai_readiness"],
+    progress: 60
+  },
+  {
+    id: "intake",
+    title: "Intake & Pipeline",
+    description: "How do you capture and track leads once they come in?",
+    fields: ["intake_centralization", "pipeline_tracking"],
+    progress: 72
   },
   {
     id: "chaos",
     title: "The Chaos Gap",
     description: "How much operational overhead is slowing you down?",
     fields: ["manual_hours", "knowledge_bottleneck", "operational_complexity"],
-    progress: 85
+    progress: 84
   },
   {
     id: "contact",
     title: "Get Your Results",
-    description: "We'll send your personalized Revenue Gap Report to your inbox.",
+    description: "We'll send your personalized Sequential Revenue™ Friction Analysis to your inbox.",
     fields: ["contact_first_name", "contact_last_name", "contact_email", "contact_phone", "disclaimer_accepted"],
     progress: 95
   }
@@ -117,13 +124,11 @@ export const FIRST_CONTACT_SPEED_OPTIONS = [
   "It varies wildly (inconsistent)"
 ];
 
-export const UNAVAILABILITY_PCT_OPTIONS = [
-  "0-10% (Rare—we're almost always available)",
-  "11-25% (Occasional—some evenings/weekends)",
-  "26-50% (Frequent—about half the time)",
-  "51-75% (Most of the time—we miss more than we catch)",
-  "76-100% (Nearly constant—we're rarely available when they call)",
-  "I don't know (we don't track this)"
+export const LEAD_UNAVAILABILITY_OPTIONS = [
+  "Rarely (we're almost always available)",
+  "Sometimes (evenings/weekends we miss some)",
+  "Often (we miss a significant number of calls/messages)",
+  "Almost always (we're rarely available when they call)"
 ];
 
 export const PHONE_UNAVAILABLE_HANDLING_OPTIONS = [
@@ -156,11 +161,10 @@ export const QUOTE_FOLLOWUP_OPTIONS = [
 ];
 
 export const DORMANT_LEADS_OPTIONS = [
-  "Yes, hundreds or thousands (significant untapped opportunity)",
-  "Yes, 50-200 leads (moderate database)",
-  "Yes, under 50 (small list)",
-  "No, we actively work our database (stay on top of it)",
-  "I don't know / We don't track leads in a database"
+  "500+ (large reactivation opportunity)",
+  "100–499",
+  "Under 100",
+  "I'm not sure / we don't track this"
 ];
 
 export const NO_SHOW_RATE_OPTIONS = [
@@ -182,18 +186,37 @@ export const CONTACT_CHANNEL_OPTIONS = [
   { value: "Walk-ins only", subtitle: "In-person" }
 ];
 
-export const SOCIAL_MEDIA_ACTIVITY_OPTIONS = [
-  "Yes, very active (post 3+ times/week, respond to comments/DMs)",
-  "Somewhat active (have pages, post occasionally)",
-  "Barely active (pages exist but rarely use them)",
-  "No (don't use social media for business)"
+export const AI_SEARCH_FREQUENCY_OPTIONS = [
+  "Frequently (we get leads from Google/AI search regularly)",
+  "Occasionally (some leads mention finding us online)",
+  "Rarely or never",
+  "I don't know / we don't ask"
+];
+
+export const AI_READINESS_OPTIONS = [
+  { value: "We've intentionally optimized for AI search and voice assistants" },
+  { value: "We've done some basic SEO but nothing AI-specific" },
+  { value: "No real SEO or AI optimization — we rely on referrals/ads" },
+  { value: "We don't really have a proper website" }
+];
+
+export const INTAKE_CENTRALIZATION_OPTIONS = [
+  { value: "In a central CRM or booking system automatically" },
+  { value: "In multiple tools (email, spreadsheets, notes)" },
+  { value: "Mostly in people's heads / phones — not captured systematically" }
+];
+
+export const PIPELINE_TRACKING_OPTIONS = [
+  { value: "Yes, consistently in a CRM or job system" },
+  { value: "Partially (some data is tracked, some isn't)" },
+  { value: "No, we mostly rely on memory and informal tools" }
 ];
 
 export const REVIEW_REQUEST_OPTIONS = [
   "Yes, automatically (every customer gets a review request)",
   "Yes, manually (we ask when we remember)",
   "Sometimes (only our best customers)",
-  "No (we rely on organic reviews)"
+  "We rely on organic reviews / we don't really ask"
 ];
 
 export const CLOSE_RATE_OPTIONS = [

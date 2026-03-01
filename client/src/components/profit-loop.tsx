@@ -482,7 +482,6 @@ function DesktopCarousel({ activeIndex, setActiveIndex }: { activeIndex: number;
                     if (o < -2) o += NODE_COUNT;
                     navigate(o);
                     setIsAutoPlaying(false);
-                    setShowHint(false);
                   }
                 }}
                 data-testid={`profit-node-${node.id}`}

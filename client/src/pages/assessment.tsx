@@ -18,7 +18,7 @@ import {
   TEAM_SIZE_OPTIONS,
   MONTHLY_LEAD_VOLUME_OPTIONS,
   FIRST_CONTACT_SPEED_OPTIONS,
-  UNAVAILABILITY_PCT_OPTIONS,
+  LEAD_UNAVAILABILITY_OPTIONS,
   PHONE_UNAVAILABLE_HANDLING_OPTIONS,
   DIGITAL_UNAVAILABLE_HANDLING_OPTIONS,
   NO_SHOW_RECOVERY_OPTIONS,
@@ -26,7 +26,10 @@ import {
   DORMANT_LEADS_OPTIONS,
   NO_SHOW_RATE_OPTIONS,
   CONTACT_CHANNEL_OPTIONS,
-  SOCIAL_MEDIA_ACTIVITY_OPTIONS,
+  AI_SEARCH_FREQUENCY_OPTIONS,
+  AI_READINESS_OPTIONS,
+  INTAKE_CENTRALIZATION_OPTIONS,
+  PIPELINE_TRACKING_OPTIONS,
   REVIEW_REQUEST_OPTIONS,
   CLOSE_RATE_OPTIONS,
   MANUAL_HOURS_OPTIONS,
@@ -363,24 +366,24 @@ export default function Assessment() {
           </div>
         );
 
-      case 'unavailability_pct':
+      case 'lead_unavailability':
         return (
           <div className="space-y-3 w-full pt-4">
-            <GlassLabel>If you had to guess, what percentage of leads contact you outside your normal availability?</GlassLabel>
+            <GlassLabel>How often are leads trying to reach you when no one's available?</GlassLabel>
             <p className="text-xs text-slate-500 mb-2">Think about after-hours, weekends, busy periods, team in the field, etc.</p>
             <Controller
               control={control}
-              name="unavailability_pct"
+              name="lead_unavailability"
               render={({ field }) => (
                 <GlassRadioGroup
-                  options={UNAVAILABILITY_PCT_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  options={LEAD_UNAVAILABILITY_OPTIONS.map(opt => ({ value: opt, label: opt }))}
                   value={field.value}
                   onChange={field.onChange}
                   columns={1}
                 />
               )}
             />
-            {errors.unavailability_pct && <p className="text-cyan-400 text-xs">{errors.unavailability_pct.message}</p>}
+            {errors.lead_unavailability && <p className="text-cyan-400 text-xs">{errors.lead_unavailability.message}</p>}
           </div>
         );
 
@@ -554,23 +557,93 @@ export default function Assessment() {
           </div>
         );
 
-      case 'social_media_activity':
+      case 'ai_search_frequency':
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>Are you active on social media for your business?</GlassLabel>
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2">AI SEARCH VISIBILITY</div>
+            <GlassLabel>How often do potential customers find you through Google or AI-powered search?</GlassLabel>
             <Controller
               control={control}
-              name="social_media_activity"
+              name="ai_search_frequency"
               render={({ field }) => (
                 <GlassRadioGroup
-                  options={SOCIAL_MEDIA_ACTIVITY_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  options={AI_SEARCH_FREQUENCY_OPTIONS.map(opt => ({ value: opt, label: opt }))}
                   value={field.value}
                   onChange={field.onChange}
                   columns={1}
                 />
               )}
             />
-            {errors.social_media_activity && <p className="text-cyan-400 text-xs">{errors.social_media_activity.message}</p>}
+            {errors.ai_search_frequency && <p className="text-cyan-400 text-xs">{errors.ai_search_frequency.message}</p>}
+          </div>
+        );
+
+      case 'ai_readiness':
+        return (
+          <div className="space-y-3 w-full">
+            <GlassLabel>How prepared is your online presence for AI-powered search (ChatGPT, Google AI Overviews)?</GlassLabel>
+            <Controller
+              control={control}
+              name="ai_readiness"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={AI_READINESS_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.ai_readiness && <p className="text-cyan-400 text-xs">{errors.ai_readiness.message}</p>}
+          </div>
+        );
+
+      case 'intake_centralization':
+        return (
+          <div className="space-y-3 w-full">
+            <GlassLabel>When a new lead comes in, where does their info end up?</GlassLabel>
+            <Controller
+              control={control}
+              name="intake_centralization"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={INTAKE_CENTRALIZATION_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.intake_centralization && <p className="text-cyan-400 text-xs">{errors.intake_centralization.message}</p>}
+          </div>
+        );
+
+      case 'pipeline_tracking':
+        return (
+          <div className="space-y-3 w-full">
+            <GlassLabel>Do you track the status of every lead from first contact to close?</GlassLabel>
+            <Controller
+              control={control}
+              name="pipeline_tracking"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={PIPELINE_TRACKING_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.pipeline_tracking && <p className="text-cyan-400 text-xs">{errors.pipeline_tracking.message}</p>}
           </div>
         );
 

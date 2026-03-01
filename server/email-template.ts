@@ -6,15 +6,18 @@ interface AssessmentEmailData {
   teamSize: string;
   avgJobValue: string;
   monthlyLeadVolume: string;
-  clarityScore: number;
+  overallScore: number;
+  captureScore: number;
+  captureFindings: string[];
+  convertScore: number;
+  convertFindings: string[];
+  compoundScore: number;
+  compoundFindings: string[];
+  blindspots: string[];
+  quickWins: string[];
+  supportingActions: string[];
   totalMonthlyGap: number;
   annualizedGap: number;
-  speedGapEstimate: number;
-  speedGapFindings: string[];
-  silenceGapEstimate: number;
-  silenceGapFindings: string[];
-  chaosGapEstimate: number;
-  chaosGapFindings: string[];
   recommendedTier: string;
   tierReason: string;
 }
@@ -23,6 +26,8 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
   const calendarLink = "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi";
   
   const firstName = data.contactName.split(" ")[0];
+
+  const scoreColor = (score: number) => score >= 70 ? '#22c55e' : score >= 40 ? '#eab308' : '#ef4444';
   
   return `
 <!DOCTYPE html>
@@ -30,7 +35,7 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your AI Clarity Assessment Results</title>
+  <title>Your Sequential Revenue™ Friction Analysis Results</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #0f0f11; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0f0f11;">
@@ -45,7 +50,7 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
                 <tr>
                   <td>
                     <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: #ffffff;">SimpleSequence</h1>
-                    <p style="margin: 8px 0 0; font-size: 14px; color: #67E8F9;">AI Clarity Assessment Results</p>
+                    <p style="margin: 8px 0 0; font-size: 14px; color: #67E8F9;">Sequential Revenue™ Friction Analysis Results</p>
                   </td>
                 </tr>
               </table>
@@ -57,8 +62,8 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
             <td style="background-color: #18181b; padding: 30px;">
               <p style="margin: 0 0 16px; font-size: 16px; color: #e2e8f0;">Hi ${firstName},</p>
               <p style="margin: 0; font-size: 16px; color: #94a3b8; line-height: 1.6;">
-                Thank you for completing the AI Clarity Assessment for <strong style="color: #ffffff;">${data.businessName}</strong>. 
-                Here's your personalized analysis of operational gaps and revenue opportunities.
+                Thank you for completing the Sequential Revenue™ Friction Analysis for <strong style="color: #ffffff;">${data.businessName}</strong>. 
+                Here's your personalized breakdown of where friction is slowing your revenue across the three pillars.
               </p>
             </td>
           </tr>
@@ -92,52 +97,79 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
             </td>
           </tr>
 
-          <!-- Total Impact Summary -->
+          <!-- Overall Score -->
           <tr>
             <td style="background-color: #18181b; padding: 0 30px 30px;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 12px; border: 1px solid rgba(103, 232, 249, 0.3);">
                 <tr>
                   <td style="padding: 24px; text-align: center;">
-                    <p style="margin: 0 0 8px; font-size: 12px; font-weight: 600; color: #67E8F9; text-transform: uppercase; letter-spacing: 1px;">Total Monthly Revenue Gap</p>
-                    <p style="margin: 0; font-size: 36px; font-weight: 700; color: #67E8F9;">$${data.totalMonthlyGap.toLocaleString()}/mo</p>
-                    <p style="margin: 8px 0 0; font-size: 14px; color: #94a3b8;">Annualized: $${data.annualizedGap.toLocaleString()}</p>
+                    <p style="margin: 0 0 8px; font-size: 12px; font-weight: 600; color: #67E8F9; text-transform: uppercase; letter-spacing: 1px;">Sequential Revenue™ Score</p>
+                    <p style="margin: 0; font-size: 48px; font-weight: 700; color: ${scoreColor(data.overallScore)};">${data.overallScore}/100</p>
+                    <p style="margin: 12px 0 0; font-size: 14px; color: #94a3b8;">Est. Monthly Revenue Gap: $${data.totalMonthlyGap.toLocaleString()} &bull; Annualized: $${data.annualizedGap.toLocaleString()}</p>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- Gap Breakdown -->
+          <!-- Pillar Scores -->
           <tr>
             <td style="background-color: #18181b; padding: 0 30px 30px;">
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                 <tr>
                   <td width="32%" style="padding-right: 8px;">
-                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: rgba(20, 184, 166, 0.1); border-radius: 8px; border: 1px solid rgba(20, 184, 166, 0.2);">
-                      <tr>
-                        <td style="padding: 16px; text-align: center;">
-                          <p style="margin: 0; font-size: 11px; color: #5eead4; text-transform: uppercase;">Speed Gap</p>
-                          <p style="margin: 8px 0 0; font-size: 18px; font-weight: 700; color: #14b8a6;">$${data.speedGapEstimate.toLocaleString()}</p>
-                        </td>
-                      </tr>
-                    </table>
+                    ${generatePillarBlock("Capture", data.captureScore, scoreColor(data.captureScore))}
                   </td>
                   <td width="32%" style="padding: 0 4px;">
-                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: rgba(251, 191, 36, 0.1); border-radius: 8px; border: 1px solid rgba(251, 191, 36, 0.2);">
-                      <tr>
-                        <td style="padding: 16px; text-align: center;">
-                          <p style="margin: 0; font-size: 11px; color: #fcd34d; text-transform: uppercase;">Silence Gap</p>
-                          <p style="margin: 8px 0 0; font-size: 18px; font-weight: 700; color: #f59e0b;">$${data.silenceGapEstimate.toLocaleString()}</p>
-                        </td>
-                      </tr>
-                    </table>
+                    ${generatePillarBlock("Convert", data.convertScore, scoreColor(data.convertScore))}
                   </td>
                   <td width="36%" style="padding-left: 8px;">
-                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: rgba(239, 68, 68, 0.1); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                    ${generatePillarBlock("Compound", data.compoundScore, scoreColor(data.compoundScore))}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Pillar Details -->
+          ${generatePillarSection("Capture", data.captureScore, data.captureFindings, "#67E8F9", "rgba(103, 232, 249, 0.1)")}
+          ${generatePillarSection("Convert", data.convertScore, data.convertFindings, "#67E8F9", "rgba(103, 232, 249, 0.08)")}
+          ${generatePillarSection("Compound", data.compoundScore, data.compoundFindings, "#67E8F9", "rgba(103, 232, 249, 0.06)")}
+
+          <!-- Blindspots -->
+          ${data.blindspots.length > 0 ? `
+          <tr>
+            <td style="background-color: #18181b; padding: 0 30px 30px;">
+              <p style="margin: 0 0 12px; font-size: 16px; font-weight: 600; color: #ffffff;">Your Blindspots</p>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: rgba(234, 179, 8, 0.05); border-radius: 8px; border: 1px solid rgba(234, 179, 8, 0.2);">
+                <tr>
+                  <td style="padding: 16px;">
+                    ${data.blindspots.slice(0, 4).map(s => `<p style="margin: 0 0 8px; font-size: 13px; color: #94a3b8; padding-left: 16px;">&#9888; ${s}</p>`).join("")}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          ` : ''}
+
+          <!-- 30-Day Action Plan -->
+          <tr>
+            <td style="background-color: #18181b; padding: 0 30px 30px;">
+              <p style="margin: 0 0 16px; font-size: 16px; font-weight: 600; color: #ffffff;">Your Next-30-Day Action Plan</p>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(71, 85, 105, 0.3);">
+                <tr>
+                  <td style="padding: 20px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                       <tr>
-                        <td style="padding: 16px; text-align: center;">
-                          <p style="margin: 0; font-size: 11px; color: #fca5a5; text-transform: uppercase;">Chaos Gap</p>
-                          <p style="margin: 8px 0 0; font-size: 18px; font-weight: 700; color: #ef4444;">$${data.chaosGapEstimate.toLocaleString()}</p>
+                        <td style="padding-bottom: 16px;">
+                          <p style="margin: 0 0 8px; font-size: 13px; font-weight: 600; color: #67E8F9;">Quick Wins (First 7–14 Days)</p>
+                          ${data.quickWins.slice(0, 3).map(w => `<p style="margin: 0 0 6px; font-size: 13px; color: #94a3b8; line-height: 1.5; padding-left: 16px;">&#10003; ${w}</p>`).join("")}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p style="margin: 0 0 8px; font-size: 13px; font-weight: 600; color: #94a3b8;">Supporting Actions (Rest of 30 Days)</p>
+                          ${data.supportingActions.slice(0, 3).map(a => `<p style="margin: 0 0 6px; font-size: 13px; color: #94a3b8; line-height: 1.5; padding-left: 16px;">&#8226; ${a}</p>`).join("")}
                         </td>
                       </tr>
                     </table>
@@ -146,11 +178,6 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
               </table>
             </td>
           </tr>
-
-          <!-- Gap Analysis Details -->
-          ${generateGapSection("Speed Gap", data.speedGapEstimate, data.speedGapFindings, "#14b8a6", "rgba(20, 184, 166, 0.1)")}
-          ${generateGapSection("Silence Gap", data.silenceGapEstimate, data.silenceGapFindings, "#f59e0b", "rgba(251, 191, 36, 0.1)")}
-          ${generateGapSection("Chaos Gap", data.chaosGapEstimate, data.chaosGapFindings, "#ef4444", "rgba(239, 68, 68, 0.1)")}
 
           <!-- Recommended Tier -->
           <tr>
@@ -167,39 +194,6 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
             </td>
           </tr>
 
-          <!-- DIY Tips Section -->
-          <tr>
-            <td style="background-color: #18181b; padding: 0 30px 30px;">
-              <p style="margin: 0 0 16px; font-size: 16px; font-weight: 600; color: #ffffff;">Quick Wins You Can Start Today</p>
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(71, 85, 105, 0.3);">
-                <tr>
-                  <td style="padding: 20px;">
-                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
-                      <tr>
-                        <td style="padding-bottom: 12px;">
-                          <p style="margin: 0 0 8px; font-size: 13px; font-weight: 600; color: #14b8a6;">Speed Fixes</p>
-                          <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.5;">• Set up auto-responders for after-hours leads<br>• Train team on sub-5-minute response protocol</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding-bottom: 12px;">
-                          <p style="margin: 0 0 8px; font-size: 13px; font-weight: 600; color: #f59e0b;">Silence Fixes</p>
-                          <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.5;">• Create no-show recovery scripts<br>• Set calendar reminders for quote follow-ups</p>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p style="margin: 0 0 8px; font-size: 13px; font-weight: 600; color: #ef4444;">Chaos Fixes</p>
-                          <p style="margin: 0; font-size: 13px; color: #94a3b8; line-height: 1.5;">• Document top 10 repetitive admin tasks<br>• Use Zapier/Make.com free tiers for automation</p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
           <!-- CTA -->
           <tr>
             <td style="background-color: #18181b; padding: 0 30px 30px;">
@@ -208,7 +202,7 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
                   <td style="padding: 30px; text-align: center;">
                     <p style="margin: 0 0 8px; font-size: 20px; font-weight: 700; color: #ffffff;">Ready to Close Your Revenue Gaps?</p>
                     <p style="margin: 0 0 24px; font-size: 14px; color: #94a3b8; line-height: 1.5;">
-                      Let's discuss how to implement these fixes with AI-powered automation—without the DIY headaches.
+                      Let's discuss how to implement these fixes with AI-powered automation — without the DIY headaches.
                     </p>
                     <a href="${calendarLink}" target="_blank" style="display: inline-block; padding: 14px 32px; background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%); color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 8px;">
                       Book a Discovery Call
@@ -245,9 +239,22 @@ export function generateAssessmentEmailHTML(data: AssessmentEmailData): string {
   `.trim();
 }
 
-function generateGapSection(title: string, estimate: number, findings: string[], color: string, bgColor: string): string {
+function generatePillarBlock(title: string, score: number, color: string): string {
+  return `
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: rgba(15, 23, 42, 0.6); border-radius: 8px; border: 1px solid rgba(71, 85, 105, 0.3);">
+      <tr>
+        <td style="padding: 16px; text-align: center;">
+          <p style="margin: 0; font-size: 11px; color: #67E8F9; text-transform: uppercase;">${title}</p>
+          <p style="margin: 8px 0 0; font-size: 24px; font-weight: 700; color: ${color};">${score}/100</p>
+        </td>
+      </tr>
+    </table>
+  `;
+}
+
+function generatePillarSection(title: string, score: number, findings: string[], color: string, bgColor: string): string {
   const findingsHTML = findings.slice(0, 3).map(f => 
-    `<tr><td style="padding: 4px 0 4px 16px; font-size: 13px; color: #94a3b8;">• ${f}</td></tr>`
+    `<tr><td style="padding: 4px 0 4px 16px; font-size: 13px; color: #94a3b8;">&#8226; ${f}</td></tr>`
   ).join("");
 
   return `
@@ -262,7 +269,7 @@ function generateGapSection(title: string, estimate: number, findings: string[],
                           <p style="margin: 0; font-size: 14px; font-weight: 600; color: ${color};">${title}</p>
                         </td>
                         <td style="text-align: right;">
-                          <p style="margin: 0; font-size: 16px; font-weight: 700; color: ${color};">$${estimate.toLocaleString()}/mo</p>
+                          <p style="margin: 0; font-size: 16px; font-weight: 700; color: ${color};">${score}/100</p>
                         </td>
                       </tr>
                     </table>

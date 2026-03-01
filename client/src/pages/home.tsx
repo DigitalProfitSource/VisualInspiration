@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "wouter";
-import { Activity, Layers, Zap, Brain, ShieldCheck, Shield, LayoutTemplate, ChevronDown, Quote, RefreshCw, TrendingUp, FileText, Globe, ChevronRight, ArrowUpRight, Sparkles, Star } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, Shield, LayoutTemplate, ChevronDown, Quote, RefreshCw, TrendingUp, FileText, Globe, ChevronRight, ArrowUpRight, Sparkles, Star, CheckCircle } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -799,21 +799,32 @@ export default function Home() {
               className="max-w-2xl"
             >
               <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
-                START HERE
+                CHECK YOUR BLINDSPOTS
               </div>
-              <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight">The Revenue Friction Analysis</h2>
+              <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight">The Sequential Revenue™ Friction Analysis</h2>
               <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
-                Your growth isn't stalling due to lack of effort; it's stalling due to hidden operational drag. Leads go cold in the invisible gaps between manual tasks and handoffs that your CRM isn't tracking. This AI-powered analysis pinpoints exactly where friction is choking your pipeline and uncovers the single biggest operational gap <span className="text-white font-medium">costing you deals right now.</span>
+                Revenue doesn't stall because you're not working hard enough — it stalls because of invisible flow problems. Leads go cold before you respond. Quotes disappear into silence. Past customers never come back. This analysis maps friction across your three revenue pillars — <span className="text-white font-medium">Capture, Convert, and Compound</span> — and shows you exactly where the drag is.
               </p>
-              <p className="text-lg text-white font-semibold mb-10">
-                Move from guessing to knowing. Stop letting invisible inefficiencies dictate your revenue.
-              </p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Your Sequential Revenue™ Score across all three pillars</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Prioritized blindspots showing where deals are slowing down</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>A next-30-day action plan you can start implementing today</span>
+                </li>
+              </ul>
               <Link 
                 href="/assessment"
                 data-testid="button-assessment-cta"
                 className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] group transition-colors"
               >
-                Get My Executive Analysis
+                Get My 30-Day Plan
                 <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </motion.div>
@@ -830,40 +841,49 @@ export default function Home() {
                <div className="relative bg-zinc-900 p-8 rounded-2xl border border-white/10 shadow-2xl">
                   {/* Header */}
                   <div className="flex items-center gap-2 mb-6">
-                    <span className="text-xs font-mono text-zinc-400 tracking-wider">EXECUTIVE AI ANALYSIS</span>
+                    <span className="text-xs font-mono text-zinc-400 tracking-wider">SEQUENTIAL REVENUE™ ANALYSIS</span>
                     <FileText className="w-4 h-4 text-primary" />
                   </div>
                   
-                  {/* Progress bars */}
-                  <div className="space-y-2 mb-6">
-                    <div className="h-1.5 bg-primary/60 rounded-full w-full" />
-                    <div className="h-1.5 bg-primary/40 rounded-full w-4/5" />
-                    <div className="h-1.5 bg-primary/20 rounded-full w-3/5" />
+                  {/* Pillar scores */}
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-zinc-400">Capture</span>
+                      <span className="text-xs font-mono text-white">72/100</span>
+                    </div>
+                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/70 rounded-full" style={{width: '72%'}} /></div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-zinc-400">Convert</span>
+                      <span className="text-xs font-mono text-white">58/100</span>
+                    </div>
+                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/50 rounded-full" style={{width: '58%'}} /></div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-zinc-400">Compound</span>
+                      <span className="text-xs font-mono text-white">41/100</span>
+                    </div>
+                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/30 rounded-full" style={{width: '41%'}} /></div>
                   </div>
                   
-                  {/* Friction Point Label */}
-                  <div className="text-xs font-mono text-zinc-500 mb-4 tracking-wider">FRICTION POINT IDENTIFICATION</div>
-                  
-                  {/* Operational Efficiency Score */}
+                  {/* Sequential Revenue Score */}
                   <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5 mb-4">
                     <div className="flex items-center gap-2 mb-2">
                       <Activity className="w-4 h-4 text-primary" />
-                      <span className="text-xs text-zinc-400">Operational Efficiency Score</span>
+                      <span className="text-xs text-zinc-400">Sequential Revenue™ Score</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-4xl font-mono font-bold text-white">76</span>
+                      <span className="text-4xl font-mono font-bold text-white">59</span>
                       <span className="text-2xl font-mono text-zinc-600">/100</span>
                       <TrendingUp className="w-5 h-5 text-primary ml-auto" />
                     </div>
                   </div>
                   
-                  {/* Potential Revenue Impact */}
+                  {/* Blindspots count */}
                   <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5">
                     <div className="flex items-center gap-2 mb-2">
                       <Sparkles className="w-4 h-4 text-primary" />
-                      <span className="text-xs text-zinc-400">Potential Revenue Impact</span>
+                      <span className="text-xs text-zinc-400">Blindspots Identified</span>
                     </div>
-                    <div className="text-3xl font-mono font-bold text-white">$35,000</div>
+                    <div className="text-3xl font-mono font-bold text-white">4</div>
                   </div>
                </div>
             </motion.div>

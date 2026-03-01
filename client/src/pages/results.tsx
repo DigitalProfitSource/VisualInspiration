@@ -1,37 +1,55 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "wouter";
 import { motion } from "framer-motion";
-import { BarChart3, ArrowRight, CheckCircle, ChevronDown, ChevronUp, ExternalLink, Wrench, Clock, Code, RefreshCw, Send } from "lucide-react";
-import { AssessmentResult, GapScore } from "@/lib/scoring";
+import { BarChart3, ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw, Send, Eye, Zap, TrendingUp, Target, AlertTriangle } from "lucide-react";
+import { AssessmentResult, PillarScore } from "@/lib/scoring";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
-function GapCard({ 
+function PillarCard({ 
   title, 
-  gap, 
+  pillar,
+  icon,
+  color,
   description
 }: { 
   title: string; 
-  gap: GapScore; 
+  pillar: PillarScore;
+  icon: React.ReactNode;
+  color: string;
   description: string;
 }) {
-  const [showCalculation, setShowCalculation] = useState(false);
+  const scoreColor = pillar.score >= 70 ? 'text-green-400' : pillar.score >= 40 ? 'text-yellow-400' : 'text-red-400';
+  const barColor = pillar.score >= 70 ? 'bg-green-400' : pillar.score >= 40 ? 'bg-yellow-400' : 'bg-red-400';
 
   return (
     <GlassCard className="p-6 border-cyan-500/20 bg-cyan-950/10 relative overflow-hidden">
-      <div className="mb-4">
-        <h3 className="text-xl font-heading font-semibold text-white">{title}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className={`p-2 rounded-lg ${color}`}>
+            {icon}
+          </div>
+          <h3 className="text-xl font-heading font-semibold text-white">{title}</h3>
+        </div>
+        <div className="text-right">
+          <span className={`text-3xl font-mono font-bold ${scoreColor}`}>{pillar.score}</span>
+          <span className="text-lg font-mono text-slate-500">/100</span>
+        </div>
+      </div>
+
+      <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-4">
+        <div className={`h-full ${barColor} rounded-full transition-all`} style={{ width: `${pillar.score}%` }} />
       </div>
       
-      <p className="text-sm text-slate-400 mb-6">{description}</p>
+      <p className="text-sm text-slate-400 mb-5">{description}</p>
       
-      <div className="space-y-4 mb-6">
-        <div>
+      {pillar.findings.length > 0 && (
+        <div className="mb-4">
           <p className="text-xs text-cyan-400 uppercase tracking-wider mb-2">What We Found</p>
           <ul className="space-y-1">
-            {gap.findings.map((finding, i) => (
+            {pillar.findings.map((finding, i) => (
               <li key={i} className="text-sm text-slate-300 flex gap-2">
                 <span className="text-slate-500">-</span>
                 {finding}
@@ -39,46 +57,20 @@ function GapCard({
             ))}
           </ul>
         </div>
-        
-        {gap.causes.length > 0 && (
-          <div>
-            <p className="text-xs text-cyan-400 uppercase tracking-wider mb-2">What's Causing This</p>
-            <ul className="space-y-1">
-              {gap.causes.map((cause, i) => (
-                <li key={i} className="text-sm text-slate-300 flex gap-2">
-                  <span className="text-slate-500">-</span>
-                  {cause}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+      )}
       
-      <div className="flex justify-between items-center pt-4 border-t border-slate-700/50">
+      {pillar.blindspots.length > 0 && (
         <div>
-          <p className="text-xs text-slate-500 uppercase">Estimated Monthly Impact</p>
-          <p className="text-2xl font-mono font-bold text-cyan-400">~${gap.estimate.toLocaleString()}</p>
+          <p className="text-xs text-yellow-400 uppercase tracking-wider mb-2">Blindspots</p>
+          <ul className="space-y-2">
+            {pillar.blindspots.map((spot, i) => (
+              <li key={i} className="text-sm text-slate-300 flex gap-2">
+                <AlertTriangle size={14} className="text-yellow-400 mt-0.5 flex-shrink-0" />
+                {spot}
+              </li>
+            ))}
+          </ul>
         </div>
-        
-        <button 
-          onClick={() => setShowCalculation(!showCalculation)}
-          className="text-xs text-slate-500 hover:text-cyan-400 flex items-center gap-1 transition-colors"
-        >
-          {showCalculation ? 'Hide' : 'Show'} calculation
-          {showCalculation ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-        </button>
-      </div>
-      
-      {showCalculation && (
-        <motion.div 
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          className="mt-4 pt-4 border-t border-slate-700/30"
-        >
-          <p className="text-xs text-slate-500 mb-2">{gap.calculationDetails.description}</p>
-          <p className="text-xs font-mono text-slate-400 bg-slate-900/50 p-2 rounded">{gap.calculationDetails.formula}</p>
-        </motion.div>
       )}
     </GlassCard>
   );
@@ -192,6 +184,8 @@ export default function Results() {
     );
   }
 
+  const overallColor = result.overallScore >= 70 ? 'text-green-400' : result.overallScore >= 40 ? 'text-yellow-400' : 'text-red-400';
+
   const frontlineFeatures = [
     "AI Voice backup when team is busy/after-hours",
     "24/7 website chatbot",
@@ -248,10 +242,10 @@ export default function Results() {
           className="text-center space-y-4 mb-12"
         >
           <h1 className="text-3xl md:text-4xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">
-            Your Revenue Gap Report: {result.businessName}
+            Sequential Revenue™ Friction Analysis
           </h1>
           <p className="text-slate-300 text-lg">
-            Here's what's really happening in your business - and exactly how much it's costing you.
+            {result.businessName} — here's where friction is slowing your revenue.
           </p>
         </motion.div>
 
@@ -295,62 +289,179 @@ export default function Results() {
           className="space-y-6 mb-12"
         >
           <GlassCard className="p-8 border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 to-slate-900/50 mb-8">
-            <h3 className="text-xl font-heading font-semibold text-cyan-400 flex items-center gap-2 mb-4">
-              <BarChart3 size={24} /> Total Impact Summary
+            <h3 className="text-xl font-heading font-semibold text-cyan-400 flex items-center gap-2 mb-6">
+              <BarChart3 size={24} /> Your Sequential Revenue™ Score
             </h3>
             
             <div className="text-center py-6">
-              <p className="text-sm text-slate-400 uppercase tracking-wider mb-3">Total Monthly Revenue Gap</p>
-              <p className="text-4xl md:text-5xl font-mono font-bold text-cyan-400 mb-2">
-                ${result.totalMonthlyGap.toLocaleString()}
+              <p className="text-sm text-slate-400 uppercase tracking-wider mb-3">Overall Score</p>
+              <p className={`text-5xl md:text-6xl font-mono font-bold ${overallColor} mb-2`}>
+                {result.overallScore}
               </p>
-              <p className="text-lg text-slate-300 font-medium">
-                Annualized: ${result.annualizedGap.toLocaleString()}
-              </p>
+              <p className="text-lg text-slate-500 font-mono">/100</p>
 
-              <div className="mt-6 grid grid-cols-3 gap-4 text-center">
+              <div className="mt-8 grid grid-cols-3 gap-4 text-center">
+                <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-700/30">
+                  <div className="flex items-center justify-center gap-1 mb-2">
+                    <Eye size={14} className="text-cyan-400" />
+                    <p className="text-cyan-400 font-semibold text-sm">Capture</p>
+                  </div>
+                  <p className="text-2xl font-mono font-bold text-white">{result.captureScore.score}</p>
+                  <p className="text-xs text-slate-500">/100</p>
+                </div>
+                <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-700/30">
+                  <div className="flex items-center justify-center gap-1 mb-2">
+                    <Target size={14} className="text-cyan-400" />
+                    <p className="text-cyan-400 font-semibold text-sm">Convert</p>
+                  </div>
+                  <p className="text-2xl font-mono font-bold text-white">{result.convertScore.score}</p>
+                  <p className="text-xs text-slate-500">/100</p>
+                </div>
+                <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-700/30">
+                  <div className="flex items-center justify-center gap-1 mb-2">
+                    <TrendingUp size={14} className="text-cyan-400" />
+                    <p className="text-cyan-400 font-semibold text-sm">Compound</p>
+                  </div>
+                  <p className="text-2xl font-mono font-bold text-white">{result.compoundScore.score}</p>
+                  <p className="text-xs text-slate-500">/100</p>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-slate-700/30 grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-cyan-400 font-semibold">Speed Gap</p>
-                  <p className="text-white font-mono">${result.speedGap.estimate.toLocaleString()}</p>
+                  <p className="text-xs text-slate-500 uppercase">Est. Monthly Revenue Gap</p>
+                  <p className="text-2xl font-mono font-bold text-cyan-400">${result.totalMonthlyGap.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-cyan-400 font-semibold">Silence Gap</p>
-                  <p className="text-white font-mono">${result.silenceGap.estimate.toLocaleString()}</p>
-                </div>
-                <div>
-                  <p className="text-cyan-400 font-semibold">Chaos Gap</p>
-                  <p className="text-white font-mono">${result.chaosGap.estimate.toLocaleString()}</p>
+                  <p className="text-xs text-slate-500 uppercase">Annualized</p>
+                  <p className="text-2xl font-mono font-bold text-cyan-400">${result.annualizedGap.toLocaleString()}</p>
                 </div>
               </div>
             </div>
           </GlassCard>
 
-          <h2 className="text-2xl font-heading font-bold text-white">Gap Analysis</h2>
+          <h2 className="text-2xl font-heading font-bold text-white">Pillar Breakdown</h2>
           
-          <GapCard 
-            title="Speed Gap" 
-            gap={result.speedGap}
-            description="Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first."
+          <PillarCard 
+            title="Capture" 
+            pillar={result.captureScore}
+            icon={<Eye size={20} className="text-cyan-400" />}
+            color="bg-cyan-500/10"
+            description="How effectively you attract and respond to new leads. This covers response speed, availability, AI search visibility, and lead intake."
           />
           
-          <GapCard 
-            title="Silence Gap" 
-            gap={result.silenceGap}
-            description="Most revenue isn't lost at first contact - it's lost in the days and weeks after when no one follows up."
+          <PillarCard 
+            title="Convert" 
+            pillar={result.convertScore}
+            icon={<Target size={20} className="text-cyan-400" />}
+            color="bg-cyan-500/10"
+            description="How well you turn leads into paying customers. This covers follow-up persistence, no-show recovery, pipeline tracking, and close rate."
           />
           
-          <GapCard 
-            title="Chaos Gap" 
-            gap={result.chaosGap}
-            description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."
+          <PillarCard 
+            title="Compound" 
+            pillar={result.compoundScore}
+            icon={<TrendingUp size={20} className="text-cyan-400" />}
+            color="bg-cyan-500/10"
+            description="How effectively past customers fuel future growth. This covers dormant lead reactivation and review generation."
           />
         </motion.div>
 
+        {result.blindspots.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mb-12"
+          >
+            <h2 className="text-2xl font-heading font-bold text-white mb-4">Your Blindspots</h2>
+            <GlassCard className="p-6 border-yellow-500/20 bg-yellow-950/5">
+              <p className="text-sm text-slate-400 mb-4">These are the friction points most likely costing you revenue right now:</p>
+              <ul className="space-y-3">
+                {result.blindspots.map((spot, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
+                    <AlertTriangle size={16} className="text-yellow-400 mt-0.5 flex-shrink-0" />
+                    {spot}
+                  </li>
+                ))}
+              </ul>
+            </GlassCard>
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
+          className="mb-12"
+        >
+          <h2 className="text-2xl font-heading font-bold text-cyan-400 mb-2">Your Next-30-Day Action Plan</h2>
+          <p className="text-slate-400 mb-6">Start here — these are tailored to your weakest pillar. You can implement them with or without SimpleSequence.</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <GlassCard className="p-6 border-cyan-500/20 bg-cyan-950/10">
+              <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+                <Zap size={18} className="text-cyan-400" />
+                Quick Wins (First 7–14 Days)
+              </h3>
+              <div className="space-y-3">
+                {result.actionPlan.quickWins.map((action, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <CheckCircle size={16} className="text-cyan-400 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-slate-300">{action}</p>
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
+
+            <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
+              <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
+                <Wrench size={18} className="text-slate-400" />
+                Supporting Actions (Rest of 30 Days)
+              </h3>
+              <div className="space-y-3">
+                {result.actionPlan.supportingActions.map((action, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <CheckCircle size={16} className="text-slate-500 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-slate-400">{action}</p>
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
+          </div>
+
+          <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
+            <h3 className="text-lg font-heading font-semibold text-white mb-3">The Reality of DIY Implementation</h3>
+            <p className="text-slate-400 text-sm mb-4">
+              Most businesses intend to implement these fixes but never do. Success requires specialized systems that run without your constant attention. Manual implementation typically requires:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
+                <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
+                  <Clock size={12} /> Time Investment
+                </p>
+                <p className="text-sm text-slate-300">15-30 hours of technical setup and troubleshooting</p>
+              </div>
+              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
+                <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
+                  <Code size={12} /> Technical Debt
+                </p>
+                <p className="text-sm text-slate-300">Advanced API & integration knowledge to prevent failures</p>
+              </div>
+              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
+                <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
+                  <RefreshCw size={12} /> Ongoing Overhead
+                </p>
+                <p className="text-sm text-slate-300">Constant maintenance, API updates, and security monitoring</p>
+              </div>
+            </div>
+          </GlassCard>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
           className="space-y-6 mb-12"
         >
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -365,7 +476,7 @@ export default function Results() {
               tier="Frontline"
               price="$297/mo"
               setupFee="$500"
-              description="The Human-First Safety Net - Fix the Speed Gap first."
+              description="The Human-First Safety Net — Fix the Capture pillar first."
               features={frontlineFeatures}
               isRecommended={result.recommendedTier === 'Frontline'}
               ctaText="Get Started"
@@ -376,7 +487,7 @@ export default function Results() {
               tier="Specialist"
               price="$497/mo"
               setupFee="$1,000"
-              description="The Revenue & Reputation Accelerator - Address Speed + Silence Gaps."
+              description="The Revenue & Reputation Accelerator — Address Capture + Convert pillars."
               features={specialistFeatures}
               isRecommended={result.recommendedTier === 'Specialist'}
               ctaText="Get Started"
@@ -387,7 +498,7 @@ export default function Results() {
               tier="Command"
               price="Starting at $997/mo"
               setupFee="$2,500+"
-              description="The Autonomous Operations Engine - Full operational transformation."
+              description="The Autonomous Operations Engine — Full operational transformation across all pillars."
               features={commandFeatures}
               isRecommended={result.recommendedTier === 'Command'}
               ctaText="Apply Now"
@@ -396,8 +507,6 @@ export default function Results() {
             />
           </div>
         </motion.div>
-
-        <DIYSection />
 
         <FeedbackSection />
 
@@ -418,134 +527,6 @@ export default function Results() {
         </motion.div>
       </main>
     </div>
-  );
-}
-
-function DIYSection() {
-  const speedGapFixes = [
-    {
-      title: "Set up auto-responders",
-      description: "Use Google Voice or your CRM's basic auto-reply for after-hours leads."
-    },
-    {
-      title: "Instant SMS Text-Back",
-      description: "Connect Zapier to Twilio to send an \"I'll call you right back\" text on every missed call (~$30/mo)."
-    },
-    {
-      title: "Response Protocol",
-      description: "Train your team on a strict sub-5-minute response protocol for all new inquiries."
-    }
-  ];
-
-  const silenceGapFixes = [
-    {
-      title: "No-Show Recovery",
-      description: "Create a script: \"Hi [Name], we missed you! Would you like to reschedule for tomorrow?\""
-    },
-    {
-      title: "Quote Follow-up",
-      description: "Set manual calendar reminders for Day 3, 7, and 14 after sending any quote."
-    },
-    {
-      title: "Database Reactivation",
-      description: "Export your old leads and send a \"Checking in\" email with a special seasonal offer."
-    }
-  ];
-
-  const chaosGapFixes = [
-    {
-      title: "Task Documentation",
-      description: "Document your top 10 most repetitive administrative tasks step-by-step."
-    },
-    {
-      title: "Free Automation",
-      description: "Use the free tiers of Zapier or Make.com to sync data between your tools automatically."
-    },
-    {
-      title: "Google Docs Wiki",
-      description: "Create a central \"Wiki\" in Google Docs for FAQs, pricing, and common scenarios."
-    }
-  ];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3 }}
-      className="mb-12"
-    >
-      <h2 className="text-2xl font-heading font-bold text-cyan-400 mb-2">Your DIY Action Plan</h2>
-      <p className="text-slate-400 mb-6">You can implement these fixes with or without SimpleSequence. Here is how to do it yourself:</p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
-          <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
-            <span className="text-cyan-400">1.</span> Speed Gap Fixes
-          </h3>
-          <div className="space-y-4">
-            {speedGapFixes.map((fix, i) => (
-              <div key={i}>
-                <p className="font-semibold text-white text-sm mb-1">{fix.title}</p>
-                <p className="text-xs text-slate-400">{fix.description}</p>
-              </div>
-            ))}
-          </div>
-        </GlassCard>
-
-        <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
-          <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
-            <span className="text-cyan-400">2.</span> Silence Gap Fixes
-          </h3>
-          <div className="space-y-4">
-            {silenceGapFixes.map((fix, i) => (
-              <div key={i}>
-                <p className="font-semibold text-white text-sm mb-1">{fix.title}</p>
-                <p className="text-xs text-slate-400">{fix.description}</p>
-              </div>
-            ))}
-          </div>
-        </GlassCard>
-
-        <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
-          <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
-            <span className="text-cyan-400">3.</span> Chaos Gap Fixes
-          </h3>
-          <div className="space-y-4">
-            {chaosGapFixes.map((fix, i) => (
-              <div key={i}>
-                <p className="font-semibold text-white text-sm mb-1">{fix.title}</p>
-                <p className="text-xs text-slate-400">{fix.description}</p>
-              </div>
-            ))}
-          </div>
-        </GlassCard>
-      </div>
-      <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
-        <h3 className="text-lg font-heading font-semibold text-white mb-3">The Reality of DIY Implementation</h3>
-        <p className="text-slate-400 text-sm mb-4">
-          Most businesses intend to implement these fixes but never do. Success requires specialized systems that run without your constant attention. Manual implementation typically requires:
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
-            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
-              <Clock size={12} /> Time Investment
-            </p>
-            <p className="text-sm text-slate-300">15-30 hours of technical setup and troubleshooting</p>
-          </div>
-          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
-            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
-              <Code size={12} /> Technical Debt
-            </p>
-            <p className="text-sm text-slate-300">Advanced API & integration knowledge to prevent failures</p>
-          </div>
-          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
-            <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
-              <RefreshCw size={12} /> Ongoing Overhead
-            </p>
-            <p className="text-sm text-slate-300">Constant maintenance, API updates, and security monitoring</p>
-          </div>
-        </div>
-      </GlassCard>
-    </motion.div>
   );
 }
 
@@ -603,8 +584,8 @@ function FeedbackSection() {
           <div className="flex items-center gap-3">
             <CheckCircle className="text-cyan-400" size={24} />
             <div>
-              <h3 className="text-lg font-heading font-semibold text-white">Thank you for your feedback!</h3>
-              <p className="text-slate-400 text-sm">We appreciate you taking the time to help us improve.</p>
+              <p className="text-white font-semibold">Thank you for your feedback!</p>
+              <p className="text-sm text-slate-400">Your input helps us improve the assessment for future users.</p>
             </div>
           </div>
         </GlassCard>
@@ -619,36 +600,26 @@ function FeedbackSection() {
       transition={{ delay: 0.35 }}
       className="mb-12"
     >
-      <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-heading font-semibold text-white">How did we do?</h3>
-          <p className="text-slate-500 text-xs">Was this assessment helpful?</p>
-        </div>
-        
-        <div className="flex gap-2">
-          <Textarea
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
-            placeholder="Share your thoughts..."
-            className="bg-slate-900/40 border-slate-800 text-white placeholder:text-slate-600 min-h-[42px] h-[42px] py-2 resize-none flex-grow"
-            data-testid="textarea-feedback"
-          />
-          
-          <Button
-            onClick={handleSubmit}
-            disabled={isSubmitting || !feedback.trim()}
-            className="bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 border border-cyan-600/30 h-[42px] px-4"
-            data-testid="button-submit-feedback"
-            title="Submit feedback"
-          >
-            {isSubmitting ? (
-              <RefreshCw size={16} className="animate-spin" />
-            ) : (
-              <Send size={16} />
-            )}
-          </Button>
-        </div>
-      </div>
+      <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
+        <h3 className="text-lg font-heading font-semibold text-white mb-2">Was this helpful?</h3>
+        <p className="text-sm text-slate-400 mb-4">Your feedback helps us improve the assessment experience.</p>
+        <Textarea
+          placeholder="Tell us what you think about your results..."
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          className="bg-slate-900/50 border-slate-700/50 text-white mb-4"
+          data-testid="textarea-feedback"
+        />
+        <Button
+          onClick={handleSubmit}
+          disabled={isSubmitting || !feedback.trim()}
+          className="bg-cyan-500 hover:bg-cyan-400 text-black"
+          data-testid="button-submit-feedback"
+        >
+          {isSubmitting ? "Sending..." : "Send Feedback"}
+          <Send size={14} className="ml-2" />
+        </Button>
+      </GlassCard>
     </motion.div>
   );
 }

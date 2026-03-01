@@ -15,7 +15,7 @@ interface GHLWebhookData {
   websiteUrl?: string;
   businessName: string;
   industry: string;
-  clarityScore: number;
+  overallScore: number;
   result: AssessmentResult;
   revenuePains: string[];
   submittedAt: Date;
@@ -38,15 +38,18 @@ async function sendToGHL(data: GHLWebhookData) {
       teamSize: data.result.teamSize,
       avgJobValue: `$${data.result.avgJobValue.toLocaleString()}`,
       monthlyLeadVolume: String(data.result.monthlyLeads),
-      clarityScore: data.clarityScore,
+      overallScore: data.result.overallScore,
+      captureScore: data.result.captureScore.score,
+      captureFindings: data.result.captureScore.findings,
+      convertScore: data.result.convertScore.score,
+      convertFindings: data.result.convertScore.findings,
+      compoundScore: data.result.compoundScore.score,
+      compoundFindings: data.result.compoundScore.findings,
+      blindspots: data.result.blindspots,
+      quickWins: data.result.actionPlan.quickWins,
+      supportingActions: data.result.actionPlan.supportingActions,
       totalMonthlyGap: data.result.totalMonthlyGap,
       annualizedGap: data.result.annualizedGap,
-      speedGapEstimate: data.result.speedGap.estimate,
-      speedGapFindings: data.result.speedGap.findings,
-      silenceGapEstimate: data.result.silenceGap.estimate,
-      silenceGapFindings: data.result.silenceGap.findings,
-      chaosGapEstimate: data.result.chaosGap.estimate,
-      chaosGapFindings: data.result.chaosGap.findings,
       recommendedTier: data.result.recommendedTier,
       tierReason: data.result.tierReason,
     });
@@ -134,13 +137,13 @@ export async function registerRoutes(
       // Calculate results server-side for data integrity
       const result = calculateResults(data.assessmentData);
 
-      const clarityScore = Math.round((100 - (result.speedGap.estimate + result.silenceGap.estimate + result.chaosGap.estimate) / 300) * 100);
+      const overallScore = result.overallScore;
       const revenueLeakLow = Math.round(result.totalMonthlyGap * 0.8);
       const revenueLeakHigh = Math.round(result.totalMonthlyGap * 1.2);
 
       const lead = await storage.createAssessmentLead({
         assessmentData: data.assessmentData,
-        clarityScore,
+        clarityScore: overallScore,
         revenueLeakLow,
         revenueLeakHigh,
         timeWastedMinutes: 0,
@@ -151,7 +154,6 @@ export async function registerRoutes(
         contactSubmittedAt: new Date(),
       });
 
-      // Send to GHL webhook (non-blocking)
       sendToGHL({
         contactName: `${data.contactFirstName} ${data.contactLastName}`,
         contactEmail: data.contactEmail,
@@ -159,7 +161,7 @@ export async function registerRoutes(
         websiteUrl: data.assessmentData.website_url || undefined,
         businessName: result.businessName,
         industry: result.industry,
-        clarityScore,
+        overallScore,
         result,
         revenuePains: data.assessmentData.revenue_pain.map(p => p.value),
         submittedAt: new Date(),

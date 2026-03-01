@@ -20,9 +20,9 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       size: "LETTER",
       margin: 50,
       info: {
-        Title: `AI Clarity Assessment - ${data.result.businessName}`,
+        Title: `Sequential Revenue™ Friction Analysis - ${data.result.businessName}`,
         Author: "SimpleSequence",
-        Subject: "Operational AI Assessment Report",
+        Subject: "Sequential Revenue™ Friction Analysis Report",
       },
     });
 
@@ -52,7 +52,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     doc
       .fontSize(10)
       .fillColor(colors.cyan)
-      .text("AI Clarity Assessment Report", 50, 65);
+      .text("Sequential Revenue™ Friction Analysis", 50, 65);
 
     doc
       .fontSize(9)
@@ -106,39 +106,44 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
 
     y += 20;
 
-    doc.rect(50, y, 512, 80).fillAndStroke("#f0fdfa", colors.teal);
+    doc.rect(50, y, 512, 100).fillAndStroke("#f0fdfa", colors.teal);
 
     doc
       .fontSize(11)
       .fillColor(colors.teal)
-      .text("TOTAL MONTHLY REVENUE GAP", 60, y + 12, { align: "center", width: 492 });
+      .text("SEQUENTIAL REVENUE™ SCORE", 60, y + 10, { align: "center", width: 492 });
 
     doc
-      .fontSize(32)
+      .fontSize(36)
       .fillColor(colors.primary)
-      .text(`$${data.result.totalMonthlyGap.toLocaleString()}/mo`, 60, y + 30, { align: "center", width: 492 });
+      .text(`${data.result.overallScore}/100`, 60, y + 28, { align: "center", width: 492 });
 
     doc
       .fontSize(10)
       .fillColor(colors.slate)
-      .text(`Annualized: $${data.result.annualizedGap.toLocaleString()}`, 60, y + 65, { align: "center", width: 492 });
+      .text(`Capture: ${data.result.captureScore.score}  |  Convert: ${data.result.convertScore.score}  |  Compound: ${data.result.compoundScore.score}`, 60, y + 70, { align: "center", width: 492 });
 
-    y += 100;
+    doc
+      .fontSize(10)
+      .fillColor(colors.slate)
+      .text(`Estimated monthly revenue gap: $${data.result.totalMonthlyGap.toLocaleString()}/mo ($${data.result.annualizedGap.toLocaleString()}/yr)`, 60, y + 85, { align: "center", width: 492 });
+
+    y += 115;
 
     doc
       .fontSize(18)
       .fillColor(colors.dark)
-      .text("Gap Breakdown", 50, y);
+      .text("Pillar Breakdown", 50, y);
 
     y += 30;
 
-    const gaps = [
-      { name: "Speed Gap", color: colors.teal, gap: data.result.speedGap },
-      { name: "Silence Gap", color: colors.amber, gap: data.result.silenceGap },
-      { name: "Chaos Gap", color: colors.red, gap: data.result.chaosGap },
+    const pillars = [
+      { name: "Capture", color: colors.teal, pillar: data.result.captureScore },
+      { name: "Convert", color: colors.amber, pillar: data.result.convertScore },
+      { name: "Compound", color: colors.primary, pillar: data.result.compoundScore },
     ];
 
-    for (const { name, color, gap } of gaps) {
+    for (const { name, color, pillar } of pillars) {
       doc.rect(50, y, 512, 20).fill(color + "15");
       doc.rect(50, y, 512, 20).stroke(color);
 
@@ -147,17 +152,33 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
         .fillColor(color)
         .text(name, 60, y + 5);
 
-      doc.text(`$${gap.estimate.toLocaleString()}/mo`, 450, y + 5, { align: "right", width: 100 });
+      doc.text(`${pillar.score}/100`, 450, y + 5, { align: "right", width: 100 });
 
       y += 28;
 
       doc.fontSize(9).fillColor(colors.slate);
-      for (const finding of gap.findings.slice(0, 3)) {
+      for (const finding of pillar.findings.slice(0, 3)) {
         doc.text("• " + finding, 60, y);
         y += 14;
       }
 
       y += 10;
+    }
+
+    if (data.result.blindspots.length > 0) {
+      y += 10;
+      doc
+        .fontSize(18)
+        .fillColor(colors.dark)
+        .text("Blindspots", 50, y);
+
+      y += 25;
+
+      doc.fontSize(9).fillColor(colors.slate);
+      for (const blindspot of data.result.blindspots.slice(0, 5)) {
+        doc.text("⚠ " + blindspot, 60, y, { width: 480 });
+        y += 16;
+      }
     }
 
     doc.addPage();
@@ -167,60 +188,36 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     doc
       .fontSize(18)
       .fillColor(colors.dark)
-      .text("Scoring Methodology", 50, y);
+      .text("Your 30-Day Action Plan", 50, y);
 
     y += 30;
 
-    for (const { name, color, gap } of gaps) {
-      doc
-        .fontSize(12)
-        .fillColor(color)
-        .text(name + " Calculation", 50, y);
-
-      y += 18;
-
-      doc.fontSize(9).fillColor(colors.slate);
-      doc.text(gap.calculationDetails.description, 60, y);
-      y += 14;
-      doc.text(`Formula: ${gap.calculationDetails.formula}`, 60, y);
-      y += 20;
-
-      doc.fontSize(8).fillColor(colors.dark);
-      for (const [key, value] of Object.entries(gap.calculationDetails.inputs)) {
-        const label = key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase());
-        doc.text(`${label}: ${value}`, 70, y);
-        y += 12;
-      }
-
-      y += 15;
-    }
+    doc
+      .fontSize(13)
+      .fillColor(colors.teal)
+      .text("Quick Wins (First 7–14 Days)", 50, y);
 
     y += 20;
 
+    doc.fontSize(9).fillColor(colors.slate);
+    for (const action of data.result.actionPlan.quickWins) {
+      doc.text("✓ " + action, 60, y, { width: 480 });
+      y += 16;
+    }
+
+    y += 15;
+
     doc
-      .fontSize(18)
-      .fillColor(colors.dark)
-      .text("Root Causes Analysis", 50, y);
+      .fontSize(13)
+      .fillColor(colors.amber)
+      .text("Supporting Actions (Rest of 30 Days)", 50, y);
 
-    y += 30;
+    y += 20;
 
-    for (const { name, color, gap } of gaps) {
-      if (gap.causes.length === 0) continue;
-
-      doc
-        .fontSize(11)
-        .fillColor(color)
-        .text(name, 50, y);
-
-      y += 18;
-
-      doc.fontSize(9).fillColor(colors.slate);
-      for (const cause of gap.causes) {
-        doc.text("• " + cause, 60, y, { width: 480 });
-        y += 16;
-      }
-
-      y += 10;
+    doc.fontSize(9).fillColor(colors.slate);
+    for (const action of data.result.actionPlan.supportingActions) {
+      doc.text("→ " + action, 60, y, { width: 480 });
+      y += 16;
     }
 
     doc.addPage();
@@ -256,14 +253,14 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     const tiers = [
       {
         name: "Frontline",
-        focus: "Speed Gap Only",
-        ideal: "Speed is your primary issue",
+        focus: "Capture pillar",
+        ideal: "Lead capture and response speed are your primary friction",
         includes: ["AI voice answering", "Instant lead capture", "After-hours coverage"],
       },
       {
         name: "Specialist",
-        focus: "Speed + Silence Gaps",
-        ideal: "Follow-up and no-shows also hurt revenue",
+        focus: "Capture + Convert pillars",
+        ideal: "Follow-up, conversion, and no-shows also create drag",
         includes: [
           "Everything in Frontline",
           "No-show recovery automation",
@@ -273,8 +270,8 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       },
       {
         name: "Command",
-        focus: "All Three Gaps",
-        ideal: "Complex operations or high volume",
+        focus: "All three pillars",
+        ideal: "Complex operations or high volume across Capture, Convert, and Compound",
         includes: [
           "Everything in Specialist",
           "Full ops automation",
@@ -320,7 +317,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     doc
       .fontSize(14)
       .fillColor(colors.primary)
-      .text("Ready to Close Your Revenue Gaps?", 50, y, { align: "center", width: 512 });
+      .text("Ready to Fix Your Revenue Friction?", 50, y, { align: "center", width: 512 });
 
     y += 20;
 

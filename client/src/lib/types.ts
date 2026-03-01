@@ -56,13 +56,11 @@ export const FirstContactSpeedSchema = z.enum([
   "It varies wildly (inconsistent)"
 ]);
 
-export const UnavailabilityPctSchema = z.enum([
-  "0-10% (Rare—we're almost always available)",
-  "11-25% (Occasional—some evenings/weekends)",
-  "26-50% (Frequent—about half the time)",
-  "51-75% (Most of the time—we miss more than we catch)",
-  "76-100% (Nearly constant—we're rarely available when they call)",
-  "I don't know (we don't track this)"
+export const LeadUnavailabilitySchema = z.enum([
+  "Rarely (we're almost always available)",
+  "Sometimes (evenings/weekends we miss some)",
+  "Often (we miss a significant number of calls/messages)",
+  "Almost always (we're rarely available when they call)"
 ]);
 
 export const PhoneUnavailableHandlingSchema = z.enum([
@@ -95,11 +93,10 @@ export const QuoteFollowUpSchema = z.enum([
 ]);
 
 export const DormantLeadsSchema = z.enum([
-  "Yes, hundreds or thousands (significant untapped opportunity)",
-  "Yes, 50-200 leads (moderate database)",
-  "Yes, under 50 (small list)",
-  "No, we actively work our database (stay on top of it)",
-  "I don't know / We don't track leads in a database"
+  "500+ (large reactivation opportunity)",
+  "100–499",
+  "Under 100",
+  "I'm not sure / we don't track this"
 ]);
 
 export const NoShowRateSchema = z.enum([
@@ -122,18 +119,37 @@ export const ContactChannelSchema = z.enum([
 ]);
 export type ContactChannel = z.infer<typeof ContactChannelSchema>;
 
-export const SocialMediaActivitySchema = z.enum([
-  "Yes, very active (post 3+ times/week, respond to comments/DMs)",
-  "Somewhat active (have pages, post occasionally)",
-  "Barely active (pages exist but rarely use them)",
-  "No (don't use social media for business)"
+export const AISearchFrequencySchema = z.enum([
+  "Frequently (we get leads from Google/AI search regularly)",
+  "Occasionally (some leads mention finding us online)",
+  "Rarely or never",
+  "I don't know / we don't ask"
+]);
+
+export const AIReadinessSchema = z.enum([
+  "We've intentionally optimized for AI search and voice assistants",
+  "We've done some basic SEO but nothing AI-specific",
+  "No real SEO or AI optimization — we rely on referrals/ads",
+  "We don't really have a proper website"
+]);
+
+export const IntakeCentralizationSchema = z.enum([
+  "In a central CRM or booking system automatically",
+  "In multiple tools (email, spreadsheets, notes)",
+  "Mostly in people's heads / phones — not captured systematically"
+]);
+
+export const PipelineTrackingSchema = z.enum([
+  "Yes, consistently in a CRM or job system",
+  "Partially (some data is tracked, some isn't)",
+  "No, we mostly rely on memory and informal tools"
 ]);
 
 export const ReviewRequestSchema = z.enum([
   "Yes, automatically (every customer gets a review request)",
   "Yes, manually (we ask when we remember)",
   "Sometimes (only our best customers)",
-  "No (we rely on organic reviews)"
+  "We rely on organic reviews / we don't really ask"
 ]);
 
 export const CloseRateSchema = z.enum([
@@ -178,7 +194,7 @@ export const AssessmentSchema = z.object({
   avg_job_value: z.string().min(1, "Required"),
   monthly_lead_volume: MonthlyLeadVolumeSchema,
   first_contact_speed: FirstContactSpeedSchema,
-  unavailability_pct: UnavailabilityPctSchema,
+  lead_unavailability: LeadUnavailabilitySchema,
   phone_unavailable_handling: PhoneUnavailableHandlingSchema,
   digital_unavailable_handling: DigitalUnavailableHandlingSchema,
   no_show_recovery: NoShowRecoverySchema,
@@ -186,9 +202,12 @@ export const AssessmentSchema = z.object({
   dormant_leads: DormantLeadsSchema,
   no_show_rate: NoShowRateSchema,
   contact_channels: z.array(ContactChannelSchema).min(1, "Select at least one contact channel"),
-  social_media_activity: SocialMediaActivitySchema,
+  ai_search_frequency: AISearchFrequencySchema,
+  ai_readiness: AIReadinessSchema,
   review_request: ReviewRequestSchema,
   close_rate: CloseRateSchema,
+  intake_centralization: IntakeCentralizationSchema,
+  pipeline_tracking: PipelineTrackingSchema,
   manual_hours: ManualHoursSchema,
   knowledge_bottleneck: KnowledgeBottleneckSchema,
   operational_complexity: OperationalComplexitySchema,
