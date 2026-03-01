@@ -1,0 +1,118 @@
+Your tasks:
+	1.	Update the “Revenue Friction Analysis” sections on both the Homepage and the Offers page.
+	2.	Modify the questions in the Sequential Revenue™ assessment to streamline the flow and cover AI blindspots.
+	3.	Update the backend logic so scores and output text reflect the Capture / Convert / Compound framing and the next‑30‑day DIY action plan.
+		1. Homepage & Offers page copy changes
+		For the section currently promoting the analysis/quiz on both the Homepage and the Offers page, replace the existing label, headline, body, bullets, and CTA with the following:
+		Label (small, above headline)
+ Check your blindspots 
+		Headline
+ The Sequential Revenue™ Friction Analysis 
+		Sub‑headline
+ Uncover where your Capture–Convert–Compound loop is slowing you down — and get a next‑30‑day action plan to speed it up. 
+		Body copy
+ Most service businesses don’t have a marketing problem — they have a flow problem. Leads come in, follow‑up stalls, and past customers go quiet. This short assessment walks your business through the three pillars of the Sequential Revenue™ System — Capture, Convert, and Compound — plus the hidden operational “chaos gaps” in between. In a few minutes, you’ll see exactly where your system is dragging, how much time and revenue it’s costing you, and the quickest wins you can implement over the next 30 days. 
+		Bullets (3)
+ • A Capture–Convert–Compound score that shows how healthy your revenue loop is   • A clear list of blindspots around speed to lead, follow‑up, reactivation, and admin overload   • A next‑30‑day DIY action plan highlighting what to fix first — starting with wins you can see in the first 7–14 days 
+		Primary CTA button text
+ Get My 30‑Day Plan 
+		Keep layout, styling, and any right‑hand “score card” visuals the same; only swap the text above. If there is a secondary CTA link (e.g., to book a call), keep it but ensure the primary CTA is “Get My 30‑Day Plan”.
+		Avoid using metaphors like “buckets” or “leaks” anywhere in the copy. Use language about “flow,” “drag,” “slowdowns,” or “friction in the system” instead.
+		2. Assessment question updates (front end)
+		Edit the existing Sequential Revenue™ assessment as follows.
+		2.1 Add “AI Search Visibility” block
+		Under the section that currently covers “Channels & Engagement”, insert a new subsection titled:
+		 AI Search Visibility 
+		Add these questions:
+	1.	 How often do new customers say they found you through AI tools (ChatGPT, Perplexity, Google AI Overviews, etc.)? 
+	•	Frequently (we hear it weekly)
+	•	Occasionally (we’ve heard it a few times)
+	•	Rarely or never
+	•	I don’t know / we don’t ask
+	2.	 Which of these best describes your website’s AI‑readiness? 
+	•	We’ve intentionally optimized content and schema for AI search (or had someone do it)
+	•	We’ve done some basic SEO but nothing specific for AI tools
+	•	No real SEO/AI optimization — our site is mostly a digital brochure
+	•	We don’t really have a proper website
+		Treat these as inputs to the Capture pillar score.
+		2.2 Merge / simplify availability and missed‑contact questions
+		In the sections currently labeled “The Speed Gap” and any related availability sections:
+	•	Keep the detailed behavioral questions:
+	•	“When a phone call comes in and you can’t answer, what happens?”
+	•	“When a text, email, or web form comes in and you’re busy, what happens?”
+	•	Remove or replace any percentage‑based availability questions that ask them to guess exact percentages of after‑hours leads. Replace those with a single simpler question:
+		 How often do leads contact you when you’re unavailable (after‑hours, weekends, or when you’re in the field)? 
+	•	Rarely
+	•	Sometimes
+	•	Often
+	•	Almost always / we’re rarely available when they call
+		Map these questions to the Capture pillar (speed to lead and coverage).
+		2.3 Review / reputation questions
+		In “Channels & Engagement”, keep only one review‑related question and remove any duplicates.
+		Use this as the single review question:
+		 How do you currently ask customers for reviews? 
+	•	Automatically (every customer gets a review request)
+	•	Manually (we ask when we remember)
+	•	Occasionally (only our best customers)
+	•	We rely on organic reviews / we don’t really ask
+		Remove other review questions that don’t materially change the outcome.
+Treat this question as part of the Compound pillar.
+		2.4 Old leads & cancellations
+		Consolidate the questions about old leads and cancellations into two key questions:
+	1.	 How many old leads (6+ months dormant) are sitting in your database? 
+	•	500+ (large reactivation opportunity)
+	•	100–499
+	•	Under 100
+	•	I’m not sure / we don’t track this
+	2.	 What’s your average cancellation or no‑show rate? 
+	•	0–10% (excellent — very reliable customers)
+	•	11–20% (average — some no‑shows)
+	•	21–35% (high — significant problem)
+	•	35%+ (critical — major revenue drain)
+	•	I don’t track this
+		Remove any older/duplicate questions that ask about old leads or cancellations in slightly different words.
+Map old leads to Compound, and cancellation/no‑show to Convert.
+		2.5 Intake centralization & pipeline visibility
+		Add these two questions (if they don’t already exist):
+	1.	 When a new inquiry comes in (call, text, form, DM), where does that info get stored first? 
+	•	In a central CRM or booking system automatically
+	•	In multiple tools (email, spreadsheets, notes)
+	•	Mostly in people’s heads / phones — not captured systematically
+	2.	 Do you currently track each lead through stages (new lead, quoted, scheduled, completed, etc.) in a pipeline? 
+	•	Yes, consistently in a CRM or job system
+	•	Partially (some data is tracked, some isn’t)
+	•	No, we mostly rely on memory and informal tools
+		Map both questions across Capture and Convert as indicators of structural friction.
+		2.6 Keep the “Chaos Gap” questions as‑is
+		Leave the existing “Chaos Gap” block intact (manual coordination hours, repetitive questions, operational complexity). These should primarily influence the overall “operational drag” component that supports recommendations in all three pillars.
+		3. Backend logic & output updates
+		Update the scoring and result outputs as follows:
+	1.	Maintain or create three core scores:
+	•	 Capture Score  (speed to lead, availability, channels, AI visibility, intake centralization)
+	•	 Convert Score  (follow‑up consistency, quotes, no‑shows/cancellations, pipeline visibility)
+	•	 Compound Score  (old leads, past customers, review systemization)
+	2.	Combine these into an overall  Sequential Revenue™ Score  (0–100).
+	3.	On the results page, make sure the intro clearly states that the user is receiving:
+	•	Their Sequential Revenue™ Score
+	•	Individual Capture / Convert / Compound scores
+	•	A prioritized list of blindspots
+	•	A next‑30‑day DIY action plan
+	4.	Structure the next‑30‑day plan into two parts in the results copy:
+	•	“Quick wins to tackle in the first 7–14 days”
+	•	“Supporting actions to complete over the rest of the 30 days”
+	5.	For the action plan text, use these rules:
+	•	If Capture Score is the lowest, emphasize fixes like faster response, better after‑hours coverage, centralizing intake, and AI/ASO upgrades.
+	•	If Convert Score is the lowest, emphasize automated follow‑up, quote and no‑show recovery, and pipeline visibility.
+	•	If Compound Score is the lowest, emphasize reactivating dormant leads, building basic review systems, and creating simple win‑back campaigns.
+	6.	Ensure any labels, headings, or explanations on the results page use the same language as the homepage/offers section:
+	•	“Sequential Revenue™ Friction Analysis”
+	•	“Capture–Convert–Compound loop”
+	•	“next‑30‑day DIY action plan”
+	•	“Check your blindspots”
+	•	Avoid words like “buckets” or “leaks”; describe issues as “slowdowns,” “drag,” “friction,” or “gaps” instead.
+		4. Constraints
+	•	Do not change brand voice: keep the tone calm, confident, and clear.
+	•	Do not alter unrelated site sections (e.g., detailed pillar descriptions, unrelated offers). Only modify:
+	•	The analysis hero sections on Home and Offers pages.
+	•	The assessment questions and their scoring logic.
+	•	The text on the results page that describes scores and the next‑30‑day DIY action plan.
