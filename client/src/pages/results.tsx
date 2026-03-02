@@ -241,7 +241,19 @@ export default function Results() {
     const storedEmail = sessionStorage.getItem('contactEmail');
     
     if (storedResult) {
-      setResult(JSON.parse(storedResult));
+      const parsed = JSON.parse(storedResult) as AssessmentResult;
+      if (!parsed.gapBreakdown) {
+        parsed.gapBreakdown = {
+          captureGap: 0,
+          convertGap: 0,
+          compoundGap: 0,
+          total: parsed.totalMonthlyGap || 0,
+          captureCalc: "Calculation unavailable — retake assessment for full breakdown",
+          convertCalc: "Calculation unavailable — retake assessment for full breakdown",
+          compoundCalc: "Calculation unavailable — retake assessment for full breakdown",
+        };
+      }
+      setResult(parsed);
     }
     if (storedLeadId) {
       setLeadId(storedLeadId);
