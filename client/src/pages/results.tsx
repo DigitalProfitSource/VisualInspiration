@@ -265,7 +265,6 @@ export default function Results() {
     <div className="min-h-screen text-foreground font-sans selection:bg-primary/30 relative overflow-hidden bg-background">
       <div className="fixed inset-0 z-0 bg-grid-pattern pointer-events-none" />
       <div className="fixed inset-0 z-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
-      
       <header className="fixed top-0 left-0 right-0 z-50 h-20 glass-panel flex items-center px-6 md:px-12 justify-between">
         <Link href="/">
           <div className="text-xl font-heading font-bold tracking-tighter hover:opacity-80 transition-opacity flex items-center gap-3 cursor-pointer">
@@ -283,7 +282,6 @@ export default function Results() {
           <ExternalLink size={16} />
         </Link>
       </header>
-
       <main className="relative z-10 pt-32 pb-20 px-4 md:px-8 max-w-[900px] mx-auto">
 
         {/* === SCORE DASHBOARD CARD === */}
@@ -356,7 +354,7 @@ export default function Results() {
           <GlassCard className="p-8 md:p-10 border-cyan-500/30 bg-gradient-to-br from-slate-900/60 to-cyan-950/30 relative overflow-hidden text-center" data-testid="card-revenue-drag">
             <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-teal-500/5 pointer-events-none" />
             <div className="relative">
-              <h2 className="text-xl md:text-2xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 uppercase tracking-wider mb-6">
+              <h2 className="text-xl md:text-2xl font-heading font-bold bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 uppercase tracking-wider mb-6 text-[#f7f2f2]">
                 Estimated Revenue Drag
               </h2>
               
