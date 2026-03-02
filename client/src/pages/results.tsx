@@ -15,7 +15,7 @@ function useCountUp(end: number, duration: number = 1500) {
   const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!isInView || hasAnimated.current) return;
+    if (!isInView || hasAnimated.current || end === 0) return;
     hasAnimated.current = true;
 
     const startTime = performance.now();
@@ -181,6 +181,7 @@ export default function Results() {
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [leadId, setLeadId] = useState<string>('');
   const [contactEmail, setContactEmail] = useState<string>('');
+  const { value: animatedScore, ref: scoreRef } = useCountUp(result?.overallScore ?? 0);
 
   useEffect(() => {
     const storedResult = sessionStorage.getItem('assessmentResult');
@@ -219,8 +220,6 @@ export default function Results() {
       </div>
     );
   }
-
-  const { value: animatedScore, ref: scoreRef } = useCountUp(result.overallScore);
 
   const pillars = [
     { name: "Capture", score: result.captureScore.score },
