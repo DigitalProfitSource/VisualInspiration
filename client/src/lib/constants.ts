@@ -46,22 +46,29 @@ export const STEPS: Step[] = [
     id: "engagement",
     title: "Channels & Engagement",
     description: "How do leads find and reach you? How do you build trust after the job is done?",
-    fields: ["contact_channels", "review_request", "close_rate", "ai_search_frequency", "ai_readiness"],
-    progress: 60
+    fields: ["contact_channels", "review_request", "close_rate"],
+    progress: 55
+  },
+  {
+    id: "ai_visibility",
+    title: "AI Visibility",
+    description: "AI tools like ChatGPT, Siri, and Google AI are becoming how customers find businesses. Let's see where you stand.",
+    fields: ["ai_search_frequency", "ai_readiness"],
+    progress: 65
   },
   {
     id: "intake",
     title: "Intake & Pipeline",
     description: "How do you capture and track leads once they come in?",
     fields: ["intake_centralization", "pipeline_tracking"],
-    progress: 72
+    progress: 75
   },
   {
     id: "chaos",
     title: "The Chaos Gap",
     description: "How much operational overhead is slowing you down?",
     fields: ["manual_hours", "knowledge_bottleneck", "operational_complexity"],
-    progress: 84
+    progress: 85
   },
   {
     id: "contact",
@@ -187,17 +194,17 @@ export const CONTACT_CHANNEL_OPTIONS = [
 ];
 
 export const AI_SEARCH_FREQUENCY_OPTIONS = [
-  "Regularly — we've verified AI platforms reference us",
-  "Occasionally — we've seen it happen but haven't checked closely",
-  "Rarely or never — we don't think AI tools know about us",
-  "I don't know / we haven't checked"
+  "Yes — we show up regularly",
+  "Sometimes — we've seen it happen",
+  "No — we don't show up",
+  "Not sure — haven't checked"
 ];
 
 export const AI_READINESS_OPTIONS = [
-  { value: "Yes — we've optimized our content and data for AI discovery" },
-  { value: "We've done some basic SEO but nothing AI-specific" },
-  { value: "No — we haven't considered AI visibility" },
-  { value: "We don't have much of an online presence yet" }
+  { value: "Yes — we've optimized for AI discovery" },
+  { value: "We've done basic SEO but nothing AI-specific" },
+  { value: "No — we haven't thought about it" },
+  { value: "We don't have much of an online presence" }
 ];
 
 export const INTAKE_CENTRALIZATION_OPTIONS = [

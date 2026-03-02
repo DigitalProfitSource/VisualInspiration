@@ -561,8 +561,7 @@ export default function Assessment() {
       case 'ai_search_frequency':
         return (
           <div className="space-y-3 w-full">
-            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2">AI SEARCH VISIBILITY</div>
-            <GlassLabel className="text-cyan-400 font-bold">How often do AI tools (ChatGPT, Siri, Google AI) recommend or mention your business?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">When people ask AI tools like ChatGPT or Google AI for a recommendation in your industry, does your business come up?</GlassLabel>
             <Controller
               control={control}
               name="ai_search_frequency"
@@ -582,16 +581,13 @@ export default function Assessment() {
       case 'ai_readiness':
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel className="text-cyan-400 font-bold">Have you taken any steps to make your business visible to AI assistants and AI-powered search?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">Have you done anything to help AI tools find and recommend your business?</GlassLabel>
             <Controller
               control={control}
               name="ai_readiness"
               render={({ field }) => (
-                <VisualCardSelector
-                  options={AI_READINESS_OPTIONS.map(opt => ({ 
-                    value: opt.value, 
-                    label: opt.value
-                  }))}
+                <GlassRadioGroup
+                  options={AI_READINESS_OPTIONS.map(opt => ({ value: opt.value, label: opt.value }))}
                   value={field.value}
                   onChange={field.onChange}
                   columns={1}

@@ -120,17 +120,17 @@ export const ContactChannelSchema = z.enum([
 export type ContactChannel = z.infer<typeof ContactChannelSchema>;
 
 export const AISearchFrequencySchema = z.enum([
-  "Frequently (we get leads from Google/AI search regularly)",
-  "Occasionally (some leads mention finding us online)",
-  "Rarely or never",
-  "I don't know / we don't ask"
+  "Yes — we show up regularly",
+  "Sometimes — we've seen it happen",
+  "No — we don't show up",
+  "Not sure — haven't checked"
 ]);
 
 export const AIReadinessSchema = z.enum([
-  "We've intentionally optimized for AI search and voice assistants",
-  "We've done some basic SEO but nothing AI-specific",
-  "No real SEO or AI optimization — we rely on referrals/ads",
-  "We don't really have a proper website"
+  "Yes — we've optimized for AI discovery",
+  "We've done basic SEO but nothing AI-specific",
+  "No — we haven't thought about it",
+  "We don't have much of an online presence"
 ]);
 
 export const IntakeCentralizationSchema = z.enum([
