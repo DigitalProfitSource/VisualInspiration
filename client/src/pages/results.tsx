@@ -356,7 +356,6 @@ export default function Results() {
           <GlassCard className="p-8 md:p-10 border-cyan-500/30 bg-gradient-to-br from-slate-900/60 to-cyan-950/30 relative overflow-hidden text-center" data-testid="card-revenue-drag">
             <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-teal-500/5 pointer-events-none" />
             <div className="relative">
-              <p className="text-xs text-slate-500 uppercase tracking-[0.2em] font-semibold mb-2">Revenue Drag Section</p>
               <h2 className="text-xl md:text-2xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 uppercase tracking-wider mb-6">
                 Estimated Revenue Drag
               </h2>
