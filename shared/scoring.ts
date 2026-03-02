@@ -11,6 +11,16 @@ export interface ActionPlan {
   supportingActions: string[];
 }
 
+export interface GapBreakdown {
+  captureGap: number;
+  convertGap: number;
+  compoundGap: number;
+  total: number;
+  captureCalc: string;
+  convertCalc: string;
+  compoundCalc: string;
+}
+
 export interface AssessmentResult {
   businessName: string;
   industry: string;
@@ -30,6 +40,7 @@ export interface AssessmentResult {
 
   totalMonthlyGap: number;
   annualizedGap: number;
+  gapBreakdown: GapBreakdown;
 
   recommendedTier: 'Frontline' | 'Specialist' | 'Command';
   tierReason: string;
@@ -372,9 +383,7 @@ function generateActionPlan(captureScore: PillarScore, convertScore: PillarScore
   return { quickWins, supportingActions };
 }
 
-function estimateMonthlyGap(data: AssessmentData, monthlyLeads: number, avgJobValue: number, closeRate: number): number {
-  let totalGap = 0;
-
+function estimateMonthlyGapBreakdown(data: AssessmentData, monthlyLeads: number, avgJobValue: number, closeRate: number): GapBreakdown {
   const unavailabilityLoss: Record<string, number> = {
     "Rarely (we're almost always available)": 0.05,
     "Sometimes (evenings/weekends we miss some)": 0.15,
@@ -394,19 +403,20 @@ function estimateMonthlyGap(data: AssessmentData, monthlyLeads: number, avgJobVa
   };
   const speedLoss = speedLossRates[data.first_contact_speed] || 0.30;
 
-  const captureGap = monthlyLeads * unavailRate * speedLoss * avgJobValue * 0.5;
-  totalGap += captureGap;
+  const rawCaptureGap = monthlyLeads * unavailRate * speedLoss * avgJobValue * 0.5;
+  const captureGap = Math.round(rawCaptureGap / 50) * 50;
+  const captureCalc = `${monthlyLeads} leads × ${Math.round(unavailRate * 100)}% unavail × ${Math.round(speedLoss * 100)}% speed loss × $${avgJobValue.toLocaleString()}`;
 
   const noShowRate = parseNoShowRate(data.no_show_rate);
   const noShowMonthly = monthlyLeads * closeRate * (noShowRate / 100) * 0.25 * avgJobValue;
-
   let quoteRecoveryRate = 0.20;
   if (data.quote_followup.includes("Automated")) quoteRecoveryRate = 0.10;
   else if (data.quote_followup.includes("Manual")) quoteRecoveryRate = 0.15;
   else if (data.quote_followup.includes("Nothing")) quoteRecoveryRate = 0.25;
   const quoteMonthly = monthlyLeads * closeRate * 0.50 * quoteRecoveryRate * avgJobValue;
-
-  totalGap += noShowMonthly + quoteMonthly;
+  const rawConvertGap = noShowMonthly + quoteMonthly;
+  const convertGap = Math.round(rawConvertGap / 50) * 50;
+  const convertCalc = `($${Math.round(noShowMonthly).toLocaleString()} no-show recovery) + ($${Math.round(quoteMonthly).toLocaleString()} quote follow-up)`;
 
   const dormantCounts: Record<string, number> = {
     "500+": 500,
@@ -421,12 +431,16 @@ function estimateMonthlyGap(data: AssessmentData, monthlyLeads: number, avgJobVa
       break;
     }
   }
-  totalGap += (dormantCount * 0.08 * avgJobValue) / 12;
-
+  const dormantMonthly = (dormantCount * 0.08 * avgJobValue) / 12;
   const manualHours = parseManualHours(data.manual_hours);
-  totalGap += manualHours * 30 * 4.33;
+  const manualCost = manualHours * 30 * 4.33;
+  const rawCompoundGap = dormantMonthly + manualCost;
+  const compoundGap = Math.round(rawCompoundGap / 50) * 50;
+  const compoundCalc = `($${Math.round(dormantMonthly).toLocaleString()}/mo from ${dormantCount} dormant leads) + ($${Math.round(manualCost).toLocaleString()}/mo × ${manualHours} manual hrs)`;
 
-  return Math.round(totalGap / 50) * 50;
+  const total = captureGap + convertGap + compoundGap;
+
+  return { captureGap, convertGap, compoundGap, total, captureCalc, convertCalc, compoundCalc };
 }
 
 function recommendTier(
@@ -520,7 +534,8 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
 
   const actionPlan = generateActionPlan(captureScore, convertScore, compoundScore, data);
 
-  const totalMonthlyGap = estimateMonthlyGap(data, monthlyLeads, avgJobValue, closeRate);
+  const gapBreakdown = estimateMonthlyGapBreakdown(data, monthlyLeads, avgJobValue, closeRate);
+  const totalMonthlyGap = gapBreakdown.total;
   const annualizedGap = totalMonthlyGap * 12;
 
   const { tier, reason } = recommendTier(
@@ -550,6 +565,7 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
 
     totalMonthlyGap,
     annualizedGap,
+    gapBreakdown,
 
     recommendedTier: tier,
     tierReason: reason

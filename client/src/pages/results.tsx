@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, Link } from "wouter";
 import { motion, useInView } from "framer-motion";
-import { ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw, Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Download, Calendar } from "lucide-react";
+import { ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw, Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Download, Calendar, ChevronDown } from "lucide-react";
 import { AssessmentResult, PillarScore } from "@/lib/scoring";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
 import { Button } from "@/components/ui/button";
@@ -41,23 +41,35 @@ function PillarCard({
   title, 
   pillar,
   icon,
-  description
+  description,
+  monthlyImpact,
+  calcFormula,
+  calcLabel
 }: { 
   title: string; 
   pillar: PillarScore;
   icon: React.ReactNode;
   description: string;
+  monthlyImpact: number;
+  calcFormula: string;
+  calcLabel: string;
 }) {
   const isStrong = pillar.score >= 70;
+  const [showCalc, setShowCalc] = useState(false);
 
   return (
-    <GlassCard className="p-6 border-cyan-500/10 bg-slate-900/40 relative overflow-hidden" data-testid={`card-pillar-${title.toLowerCase()}`}>
+    <div 
+      className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_1px_rgba(103,232,249,0.08)]"
+      data-testid={`card-pillar-${title.toLowerCase()}`}
+    >
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-cyan-500/10">
+          <div className="p-2.5 rounded-xl bg-[#0c1018] border border-[#182030] shadow-[inset_0_1px_0_rgba(103,232,249,0.05)]">
             {icon}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <h3 className="text-2xl font-heading font-bold text-white">{title}</h3>
             {isStrong && (
               <span className="text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-full">
@@ -68,26 +80,26 @@ function PillarCard({
         </div>
         <div className="text-right">
           <span className="text-xl font-mono font-bold text-white">{pillar.score}</span>
-          <span className="text-base font-mono text-slate-500"> / 100</span>
+          <span className="text-base font-mono text-slate-600"> / 100</span>
         </div>
       </div>
 
-      <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-5">
+      <div className="w-full h-1.5 bg-[#0c1018] rounded-full overflow-hidden mb-5 border border-[#182030]">
         <div 
-          className="h-full rounded-full transition-all bg-gradient-to-r from-cyan-500 to-teal-400" 
+          className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400 transition-all" 
           style={{ width: `${pillar.score}%`, opacity: Math.max(0.4, pillar.score / 100) }} 
         />
       </div>
       
-      <p className="text-base text-slate-400 mb-6">{description}</p>
+      <p className="text-sm text-slate-400 leading-relaxed mb-6">{description}</p>
       
       {pillar.findings.length > 0 && (
         <div className="mb-5">
-          <p className="text-sm font-bold text-cyan-400 uppercase tracking-wider mb-3">What We Found</p>
-          <ul className="space-y-2.5">
+          <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-3">What We Found</p>
+          <ul className="space-y-2">
             {pillar.findings.map((finding, i) => (
               <li key={i} className="text-sm text-slate-300 flex gap-2.5 leading-relaxed">
-                <span className="text-cyan-500/60 mt-0.5">–</span>
+                <span className="text-cyan-500/50 mt-0.5 flex-shrink-0">–</span>
                 {finding}
               </li>
             ))}
@@ -96,19 +108,54 @@ function PillarCard({
       )}
       
       {pillar.blindspots.length > 0 && (
-        <div className="pt-4 border-t border-slate-700/30">
-          <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Blindspots</p>
-          <ul className="space-y-2.5">
+        <div className="pt-5 border-t border-[#1a2332] mb-6">
+          <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-3">What's Causing This</p>
+          <ul className="space-y-2">
             {pillar.blindspots.map((spot, i) => (
               <li key={i} className="text-sm text-slate-300 flex gap-2.5 leading-relaxed">
-                <AlertTriangle size={14} className="text-cyan-400/70 mt-0.5 flex-shrink-0" />
+                <AlertTriangle size={13} className="text-cyan-400/60 mt-0.5 flex-shrink-0" />
                 {spot}
               </li>
             ))}
           </ul>
         </div>
       )}
-    </GlassCard>
+
+      <div className="pt-5 border-t border-[#1a2332]">
+        <div className="flex items-end justify-between mb-1">
+          <div>
+            <p className="text-[10px] text-slate-500 uppercase tracking-[0.25em] font-semibold mb-2">Estimated Monthly Impact</p>
+            <p 
+              className="text-3xl md:text-4xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 leading-none"
+              style={{ filter: 'drop-shadow(0 0 20px rgba(103, 232, 249, 0.15))' }}
+            >
+              ~${monthlyImpact.toLocaleString()}
+            </p>
+          </div>
+          <button
+            onClick={() => setShowCalc(!showCalc)}
+            className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-400 transition-colors cursor-pointer"
+            data-testid={`toggle-calc-${title.toLowerCase()}`}
+          >
+            {showCalc ? 'Hide' : 'Show'} calculation
+            <ChevronDown size={14} className={`transition-transform ${showCalc ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
+
+        {showCalc && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }} 
+            animate={{ opacity: 1, height: 'auto' }} 
+            className="mt-4 space-y-2"
+          >
+            <p className="text-xs text-slate-500">{calcLabel}</p>
+            <div className="rounded-lg bg-[#0c1018] border border-[#182030] px-4 py-3 shadow-[inset_0_1px_0_rgba(103,232,249,0.04)]">
+              <p className="text-sm font-mono text-slate-300">{calcFormula}</p>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -374,7 +421,23 @@ export default function Results() {
               </p>
               <p className="text-xs text-slate-500 uppercase tracking-widest font-medium mb-5">Annualized Revenue Drag</p>
               
-              <p className="text-[11px] text-slate-600 italic">Based on avg job value × leads lost to friction</p>
+              <p className="text-[11px] text-slate-600 italic mb-5">Based on avg job value × leads lost to friction</p>
+
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { label: "Capture Drag", amount: result.gapBreakdown.captureGap },
+                  { label: "Convert Drag", amount: result.gapBreakdown.convertGap },
+                  { label: "Compound Drag", amount: result.gapBreakdown.compoundGap },
+                ].map((g) => (
+                  <div 
+                    key={g.label}
+                    className="rounded-xl bg-[#0c1018] border border-[#182030] py-3 px-2 text-center shadow-[inset_0_1px_0_rgba(103,232,249,0.05)]"
+                  >
+                    <p className="text-[10px] text-slate-500 uppercase tracking-wider font-medium mb-1">{g.label}</p>
+                    <p className="font-mono font-bold text-base text-cyan-400">${g.amount.toLocaleString()}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent" />
@@ -394,21 +457,30 @@ export default function Results() {
             title="Capture" 
             pillar={result.captureScore}
             icon={<Eye size={20} className="text-cyan-400" />}
-            description="How effectively you attract and respond to new leads. This covers response speed, availability, AI search visibility, and lead intake."
+            description="Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first."
+            monthlyImpact={result.gapBreakdown.captureGap}
+            calcFormula={result.gapBreakdown.captureCalc}
+            calcLabel="Capture Drag = Unavailable leads × Speed loss rate × Avg job value"
           />
           
           <PillarCard 
             title="Convert" 
             pillar={result.convertScore}
             icon={<Target size={20} className="text-cyan-400" />}
-            description="How well you turn leads into paying customers. This covers follow-up persistence, no-show recovery, pipeline tracking, and close rate."
+            description="Most revenue isn't lost at first contact — it's lost in the days and weeks after when no one follows up."
+            monthlyImpact={result.gapBreakdown.convertGap}
+            calcFormula={result.gapBreakdown.convertCalc}
+            calcLabel="Convert Drag = No-show recovery + Quote follow-up losses"
           />
           
           <PillarCard 
             title="Compound" 
             pillar={result.compoundScore}
             icon={<TrendingUp size={20} className="text-cyan-400" />}
-            description="How effectively past customers fuel future growth. This covers dormant lead reactivation and review generation."
+            description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."
+            monthlyImpact={result.gapBreakdown.compoundGap}
+            calcFormula={result.gapBreakdown.compoundCalc}
+            calcLabel="Compound Drag = Database reactivation potential + Manual labor cost"
           />
         </motion.div>
 
