@@ -9,7 +9,7 @@ SimpleSequence is a consulting service website for an AI Implementation Advisor 
 - **Solutions** (`/solutions`) - Sequential Revenue™ 3-Pillar Revenue Loop: Capture (The 24/7 AI-Presence), Convert (The 24/7 Sales Rep), Compound (The Compounding Engine) — with Old Way/New Reality contrast blocks, collapsible "Under the Hood" sections, loop visual diagram, qualifier, "Beyond Basic Automation" section (moved from Home — 4 sticky feature cards with diagrams), and CTA
 - **Industries** (`/industries`) - 5 industry-specific sections with bidirectional scroll animations, varied card sizes, and jackpot-style number counters
 - **Process** (`/process`) - Client journey with three phases (Diagnostic & Audit, Build & Deploy, Optimize & Scale), "What Happens" vs "What You Experience" columns, Six Pillars reference section linking to Solutions, and FAQ accordion
-- **Offers** (`/offers`) - AI Clarity Assessment and full 5-tier pricing section (Blueprint, Tune-Up, Growth Architecture, Operating System, Ongoing Optimization Partner)
+- **Offers** (`/offers`) - 3-tier pricing: The AI Brain ($150/mo, Capture Essentials), The AI System ($250/mo, Capture + Convert), The AI Infrastructure ($350/mo, Full Loop) — with dual-hover card layout, Found Money Guarantee section, comparison table, and assessment CTA. All buttons link to /assessment.
 - **Book** (`/book`) - Discovery call booking page with inline contact form as placeholder (ready for calendar embed — Calendly, GHL, etc.)
 
 **Content Alignment:**

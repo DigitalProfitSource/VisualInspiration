@@ -1,11 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { Activity, Check, ChevronDown, Phone, Users, Brain, Shield, Zap, BarChart3, Info, FileText, TrendingUp, Sparkles } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Check, ChevronDown, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
-import { ContactFormDialog } from "@/components/contact-form-dialog";
 import { SEO, createOfferSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
 import { useState } from "react";
@@ -20,266 +18,82 @@ const fadeInUpViewport = {
 interface PricingTier {
   number: string;
   name: string;
+  hook: string;
   descriptor: string;
   buildFee: string;
   monthlyFee: string;
-  ifYouWant: string;
   clarityLine?: string;
-  focusBullets: string[];
   expandedBullets: { title: string; description: string }[];
-  outcome: string;
+  goal: string;
   infrastructureFooter: string;
   ctaText: string;
   ctaSource: string;
   isPopular?: boolean;
-  isApplication?: boolean;
 }
 
 const pricingTiers: PricingTier[] = [
   {
     number: "01",
-    name: "Frontline",
-    descriptor: "The \"Human-First\" Safety Net",
-    buildFee: "$600",
-    monthlyFee: "$297/mo",
-    ifYouWant: "",
-    focusBullets: [],
+    name: "The AI Brain",
+    hook: "Stop the Bleed.",
+    descriptor: "Capture Essentials",
+    buildFee: "$750",
+    monthlyFee: "$150/mo",
     expandedBullets: [
-      { title: "AI Voice Backup Receptionist", description: "Answers only when your team is busy or after-hours." },
-      { title: "24/7 Website AI Chatbot", description: "Engages and books visitors directly from your landing page." },
-      { title: "Instant SMS Text-Back", description: "A digital safety net that keeps the conversation alive if a call is missed." },
-      { title: "Speed-to-Lead Engine", description: "Ensures new inquiries get a response in under 60 seconds." },
-      { title: "Single Intake Pipeline", description: "One unified view for all phone, text, and form leads." }
+      { title: "24/7 Website AI Chatbot", description: "Engages and books visitors directly from your site, around the clock." },
+      { title: "AI Voice Backup Receptionist", description: "Answers when your team is busy or after-hours — no more lost calls." },
+      { title: "Instant SMS Text-Back", description: "Speed-to-Lead engine ensures every missed call gets a text response in under 60 seconds." }
     ],
-    outcome: "Your front desk is now fail-safe. Stop leaking leads to competitors and ensure every caller gets a professional response—even when your team is busy or the office is closed.",
-    infrastructureFooter: "INCLUDES: 250 AI Voice Minutes/mo • Standard Security • Optional HIPAA Upgrade (+$300/mo)",
-    ctaText: "Start Frontline",
-    ctaSource: "frontline"
+    goal: "Ensure every inquiry is answered in <60 seconds, 24/7. Stop leaking leads to competitors while your team sleeps or is on the job.",
+    infrastructureFooter: "INCLUDES: 250 AI Voice Minutes/mo • Instant SMS Text-Back • Standard Security",
+    ctaText: "Get Started",
+    ctaSource: "ai-brain"
   },
   {
     number: "02",
-    name: "Specialist",
-    descriptor: "The \"Revenue & Reputation\" Accelerator",
-    buildFee: "$1,000",
-    monthlyFee: "$497/mo",
-    ifYouWant: "",
-    clarityLine: "Everything in Frontline, PLUS:",
-    focusBullets: [],
+    name: "The AI System",
+    hook: "The Invisible Sales Rep.",
+    descriptor: "Capture + Convert",
+    buildFee: "$1,250",
+    monthlyFee: "$250/mo",
+    clarityLine: "Everything in The AI Brain, PLUS:",
     expandedBullets: [
-      { title: "Proactive Outbound Engine", description: "AI calls back \"No-Shows\" and dormant leads to rebook them." },
-      { title: "Omni-Channel AI Command", description: "Unified messaging for Instagram, Facebook, and WhatsApp." },
-      { title: "The Database Reactivator", description: "Automated campaigns to win back old or cold leads." },
-      { title: "Auto-Reputation Engine", description: "Captures 5-star reviews and routes negative feedback internally." },
-      { title: "Smart Lead Triage", description: "AI filters spam and prioritizes \"Hot Leads\" for your team." }
+      { title: "Proactive Quote / No-Show Recovery", description: "AI automatically follows up on unsent quotes and no-show appointments to rebook them." },
+      { title: "Smart Lead Triage", description: "AI filters spam, prioritizes hot leads, and routes them to the right person on your team." },
+      { title: "90-Day Lead Nurture", description: "Automated drip sequences that keep your business top-of-mind until the lead is ready to buy." }
     ],
-    outcome: "Turn your lead list into a revenue engine. You don't just capture data—you drive behavior by dominating every social channel, ranking higher on Google, and winning back 'lost' revenue on autopilot.",
-    infrastructureFooter: "INCLUDES: 500 AI Voice Minutes/mo • Commercial Outbound Rights • Optional HIPAA Upgrade (+$300/mo)",
-    ctaText: "Start Specialist",
-    ctaSource: "specialist",
+    goal: "Automatically chase and recover \"stuck\" revenue hiding in your pipeline. Quotes that went cold, no-shows that never rebooked, leads that went silent.",
+    infrastructureFooter: "INCLUDES: 500 AI Voice Minutes/mo • Smart Triage • 90-Day Nurture Sequences",
+    ctaText: "Get Started",
+    ctaSource: "ai-system",
     isPopular: true
   },
   {
     number: "03",
-    name: "Command",
-    descriptor: "The Autonomous Operations Engine",
-    buildFee: "Starting at $2,000",
-    monthlyFee: "Starting at $997/mo",
-    ifYouWant: "",
-    clarityLine: "Everything in Specialist, PLUS:",
-    focusBullets: [],
+    name: "The AI Infrastructure",
+    hook: "Machine-Readable Dominance.",
+    descriptor: "The Full Loop",
+    buildFee: "$1,750",
+    monthlyFee: "$350/mo",
+    clarityLine: "Everything in The AI System, PLUS:",
     expandedBullets: [
-      { title: "Internal AI Knowledge Base", description: "Turn your SOPs and PDFs into an instant answer engine for your team." },
-      { title: "Custom N8N Integration Layer", description: "We bridge your CRM, PM, and billing tools to eliminate manual data entry." },
-      { title: "Service Delivery Automation", description: "Automatically generate contracts, send invoices, and create project files when a deal closes." },
-      { title: "Priority Decision Logic", description: "AI handles complex routing—like differentiating between support issues and new sales—without human input." },
-      { title: "Monthly Strategic Ops Audit", description: "Human-led consulting to maintain your workflows and identify new efficiencies." }
+      { title: "Full ASO (AI Search Optimization)", description: "Re-architect your digital presence to be machine-readable for ChatGPT, Gemini, and the new Google." },
+      { title: "The \"Found Money\" DBR Campaign", description: "Targeted Database Reactivation campaign on your existing contacts to unlock dormant revenue." },
+      { title: "Automated Reputation Management", description: "Systematically capture 5-star reviews and route negative feedback internally before it goes public." }
     ],
-    outcome: "Step out of the day-to-day 'weeds' and into the CEO role. We don't just capture leads; we automate your entire fulfillment process—contracts, invoices, and project setup—so your business runs itself.",
-    infrastructureFooter: "INCLUDES: 1,000 AI Voice Minutes • Enterprise Speed • Optional HIPAA Upgrade (+$300/mo)",
-    ctaText: "Apply for Command",
-    ctaSource: "command",
-    isApplication: true
+    goal: "Total re-architecture of your digital presence to be machine-readable. When AI tools recommend businesses in your industry, yours shows up first.",
+    infrastructureFooter: "INCLUDES: 1,000 AI Voice Minutes/mo • Full ASO Implementation • DBR Campaign • Reputation Engine",
+    ctaText: "Get Started",
+    ctaSource: "ai-infrastructure"
   }
 ];
-
-function PricingCard({ tier, index }: { tier: PricingTier; index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.15, duration: 0.6 }}
-      className={`group relative p-8 rounded-2xl border transition-all duration-300 ${
-        tier.isPopular 
-          ? 'border-primary/40 bg-gradient-to-b from-zinc-800/80 to-zinc-950 shadow-2xl' 
-          : 'border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent hover:border-primary/30'
-      }`}
-      data-testid={`card-offers-${tier.ctaSource}`}
-    >
-      {tier.isPopular && (
-        <>
-          <BorderBeam size={300} duration={12} delay={0} colorFrom="var(--color-primary)" colorTo="transparent" />
-          <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl tracking-wider">
-            MOST POPULAR
-          </div>
-        </>
-      )}
-      
-      {tier.isApplication && (
-        <div className="absolute top-0 right-0 bg-white/10 text-slate-300 text-[10px] font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl tracking-wider border-l border-b border-white/10">
-          BY APPLICATION
-        </div>
-      )}
-      
-      <div className="relative z-10">
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-xs font-mono text-primary">{tier.number}</span>
-        </div>
-        
-        <h3 className="text-2xl md:text-3xl font-display font-semibold mb-2 text-white">
-          {tier.name}
-        </h3>
-        
-        <p className="text-sm text-slate-400 mb-4">
-          {tier.descriptor}
-        </p>
-        
-        {/* Outcome Box - Now above features */}
-        <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
-          <p className="text-slate-300 text-sm leading-relaxed">
-            {tier.outcome}
-          </p>
-        </div>
-        
-        {/* Pricing - Monthly largest, Launch Build below */}
-        <div className="mb-6">
-          <div className="text-3xl font-display font-bold text-white mb-1">{tier.monthlyFee}</div>
-          <div className="text-sm text-slate-500">One-time setup: {tier.buildFee}</div>
-        </div>
-        
-        {/* Core Capabilities */}
-        <div className="mb-6">
-          {tier.clarityLine && (
-            <p className="text-sm text-primary font-semibold mb-4">{tier.clarityLine}</p>
-          )}
-          <h4 className="text-xs font-mono text-slate-400 mb-3">CORE CAPABILITIES</h4>
-          <ul className="space-y-3">
-            {tier.expandedBullets.map((bullet, i) => (
-              <li key={i} className="text-sm">
-                <div className="flex items-start gap-3">
-                  <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <div>
-                    <span className="text-white font-medium">{bullet.title}:</span>
-                    <span className="text-slate-400 ml-1">{bullet.description}</span>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        
-        {/* Infrastructure Footer */}
-        <div className="mb-6 pt-4 border-t border-white/10">
-          <p className="text-xs text-slate-500 font-mono">{tier.infrastructureFooter}</p>
-        </div>
-        
-        <ContactFormDialog
-          source={tier.ctaSource}
-          title={tier.ctaText}
-          description={`Tell us about your business and we'll help you get started with ${tier.name}.`}
-          trigger={
-            <Button 
-              data-testid={`button-offers-${tier.ctaSource}`}
-              className={`w-full h-12 rounded-lg font-medium transition-all ${
-                tier.isPopular
-                  ? 'bg-primary text-primary-foreground hover:bg-cyan-300 shadow-[0_0_20px_-5px_var(--color-primary)]'
-                  : 'bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-primary/30'
-              }`}
-            >
-              {tier.ctaText} <span className="ml-2">→</span>
-            </Button>
-          }
-        />
-      </div>
-    </motion.div>
-  );
-}
-
-function AssuranceBox() {
-  const [finePrintExpanded, setFinePrintExpanded] = useState(false);
-  
-  return (
-    <div className="p-8 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
-      <h3 className="text-xl font-display font-semibold mb-4 text-primary flex items-center gap-3">
-        <Zap className="w-5 h-5" />
-        90-Day Optimization Assurance
-      </h3>
-      <p className="text-slate-300 leading-relaxed mb-6">
-        The first 90 days after go-live are your optimization window. We're in this with you, not just turning on a bot and hoping for the best.
-      </p>
-      <p className="text-slate-300 leading-relaxed mb-6">
-        If, after that period, we're still not seeing the movement we both expected in key metrics like responsiveness and show-rate — and your team has actually been using the system, routing leads through it, and implementing the agreed changes — we will:
-      </p>
-      <ol className="list-decimal list-inside space-y-2 text-slate-300 mb-6 pl-2">
-        <li>Extend your subscription by 30 days at no additional subscription cost while we adjust it together, and</li>
-        <li>If you're still not satisfied after that extension, refund 100% of the subscription fees you paid during that period. Your Launch Build fee is not refundable.</li>
-      </ol>
-      <p className="text-slate-400 text-sm mb-4">
-        This assurance applies to Frontline, Specialist, and Command plans. It does not apply to fully custom builds.
-      </p>
-      <p className="text-sm text-slate-500 italic mb-6">
-        If you're only looking to "test a bot for a couple weeks," SimpleSequence is probably not the right fit.
-      </p>
-      
-      {/* Collapsible Fine Print */}
-      <div className="border-t border-white/10 pt-4">
-        <button
-          onClick={() => setFinePrintExpanded(!finePrintExpanded)}
-          className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-400 transition-colors"
-          data-testid="toggle-fine-print"
-        >
-          <motion.div animate={{ rotate: finePrintExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
-            <ChevronDown className="w-3 h-3" />
-          </motion.div>
-          {finePrintExpanded ? "Hide Guarantee Conditions" : "View Guarantee Conditions (Fine Print)"}
-        </button>
-        
-        <AnimatePresence>
-          {finePrintExpanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div className="mt-4 text-xs text-slate-500 leading-relaxed space-y-3">
-                <p>To qualify for the 90-Day Optimization Assurance and subscription refund:</p>
-                <ul className="space-y-2 pl-4">
-                  <li><span className="text-slate-400">Coverage period.</span> The assurance covers subscription fees paid in the first 90 days after go-live, plus the 30-day optimization extension we add if results are not on track. It does not cover the Launch Build fee, usage-based fees, or any third-party tool costs.</li>
-                  <li><span className="text-slate-400">Plans included.</span> The assurance applies to Frontline, Specialist, and Command plans only. It does not apply to fully custom builds or one-off custom projects where scope is jointly designed outside the standard offers.</li>
-                  <li><span className="text-slate-400">Go-live definition.</span> "Go-live" means SimpleSequence is actively handling inbound calls/messages for at least one primary phone number or channel, and you've approved the initial flows/scripts in writing (email is sufficient).</li>
-                  <li><span className="text-slate-400">Minimum usage.</span> During the 90-day window, you agree to route at least 75% of relevant inbound leads/calls/messages through SimpleSequence on the agreed channels, and maintain a minimum inbound lead volume that makes evaluation meaningful (at least 30 new leads per month across all channels).</li>
-                  <li><span className="text-slate-400">Participation.</span> You or a delegated team member must complete onboarding tasks within the agreed timelines, attend at least 2 out of 3 scheduled optimization calls (or reschedule in good faith), and implement reasonable changes we agree on (routing changes, script updates, or offer tweaks).</li>
-                  <li><span className="text-slate-400">Request process.</span> To invoke the assurance, you must request it in writing within 120 days of go-live, allow us to review the metrics and usage together, and participate in the 30-day optimization extension where we attempt fixes.</li>
-                  <li><span className="text-slate-400">Refund scope.</span> If, after the 30-day extension, we mutually agree that there has not been meaningful improvement in the agreed metrics, we will refund 100% of subscription fees paid during the 90-day window (and the extension if applicable). The Launch Build fee remains non-refundable.</li>
-                  <li><span className="text-slate-400">One-time use.</span> This assurance may be used once per client organization.</li>
-                </ul>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-}
 
 function PricingGridSection() {
   const [entryCardsHovered, setEntryCardsHovered] = useState(false);
 
-  const frontline = pricingTiers[0];
-  const specialist = pricingTiers[1];
-  const command = pricingTiers[2];
+  const brain = pricingTiers[0];
+  const system = pricingTiers[1];
+  const infra = pricingTiers[2];
 
   return (
     <section className="py-24">
@@ -291,11 +105,10 @@ function PricingGridSection() {
           transition={fadeInUpViewport.transition}
           className="text-center mb-16"
         >
-          <span className="text-sm font-mono text-primary mb-4 block">SELECT YOUR PLAN</span>
+          <span className="text-sm font-mono text-primary mb-4 block">SELECT YOUR TIER</span>
           <h2 className="text-4xl md:text-5xl font-display font-medium">Find Your Fit</h2>
         </motion.div>
 
-        {/* Row 1: Frontline & Specialist side by side with dual-hover */}
         <motion.div 
           initial={fadeInUpViewport.initial}
           whileInView={fadeInUpViewport.whileInView}
@@ -305,33 +118,29 @@ function PricingGridSection() {
           onMouseEnter={() => setEntryCardsHovered(true)}
           onMouseLeave={() => setEntryCardsHovered(false)}
         >
-          {/* Frontline Card */}
           <div 
             className={`group p-8 rounded-2xl border bg-gradient-to-b from-white/[0.06] to-transparent transition-all duration-300 ${
               entryCardsHovered ? 'border-primary/30' : 'border-white/10 hover:border-primary/30'
             }`}
-            data-testid="card-offers-frontline"
+            data-testid="card-offers-ai-brain"
           >
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-mono text-primary">{frontline.number}</span>
+              <span className="text-xs font-mono text-primary">{brain.number}</span>
             </div>
             
-            <h3 className="text-2xl font-display font-medium mb-2 text-white">
-              {frontline.name}
+            <h3 className="text-2xl font-display font-medium mb-1 text-white">
+              {brain.name}
             </h3>
-            <p className="text-sm text-slate-400 mb-4">{frontline.descriptor}</p>
+            <p className="text-sm text-primary font-semibold mb-1">{brain.hook}</p>
+            <p className="text-sm text-slate-400 mb-4">{brain.descriptor}</p>
             
-            {/* Outcome Box - Above features */}
             <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
-              <p className="text-slate-300 text-sm">
-                {frontline.outcome}
-              </p>
+              <p className="text-slate-300 text-sm">{brain.goal}</p>
             </div>
             
-            {/* Pricing - Monthly largest */}
             <div className="mb-6">
-              <div className="text-3xl font-display font-bold text-white mb-1">{frontline.monthlyFee}</div>
-              <div className="text-sm text-slate-500">One-time setup: {frontline.buildFee}</div>
+              <div className="text-3xl font-display font-bold text-white mb-1">{brain.monthlyFee}</div>
+              <div className="text-sm text-slate-500">One-time setup: {brain.buildFee}</div>
             </div>
 
             <AnimatePresence>
@@ -344,9 +153,9 @@ function PricingGridSection() {
                   className="overflow-hidden"
                 >
                   <div className="mb-6">
-                    <h4 className="text-xs font-mono text-slate-400 mb-3">CORE CAPABILITIES</h4>
+                    <h4 className="text-xs font-mono text-slate-400 mb-3">WHAT'S INSIDE</h4>
                     <ul className="space-y-3">
-                      {frontline.expandedBullets.map((bullet, i) => (
+                      {brain.expandedBullets.map((bullet, i) => (
                         <li key={i} className="text-sm">
                           <div className="flex items-start gap-3">
                             <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
@@ -360,35 +169,28 @@ function PricingGridSection() {
                     </ul>
                   </div>
                   
-                  {/* Infrastructure Footer */}
                   <div className="pt-4 border-t border-white/10">
-                    <p className="text-xs text-slate-500 font-mono">{frontline.infrastructureFooter}</p>
+                    <p className="text-xs text-slate-500 font-mono">{brain.infrastructureFooter}</p>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            <ContactFormDialog
-              source="frontline"
-              title="Start Frontline"
-              description="Tell us about your business and we'll help you get started with Frontline."
-              trigger={
-                <Button 
-                  data-testid="button-offers-frontline"
-                  className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all group-hover:border-primary/30"
-                >
-                  {frontline.ctaText} <span className="ml-2 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
-                </Button>
-              }
-            />
+            <Link href="/assessment">
+              <Button 
+                data-testid="button-offers-ai-brain"
+                className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all group-hover:border-primary/30"
+              >
+                {brain.ctaText} <span className="ml-2 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">&rarr;</span>
+              </Button>
+            </Link>
           </div>
 
-          {/* Specialist Card (Most Popular) */}
           <div 
             className={`group p-8 rounded-2xl border bg-gradient-to-b from-zinc-800/80 to-zinc-950 relative shadow-xl transition-all duration-300 overflow-hidden ${
               entryCardsHovered ? 'border-primary/40' : 'border-primary/30 hover:border-primary/40'
             }`}
-            data-testid="card-offers-specialist"
+            data-testid="card-offers-ai-system"
           >
             <BorderBeam size={300} duration={12} delay={0} colorFrom="var(--color-primary)" colorTo="transparent" />
             <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl tracking-wider">
@@ -397,25 +199,22 @@ function PricingGridSection() {
             
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-mono text-primary">{specialist.number}</span>
+                <span className="text-xs font-mono text-primary">{system.number}</span>
               </div>
               
-              <h3 className="text-2xl font-display font-medium mb-2 text-white">
-                {specialist.name}
+              <h3 className="text-2xl font-display font-medium mb-1 text-white">
+                {system.name}
               </h3>
-              <p className="text-sm text-slate-400 mb-4">{specialist.descriptor}</p>
+              <p className="text-sm text-primary font-semibold mb-1">{system.hook}</p>
+              <p className="text-sm text-slate-400 mb-4">{system.descriptor}</p>
               
-              {/* Outcome Box - Above features */}
               <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
-                <p className="text-slate-300 text-sm">
-                  {specialist.outcome}
-                </p>
+                <p className="text-slate-300 text-sm">{system.goal}</p>
               </div>
               
-              {/* Pricing - Monthly largest */}
               <div className="mb-6">
-                <div className="text-3xl font-display font-bold text-white mb-1">{specialist.monthlyFee}</div>
-                <div className="text-sm text-slate-500">One-time setup: {specialist.buildFee}</div>
+                <div className="text-3xl font-display font-bold text-white mb-1">{system.monthlyFee}</div>
+                <div className="text-sm text-slate-500">One-time setup: {system.buildFee}</div>
               </div>
 
               <AnimatePresence>
@@ -428,12 +227,12 @@ function PricingGridSection() {
                     className="overflow-hidden"
                   >
                     <div className="mb-6">
-                      {specialist.clarityLine && (
-                        <p className="text-sm text-primary font-semibold mb-4">{specialist.clarityLine}</p>
+                      {system.clarityLine && (
+                        <p className="text-sm text-primary font-semibold mb-4">{system.clarityLine}</p>
                       )}
-                      <h4 className="text-xs font-mono text-slate-400 mb-3">CORE CAPABILITIES</h4>
+                      <h4 className="text-xs font-mono text-slate-400 mb-3">WHAT'S INSIDE</h4>
                       <ul className="space-y-3">
-                        {specialist.expandedBullets.map((bullet, i) => (
+                        {system.expandedBullets.map((bullet, i) => (
                           <li key={i} className="text-sm">
                             <div className="flex items-start gap-3">
                               <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
@@ -447,32 +246,25 @@ function PricingGridSection() {
                       </ul>
                     </div>
                     
-                    {/* Infrastructure Footer */}
                     <div className="pt-4 border-t border-white/10">
-                      <p className="text-xs text-slate-500 font-mono">{specialist.infrastructureFooter}</p>
+                      <p className="text-xs text-slate-500 font-mono">{system.infrastructureFooter}</p>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              <ContactFormDialog
-                source="specialist"
-                title="Start Specialist"
-                description="Tell us about your business and we'll help you get started with Specialist."
-                trigger={
-                  <Button 
-                    data-testid="button-offers-specialist"
-                    className="w-full bg-primary text-primary-foreground hover:bg-cyan-300 h-12 rounded-lg font-medium shadow-[0_0_20px_-5px_var(--color-primary)] transition-all"
-                  >
-                    {specialist.ctaText} <span className="ml-2">→</span>
-                  </Button>
-                }
-              />
+              <Link href="/assessment">
+                <Button 
+                  data-testid="button-offers-ai-system"
+                  className="w-full bg-primary text-primary-foreground hover:bg-cyan-300 h-12 rounded-lg font-medium shadow-[0_0_20px_-5px_var(--color-primary)] transition-all"
+                >
+                  {system.ctaText} <span className="ml-2">&rarr;</span>
+                </Button>
+              </Link>
             </div>
           </div>
         </motion.div>
 
-        {/* Row 2: Command - Full Width Featured */}
         <motion.div 
           initial={fadeInUpViewport.initial}
           whileInView={fadeInUpViewport.whileInView}
@@ -482,53 +274,45 @@ function PricingGridSection() {
         >
           <div className="p-10 rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900/50 to-transparent relative overflow-hidden hover:border-primary/20 transition-all">
             <div className="absolute top-0 right-0 bg-white/10 text-slate-300 text-[10px] font-bold px-4 py-2 rounded-bl-xl rounded-tr-xl tracking-wider border-l border-b border-white/10">
-              BY APPLICATION
+              FULL LOOP
             </div>
             
             <div className="grid lg:grid-cols-2 gap-10">
               <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-xs font-mono text-primary/70">{command.number}</span>
+                  <span className="text-xs font-mono text-primary/70">{infra.number}</span>
                 </div>
-                <h3 className="text-3xl font-display font-semibold mb-2 text-white">{command.name}</h3>
-                <p className="text-sm text-slate-400 mb-4">{command.descriptor}</p>
+                <h3 className="text-3xl font-display font-semibold mb-1 text-white">{infra.name}</h3>
+                <p className="text-sm text-primary font-semibold mb-1">{infra.hook}</p>
+                <p className="text-sm text-slate-400 mb-4">{infra.descriptor}</p>
                 
-                {/* Outcome Box - Above features */}
                 <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
-                  <p className="text-slate-300 text-sm">
-                    {command.outcome}
-                  </p>
+                  <p className="text-slate-300 text-sm">{infra.goal}</p>
                 </div>
                 
-                {/* Pricing - Monthly largest */}
                 <div className="mb-6">
-                  <div className="text-3xl font-display font-bold text-white mb-1">{command.monthlyFee}</div>
-                  <div className="text-sm text-slate-500">One-time setup: {command.buildFee}</div>
+                  <div className="text-3xl font-display font-bold text-white mb-1">{infra.monthlyFee}</div>
+                  <div className="text-sm text-slate-500">One-time setup: {infra.buildFee}</div>
                 </div>
                 
-                <ContactFormDialog
-                  source="command"
-                  title="Apply for Command"
-                  description="Tell us about your business and we'll help you get started with Command."
-                  trigger={
-                    <Button 
-                      data-testid="button-offers-command"
-                      className="bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-primary/30 h-14 px-8 rounded-lg font-medium text-base transition-all"
-                    >
-                      {command.ctaText} <span className="ml-2 opacity-50 group-hover:opacity-100">→</span>
-                    </Button>
-                  }
-                />
+                <Link href="/assessment">
+                  <Button 
+                    data-testid="button-offers-ai-infrastructure"
+                    className="bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-primary/30 h-14 px-8 rounded-lg font-medium text-base transition-all"
+                  >
+                    {infra.ctaText} <span className="ml-2 opacity-50 group-hover:opacity-100">&rarr;</span>
+                  </Button>
+                </Link>
               </div>
               
               <div className="space-y-6">
-                {command.clarityLine && (
-                  <p className="text-sm text-primary font-semibold">{command.clarityLine}</p>
+                {infra.clarityLine && (
+                  <p className="text-sm text-primary font-semibold">{infra.clarityLine}</p>
                 )}
                 <div>
-                  <h4 className="text-xs font-mono text-slate-400 mb-3">CORE CAPABILITIES</h4>
+                  <h4 className="text-xs font-mono text-slate-400 mb-3">WHAT'S INSIDE</h4>
                   <ul className="space-y-3 text-sm">
-                    {command.expandedBullets.map((bullet, i) => (
+                    {infra.expandedBullets.map((bullet, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <Check className="w-4 h-4 text-primary/70 mt-0.5 flex-shrink-0" />
                         <div>
@@ -540,9 +324,8 @@ function PricingGridSection() {
                   </ul>
                 </div>
                 
-                {/* Infrastructure Footer */}
                 <div className="pt-4 border-t border-white/10">
-                  <p className="text-xs text-slate-500 font-mono">{command.infrastructureFooter}</p>
+                  <p className="text-xs text-slate-500 font-mono">{infra.infrastructureFooter}</p>
                 </div>
               </div>
             </div>
@@ -553,61 +336,114 @@ function PricingGridSection() {
   );
 }
 
+function FoundMoneyGuarantee() {
+  const [finePrintExpanded, setFinePrintExpanded] = useState(false);
+  
+  return (
+    <section className="py-24 border-t border-white/5">
+      <div className="container mx-auto px-6 max-w-4xl">
+        <motion.div
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
+          viewport={fadeInUpViewport.viewport}
+          transition={fadeInUpViewport.transition}
+        >
+          <div className="p-8 md:p-12 rounded-2xl border border-primary/20 bg-gradient-to-b from-primary/5 to-transparent">
+            <div className="flex items-center gap-3 mb-6">
+              <Zap className="w-6 h-6 text-primary" />
+              <span className="text-sm font-mono text-primary">AI INFRASTRUCTURE TIER</span>
+            </div>
+            
+            <h3 className="text-3xl md:text-4xl font-display font-semibold mb-6 text-white">
+              The Found Money Guarantee
+            </h3>
+            
+            <p className="text-lg text-slate-300 leading-relaxed mb-6">
+              Within your first 30 days, we run a targeted Database Reactivation (DBR) campaign on your existing contacts. If we don't generate a meaningful volume of qualified responses or booked appointments from your list, we'll run a second full reactivation campaign at no additional service fee.
+            </p>
+            
+            <div className="border-t border-white/10 pt-4">
+              <button
+                onClick={() => setFinePrintExpanded(!finePrintExpanded)}
+                className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-400 transition-colors"
+                data-testid="toggle-found-money-fine-print"
+              >
+                <motion.div animate={{ rotate: finePrintExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+                  <ChevronDown className="w-3 h-3" />
+                </motion.div>
+                {finePrintExpanded ? "Hide Conditions" : "View Conditions (Fine Print)"}
+              </button>
+              
+              <AnimatePresence>
+                {finePrintExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-4 text-xs text-slate-500 leading-relaxed space-y-3">
+                      <ul className="space-y-2 pl-4">
+                        <li><span className="text-slate-400">List requirement.</span> Requires a permission-based list of 500+ contacts. Lists must comply with applicable messaging and consent regulations.</li>
+                        <li><span className="text-slate-400">Client responsibility.</span> Client is responsible for final lead closing and fulfillment. SimpleSequence generates the conversations — your team closes them.</li>
+                        <li><span className="text-slate-400">Availability.</span> The Found Money Guarantee is available exclusively with The AI Infrastructure tier.</li>
+                      </ul>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 interface ComparisonRow {
   label: string;
-  frontline: string;
-  specialist: string;
-  command: string;
-  isCategory?: boolean;
+  brain: string;
+  system: string;
+  infrastructure: string;
   isSection?: boolean;
 }
 
 const comparisonRows: ComparisonRow[] = [
-  { label: "CORE CAPABILITIES (Frontline)", frontline: "", specialist: "", command: "", isSection: true },
-  { label: "AI Voice Backup Receptionist", frontline: "Included", specialist: "Included", command: "Included" },
-  { label: "24/7 Website AI Chatbot", frontline: "Included", specialist: "Included", command: "Included" },
-  { label: "Instant SMS Text-Back + Speed-to-Lead", frontline: "Included", specialist: "Included", command: "Included" },
-  { label: "Single Intake Pipeline", frontline: "Included", specialist: "Included", command: "Included" },
+  { label: "CAPTURE ESSENTIALS (AI Brain)", brain: "", system: "", infrastructure: "", isSection: true },
+  { label: "24/7 Website AI Chatbot", brain: "Included", system: "Included", infrastructure: "Included" },
+  { label: "AI Voice Backup Receptionist", brain: "Included", system: "Included", infrastructure: "Included" },
+  { label: "Instant SMS Text-Back / Speed-to-Lead", brain: "Included", system: "Included", infrastructure: "Included" },
   
-  { label: "GROWTH & REVENUE (Specialist)", frontline: "", specialist: "", command: "", isSection: true },
-  { label: "Proactive Outbound Engine (Rebooking)", frontline: "—", specialist: "Included", command: "Included" },
-  { label: "Omni-Channel AI (IG, FB, WhatsApp)", frontline: "—", specialist: "Included", command: "Included" },
-  { label: "Database Reactivation + Reputation Engine", frontline: "—", specialist: "Included", command: "Included" },
-  { label: "Smart Lead Triage", frontline: "—", specialist: "Included", command: "Included" },
+  { label: "CONVERSION ENGINE (AI System)", brain: "", system: "", infrastructure: "", isSection: true },
+  { label: "Proactive Quote / No-Show Recovery", brain: "\u2014", system: "Included", infrastructure: "Included" },
+  { label: "Smart Lead Triage", brain: "\u2014", system: "Included", infrastructure: "Included" },
+  { label: "90-Day Lead Nurture", brain: "\u2014", system: "Included", infrastructure: "Included" },
   
-  { label: "OPS & AUTONOMY (Command)", frontline: "", specialist: "", command: "", isSection: true },
-  { label: "Internal AI Knowledge Base (SOPs)", frontline: "—", specialist: "—", command: "Included" },
-  { label: "Custom N8N Integration Layer", frontline: "—", specialist: "—", command: "Included" },
-  { label: "Service Delivery Automation", frontline: "—", specialist: "—", command: "Included" },
-  { label: "Monthly Strategic Ops Audit", frontline: "—", specialist: "—", command: "Included" },
-  
-  { label: "INFRASTRUCTURE & LIMITS", frontline: "", specialist: "", command: "", isSection: true },
-  { label: "Included AI Voice Minutes", frontline: "250 Minutes", specialist: "500 Minutes", command: "1,000 Minutes" },
-  { label: "Included SMS Segments", frontline: "500", specialist: "2,000", command: "Enterprise Vol." },
-  { label: "HIPAA Compliance Server Upgrade", frontline: "Optional (+$300/mo)", specialist: "Optional (+$300/mo)", command: "Optional (+$300/mo)" },
+  { label: "FULL LOOP (AI Infrastructure)", brain: "", system: "", infrastructure: "", isSection: true },
+  { label: "ASO / Machine-Readable Architecture", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
+  { label: "\"Found Money\" DBR Campaign", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
+  { label: "Automated Reputation Management", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
+  { label: "Found Money Guarantee", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
+
+  { label: "INFRASTRUCTURE & LIMITS", brain: "", system: "", infrastructure: "", isSection: true },
+  { label: "Included AI Voice Minutes", brain: "250/mo", system: "500/mo", infrastructure: "1,000/mo" },
+  { label: "Setup Fee", brain: "$750", system: "$1,250", infrastructure: "$1,750" },
+  { label: "Monthly Retainer", brain: "$150/mo", system: "$250/mo", infrastructure: "$350/mo" },
 ];
 
-function ComparisonCell({ value, isSpecialist = false }: { value: string; isSpecialist?: boolean }) {
-  const isEmpty = value === "—" || value === "";
-  const isAvailable = value === "Available";
-  const isByApplication = value.includes("by application") || value === "By application";
-  const isIncluded = value === "Included" || value.startsWith("Included");
-  const isOptional = value.includes("Optional");
+function ComparisonCell({ value, isPopular = false }: { value: string; isPopular?: boolean }) {
+  const isEmpty = value === "\u2014" || value === "";
+  const isIncluded = value === "Included";
   
   let className = "text-xs md:text-sm ";
   if (isEmpty) {
     className += "text-slate-600";
-  } else if (isAvailable) {
-    className += "text-primary/80 font-medium";
-  } else if (isByApplication) {
-    className += "text-white/70 italic";
-  } else if (isOptional) {
-    className += "text-slate-400";
-  } else if (isIncluded && isSpecialist) {
+  } else if (isIncluded && isPopular) {
     className += "text-primary font-medium";
   } else if (isIncluded) {
     className += "text-slate-300 font-medium";
-  } else if (isSpecialist) {
+  } else if (isPopular) {
     className += "text-primary/90";
   } else {
     className += "text-slate-300";
@@ -627,8 +463,8 @@ function ComparePlansSection() {
           transition={fadeInUpViewport.transition}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">Compare Plans</h2>
-          <p className="text-slate-400">Clear tiers without overpromising. Final scope confirmed during Launch Build.</p>
+          <h2 className="text-3xl md:text-4xl font-display font-medium mb-4">Compare Tiers</h2>
+          <p className="text-slate-400">See exactly what's included at each level.</p>
         </motion.div>
 
         <motion.div
@@ -638,15 +474,14 @@ function ComparePlansSection() {
           transition={fadeInUpViewport.transition}
           className="max-w-5xl mx-auto"
         >
-          {/* Desktop Table */}
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full border-collapse">
               <thead>
                 <tr className="border-b border-white/10">
                   <th className="text-left py-4 pr-6 text-xs font-mono text-slate-500 uppercase tracking-wider w-1/3"></th>
-                  <th className="py-4 px-4 text-center text-sm font-semibold text-white">Frontline</th>
-                  <th className="py-4 px-4 text-center text-sm font-semibold text-primary bg-primary/[0.03]">Specialist</th>
-                  <th className="py-4 px-4 text-center text-sm font-semibold text-white/80">Command</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-white">AI Brain</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-primary bg-primary/[0.03]">AI System</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-white/80">AI Infrastructure</th>
                 </tr>
               </thead>
               <tbody>
@@ -663,9 +498,9 @@ function ComparePlansSection() {
                   return (
                     <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
                       <td className="py-4 pr-6 text-sm text-slate-300 text-left">{row.label}</td>
-                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.frontline} /></td>
-                      <td className="py-4 px-4 text-center bg-primary/[0.03]"><ComparisonCell value={row.specialist} isSpecialist /></td>
-                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.command} /></td>
+                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.brain} /></td>
+                      <td className="py-4 px-4 text-center bg-primary/[0.03]"><ComparisonCell value={row.system} isPopular /></td>
+                      <td className="py-4 px-4 text-center"><ComparisonCell value={row.infrastructure} /></td>
                     </tr>
                   );
                 })}
@@ -673,7 +508,6 @@ function ComparePlansSection() {
             </table>
           </div>
 
-          {/* Mobile Stacked View */}
           <div className="md:hidden space-y-4">
             {comparisonRows.map((row, i) => {
               if (row.isSection) {
@@ -688,63 +522,53 @@ function ComparePlansSection() {
                   <p className="text-sm text-slate-300 font-medium mb-4 text-left">{row.label}</p>
                   <div className="grid grid-cols-3 gap-2 text-center">
                     <div>
-                      <p className="text-[10px] text-slate-500 mb-1">Frontline</p>
-                      <ComparisonCell value={row.frontline} />
+                      <p className="text-[10px] text-slate-500 mb-1">AI Brain</p>
+                      <ComparisonCell value={row.brain} />
                     </div>
                     <div className="bg-primary/[0.03] rounded-lg py-1 px-1">
-                      <p className="text-[10px] text-primary mb-1">Specialist</p>
-                      <ComparisonCell value={row.specialist} isSpecialist />
+                      <p className="text-[10px] text-primary mb-1">AI System</p>
+                      <ComparisonCell value={row.system} isPopular />
                     </div>
                     <div>
-                      <p className="text-[10px] text-slate-500 mb-1">Command</p>
-                      <ComparisonCell value={row.command} />
+                      <p className="text-[10px] text-slate-500 mb-1">AI Infra</p>
+                      <ComparisonCell value={row.infrastructure} />
                     </div>
                   </div>
                 </div>
               );
             })}
           </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
-          {/* Legend + Note */}
-          <div className="mt-8 text-left space-y-2">
-            <p className="text-xs text-slate-400">
-              <span className="font-semibold text-slate-300">Legend:</span> Available = enabled when appropriate based on your workflows + permissions. Confirmed during Launch Build.
-            </p>
-            <p className="text-xs text-slate-500">
-              <span className="font-semibold text-slate-400">Note:</span> We do not claim compliance certification.
-            </p>
-          </div>
-
-          {/* Custom / Enterprise Card */}
-          <motion.div
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={{ ...fadeInUpViewport.transition, delay: 0.2 }}
-            className="mt-12 p-8 rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-transparent max-w-md mx-auto text-center"
-            data-testid="card-offers-custom-enterprise"
+function NotSureSection() {
+  return (
+    <section className="py-24 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
+      <div className="container mx-auto px-6 relative z-10">
+        <motion.div
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
+          viewport={fadeInUpViewport.viewport}
+          transition={fadeInUpViewport.transition}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <h2 className="text-4xl md:text-5xl font-display font-medium mb-6">
+            Not Sure Where to <span className="text-primary">Start</span>?
+          </h2>
+          <p className="text-lg text-slate-400 leading-relaxed mb-8">
+            Run the free Sequential Revenue&trade; Friction Analysis. In a few minutes, we'll show you exactly where leads are falling through the cracks and how much it's costing you each month. Then you'll know which tier makes sense.
+          </p>
+          <Link 
+            href="/assessment"
+            data-testid="button-offers-assessment-cta"
+            className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
           >
-            <h3 className="text-2xl font-display font-medium mb-3 text-white">Custom / Enterprise</h3>
-            <p className="text-slate-400 mb-6">
-              Multi-location, unusual workflows, strict compliance, or non-standard tools.
-            </p>
-            <ContactFormDialog
-              source="custom-enterprise"
-              title="Talk to Us"
-              description="Tell us about your unique requirements and we'll map out what's possible."
-              trigger={
-                <Button 
-                  data-testid="button-offers-custom-enterprise"
-                  className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-primary/30 h-12 rounded-lg font-medium transition-all"
-                >
-                  Talk to Us <span className="ml-2">→</span>
-                </Button>
-              }
-            />
-            <p className="text-xs text-slate-500 mt-4">
-              We'll map your stack, risks, and required audit trail before quoting.
-            </p>
-          </motion.div>
+            Take the Free Assessment &rarr;
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -754,7 +578,7 @@ function ComparePlansSection() {
 export default function Offers() {
   const offerSchemas = pricingTiers.map(tier => createOfferSchema({
     name: tier.name,
-    description: tier.descriptor,
+    description: `${tier.hook} ${tier.descriptor}`,
     price: tier.monthlyFee.replace(/[^0-9]/g, ''),
     buildFee: tier.buildFee
   }));
@@ -763,7 +587,7 @@ export default function Offers() {
     <Layout>
       <SEO 
         title="Pricing & Offers | SimpleSequence"
-        description="Three tiers: Frontline ($297/mo), Specialist ($497/mo), and Command (from $997/mo). AI front desk, follow-up automation, and operational systems."
+        description="Three tiers of AI-Native Infrastructure: The AI Brain ($150/mo), The AI System ($250/mo), and The AI Infrastructure ($350/mo). Capture, convert, and compound your revenue."
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "ItemList",
@@ -775,7 +599,6 @@ export default function Offers() {
         }}
       />
 
-      {/* Hero Section */}
       <section className="pt-44 pb-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary),0.08),transparent_50%)]" />
         <CircuitBeams className="opacity-40" />
@@ -788,297 +611,22 @@ export default function Offers() {
           >
             <span className="text-sm font-mono text-primary mb-6 block">SERVICES & PRICING</span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium mb-8 tracking-tight">
-              Choose Your <span className="text-primary">Path Forward</span>
+              Future-Proof Your <span className="text-primary">Revenue</span>.
             </h1>
             <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto">
-              From AI front desk and follow-up to a full AI operations partner — select the level that matches where you are today.
+              Select the level of AI-Native Infrastructure your business needs to thrive in the era of Generative Search.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Pricing Grid - Find Your Fit */}
       <PricingGridSection />
 
-      {/* Compare Plans Section */}
+      <FoundMoneyGuarantee />
+
       <ComparePlansSection />
 
-      {/* Not Sure Where to Start? + AI Clarity Assessment */}
-      <section id="ai-clarity-assessment" className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-6xl font-display font-medium">
-              Not Sure Where to <span className="text-primary">Start</span>?
-            </h2>
-          </motion.div>
-          
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-16 max-w-6xl mx-auto">
-            <motion.div 
-              initial={fadeInUpViewport.initial}
-              whileInView={fadeInUpViewport.whileInView}
-              viewport={fadeInUpViewport.viewport}
-              transition={fadeInUpViewport.transition}
-              className="max-w-2xl"
-            >
-              <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
-                CHECK YOUR BLINDSPOTS
-              </div>
-              <h3 className="text-3xl md:text-4xl font-medium mb-4 tracking-tight">The Sequential Revenue™ Friction Analysis</h3>
-              <p className="text-lg text-primary/80 mb-8">
-                See where revenue friction is hiding before you choose a plan.
-              </p>
-              <div className="space-y-4 text-lg text-muted-foreground mb-8 leading-relaxed">
-                <p>
-                  Before you pick a plan, run the free Sequential Revenue™ Friction Analysis. In a few minutes, we'll map how leads actually flow through your business — where response speed creates drag, where follow-up goes silent, and where past customers never come back.
-                </p>
-                <p>
-                  You'll receive your Sequential Revenue™ Score (0–100) across all three pillars — Capture, Convert, and Compound — plus a prioritized list of blindspots and a next-30-day action plan you can start immediately. Decide with real data instead of guessing.
-                </p>
-              </div>
-              <ul className="space-y-3 mb-10">
-                <li className="flex items-start gap-3 text-slate-300">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Your Sequential Revenue™ Score across Capture, Convert, and Compound</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-300">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Prioritized blindspots showing where deals are slowing down</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-300">
-                  <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>A next-30-day action plan tailored to your weakest pillar</span>
-                </li>
-              </ul>
-              <Link 
-                href="/assessment"
-                data-testid="button-offers-assessment-cta"
-                className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
-              >
-                Get My 30-Day Plan
-              </Link>
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="w-full max-w-md relative"
-            >
-               {/* Mockup Effect */}
-               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-2xl blur-lg opacity-50" />
-               <div className="relative bg-zinc-900 p-8 rounded-2xl border border-white/10 shadow-2xl">
-                  {/* Header */}
-                  <div className="flex items-center gap-2 mb-6">
-                    <span className="text-xs font-mono text-zinc-400 tracking-wider">SEQUENTIAL REVENUE™ ANALYSIS</span>
-                    <FileText className="w-4 h-4 text-primary" />
-                  </div>
-                  
-                  {/* Pillar scores */}
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-zinc-400">Capture</span>
-                      <span className="text-xs font-mono text-white">72/100</span>
-                    </div>
-                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/70 rounded-full" style={{width: '72%'}} /></div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-zinc-400">Convert</span>
-                      <span className="text-xs font-mono text-white">58/100</span>
-                    </div>
-                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/50 rounded-full" style={{width: '58%'}} /></div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-zinc-400">Compound</span>
-                      <span className="text-xs font-mono text-white">41/100</span>
-                    </div>
-                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/30 rounded-full" style={{width: '41%'}} /></div>
-                  </div>
-                  
-                  {/* Sequential Revenue Score */}
-                  <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5 mb-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Activity className="w-4 h-4 text-primary" />
-                      <span className="text-xs text-zinc-400">Sequential Revenue™ Score</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-4xl font-mono font-bold text-white">59</span>
-                      <span className="text-2xl font-mono text-zinc-600">/100</span>
-                      <TrendingUp className="w-5 h-5 text-primary ml-auto" />
-                    </div>
-                  </div>
-                  
-                  {/* Blindspots count */}
-                  <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Sparkles className="w-4 h-4 text-primary" />
-                      <span className="text-xs text-zinc-400">Blindspots Identified</span>
-                    </div>
-                    <div className="text-3xl font-mono font-bold text-white">4</div>
-                  </div>
-               </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Launch Build Band */}
-      <section className="py-20 border-y border-white/5 bg-white/[0.01]">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <motion.div
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-          >
-            <h3 className="text-3xl font-display font-medium mb-3 text-white text-center">
-              What the Launch Build Includes
-            </h3>
-            <p className="text-lg text-primary/80 text-center mb-6">
-              From kickoff to go-live in days, not months.
-            </p>
-            <p className="text-slate-400 text-center max-w-3xl mx-auto mb-12 leading-relaxed">
-              A focused rollout where we design, wire, and test your AI front desk and follow-up system inside the tools you already use.
-            </p>
-            
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
-                <div className="text-xs font-mono text-primary mb-3">PHASE 1</div>
-                <h4 className="text-lg font-semibold text-white mb-2">Clarity & Mapping</h4>
-                <p className="text-xs text-slate-500 mb-3">Days 1–2</p>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                  We run the AI Clarity Diagnostic, map where we can make the biggest difference, and define the key scripts, routing rules, and follow-up flows you actually need.
-                </p>
-              </div>
-              
-              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
-                <div className="text-xs font-mono text-primary mb-3">PHASE 2</div>
-                <h4 className="text-lg font-semibold text-white mb-2">Build & Test</h4>
-                <p className="text-xs text-slate-500 mb-3">Days 3–7</p>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                  We configure where AI fits best — front desk, pipelines, and sequences — connect phones/forms/calendars/CRM where supported, and test everything with your team.
-                </p>
-              </div>
-              
-              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
-                <div className="text-xs font-mono text-primary mb-3">PHASE 3</div>
-                <h4 className="text-lg font-semibold text-white mb-2">Go-Live & Fine-Tune</h4>
-                <p className="text-xs text-slate-500 mb-3">Days 7–14</p>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                  We switch the system on, smooth out rough edges from real conversations, and make sure your team is confident using it.
-                </p>
-              </div>
-            </div>
-            
-            <p className="text-sm text-slate-500 text-center mb-8 italic">
-              Most Frontline and Specialist builds go live inside a week; more complex Command builds may take a bit longer, and we'll agree on that up front.
-            </p>
-            
-            <p className="text-slate-400 text-center max-w-3xl mx-auto leading-relaxed">
-              After go-live, we're no longer "building" — we're tuning, focusing the next 60–90 days on data-driven optimization so results compound instead of stalling.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 90-Day Expectations + Assurance Section */}
-      <section className="py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(var(--primary),0.05),transparent_60%)]" />
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={fadeInUpViewport.initial}
-            whileInView={fadeInUpViewport.whileInView}
-            viewport={fadeInUpViewport.viewport}
-            transition={fadeInUpViewport.transition}
-            className="max-w-5xl mx-auto"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <Shield className="w-6 h-6 text-primary" />
-              <span className="text-sm font-mono text-primary">REALISTIC EXPECTATIONS</span>
-            </div>
-            
-            <h2 className="text-3xl md:text-4xl font-display font-medium mb-8 text-white">
-              When You'll Actually Feel the Impact
-            </h2>
-            
-            <p className="text-lg text-slate-400 leading-relaxed mb-12">
-              You don't need to wait 30 or 90 days to feel a difference. Most clients notice fewer missed calls and cleaner follow-up in the first few days after go-live. What can take 60–90 days is building stable, trustworthy numbers on response time, show-rates, and reactivation.
-            </p>
-            
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
-              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
-                <h4 className="text-lg font-semibold text-white mb-1">Days 1–7</h4>
-                <p className="text-sm text-primary mb-4">Immediate Relief</p>
-                <ul className="space-y-2 text-sm text-slate-400">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>New leads stop disappearing into voicemail or inbox chaos.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>Your team spends less time chasing "who called about what?".</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>We quickly fix any obvious script or routing issues.</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
-                <h4 className="text-lg font-semibold text-white mb-1">Days 8–30</h4>
-                <p className="text-sm text-primary mb-4">Visible Movement</p>
-                <ul className="space-y-2 text-sm text-slate-400">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>Faster responses and more booked appointments show up in your calendar.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>Early patterns in show-rates and reactivations start to emerge.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>We tweak timing and messaging based on real conversations.</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
-                <h4 className="text-lg font-semibold text-white mb-1">Days 31–90</h4>
-                <p className="text-sm text-primary mb-4">Reliable Baseline</p>
-                <ul className="space-y-2 text-sm text-slate-400">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>Trends in show-rates, reactivation, and reviews become clear.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>Hand-offs between AI and your team feel natural instead of experimental.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    <span>You get a baseline that shows exactly what SimpleSequence is doing for your revenue and workload.</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            
-            <p className="text-slate-400 text-center mb-16 leading-relaxed max-w-3xl mx-auto">
-              Therefore, we treat the first 90 days after go-live as your optimization runway — the period where quick wins harden into reliable, repeatable performance.
-            </p>
-            
-            {/* 90-Day Optimization Assurance Box with Collapsible Fine Print */}
-            <AssuranceBox />
-          </motion.div>
-        </div>
-      </section>
+      <NotSureSection />
 
     </Layout>
   );
