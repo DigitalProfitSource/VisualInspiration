@@ -370,7 +370,7 @@ export default function Home() {
               Turn Your Disconnected Tools Into a Single Profit <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-cyan-300 to-primary/50">Loop</span>
             </motion.h1>
 
-            <motion.p variants={fadeIn} className="text-base md:text-lg text-primary/80 mb-3 md:mb-4 font-medium">Capture. Convert. Compound. — On Autopilot.</motion.p>
+            <motion.p variants={fadeIn} className="text-base md:text-lg text-primary/80 mb-3 md:mb-4 font-medium text-balance">AI Implementation Advisor™ — Capture. Convert. Compound.</motion.p>
             
             {/* Hide on mobile, show on desktop */}
             <motion.p variants={fadeIn} className="hidden md:block text-lg md:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">We connect your lead capture, follow-up, and customer base into one automated loop — so every dollar you spend on marketing compounds instead of evaporating.</motion.p>
@@ -1095,7 +1095,7 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-xl font-display font-semibold text-white">The Founder</h3>
-                  <p className="text-sm font-mono text-primary">AI IMPLEMENTATION ADVISOR™</p>
+                  <p className="text-sm font-mono text-primary uppercase tracking-widest">AI Implementation Advisor™</p>
                 </div>
               </div>
               <p className="text-slate-400 leading-relaxed mb-6">

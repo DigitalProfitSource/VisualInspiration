@@ -416,7 +416,7 @@ export default function Results() {
           </div>
         </motion.div>
 
-        {/* === PILLAR BREAKDOWN === */}
+        {/* === Gap Analysis === */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -426,7 +426,7 @@ export default function Results() {
           <h2 className="text-2xl font-heading font-bold text-white">Gap Analysis</h2>
           
           <PillarCard 
-            title="Capture Gap" 
+            title="Capture" 
             pillar={result.captureScore}
             icon={<Eye size={20} className="text-cyan-400" />}
             description="Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first."
@@ -436,7 +436,7 @@ export default function Results() {
           />
           
           <PillarCard 
-            title="Conversion Gap" 
+            title="Conversion" 
             pillar={result.convertScore}
             icon={<Target size={20} className="text-cyan-400" />}
             description="Most revenue isn't lost at first contact — it's lost in the days and weeks after when no one follows up."
@@ -446,7 +446,7 @@ export default function Results() {
           />
           
           <PillarCard 
-            title="Compounding Gap" 
+            title="Compounding" 
             pillar={result.compoundScore}
             icon={<TrendingUp size={20} className="text-cyan-400" />}
             description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."

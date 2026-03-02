@@ -150,18 +150,18 @@ function calculateCaptureScore(data: AssessmentData): PillarScore {
   findings.push(`Digital backup: ${data.digital_unavailable_handling}`);
 
   const aiSearchScores: Record<string, number> = {
-    "Frequently (we get leads from Google/AI search regularly)": 0,
-    "Occasionally (some leads mention finding us online)": -4,
-    "Rarely or never": -10,
-    "I don't know / we don't ask": -7
+    "Regularly — we've verified AI platforms reference us": 0,
+    "Occasionally — we've seen it happen but haven't checked closely": -4,
+    "Rarely or never — we don't think AI tools know about us": -10,
+    "I don't know / we haven't checked": -7
   };
   score += aiSearchScores[data.ai_search_frequency] || -5;
 
   const aiReadinessScores: Record<string, number> = {
-    "We've intentionally optimized for AI search and voice assistants": 0,
+    "Yes — we've optimized our content and data for AI discovery": 0,
     "We've done some basic SEO but nothing AI-specific": -5,
-    "No real SEO or AI optimization — we rely on referrals/ads": -10,
-    "We don't really have a proper website": -15
+    "No — we haven't considered AI visibility": -10,
+    "We don't have much of an online presence yet": -15
   };
   const readinessPenalty = aiReadinessScores[data.ai_readiness] || -8;
   score += readinessPenalty;

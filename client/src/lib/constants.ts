@@ -183,21 +183,21 @@ export const CONTACT_CHANNEL_OPTIONS = [
   { value: "Chat widget", subtitle: "Website chat" },
   { value: "Email", subtitle: "Direct email" },
   { value: "Online booking", subtitle: "Self-service" },
-  { value: "Walk-ins only", subtitle: "In-person" }
+  { value: "Google Business Profile", subtitle: "GMB / Maps" }
 ];
 
 export const AI_SEARCH_FREQUENCY_OPTIONS = [
-  "Frequently (we get leads from Google/AI search regularly)",
-  "Occasionally (some leads mention finding us online)",
-  "Rarely or never",
-  "I don't know / we don't ask"
+  "Regularly — we've verified AI platforms reference us",
+  "Occasionally — we've seen it happen but haven't checked closely",
+  "Rarely or never — we don't think AI tools know about us",
+  "I don't know / we haven't checked"
 ];
 
 export const AI_READINESS_OPTIONS = [
-  { value: "We've intentionally optimized for AI search and voice assistants" },
+  { value: "Yes — we've optimized our content and data for AI discovery" },
   { value: "We've done some basic SEO but nothing AI-specific" },
-  { value: "No real SEO or AI optimization — we rely on referrals/ads" },
-  { value: "We don't really have a proper website" }
+  { value: "No — we haven't considered AI visibility" },
+  { value: "We don't have much of an online presence yet" }
 ];
 
 export const INTAKE_CENTRALIZATION_OPTIONS = [

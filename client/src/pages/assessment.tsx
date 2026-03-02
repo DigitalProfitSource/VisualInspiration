@@ -350,7 +350,7 @@ export default function Assessment() {
       case 'first_contact_speed':
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>How fast do you typically make first contact with new leads?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">How fast do you typically make first contact with new leads?</GlassLabel>
             <Controller
               control={control}
               name="first_contact_speed"
@@ -370,7 +370,7 @@ export default function Assessment() {
       case 'lead_unavailability':
         return (
           <div className="space-y-3 w-full pt-4">
-            <GlassLabel>How often are leads trying to reach you when no one's available?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">How often are leads trying to reach you when no one's available?</GlassLabel>
             <p className="text-xs text-slate-500 mb-2">Think about after-hours, weekends, busy periods, team in the field, etc.</p>
             <Controller
               control={control}
@@ -391,7 +391,7 @@ export default function Assessment() {
       case 'phone_unavailable_handling':
         return (
           <div className="space-y-4 w-full">
-            <GlassLabel>When a phone call comes in and you can't answer, what happens?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">When a phone call comes in and you can't answer, what happens?</GlassLabel>
             <Controller
               control={control}
               name="phone_unavailable_handling"
@@ -415,7 +415,7 @@ export default function Assessment() {
       case 'digital_unavailable_handling':
         return (
           <div className="space-y-4 w-full">
-            <GlassLabel>When a text, email, or web form comes in and you're busy, what happens?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">When a text, email, or web form comes in and you're busy, what happens?</GlassLabel>
             <Controller
               control={control}
               name="digital_unavailable_handling"
@@ -444,7 +444,7 @@ export default function Assessment() {
         
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>{label}</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">{label}</GlassLabel>
             <Controller
               control={control}
               name="no_show_recovery"
@@ -464,7 +464,7 @@ export default function Assessment() {
       case 'quote_followup':
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>What happens to quotes that don't close immediately?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">What happens to quotes that don't close immediately?</GlassLabel>
             <Controller
               control={control}
               name="quote_followup"
@@ -484,7 +484,7 @@ export default function Assessment() {
       case 'dormant_leads':
         return (
           <div className="space-y-3 w-full pt-4">
-            <GlassLabel>Do you have old leads (6+ months dormant) sitting in your database?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">Do you have old leads (6+ months dormant) sitting in your database?</GlassLabel>
             <Controller
               control={control}
               name="dormant_leads"
@@ -509,7 +509,7 @@ export default function Assessment() {
 
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>{rateLabel}</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">{rateLabel}</GlassLabel>
             <Controller
               control={control}
               name="no_show_rate"
@@ -530,7 +530,7 @@ export default function Assessment() {
         return (
           <div className="space-y-4 w-full">
             <div className="flex justify-between items-center">
-              <GlassLabel>How can leads currently contact you?</GlassLabel>
+              <GlassLabel className="text-cyan-400 font-bold">How can leads currently contact you?</GlassLabel>
               <span className="text-sm text-slate-500">{(watchedValues.contact_channels || []).length}/8 selected</span>
             </div>
             <p className="text-xs text-slate-500">Select ALL that apply</p>
@@ -562,7 +562,7 @@ export default function Assessment() {
         return (
           <div className="space-y-3 w-full">
             <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2">AI SEARCH VISIBILITY</div>
-            <GlassLabel>How often do potential customers find you through Google or AI-powered search?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">How often do AI tools (ChatGPT, Siri, Google AI) recommend or mention your business?</GlassLabel>
             <Controller
               control={control}
               name="ai_search_frequency"
@@ -582,7 +582,7 @@ export default function Assessment() {
       case 'ai_readiness':
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>How prepared is your online presence for AI-powered search (ChatGPT, Google AI Overviews)?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">Have you taken any steps to make your business visible to AI assistants and AI-powered search?</GlassLabel>
             <Controller
               control={control}
               name="ai_readiness"
@@ -604,8 +604,9 @@ export default function Assessment() {
 
       case 'intake_centralization':
         return (
-          <div className="space-y-3 w-full">
-            <GlassLabel>When a new lead comes in, where does their info end up?</GlassLabel>
+          <div className="space-y-4 w-full">
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">CAPTURE ARCHITECTURE</div>
+            <GlassLabel className="text-cyan-400 font-bold">How are new leads currently captured?</GlassLabel>
             <Controller
               control={control}
               name="intake_centralization"
@@ -627,8 +628,9 @@ export default function Assessment() {
 
       case 'pipeline_tracking':
         return (
-          <div className="space-y-3 w-full">
-            <GlassLabel>Do you track the status of every lead from first contact to close?</GlassLabel>
+          <div className="space-y-4 w-full">
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">CONVERSION PIPELINE</div>
+            <GlassLabel className="text-cyan-400 font-bold">Do you track your active pipeline/quotes systematically?</GlassLabel>
             <Controller
               control={control}
               name="pipeline_tracking"
@@ -651,7 +653,8 @@ export default function Assessment() {
       case 'review_request':
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>Do you systematically ask customers for reviews?</GlassLabel>
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">COMPOUNDING ENGINE</div>
+            <GlassLabel className="text-cyan-400 font-bold">Do you systematically ask customers for reviews?</GlassLabel>
             <Controller
               control={control}
               name="review_request"
@@ -671,8 +674,9 @@ export default function Assessment() {
       case 'close_rate':
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>Out of every 10 leads, how many become paying customers?</GlassLabel>
-            <p className="text-xs text-slate-500 mb-2">This is your close rate - just estimate if you don't track it exactly</p>
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">CONVERSION PIPELINE</div>
+            <GlassLabel className="text-cyan-400 font-bold">Out of every 10 leads, how many become paying customers?</GlassLabel>
+            <p className="text-xs text-slate-500 mb-2 text-center md:text-left">This is your close rate - just estimate if you don't track it exactly</p>
             <Controller
               control={control}
               name="close_rate"
@@ -692,7 +696,8 @@ export default function Assessment() {
       case 'manual_hours':
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>How many hours per week do you spend on manual coordination?</GlassLabel>
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">OPERATIONAL DRAG</div>
+            <GlassLabel className="text-cyan-400 font-bold">How many hours per week do you spend on manual coordination?</GlassLabel>
             <Controller
               control={control}
               name="manual_hours"
@@ -712,7 +717,8 @@ export default function Assessment() {
       case 'knowledge_bottleneck':
         return (
           <div className="space-y-3 w-full">
-            <GlassLabel>Do you have repetitive questions that create bottlenecks?</GlassLabel>
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">OPERATIONAL DRAG</div>
+            <GlassLabel className="text-cyan-400 font-bold">Do you have repetitive questions that create bottlenecks?</GlassLabel>
             <Controller
               control={control}
               name="knowledge_bottleneck"
@@ -732,7 +738,8 @@ export default function Assessment() {
       case 'operational_complexity':
         return (
           <div className="space-y-4 w-full">
-            <GlassLabel>How complex are your operations?</GlassLabel>
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">OPERATIONAL DRAG</div>
+            <GlassLabel className="text-cyan-400 font-bold">How complex are your operations?</GlassLabel>
             <Controller
               control={control}
               name="operational_complexity"
