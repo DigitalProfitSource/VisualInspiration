@@ -1,0 +1,162 @@
+```
+**FINAL UNIFIED PROMPT: Polish Sequential Revenue™ Results Page**
+
+We ran a mockup test with this exact 
+Capture: 52/100 | Convert: 54/100 | Compound: 77/100 | Overall: 59/100
+Industry: Landscaping & Design | Leads: 18/mo | Team: 6–15 | Job: $10,400
+
+Apply ALL these fixes in ONE PASS:
+
+---
+
+## 🎯 1. HERO DASHBOARD (TOP PRIORITY - RESTRUCTURE)
+Replace current top with FULL-WIDTH dashboard card:
+
+```
+Sequential Revenue™ Friction Analysis
+elitescapes — where friction is slowing your revenue
+
+Sequential Revenue™ Score
+59 / 100  [GIANT NUMBER - brand color glow, count-up animation]
+
+Your Capture–Convert–Compound loop is dragging
+
+[Single line business context below]
+Industry: Landscaping & Design | Leads: 18/mo | Team: 6–15 | Avg Job: $10,400
+Est. Monthly Revenue Drag: $13,900¹ Annualized: $166,800
+¹Based on avg job value x leads lost to friction
+```
+
+---
+
+## 📊 2. PILLAR CARDS (TYPOGRAPHY + CONTENT)
+**Typography:** Pillar name (24px bold) > Score (20px) > Desc (16px) > Findings header (14px bold) > Bullets (14px)
+
+**CAPTURE (52/100):**
+```
+Capture
+52 / 100
+How effectively you attract and respond to new leads...
+
+What We Found
+1. Response time: 5‑30 minutes (industry benchmark: <5 min)
+2. Lead intake fragmented across multiple systems
+-  Phone backup: Answering service
+-  Digital backup: We respond when we can
+-  Only 2 contact channels — limited reach
+```
+
+**CONVERT (54/100):**
+```
+Convert
+54 / 100
+How well you turn leads into paying customers...
+
+What We Found
+-  Quote follow-up: Manual
+-  No-show recovery: Manual
+-  Pipeline tracking: Incomplete/informal
+```
+
+**COMPOUND (77/100):**
+```
+Compound ✓ Strong foundation
+77 / 100
+How effectively past customers fuel future growth...
+
+What We Found
+-  Dormant database: Under 100 (low reactivation potential)
+-  Review generation: Manual (missing easy credibility)
+```
+
+---
+
+## 🚀 3. ACTION PLAN (NAME WEAKEST PILLAR)
+```
+Your Next‑30‑Day Action Plan
+Start here — tailored to your WEAKEST PILLAR: Capture (52/100).
+You can implement with or without SimpleSequence.
+
+Quick Wins (First 7–14 Days)
+-  Set up basic auto‑responders for website + phone (~1 hour)
+-  Enable instant SMS replies for missed calls (Smith.ai/Textedly)
+-  Train team: "Respond to new inquiries in <5 minutes"
+
+Supporting Actions (Rest of 30 Days)
+-  Audit Google Business Profile + website for AI visibility
+-  Centralize lead intake into one system (CRM/booking tool)
+-  Add 1 more contact channel (chat widget/online booking)
+```
+
+---
+
+## ⚠️ 4. DIY REALITY (POLISH SPACING)
+```
+The Reality of DIY Implementation
+Most businesses intend these fixes but never finish.
+
+Time Investment    |  Technical Debt     |  Ongoing Overhead
+15-30 hours setup  |  API skills needed |  Constant maintenance
+[Larger numbers, bold headers, better spacing]
+```
+
+---
+
+## 🎪 5. BOTTOM CTAs (CRITICAL)
+```
+[Primary Large Button] Get SimpleSequence Installed
+[Medium Button] Book 15‑min Strategy Call
+[Small Link] Download PDF Results
+
+✅ Results emailed to [user@email.com]
+```
+
+---
+
+## 🎨 6. VISUAL SPECIFICATIONS
+```
+✅ BRAND COLORS ONLY (no yellow/green/red/orange)
+✅ Score count-up animation (59/100)
+✅ Add spacing between pillar bullets
+✅ Fix "Landscaping Landscape Design" → "Landscaping & Design"
+✅ Pillar names LARGER/BOLDER than findings
+```
+
+---
+
+## ✅ TEST DATA (USE EXACTLY):
+```
+Industry: Landscaping & Design
+Leads: 18 | Team: 6–15 | Job: $10,400
+Capture: 52 | Convert: 54 | Compound: 77 | Overall: 59
+Revenue Drag: $13,900/mo → $166,800/yr
+```
+
+---
+
+## 📁 FILES:
+```
+client/src/pages/results.tsx
+client/src/components/ScoreDashboard.tsx
+client/src/lib/scoring.ts
+```
+
+---
+
+## 🎁 EXPECTED OUTPUT:
+```
+1. Screenshot: Hero dashboard (59/100 dominant)
+2. Screenshot: Pillar cards (proper hierarchy)  
+3. Screenshot: Action plan (names Capture 52/100)
+4. Screenshot: Bottom CTAs
+5. Console: Scoring verification
+```
+
+**Priority:** Hero → Action plan intro → CTAs → Typography
+
+BUILD NOW 🚀
+```
+
+**Copy/paste this entire block as ONE MESSAGE.** Done.
+
+Sources
