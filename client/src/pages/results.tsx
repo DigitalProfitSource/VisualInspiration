@@ -54,41 +54,20 @@ function PillarCard({
   calcFormula: string;
   calcLabel: string;
 }) {
-  const isStrong = pillar.score >= 70;
   const [showCalc, setShowCalc] = useState(false);
 
   return (
     <div 
       className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_1px_rgba(103,232,249,0.08)]"
-      data-testid={`card-pillar-${title.toLowerCase()}`}
+      data-testid={`card-pillar-${title.toLowerCase().replace(/\s+/g, '-')}`}
     >
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
 
-      <div className="flex items-center justify-between mb-5">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-[#0c1018] border border-[#182030] shadow-[inset_0_1px_0_rgba(103,232,249,0.05)]">
-            {icon}
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-2xl font-heading font-bold text-white">{title}</h3>
-            {isStrong && (
-              <span className="text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-full">
-                ✓ Strong foundation
-              </span>
-            )}
-          </div>
+      <div className="flex items-center gap-3 mb-5">
+        <div className="p-2.5 rounded-xl bg-[#0c1018] border border-[#182030] shadow-[inset_0_1px_0_rgba(103,232,249,0.05)]">
+          {icon}
         </div>
-        <div className="text-right">
-          <span className="text-xl font-mono font-bold text-white">{pillar.score}</span>
-          <span className="text-base font-mono text-slate-600"> / 100</span>
-        </div>
-      </div>
-
-      <div className="w-full h-1.5 bg-[#0c1018] rounded-full overflow-hidden mb-5 border border-[#182030]">
-        <div 
-          className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400 transition-all" 
-          style={{ width: `${pillar.score}%`, opacity: Math.max(0.4, pillar.score / 100) }} 
-        />
+        <h3 className="text-2xl font-heading font-bold text-white">{title}</h3>
       </div>
       
       <p className="text-sm text-slate-400 leading-relaxed mb-6">{description}</p>
@@ -233,7 +212,7 @@ export default function Results() {
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [leadId, setLeadId] = useState<string>('');
   const [contactEmail, setContactEmail] = useState<string>('');
-  const { value: animatedScore, ref: scoreRef } = useCountUp(result?.overallScore ?? 0);
+  const { value: animatedScore, ref: scoreRef } = useCountUp(result?.totalMonthlyGap ?? 0);
 
   useEffect(() => {
     const storedResult = sessionStorage.getItem('assessmentResult');
@@ -286,11 +265,11 @@ export default function Results() {
   }
 
   const pillars = [
-    { name: "Capture", score: result.captureScore.score },
-    { name: "Convert", score: result.convertScore.score },
-    { name: "Compound", score: result.compoundScore.score },
+    { name: "Capture", gap: result.gapBreakdown.captureGap },
+    { name: "Conversion", gap: result.gapBreakdown.convertGap },
+    { name: "Compounding", gap: result.gapBreakdown.compoundGap },
   ];
-  const weakest = pillars.reduce((a, b) => a.score <= b.score ? a : b);
+  const weakest = pillars.reduce((a, b) => a.gap >= b.gap ? a : b);
 
   const calendarUrl = "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi";
 
@@ -343,116 +322,97 @@ export default function Results() {
       </header>
       <main className="relative z-10 pt-32 pb-20 px-4 md:px-8 max-w-[900px] mx-auto">
 
-        {/* === PREMIUM DASHBOARD === */}
+        {/* === TITLE === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
+          className="mb-8 text-center"
+        >
+          <h1 className="text-2xl md:text-3xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 mb-3">
+            Sequential Revenue™ Friction Analysis: {result.businessName}
+          </h1>
+          <p className="text-base text-slate-400">
+            Here's what's really happening in your business — and exactly how much it's costing you.
+          </p>
+        </motion.div>
+
+        {/* === YOUR BUSINESS AT A GLANCE === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="mb-6"
         >
           <div 
-            className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-5 md:p-7 relative overflow-hidden shadow-[0_16px_64px_rgba(0,0,0,0.6),0_0_1px_rgba(103,232,249,0.1)]"
-            style={{ backgroundImage: 'radial-gradient(ellipse at 50% 0%, rgba(103,232,249,0.04) 0%, transparent 60%)' }}
-            data-testid="card-hero-dashboard"
+            className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_1px_rgba(103,232,249,0.08)]"
+            data-testid="card-business-glance"
           >
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
-
-            <div className="mb-6">
-              <h1 className="text-2xl md:text-3xl font-heading font-bold text-white uppercase tracking-wide mb-1">
-                Sequential Revenue™ Friction Analysis
-              </h1>
-              <p className="text-base text-slate-500">
-                {result.businessName} — where friction is slowing your revenue
-              </p>
-            </div>
-
-            <div 
-              className="rounded-xl bg-[#0c1018] border border-[#182030] p-6 md:p-8 mb-4 relative overflow-hidden shadow-[inset_0_1px_0_rgba(103,232,249,0.06),0_4px_24px_rgba(0,0,0,0.4)]"
-              style={{ backgroundImage: 'radial-gradient(ellipse at 50% 40%, rgba(103,232,249,0.03) 0%, transparent 70%)' }}
-            >
-              <div className="text-center" ref={scoreRef}>
-                <p className="text-[10px] text-slate-500 uppercase tracking-[0.25em] font-semibold mb-4">Sequential Revenue™ Score</p>
-                <div className="relative inline-block">
-                  <div className="absolute inset-0 -m-8 rounded-full bg-gradient-to-b from-cyan-400/8 to-transparent blur-2xl pointer-events-none" />
-                  <span 
-                    className="relative text-7xl md:text-[88px] font-mono font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#67E8F9] via-[#22d3ee] to-[#0ea5e9] leading-none"
-                    style={{ filter: 'drop-shadow(0 0 40px rgba(103, 232, 249, 0.25)) drop-shadow(0 0 80px rgba(103, 232, 249, 0.1))' }}
-                    data-testid="text-overall-score"
-                  >
-                    {animatedScore}
-                  </span>
-                  <span className="text-3xl md:text-4xl font-mono text-slate-600 ml-2">/ 100</span>
-                </div>
-                <p className="text-sm text-slate-500 mt-4 tracking-wide">
-                  Your Capture–Convert–Compound loop is dragging
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3 mb-4">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+            <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-5">Your Business At A Glance</p>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
               {[
-                { icon: <Eye size={15} />, label: "Capture", score: result.captureScore.score },
-                { icon: <Target size={15} />, label: "Convert", score: result.convertScore.score },
-                { icon: <TrendingUp size={15} />, label: "Compound", score: result.compoundScore.score },
-              ].map((p) => (
-                <div 
-                  key={p.label}
-                  className="flex items-center justify-center gap-2 py-3 px-2 rounded-xl bg-[#0c1018] border border-[#182030] shadow-[inset_0_1px_0_rgba(103,232,249,0.05),0_2px_8px_rgba(0,0,0,0.3)]"
-                >
-                  <span className="text-cyan-400">{p.icon}</span>
-                  <span className="font-bold text-xs uppercase tracking-wider text-slate-300">{p.label}</span>
-                  <span className="font-mono font-bold text-base text-cyan-400">{p.score}</span>
+                { label: "Industry", value: result.industry },
+                { label: "Specialization", value: result.niche || "General" },
+                { label: "Monthly Leads", value: String(result.monthlyLeads) },
+                { label: "Team Size", value: result.teamSize },
+                { label: "Avg Job Value", value: `$${result.avgJobValue.toLocaleString()}` },
+              ].map((item) => (
+                <div key={item.label}>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">{item.label}</p>
+                  <p className="text-sm font-bold text-white">{item.value}</p>
                 </div>
               ))}
             </div>
+          </div>
+        </motion.div>
 
-            <p className="text-xs text-slate-500 text-center tracking-wide py-2">
-              {result.industry}{result.niche ? ` — ${result.niche}` : ''} &nbsp;·&nbsp; {result.monthlyLeads} leads/mo &nbsp;·&nbsp; Team: {result.teamSize} &nbsp;·&nbsp; Avg Job: ${result.avgJobValue.toLocaleString()}
-            </p>
+        {/* === TOTAL IMPACT SUMMARY === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-12"
+        >
+          <div 
+            className="rounded-2xl bg-[#080b10] border border-cyan-500/15 p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_1px_rgba(103,232,249,0.1)]"
+            style={{ backgroundImage: 'radial-gradient(ellipse at 50% 30%, rgba(103,232,249,0.04) 0%, transparent 60%)' }}
+            data-testid="card-total-impact"
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
 
-            <div className="my-4 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
-
-            <div 
-              className="rounded-xl bg-[#0c1018] border border-cyan-500/15 p-6 md:p-8 text-center relative overflow-hidden shadow-[inset_0_1px_0_rgba(103,232,249,0.06),0_4px_24px_rgba(0,0,0,0.4),0_0_60px_rgba(103,232,249,0.04)]"
-              style={{ backgroundImage: 'radial-gradient(ellipse at 50% 60%, rgba(103,232,249,0.04) 0%, transparent 70%)' }}
-              data-testid="card-revenue-drag"
-            >
-              <p className="text-[10px] text-slate-500 uppercase tracking-[0.25em] font-semibold mb-3">Estimated Revenue Drag</p>
-              
-              <p 
-                className="text-6xl md:text-7xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#67E8F9] via-[#22d3ee] to-[#0ea5e9] leading-none mb-2"
-                style={{ filter: 'drop-shadow(0 0 30px rgba(103, 232, 249, 0.2)) drop-shadow(0 0 60px rgba(103, 232, 249, 0.08))' }}
-              >
-                ${result.totalMonthlyGap.toLocaleString()}
-              </p>
-              <p className="text-xs text-slate-500 uppercase tracking-widest font-medium mb-5">Monthly Revenue Drag</p>
-              
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent mx-auto mb-5" />
-              
-              <p className="text-3xl md:text-4xl font-mono font-bold text-cyan-400/70 leading-none mb-2">
-                ${result.annualizedGap.toLocaleString()}
-              </p>
-              <p className="text-xs text-slate-500 uppercase tracking-widest font-medium mb-5">Annualized Revenue Drag</p>
-              
-              <p className="text-[11px] text-slate-600 italic mb-5">Based on avg job value × leads lost to friction</p>
-
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  { label: "Capture Drag", amount: result.gapBreakdown.captureGap },
-                  { label: "Convert Drag", amount: result.gapBreakdown.convertGap },
-                  { label: "Compound Drag", amount: result.gapBreakdown.compoundGap },
-                ].map((g) => (
-                  <div 
-                    key={g.label}
-                    className="rounded-xl bg-[#0c1018] border border-[#182030] py-3 px-2 text-center shadow-[inset_0_1px_0_rgba(103,232,249,0.05)]"
-                  >
-                    <p className="text-[10px] text-slate-500 uppercase tracking-wider font-medium mb-1">{g.label}</p>
-                    <p className="font-mono font-bold text-base text-cyan-400">${g.amount.toLocaleString()}</p>
-                  </div>
-                ))}
+            <div className="flex items-center gap-2 mb-6">
+              <div className="p-1.5 rounded-lg bg-cyan-500/10">
+                <TrendingUp size={18} className="text-cyan-400" />
               </div>
+              <p className="text-base font-bold text-cyan-400">Total Impact Summary</p>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent" />
+            <div className="text-center mb-6" ref={scoreRef}>
+              <p className="text-[10px] text-slate-500 uppercase tracking-[0.25em] font-semibold mb-3">Total Monthly Revenue Gap</p>
+              <p 
+                className="text-5xl md:text-6xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#67E8F9] via-[#22d3ee] to-[#0ea5e9] leading-none mb-2"
+                style={{ filter: 'drop-shadow(0 0 30px rgba(103, 232, 249, 0.2)) drop-shadow(0 0 60px rgba(103, 232, 249, 0.08))' }}
+                data-testid="text-total-gap"
+              >
+                ${animatedScore > 0 ? animatedScore.toLocaleString() : result.totalMonthlyGap.toLocaleString()}
+              </p>
+              <p className="text-sm text-slate-400">
+                Annualized: <span className="font-mono font-semibold text-slate-300">${result.annualizedGap.toLocaleString()}</span>
+              </p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { label: "Capture Gap", amount: result.gapBreakdown.captureGap },
+                { label: "Conversion Gap", amount: result.gapBreakdown.convertGap },
+                { label: "Compounding Gap", amount: result.gapBreakdown.compoundGap },
+              ].map((g) => (
+                <div key={g.label} className="text-center">
+                  <p className="text-xs font-bold text-cyan-400 mb-1">{g.label}</p>
+                  <p className="font-mono font-bold text-base text-slate-300">${g.amount.toLocaleString()}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
@@ -463,36 +423,36 @@ export default function Results() {
           transition={{ delay: 0.1 }}
           className="space-y-6 mb-12"
         >
-          <h2 className="text-2xl font-heading font-bold text-white">Pillar Breakdown</h2>
+          <h2 className="text-2xl font-heading font-bold text-white">Gap Analysis</h2>
           
           <PillarCard 
-            title="Capture" 
+            title="Capture Gap" 
             pillar={result.captureScore}
             icon={<Eye size={20} className="text-cyan-400" />}
             description="Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first."
             monthlyImpact={result.gapBreakdown.captureGap}
             calcFormula={result.gapBreakdown.captureCalc}
-            calcLabel="Capture Drag = Unavailable leads × Speed loss rate × Avg job value"
+            calcLabel="Capture Gap = Unavailable leads × Speed loss rate × Avg job value"
           />
           
           <PillarCard 
-            title="Convert" 
+            title="Conversion Gap" 
             pillar={result.convertScore}
             icon={<Target size={20} className="text-cyan-400" />}
             description="Most revenue isn't lost at first contact — it's lost in the days and weeks after when no one follows up."
             monthlyImpact={result.gapBreakdown.convertGap}
             calcFormula={result.gapBreakdown.convertCalc}
-            calcLabel="Convert Drag = No-show recovery + Quote follow-up losses"
+            calcLabel="Conversion Gap = No-show recovery + Quote follow-up losses"
           />
           
           <PillarCard 
-            title="Compound" 
+            title="Compounding Gap" 
             pillar={result.compoundScore}
             icon={<TrendingUp size={20} className="text-cyan-400" />}
             description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."
             monthlyImpact={result.gapBreakdown.compoundGap}
             calcFormula={result.gapBreakdown.compoundCalc}
-            calcLabel="Compound Drag = Database reactivation potential + Manual labor cost"
+            calcLabel="Compounding Gap = Database reactivation potential + Manual labor cost"
           />
         </motion.div>
 
@@ -528,7 +488,7 @@ export default function Results() {
         >
           <h2 className="text-2xl font-heading font-bold text-cyan-400 mb-2">Your Next-30-Day Action Plan</h2>
           <p className="text-slate-300 mb-1">
-            Start here — tailored to your <span className="font-bold text-white">weakest pillar: {weakest.name} ({weakest.score}/100)</span>.
+            Start here — tailored to your <span className="font-bold text-white">biggest gap: {weakest.name}</span>.
           </p>
           <p className="text-slate-500 text-sm mb-6">You can implement with or without SimpleSequence.</p>
           
