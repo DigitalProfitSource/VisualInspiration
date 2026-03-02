@@ -1,0 +1,64 @@
+You are rebuilding the "Offers" page for SimpleSequence (client/src/pages/offers.tsx). We are consolidating all services into three grounded, high-impact tiers: The AI Brain, The AI System, and The AI Infrastructure. These align with our Capture → Convert → Compound framework.
+
+DESIGN SYSTEM
+
+Theme: Preserve the existing near-black background, teal/cyan accent colors, and clean typography.
+
+Layout: Keep the 3-column pricing grid and the detailed comparison table below it.
+
+CTA: All buttons must link to /assessment.
+
+SECTION 1: Hero Section
+
+Headline: Future-Proof Your Revenue.
+
+Subtitle: Select the level of AI-Native Infrastructure your business needs to thrive in the era of Generative Search.
+
+SECTION 2: The Three Tiers (Pricing Cards)
+
+Tier 01: The AI Brain (Capture Essentials)
+
+Hook: Stop the Bleed.
+
+Price: $750 Setup | $150/mo Retainer
+
+What’s Inside: 24/7 Website AI Chatbot, AI Voice Backup Receptionist, Instant SMS Text-Back (Speed-to-Lead).
+
+Goal: Ensure every inquiry is answered in <60 seconds, 24/7.
+
+Tier 02: The AI System (Capture + Convert)
+
+Hook: The Invisible Sales Rep.
+
+Price: $1,250 Setup | $250/mo Retainer
+
+What’s Inside: Everything in the AI Brain PLUS: Proactive Quote/No-Show Recovery, Smart Lead Triage, and 90-day Lead Nurture.
+
+Goal: Automatically chase and recover "stuck" revenue in your pipeline.
+
+Tier 03: The AI Infrastructure (The Full Loop)
+
+Hook: Machine-Readable Dominance.
+
+Price: $1,750 Setup | $350/mo Retainer
+
+What’s Inside: Everything in the AI System PLUS: Full ASO (AI Search Optimization) Implementation, The "Found Money" DBR Campaign, and Automated Reputation Management.
+
+Goal: Total re-architecture of your digital presence to be machine-readable for ChatGPT, Gemini, and the new Google.
+
+SECTION 3: The "Found Money" Guarantee (Conditional)
+Create a prominent card or section below the tiers:
+
+Headline: The Found Money Guarantee.
+
+Body: Within your first 30 days, we run a targeted Database Reactivation (DBR) campaign on your existing contacts. If we don’t generate a meaningful volume of qualified responses or booked appointments from your list, we’ll run a second full reactivation campaign at no additional service fee.
+
+Small Print: Requires a permission-based list of 500+ contacts. Client is responsible for final lead closing and fulfillment.
+
+SECTION 4: Updated Comparison Table
+
+Update the table headers to: AI Brain | AI System | AI Infrastructure.
+
+Add a row for "ASO / Machine-Readable Architecture"—mark it as ONLY available in the AI Infrastructure (Tier 03) to justify the setup fee.
+
+Add a row for "Found Money Guarantee"—mark it as ONLY available in Tier 03.
