@@ -149,6 +149,7 @@ export default function Assessment() {
         
         sessionStorage.setItem('assessmentResult', JSON.stringify(result));
         sessionStorage.setItem('leadId', responseData.leadId || '');
+        sessionStorage.setItem('contactEmail', data.contact_email || '');
         
         setLocation('/results');
       } catch (error) {

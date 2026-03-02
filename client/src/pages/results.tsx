@@ -1,57 +1,88 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, Link } from "wouter";
-import { motion } from "framer-motion";
-import { BarChart3, ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw, Send, Eye, Zap, TrendingUp, Target, AlertTriangle } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw, Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Download, Calendar } from "lucide-react";
 import { AssessmentResult, PillarScore } from "@/lib/scoring";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
+function useCountUp(end: number, duration: number = 1500) {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (!isInView || hasAnimated.current) return;
+    hasAnimated.current = true;
+
+    const startTime = performance.now();
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * end));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [isInView, end, duration]);
+
+  return { value, ref };
+}
+
 function PillarCard({ 
   title, 
   pillar,
   icon,
-  color,
   description
 }: { 
   title: string; 
   pillar: PillarScore;
   icon: React.ReactNode;
-  color: string;
   description: string;
 }) {
-  const scoreColor = pillar.score >= 70 ? 'text-green-400' : pillar.score >= 40 ? 'text-yellow-400' : 'text-red-400';
-  const barColor = pillar.score >= 70 ? 'bg-green-400' : pillar.score >= 40 ? 'bg-yellow-400' : 'bg-red-400';
+  const isStrong = pillar.score >= 70;
 
   return (
-    <GlassCard className="p-6 border-cyan-500/20 bg-cyan-950/10 relative overflow-hidden">
-      <div className="flex items-center justify-between mb-4">
+    <GlassCard className="p-6 border-cyan-500/10 bg-slate-900/40 relative overflow-hidden" data-testid={`card-pillar-${title.toLowerCase()}`}>
+      <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-lg ${color}`}>
+          <div className="p-2 rounded-lg bg-cyan-500/10">
             {icon}
           </div>
-          <h3 className="text-xl font-heading font-semibold text-white">{title}</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-2xl font-heading font-bold text-white">{title}</h3>
+            {isStrong && (
+              <span className="text-xs font-semibold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-full">
+                ✓ Strong foundation
+              </span>
+            )}
+          </div>
         </div>
         <div className="text-right">
-          <span className={`text-3xl font-mono font-bold ${scoreColor}`}>{pillar.score}</span>
-          <span className="text-lg font-mono text-slate-500">/100</span>
+          <span className="text-xl font-mono font-bold text-white">{pillar.score}</span>
+          <span className="text-base font-mono text-slate-500"> / 100</span>
         </div>
       </div>
 
-      <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-4">
-        <div className={`h-full ${barColor} rounded-full transition-all`} style={{ width: `${pillar.score}%` }} />
+      <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-5">
+        <div 
+          className="h-full rounded-full transition-all bg-gradient-to-r from-cyan-500 to-teal-400" 
+          style={{ width: `${pillar.score}%`, opacity: Math.max(0.4, pillar.score / 100) }} 
+        />
       </div>
       
-      <p className="text-sm text-slate-400 mb-5">{description}</p>
+      <p className="text-base text-slate-400 mb-6">{description}</p>
       
       {pillar.findings.length > 0 && (
-        <div className="mb-4">
-          <p className="text-xs text-cyan-400 uppercase tracking-wider mb-2">What We Found</p>
-          <ul className="space-y-1">
+        <div className="mb-5">
+          <p className="text-sm font-bold text-cyan-400 uppercase tracking-wider mb-3">What We Found</p>
+          <ul className="space-y-2.5">
             {pillar.findings.map((finding, i) => (
-              <li key={i} className="text-sm text-slate-300 flex gap-2">
-                <span className="text-slate-500">-</span>
+              <li key={i} className="text-sm text-slate-300 flex gap-2.5 leading-relaxed">
+                <span className="text-cyan-500/60 mt-0.5">–</span>
                 {finding}
               </li>
             ))}
@@ -60,12 +91,12 @@ function PillarCard({
       )}
       
       {pillar.blindspots.length > 0 && (
-        <div>
-          <p className="text-xs text-yellow-400 uppercase tracking-wider mb-2">Blindspots</p>
-          <ul className="space-y-2">
+        <div className="pt-4 border-t border-slate-700/30">
+          <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Blindspots</p>
+          <ul className="space-y-2.5">
             {pillar.blindspots.map((spot, i) => (
-              <li key={i} className="text-sm text-slate-300 flex gap-2">
-                <AlertTriangle size={14} className="text-yellow-400 mt-0.5 flex-shrink-0" />
+              <li key={i} className="text-sm text-slate-300 flex gap-2.5 leading-relaxed">
+                <AlertTriangle size={14} className="text-cyan-400/70 mt-0.5 flex-shrink-0" />
                 {spot}
               </li>
             ))}
@@ -149,16 +180,21 @@ export default function Results() {
   const [, setLocation] = useLocation();
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [leadId, setLeadId] = useState<string>('');
+  const [contactEmail, setContactEmail] = useState<string>('');
 
   useEffect(() => {
     const storedResult = sessionStorage.getItem('assessmentResult');
     const storedLeadId = sessionStorage.getItem('leadId');
+    const storedEmail = sessionStorage.getItem('contactEmail');
     
     if (storedResult) {
       setResult(JSON.parse(storedResult));
     }
     if (storedLeadId) {
       setLeadId(storedLeadId);
+    }
+    if (storedEmail) {
+      setContactEmail(storedEmail);
     }
   }, []);
 
@@ -184,7 +220,16 @@ export default function Results() {
     );
   }
 
-  const overallColor = result.overallScore >= 70 ? 'text-green-400' : result.overallScore >= 40 ? 'text-yellow-400' : 'text-red-400';
+  const { value: animatedScore, ref: scoreRef } = useCountUp(result.overallScore);
+
+  const pillars = [
+    { name: "Capture", score: result.captureScore.score },
+    { name: "Convert", score: result.convertScore.score },
+    { name: "Compound", score: result.compoundScore.score },
+  ];
+  const weakest = pillars.reduce((a, b) => a.score <= b.score ? a : b);
+
+  const calendarUrl = "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi";
 
   const frontlineFeatures = [
     "AI Voice backup when team is busy/after-hours",
@@ -236,117 +281,98 @@ export default function Results() {
       </header>
 
       <main className="relative z-10 pt-32 pb-20 px-4 md:px-8 max-w-[900px] mx-auto">
+
+        {/* === HERO DASHBOARD === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center space-y-4 mb-12"
+          className="mb-12"
         >
-          <h1 className="text-3xl md:text-4xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">
-            Sequential Revenue™ Friction Analysis
-          </h1>
-          <p className="text-slate-300 text-lg">
-            {result.businessName} — here's where friction is slowing your revenue.
-          </p>
-        </motion.div>
+          <GlassCard className="p-8 md:p-10 border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 to-slate-900/50 relative overflow-hidden" data-testid="card-hero-dashboard">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-teal-500/5 pointer-events-none" />
+            <div className="relative">
+              <p className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-1">
+                Sequential Revenue™ Friction Analysis
+              </p>
+              <p className="text-lg text-slate-300 mb-8">
+                {result.businessName} — where friction is slowing your revenue
+              </p>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.05 }}
-          className="mb-8"
-        >
-          <GlassCard className="p-6 border-slate-700/50 bg-slate-900/40">
-            <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Your Business at a Glance</h3>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
-              <div>
-                <p className="text-slate-500">Industry</p>
-                <p className="text-white font-medium">{result.industry}</p>
+              <div className="text-center py-6" ref={scoreRef}>
+                <p className="text-xs text-slate-500 uppercase tracking-widest mb-3">Sequential Revenue™ Score</p>
+                <div className="relative inline-block">
+                  <span 
+                    className="text-7xl md:text-8xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400"
+                    style={{ 
+                      filter: 'drop-shadow(0 0 30px rgba(103, 232, 249, 0.3))',
+                      textShadow: '0 0 40px rgba(103, 232, 249, 0.15)'
+                    }}
+                    data-testid="text-overall-score"
+                  >
+                    {animatedScore}
+                  </span>
+                  <span className="text-3xl md:text-4xl font-mono text-slate-500 ml-2">/ 100</span>
+                </div>
+                <p className="text-base text-slate-400 mt-4">
+                  Your Capture–Convert–Compound loop is dragging
+                </p>
               </div>
-              <div>
-                <p className="text-slate-500">Specialization</p>
-                <p className="text-white font-medium">{result.niche}</p>
+
+              <div className="grid grid-cols-3 gap-4 mt-6 mb-8">
+                <div className="text-center p-3 rounded-lg bg-slate-900/50 border border-slate-700/30">
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <Eye size={13} className="text-cyan-400" />
+                    <p className="text-cyan-400 font-semibold text-xs uppercase tracking-wide">Capture</p>
+                  </div>
+                  <p className="text-xl font-mono font-bold text-white">{result.captureScore.score}</p>
+                </div>
+                <div className="text-center p-3 rounded-lg bg-slate-900/50 border border-slate-700/30">
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <Target size={13} className="text-cyan-400" />
+                    <p className="text-cyan-400 font-semibold text-xs uppercase tracking-wide">Convert</p>
+                  </div>
+                  <p className="text-xl font-mono font-bold text-white">{result.convertScore.score}</p>
+                </div>
+                <div className="text-center p-3 rounded-lg bg-slate-900/50 border border-slate-700/30">
+                  <div className="flex items-center justify-center gap-1.5 mb-1">
+                    <TrendingUp size={13} className="text-cyan-400" />
+                    <p className="text-cyan-400 font-semibold text-xs uppercase tracking-wide">Compound</p>
+                  </div>
+                  <p className="text-xl font-mono font-bold text-white">{result.compoundScore.score}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-slate-500">Monthly Leads</p>
-                <p className="text-white font-medium">{result.monthlyLeads}</p>
-              </div>
-              <div>
-                <p className="text-slate-500">Team Size</p>
-                <p className="text-white font-medium">{result.teamSize}</p>
-              </div>
-              <div>
-                <p className="text-slate-500">Avg Job Value</p>
-                <p className="text-white font-medium">${result.avgJobValue.toLocaleString()}</p>
+
+              <div className="border-t border-slate-700/30 pt-5 space-y-3">
+                <p className="text-sm text-slate-400 text-center">
+                  Industry: {result.industry}{result.niche ? ` — ${result.niche}` : ''} &nbsp;|&nbsp; Leads: {result.monthlyLeads}/mo &nbsp;|&nbsp; Team: {result.teamSize} &nbsp;|&nbsp; Avg Job: ${result.avgJobValue.toLocaleString()}
+                </p>
+                <div className="text-center">
+                  <p className="text-base text-slate-300">
+                    Est. Monthly Revenue Drag: <span className="font-mono font-bold text-cyan-400">${result.totalMonthlyGap.toLocaleString()}</span>
+                    <sup className="text-slate-500 text-xs ml-0.5">1</sup>
+                    <span className="text-slate-500 mx-2">|</span>
+                    Annualized: <span className="font-mono font-bold text-cyan-400">${result.annualizedGap.toLocaleString()}</span>
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1">¹Based on avg job value × leads lost to friction</p>
+                </div>
               </div>
             </div>
           </GlassCard>
         </motion.div>
 
+        {/* === PILLAR BREAKDOWN === */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="space-y-6 mb-12"
         >
-          <GlassCard className="p-8 border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 to-slate-900/50 mb-8">
-            <h3 className="text-xl font-heading font-semibold text-cyan-400 flex items-center gap-2 mb-6">
-              <BarChart3 size={24} /> Your Sequential Revenue™ Score
-            </h3>
-            
-            <div className="text-center py-6">
-              <p className="text-sm text-slate-400 uppercase tracking-wider mb-3">Overall Score</p>
-              <p className={`text-5xl md:text-6xl font-mono font-bold ${overallColor} mb-2`}>
-                {result.overallScore}
-              </p>
-              <p className="text-lg text-slate-500 font-mono">/100</p>
-
-              <div className="mt-8 grid grid-cols-3 gap-4 text-center">
-                <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-700/30">
-                  <div className="flex items-center justify-center gap-1 mb-2">
-                    <Eye size={14} className="text-cyan-400" />
-                    <p className="text-cyan-400 font-semibold text-sm">Capture</p>
-                  </div>
-                  <p className="text-2xl font-mono font-bold text-white">{result.captureScore.score}</p>
-                  <p className="text-xs text-slate-500">/100</p>
-                </div>
-                <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-700/30">
-                  <div className="flex items-center justify-center gap-1 mb-2">
-                    <Target size={14} className="text-cyan-400" />
-                    <p className="text-cyan-400 font-semibold text-sm">Convert</p>
-                  </div>
-                  <p className="text-2xl font-mono font-bold text-white">{result.convertScore.score}</p>
-                  <p className="text-xs text-slate-500">/100</p>
-                </div>
-                <div className="p-4 rounded-lg bg-slate-900/50 border border-slate-700/30">
-                  <div className="flex items-center justify-center gap-1 mb-2">
-                    <TrendingUp size={14} className="text-cyan-400" />
-                    <p className="text-cyan-400 font-semibold text-sm">Compound</p>
-                  </div>
-                  <p className="text-2xl font-mono font-bold text-white">{result.compoundScore.score}</p>
-                  <p className="text-xs text-slate-500">/100</p>
-                </div>
-              </div>
-
-              <div className="mt-6 pt-6 border-t border-slate-700/30 grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-xs text-slate-500 uppercase">Est. Monthly Revenue Gap</p>
-                  <p className="text-2xl font-mono font-bold text-cyan-400">${result.totalMonthlyGap.toLocaleString()}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500 uppercase">Annualized</p>
-                  <p className="text-2xl font-mono font-bold text-cyan-400">${result.annualizedGap.toLocaleString()}</p>
-                </div>
-              </div>
-            </div>
-          </GlassCard>
-
           <h2 className="text-2xl font-heading font-bold text-white">Pillar Breakdown</h2>
           
           <PillarCard 
             title="Capture" 
             pillar={result.captureScore}
             icon={<Eye size={20} className="text-cyan-400" />}
-            color="bg-cyan-500/10"
             description="How effectively you attract and respond to new leads. This covers response speed, availability, AI search visibility, and lead intake."
           />
           
@@ -354,7 +380,6 @@ export default function Results() {
             title="Convert" 
             pillar={result.convertScore}
             icon={<Target size={20} className="text-cyan-400" />}
-            color="bg-cyan-500/10"
             description="How well you turn leads into paying customers. This covers follow-up persistence, no-show recovery, pipeline tracking, and close rate."
           />
           
@@ -362,11 +387,11 @@ export default function Results() {
             title="Compound" 
             pillar={result.compoundScore}
             icon={<TrendingUp size={20} className="text-cyan-400" />}
-            color="bg-cyan-500/10"
             description="How effectively past customers fuel future growth. This covers dormant lead reactivation and review generation."
           />
         </motion.div>
 
+        {/* === BLINDSPOTS === */}
         {result.blindspots.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -375,12 +400,12 @@ export default function Results() {
             className="mb-12"
           >
             <h2 className="text-2xl font-heading font-bold text-white mb-4">Your Blindspots</h2>
-            <GlassCard className="p-6 border-yellow-500/20 bg-yellow-950/5">
+            <GlassCard className="p-6 border-cyan-500/10 bg-slate-900/40">
               <p className="text-sm text-slate-400 mb-4">These are the friction points most likely costing you revenue right now:</p>
               <ul className="space-y-3">
                 {result.blindspots.map((spot, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
-                    <AlertTriangle size={16} className="text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <li key={i} className="flex items-start gap-3 text-sm text-slate-300 leading-relaxed">
+                    <AlertTriangle size={16} className="text-cyan-400/70 mt-0.5 flex-shrink-0" />
                     {spot}
                   </li>
                 ))}
@@ -389,6 +414,7 @@ export default function Results() {
           </motion.div>
         )}
 
+        {/* === ACTION PLAN === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -396,7 +422,10 @@ export default function Results() {
           className="mb-12"
         >
           <h2 className="text-2xl font-heading font-bold text-cyan-400 mb-2">Your Next-30-Day Action Plan</h2>
-          <p className="text-slate-400 mb-6">Start here — these are tailored to your weakest pillar. You can implement them with or without SimpleSequence.</p>
+          <p className="text-slate-300 mb-1">
+            Start here — tailored to your <span className="font-bold text-white">weakest pillar: {weakest.name} ({weakest.score}/100)</span>.
+          </p>
+          <p className="text-slate-500 text-sm mb-6">You can implement with or without SimpleSequence.</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <GlassCard className="p-6 border-cyan-500/20 bg-cyan-950/10">
@@ -408,7 +437,7 @@ export default function Results() {
                 {result.actionPlan.quickWins.map((action, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle size={16} className="text-cyan-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-slate-300">{action}</p>
+                    <p className="text-sm text-slate-300 leading-relaxed">{action}</p>
                   </div>
                 ))}
               </div>
@@ -423,41 +452,43 @@ export default function Results() {
                 {result.actionPlan.supportingActions.map((action, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle size={16} className="text-slate-500 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-slate-400">{action}</p>
+                    <p className="text-sm text-slate-400 leading-relaxed">{action}</p>
                   </div>
                 ))}
               </div>
             </GlassCard>
           </div>
 
+          {/* === DIY REALITY === */}
           <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
-            <h3 className="text-lg font-heading font-semibold text-white mb-3">The Reality of DIY Implementation</h3>
-            <p className="text-slate-400 text-sm mb-4">
-              Most businesses intend to implement these fixes but never do. Success requires specialized systems that run without your constant attention. Manual implementation typically requires:
+            <h3 className="text-xl font-heading font-bold text-white mb-2">The Reality of DIY Implementation</h3>
+            <p className="text-slate-400 text-sm mb-6">
+              Most businesses intend these fixes but never finish.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
-                <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
-                  <Clock size={12} /> Time Investment
-                </p>
-                <p className="text-sm text-slate-300">15-30 hours of technical setup and troubleshooting</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                <Clock size={20} className="text-cyan-400/60 mx-auto mb-3" />
+                <p className="text-sm font-bold text-white uppercase tracking-wider mb-2">Time Investment</p>
+                <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">15–30 hrs</p>
+                <p className="text-xs text-slate-500">setup & troubleshooting</p>
               </div>
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
-                <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
-                  <Code size={12} /> Technical Debt
-                </p>
-                <p className="text-sm text-slate-300">Advanced API & integration knowledge to prevent failures</p>
+              <div className="text-center bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                <Code size={20} className="text-cyan-400/60 mx-auto mb-3" />
+                <p className="text-sm font-bold text-white uppercase tracking-wider mb-2">Technical Debt</p>
+                <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">API Skills</p>
+                <p className="text-xs text-slate-500">needed to prevent failures</p>
               </div>
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
-                <p className="text-xs uppercase tracking-wider mb-2 flex items-center gap-1 text-slate-400">
-                  <RefreshCw size={12} /> Ongoing Overhead
-                </p>
-                <p className="text-sm text-slate-300">Constant maintenance, API updates, and security monitoring</p>
+              <div className="text-center bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                <RefreshCw size={20} className="text-cyan-400/60 mx-auto mb-3" />
+                <p className="text-sm font-bold text-white uppercase tracking-wider mb-2">Ongoing Overhead</p>
+                <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">Constant</p>
+                <p className="text-xs text-slate-500">maintenance & monitoring</p>
               </div>
             </div>
           </GlassCard>
         </motion.div>
 
+        {/* === TIER CARDS === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -506,6 +537,64 @@ export default function Results() {
               reason={result.recommendedTier === 'Command' ? result.tierReason : undefined}
             />
           </div>
+        </motion.div>
+
+        {/* === BOTTOM CTAs === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="mb-12"
+        >
+          <GlassCard className="p-8 border-cyan-500/20 bg-gradient-to-br from-cyan-950/15 to-slate-900/40 text-center" data-testid="card-bottom-ctas">
+            <div className="space-y-4">
+              <Link href="/book">
+                <GlassButton 
+                  className="w-full md:w-auto min-w-[300px] bg-cyan-500 hover:bg-cyan-400 text-black text-lg font-bold py-4 px-8 rounded-xl shadow-[0_0_20px_rgba(103,232,249,0.2)]"
+                  data-testid="button-get-installed"
+                >
+                  Get SimpleSequence Installed
+                  <ArrowRight size={18} className="ml-2" />
+                </GlassButton>
+              </Link>
+
+              <div>
+                <a 
+                  href={calendarUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 transition-all text-base font-semibold"
+                  data-testid="button-book-strategy-call"
+                >
+                  <Calendar size={16} />
+                  Book 15-min Strategy Call
+                </a>
+              </div>
+
+              <div>
+                <button
+                  onClick={() => {
+                    const storedLeadId = sessionStorage.getItem('leadId');
+                    if (storedLeadId) {
+                      window.open(`/api/assessment/${storedLeadId}/pdf`, '_blank');
+                    }
+                  }}
+                  className="text-sm text-slate-400 hover:text-cyan-400 transition-colors inline-flex items-center gap-1.5 underline underline-offset-2"
+                  data-testid="link-download-pdf"
+                >
+                  <Download size={14} />
+                  Download PDF Results
+                </button>
+              </div>
+
+              {contactEmail && (
+                <p className="text-sm text-slate-500 mt-4">
+                  <CheckCircle size={14} className="inline text-cyan-400/60 mr-1.5" />
+                  Results emailed to {contactEmail}
+                </p>
+              )}
+            </div>
+          </GlassCard>
         </motion.div>
 
         <FeedbackSection />
