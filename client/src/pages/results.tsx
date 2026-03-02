@@ -11,19 +11,24 @@ import { useToast } from "@/hooks/use-toast";
 function useCountUp(end: number, duration: number = 1500) {
   const [value, setValue] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
   const hasAnimated = useRef(false);
+  const targetRef = useRef(end);
+  targetRef.current = end;
 
   useEffect(() => {
-    if (!isInView || hasAnimated.current || end === 0) return;
+    if (hasAnimated.current) return;
+    if (!isInView) return;
+    if (targetRef.current === 0) return;
     hasAnimated.current = true;
 
+    const target = targetRef.current;
     const startTime = performance.now();
     const animate = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.round(eased * end));
+      setValue(Math.round(eased * target));
       if (progress < 1) requestAnimationFrame(animate);
     };
     requestAnimationFrame(animate);
@@ -281,30 +286,29 @@ export default function Results() {
 
       <main className="relative z-10 pt-32 pb-20 px-4 md:px-8 max-w-[900px] mx-auto">
 
-        {/* === HERO DASHBOARD === */}
+        {/* === SCORE DASHBOARD CARD === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
+          className="mb-6"
         >
           <GlassCard className="p-8 md:p-10 border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 to-slate-900/50 relative overflow-hidden" data-testid="card-hero-dashboard">
             <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-teal-500/5 pointer-events-none" />
             <div className="relative">
-              <p className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-1">
+              <h1 className="text-2xl md:text-3xl font-heading font-bold text-white uppercase tracking-wide mb-1">
                 Sequential Revenue™ Friction Analysis
-              </p>
-              <p className="text-lg text-slate-300 mb-8">
+              </h1>
+              <p className="text-base text-slate-400 mb-8">
                 {result.businessName} — where friction is slowing your revenue
               </p>
 
-              <div className="text-center py-6" ref={scoreRef}>
-                <p className="text-xs text-slate-500 uppercase tracking-widest mb-3">Sequential Revenue™ Score</p>
+              <div className="rounded-xl bg-slate-900/60 border border-cyan-500/20 p-6 md:p-8 text-center mb-6" ref={scoreRef}>
+                <p className="text-xs text-slate-500 uppercase tracking-[0.2em] font-semibold mb-3">Sequential Revenue™ Score</p>
                 <div className="relative inline-block">
                   <span 
                     className="text-7xl md:text-8xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400"
                     style={{ 
-                      filter: 'drop-shadow(0 0 30px rgba(103, 232, 249, 0.3))',
-                      textShadow: '0 0 40px rgba(103, 232, 249, 0.15)'
+                      filter: 'drop-shadow(0 0 30px rgba(103, 232, 249, 0.3))'
                     }}
                     data-testid="text-overall-score"
                   >
@@ -312,49 +316,62 @@ export default function Results() {
                   </span>
                   <span className="text-3xl md:text-4xl font-mono text-slate-500 ml-2">/ 100</span>
                 </div>
-                <p className="text-base text-slate-400 mt-4">
+                <p className="text-base text-slate-400 mt-3">
                   Your Capture–Convert–Compound loop is dragging
                 </p>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 mt-6 mb-8">
-                <div className="text-center p-3 rounded-lg bg-slate-900/50 border border-slate-700/30">
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
-                    <Eye size={13} className="text-cyan-400" />
-                    <p className="text-cyan-400 font-semibold text-xs uppercase tracking-wide">Capture</p>
-                  </div>
-                  <p className="text-xl font-mono font-bold text-white">{result.captureScore.score}</p>
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
+                  <Eye size={16} className="text-cyan-400 flex-shrink-0" />
+                  <span className="text-cyan-400 font-bold text-sm uppercase tracking-wide">Capture</span>
+                  <span className="text-white font-mono font-bold text-lg">{result.captureScore.score}</span>
                 </div>
-                <div className="text-center p-3 rounded-lg bg-slate-900/50 border border-slate-700/30">
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
-                    <Target size={13} className="text-cyan-400" />
-                    <p className="text-cyan-400 font-semibold text-xs uppercase tracking-wide">Convert</p>
-                  </div>
-                  <p className="text-xl font-mono font-bold text-white">{result.convertScore.score}</p>
+                <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
+                  <Target size={16} className="text-cyan-400 flex-shrink-0" />
+                  <span className="text-cyan-400 font-bold text-sm uppercase tracking-wide">Convert</span>
+                  <span className="text-white font-mono font-bold text-lg">{result.convertScore.score}</span>
                 </div>
-                <div className="text-center p-3 rounded-lg bg-slate-900/50 border border-slate-700/30">
-                  <div className="flex items-center justify-center gap-1.5 mb-1">
-                    <TrendingUp size={13} className="text-cyan-400" />
-                    <p className="text-cyan-400 font-semibold text-xs uppercase tracking-wide">Compound</p>
-                  </div>
-                  <p className="text-xl font-mono font-bold text-white">{result.compoundScore.score}</p>
+                <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
+                  <TrendingUp size={16} className="text-cyan-400 flex-shrink-0" />
+                  <span className="text-cyan-400 font-bold text-sm uppercase tracking-wide">Compound</span>
+                  <span className="text-white font-mono font-bold text-lg">{result.compoundScore.score}</span>
                 </div>
               </div>
 
-              <div className="border-t border-slate-700/30 pt-5 space-y-3">
-                <p className="text-sm text-slate-400 text-center">
-                  Industry: {result.industry}{result.niche ? ` — ${result.niche}` : ''} &nbsp;|&nbsp; Leads: {result.monthlyLeads}/mo &nbsp;|&nbsp; Team: {result.teamSize} &nbsp;|&nbsp; Avg Job: ${result.avgJobValue.toLocaleString()}
-                </p>
-                <div className="text-center">
-                  <p className="text-base text-slate-300">
-                    Est. Monthly Revenue Drag: <span className="font-mono font-bold text-cyan-400">${result.totalMonthlyGap.toLocaleString()}</span>
-                    <sup className="text-slate-500 text-xs ml-0.5">1</sup>
-                    <span className="text-slate-500 mx-2">|</span>
-                    Annualized: <span className="font-mono font-bold text-cyan-400">${result.annualizedGap.toLocaleString()}</span>
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">¹Based on avg job value × leads lost to friction</p>
-                </div>
-              </div>
+              <p className="text-sm text-slate-400 text-center">
+                Industry: {result.industry}{result.niche ? ` — ${result.niche}` : ''} &nbsp;|&nbsp; Leads: {result.monthlyLeads}/mo &nbsp;|&nbsp; Team: {result.teamSize} &nbsp;|&nbsp; Avg Job: ${result.avgJobValue.toLocaleString()}
+              </p>
+            </div>
+          </GlassCard>
+        </motion.div>
+
+        {/* === REVENUE DRAG CARD === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="mb-12"
+        >
+          <GlassCard className="p-8 md:p-10 border-cyan-500/30 bg-gradient-to-br from-slate-900/60 to-cyan-950/30 relative overflow-hidden text-center" data-testid="card-revenue-drag">
+            <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-teal-500/5 pointer-events-none" />
+            <div className="relative">
+              <p className="text-xs text-slate-500 uppercase tracking-[0.2em] font-semibold mb-2">Revenue Drag Section</p>
+              <h2 className="text-xl md:text-2xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 uppercase tracking-wider mb-6">
+                Estimated Revenue Drag
+              </h2>
+              
+              <p className="text-5xl md:text-6xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 mb-1" style={{ filter: 'drop-shadow(0 0 20px rgba(103, 232, 249, 0.25))' }}>
+                ${result.totalMonthlyGap.toLocaleString()}
+              </p>
+              <p className="text-sm text-slate-400 font-medium mb-6">Monthly Revenue Drag</p>
+              
+              <p className="text-3xl md:text-4xl font-mono font-bold text-cyan-400/80 mb-1">
+                ${result.annualizedGap.toLocaleString()}
+              </p>
+              <p className="text-sm text-slate-400 font-medium mb-6">Annualized Revenue Drag</p>
+              
+              <p className="text-xs text-slate-500">Based on avg job value × leads lost to friction</p>
             </div>
           </GlassCard>
         </motion.div>
