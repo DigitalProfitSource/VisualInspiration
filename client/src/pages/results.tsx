@@ -322,7 +322,7 @@ export default function Results() {
               <div className="grid grid-cols-3 gap-3 mb-6">
                 <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
                   <Eye size={16} className="text-cyan-400 flex-shrink-0" />
-                  <span className="text-cyan-400 font-bold text-sm uppercase tracking-wide">Capture</span>
+                  <span className="font-bold text-sm uppercase tracking-wide text-[#ebf1f2]">Capture</span>
                   <span className="text-white font-mono font-bold text-lg">{result.captureScore.score}</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
