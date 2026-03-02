@@ -284,93 +284,101 @@ export default function Results() {
       </header>
       <main className="relative z-10 pt-32 pb-20 px-4 md:px-8 max-w-[900px] mx-auto">
 
-        {/* === SCORE DASHBOARD CARD === */}
+        {/* === PREMIUM DASHBOARD === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6"
+          className="mb-12"
         >
-          <GlassCard className="p-8 md:p-10 border-cyan-500/30 bg-gradient-to-br from-cyan-950/20 to-slate-900/50 relative overflow-hidden" data-testid="card-hero-dashboard">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-teal-500/5 pointer-events-none" />
-            <div className="relative">
+          <div 
+            className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-5 md:p-7 relative overflow-hidden shadow-[0_16px_64px_rgba(0,0,0,0.6),0_0_1px_rgba(103,232,249,0.1)]"
+            style={{ backgroundImage: 'radial-gradient(ellipse at 50% 0%, rgba(103,232,249,0.04) 0%, transparent 60%)' }}
+            data-testid="card-hero-dashboard"
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+
+            <div className="mb-6">
               <h1 className="text-2xl md:text-3xl font-heading font-bold text-white uppercase tracking-wide mb-1">
                 Sequential Revenue™ Friction Analysis
               </h1>
-              <p className="text-base text-slate-400 mb-8">
+              <p className="text-base text-slate-500">
                 {result.businessName} — where friction is slowing your revenue
               </p>
+            </div>
 
-              <div className="rounded-xl bg-slate-900/60 border border-cyan-500/20 p-6 md:p-8 text-center mb-6" ref={scoreRef}>
-                <p className="text-xs text-slate-500 uppercase tracking-[0.2em] font-semibold mb-3">Sequential Revenue™ Score</p>
+            <div 
+              className="rounded-xl bg-[#0c1018] border border-[#182030] p-6 md:p-8 mb-4 relative overflow-hidden shadow-[inset_0_1px_0_rgba(103,232,249,0.06),0_4px_24px_rgba(0,0,0,0.4)]"
+              style={{ backgroundImage: 'radial-gradient(ellipse at 50% 40%, rgba(103,232,249,0.03) 0%, transparent 70%)' }}
+            >
+              <div className="text-center" ref={scoreRef}>
+                <p className="text-[10px] text-slate-500 uppercase tracking-[0.25em] font-semibold mb-4">Sequential Revenue™ Score</p>
                 <div className="relative inline-block">
+                  <div className="absolute inset-0 -m-8 rounded-full bg-gradient-to-b from-cyan-400/8 to-transparent blur-2xl pointer-events-none" />
                   <span 
-                    className="text-7xl md:text-8xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400"
-                    style={{ 
-                      filter: 'drop-shadow(0 0 30px rgba(103, 232, 249, 0.3))'
-                    }}
+                    className="relative text-7xl md:text-[88px] font-mono font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#67E8F9] via-[#22d3ee] to-[#0ea5e9] leading-none"
+                    style={{ filter: 'drop-shadow(0 0 40px rgba(103, 232, 249, 0.25)) drop-shadow(0 0 80px rgba(103, 232, 249, 0.1))' }}
                     data-testid="text-overall-score"
                   >
                     {animatedScore}
                   </span>
-                  <span className="text-3xl md:text-4xl font-mono text-slate-500 ml-2">/ 100</span>
+                  <span className="text-3xl md:text-4xl font-mono text-slate-600 ml-2">/ 100</span>
                 </div>
-                <p className="text-base text-slate-400 mt-3">
+                <p className="text-sm text-slate-500 mt-4 tracking-wide">
                   Your Capture–Convert–Compound loop is dragging
                 </p>
               </div>
-
-              <div className="grid grid-cols-3 gap-3 mb-6">
-                <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
-                  <Eye size={16} className="text-cyan-400 flex-shrink-0" />
-                  <span className="font-bold text-sm uppercase tracking-wide text-[#ebf1f2]">Capture</span>
-                  <span className="font-mono font-bold text-lg text-[#00d3f3]">{result.captureScore.score}</span>
-                </div>
-                <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
-                  <Target size={16} className="text-cyan-400 flex-shrink-0" />
-                  <span className="font-bold text-sm uppercase tracking-wide text-[#ffffff]">Convert</span>
-                  <span className="font-mono font-bold text-lg text-[#00d3f3]">{result.convertScore.score}</span>
-                </div>
-                <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
-                  <TrendingUp size={16} className="text-cyan-400 flex-shrink-0" />
-                  <span className="font-bold text-sm uppercase tracking-wide text-[#ffffff]">Compound</span>
-                  <span className="font-mono font-bold text-lg text-[#00d3f3]">{result.compoundScore.score}</span>
-                </div>
-              </div>
-
-              <p className="text-sm text-slate-400 text-center">
-                Industry: {result.industry}{result.niche ? ` — ${result.niche}` : ''} &nbsp;|&nbsp; Leads: {result.monthlyLeads}/mo &nbsp;|&nbsp; Team: {result.teamSize} &nbsp;|&nbsp; Avg Job: ${result.avgJobValue.toLocaleString()}
-              </p>
             </div>
-          </GlassCard>
-        </motion.div>
 
-        {/* === REVENUE DRAG CARD === */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          className="mb-12"
-        >
-          <GlassCard className="p-8 md:p-10 border-cyan-500/30 bg-gradient-to-br from-slate-900/60 to-cyan-950/30 relative overflow-hidden text-center" data-testid="card-revenue-drag">
-            <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-teal-500/5 pointer-events-none" />
-            <div className="relative">
-              <h2 className="text-xl md:text-2xl font-heading font-bold bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 uppercase tracking-wider mb-6 text-[#f7f2f2]">
-                Estimated Revenue Drag
-              </h2>
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              {[
+                { icon: <Eye size={15} />, label: "Capture", score: result.captureScore.score },
+                { icon: <Target size={15} />, label: "Convert", score: result.convertScore.score },
+                { icon: <TrendingUp size={15} />, label: "Compound", score: result.compoundScore.score },
+              ].map((p) => (
+                <div 
+                  key={p.label}
+                  className="flex items-center justify-center gap-2 py-3 px-2 rounded-xl bg-[#0c1018] border border-[#182030] shadow-[inset_0_1px_0_rgba(103,232,249,0.05),0_2px_8px_rgba(0,0,0,0.3)]"
+                >
+                  <span className="text-cyan-400">{p.icon}</span>
+                  <span className="font-bold text-xs uppercase tracking-wider text-slate-300">{p.label}</span>
+                  <span className="font-mono font-bold text-base text-cyan-400">{p.score}</span>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-xs text-slate-500 text-center tracking-wide py-2">
+              {result.industry}{result.niche ? ` — ${result.niche}` : ''} &nbsp;·&nbsp; {result.monthlyLeads} leads/mo &nbsp;·&nbsp; Team: {result.teamSize} &nbsp;·&nbsp; Avg Job: ${result.avgJobValue.toLocaleString()}
+            </p>
+
+            <div className="my-4 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
+
+            <div 
+              className="rounded-xl bg-[#0c1018] border border-cyan-500/15 p-6 md:p-8 text-center relative overflow-hidden shadow-[inset_0_1px_0_rgba(103,232,249,0.06),0_4px_24px_rgba(0,0,0,0.4),0_0_60px_rgba(103,232,249,0.04)]"
+              style={{ backgroundImage: 'radial-gradient(ellipse at 50% 60%, rgba(103,232,249,0.04) 0%, transparent 70%)' }}
+              data-testid="card-revenue-drag"
+            >
+              <p className="text-[10px] text-slate-500 uppercase tracking-[0.25em] font-semibold mb-3">Estimated Revenue Drag</p>
               
-              <p className="text-5xl md:text-6xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 mb-1" style={{ filter: 'drop-shadow(0 0 20px rgba(103, 232, 249, 0.25))' }}>
+              <p 
+                className="text-6xl md:text-7xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#67E8F9] via-[#22d3ee] to-[#0ea5e9] leading-none mb-2"
+                style={{ filter: 'drop-shadow(0 0 30px rgba(103, 232, 249, 0.2)) drop-shadow(0 0 60px rgba(103, 232, 249, 0.08))' }}
+              >
                 ${result.totalMonthlyGap.toLocaleString()}
               </p>
-              <p className="text-sm text-slate-400 font-medium mb-6">Monthly Revenue Drag</p>
+              <p className="text-xs text-slate-500 uppercase tracking-widest font-medium mb-5">Monthly Revenue Drag</p>
               
-              <p className="text-3xl md:text-4xl font-mono font-bold text-cyan-400/80 mb-1">
+              <div className="w-16 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent mx-auto mb-5" />
+              
+              <p className="text-3xl md:text-4xl font-mono font-bold text-cyan-400/70 leading-none mb-2">
                 ${result.annualizedGap.toLocaleString()}
               </p>
-              <p className="text-sm text-slate-400 font-medium mb-6">Annualized Revenue Drag</p>
+              <p className="text-xs text-slate-500 uppercase tracking-widest font-medium mb-5">Annualized Revenue Drag</p>
               
-              <p className="text-xs text-slate-500">Based on avg job value × leads lost to friction</p>
+              <p className="text-[11px] text-slate-600 italic">Based on avg job value × leads lost to friction</p>
             </div>
-          </GlassCard>
+
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent" />
+          </div>
         </motion.div>
 
         {/* === PILLAR BREAKDOWN === */}
