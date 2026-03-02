@@ -327,7 +327,7 @@ export default function Results() {
                 </div>
                 <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
                   <Target size={16} className="text-cyan-400 flex-shrink-0" />
-                  <span className="text-cyan-400 font-bold text-sm uppercase tracking-wide">Convert</span>
+                  <span className="font-bold text-sm uppercase tracking-wide text-[#ffffff]">Convert</span>
                   <span className="text-white font-mono font-bold text-lg">{result.convertScore.score}</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-900/60 border border-cyan-500/20">
