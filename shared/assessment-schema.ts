@@ -113,6 +113,7 @@ export const ContactChannelSchema = z.enum([
   "Chat widget",
   "Email",
   "Online booking",
+  "Google Business Profile",
   "Walk-ins only"
 ]);
 
