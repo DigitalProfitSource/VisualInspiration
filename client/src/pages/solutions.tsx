@@ -12,6 +12,7 @@ import {
   RefreshCw,
   Globe,
   Handshake,
+  Star,
 } from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { SEO } from "@/components/seo";
@@ -22,6 +23,7 @@ import aiReadyWebConversion from "@assets/Ai-Ready-Web-Conversion_1771370273472.
 import triageRoutingDiagram from "@assets/generated_images/intelligent_triage_routing_workflow_diagram.png";
 import followUpDiagram from "@assets/generated_images/follow-up_automation_sequence_diagram.png";
 import integrationRoiDiagram from "@assets/generated_images/integration_roi_dashboard_diagram.png";
+import reputationFlywheelDiagram from "@assets/reputation-trust-flywheel_1772499550007.webp";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -381,6 +383,22 @@ const revenueFeatures = [
       "System oversight preserved—humans stay in control of what matters"
     ],
     backOutcome: "A front desk you can actually measure and improve, with workflows that don't break when you step away—and real-time visibility into what's working."
+  },
+  {
+    icon: Star,
+    title: "Reputation & Trust Flywheel",
+    image: reputationFlywheelDiagram,
+    frontDescription: "Five-star reviews don't collect themselves. Most businesses leave reputation to chance—hoping happy customers speak up while unhappy ones stay quiet. Meanwhile, competitors with more reviews rank higher, earn more trust, and capture leads that should have been yours.",
+    impact: "Every happy customer automatically fuels your next one",
+    backIntro: "Simple Sequence turns every completed job into a reputation asset. Automated review requests go out via SMS and email at the right moment—when satisfaction is highest—and feed a self-reinforcing loop that compounds over time.",
+    backBullets: [
+      "Automated review requests via SMS and email, timed to post-service satisfaction peaks",
+      "Intelligent routing: positive experiences go to Google, concerns go to your inbox first",
+      "Consistent fresh reviews boost Google Business Profile rankings and local visibility",
+      "Social proof drives new inbound demand—prospects trust businesses with recent, real reviews",
+      "Compounding flywheel: more reviews → higher rankings → more leads → more customers → more reviews"
+    ],
+    backOutcome: "A self-sustaining trust engine that builds your reputation, boosts local search rankings, and drives inbound demand—without your team lifting a finger."
   }
 ];
 
@@ -795,7 +813,7 @@ function RevenueSystemSection() {
               transition={{ delay: 0.8 }}
             >
               <ChevronDown className="w-5 h-5 animate-bounce" />
-              <span>Scroll to explore our four core capabilities</span>
+              <span>Scroll to explore our five core capabilities</span>
             </motion.div>
           </motion.div>
         </div>
