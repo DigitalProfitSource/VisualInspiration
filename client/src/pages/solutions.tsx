@@ -279,7 +279,7 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
 
           <div className="space-y-6 mb-8">
             <div className="p-5 rounded-xl border border-white/5 bg-white/[0.01]">
-              <span className="text-[10px] font-mono tracking-widest uppercase text-red-400/70 mb-2 block">The Old Way</span>
+              <span className="text-[10px] font-mono tracking-widest uppercase mb-2 block text-[#ffffffb3]">The Old Way</span>
               <p className="text-slate-500 leading-relaxed text-sm">{pillar.oldWay}</p>
             </div>
 
@@ -312,7 +312,6 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
           </div>
         </motion.div>
       </div>
-
       <div className="mt-24 border-b border-white/5" />
     </motion.div>
   );

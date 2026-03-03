@@ -9,12 +9,9 @@ import {
   Target,
   RefreshCw,
   ArrowRight,
-  Zap,
-  Bot,
-  Database,
-  Cog,
-  MessageSquare,
-  Star
+  Brain,
+  Cpu,
+  Globe
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -59,40 +56,40 @@ const phases: Phase[] = [
     number: 1,
     icon: Search,
     title: "Diagnostic & Audit",
-    description: "Before we fix anything, we find out what's actually broken. We map how leads move through your business today, identify where they slip away, and uncover the friction your team feels but can't quite name.",
+    description: "Before we build anything, we find out what's actually costing you money. We run our Sequential Revenue\u2122 Friction Analysis across Capture, Conversion, and Compounding to pinpoint where leads are slipping away.",
     whatHappens: {
       title: "What Happens",
       items: [
-        "You complete a short questionnaire about your current systems",
-        "We get view-only access to your tools (CRM, forms, calendar)",
+        "You complete the Sequential Revenue\u2122 Friction Analysis",
+        "We map your lead flow across the Capture \u2192 Convert \u2192 Compound loop",
         "One 60-minute clarity session with you and/or your team",
-        "We analyze your lead flow, response times, and follow-up patterns",
-        "We identify which of the Six Pillars need attention first"
+        "We analyze response times, follow-up gaps, and pipeline leaks",
+        "We identify which tier (AI Brain, AI System, or AI Infrastructure) fits your situation"
       ]
     },
     whatYouExperience: {
       title: "What You Experience",
       items: [
-        "Minimal disruption — about 2 hours of your time total",
-        "No judgment — we're here to help, not criticize",
+        "Minimal disruption \u2014 about 2 hours of your time total",
+        "No judgment \u2014 we\u2019re here to help, not criticize",
         "Clear communication throughout the process",
-        "A diagnostic report you can actually understand",
-        "A prioritized roadmap with quick wins identified"
+        "A friction report showing exactly where revenue is leaking",
+        "A recommendation for which tier addresses your biggest gaps"
       ]
     },
-    timeline: "5–7 business days from kickoff to final diagnostic report."
+    timeline: "3\u20135 business days from kickoff to diagnostic report."
   },
   {
     number: 2,
     icon: Wrench,
     title: "Build & Deploy",
-    description: "Once you have clarity, we build. We turn the diagnostic findings into working systems — installing the Six Pillars that matter most for your business, integrated with what you already use.",
+    description: "Once we know where the gaps are, we build your AI infrastructure. Whether it\u2019s an AI Brain for speed-to-lead, an AI System for pipeline recovery, or the full AI Infrastructure \u2014 we set it up, connect it to your tools, and get it live.",
     whatHappens: {
       title: "What Happens",
       items: [
-        "We build in priority order — quick wins first, then bigger systems",
+        "We build the tier you selected \u2014 AI Brain, AI System, or AI Infrastructure",
         "Your existing tools stay in place (no forced platform swaps)",
-        "We configure and connect your Six Pillar systems",
+        "We configure chatbot, voice, SMS, nurture sequences, and/or ASO based on your tier",
         "Custom workflows that match how your team actually operates",
         "Training sessions so your team feels confident, not confused"
       ]
@@ -100,28 +97,28 @@ const phases: Phase[] = [
     whatYouExperience: {
       title: "What You Experience",
       items: [
-        "Weekly updates — you always know what's happening",
+        "Regular updates \u2014 you always know what\u2019s happening",
         "Milestone reviews where you provide input and approval",
         "Direct access to progress (nothing feels like a black box)",
         "Testing before go-live so we catch issues early",
         "Full walkthrough with recordings and documentation at handoff"
       ]
     },
-    timeline: "3–6 weeks depending on which pillars you're implementing."
+    timeline: "Most setups go live within 1\u20132 weeks."
   },
   {
     number: 3,
     icon: TrendingUp,
     title: "Optimize & Scale",
-    description: "Your business evolves — your systems should too. After launch, we monitor what's working, tune what isn't, and help you scale the results without adding chaos or headcount.",
+    description: "Your business evolves \u2014 your AI systems should too. After launch, we monitor what\u2019s working, tune what isn\u2019t, and help you scale the results without adding chaos or headcount.",
     whatHappens: {
       title: "What Happens",
       items: [
         "Built-in review cycles at 30, 60, and 90 days post-launch",
-        "Performance tracking against your baseline metrics",
+        "Performance tracking: speed-to-lead, recovery rate, AI visibility \u2014 based on your tier",
         "Bottleneck fixes as new friction points emerge",
         "Workflow tuning based on real usage data",
-        "Recommendations for what to tackle next, in order of impact"
+        "Recommendations for when it makes sense to upgrade to the next tier"
       ]
     },
     whatYouExperience: {
@@ -129,50 +126,47 @@ const phases: Phase[] = [
       items: [
         "Confidence that someone is watching the metrics for you",
         "Quick responses when something needs adjustment",
-        "Clear reports showing what's improved (and what's next)",
-        "Optional ongoing support if you want a long-term partner",
-        "No surprises — proactive communication about any issues"
+        "Clear reports showing what\u2019s improved (and what\u2019s next)",
+        "Ongoing support included with your retainer",
+        "No surprises \u2014 proactive communication about any issues"
       ]
     },
-    timeline: "Review cycles included. Ongoing optimization available as a monthly retainer."
+    timeline: "Review cycles included with every tier. Optimization is continuous, not a one-time event."
   }
 ];
 
-const sixPillars = [
-  { icon: Zap, name: "Speed-to-Lead", desc: "Instant response systems" },
-  { icon: Bot, name: "AI Web Conversion", desc: "24/7 chat qualification" },
-  { icon: Database, name: "Database Reactivation", desc: "Mine dormant leads" },
-  { icon: Cog, name: "Ops Automation", desc: "Eliminate manual busywork" },
-  { icon: MessageSquare, name: "Follow-Up Engine", desc: "Relentless nurture sequences" },
-  { icon: Star, name: "Reputation Flywheel", desc: "Automated review generation" },
+const tierCards = [
+  { icon: Brain, name: "The AI Brain", tier: "Capture", desc: "Chatbot, Voice, SMS \u2014 every lead answered in <60s" },
+  { icon: Cpu, name: "The AI System", tier: "Capture + Convert", desc: "Recovery, Triage, 90-Day Nurture \u2014 pipeline on autopilot" },
+  { icon: Globe, name: "The AI Infrastructure", tier: "Full Loop", desc: "ASO, DBR, Reputation \u2014 machine-readable dominance" },
 ];
 
 const principles = [
   {
     icon: Microscope,
     title: "Evidence-Based",
-    description: "We don't guess — we diagnose. Every recommendation comes from your actual data, conversations, and workflows. You're not betting your operations on theory."
+    description: "We don\u2019t guess \u2014 we diagnose. Every recommendation comes from your actual data, conversations, and workflows. You\u2019re not betting your operations on theory."
   },
   {
     icon: Target,
     title: "Outcome-Focused",
-    description: "We're not here to sell you tools. We're here to deliver results: more appointments, faster response times, and fewer leaks in your revenue paths."
+    description: "We\u2019re not here to sell you tools. We\u2019re here to deliver results: more appointments, faster response times, and fewer leaks in your revenue loop."
   },
   {
     icon: RefreshCw,
     title: "Adaptive",
-    description: "Your business changes. Your systems should too. Nothing we build locks you into rigid workflows — we design for iteration so you can evolve without starting over."
+    description: "Your business changes. Your systems should too. Nothing we build locks you into rigid workflows \u2014 we design for iteration so you can evolve without starting over."
   }
 ];
 
 const faqs = [
   {
     question: "How long until I see results?",
-    answer: "Diagnostic: 5–7 business days. Build: 3–6 weeks. Many clients see quick wins within the first 30 days of implementation."
+    answer: "Setup takes 1\u20132 weeks depending on your tier. Most clients see impact within the first 30 days \u2014 fewer missed calls, faster responses, and leads that stop falling through the cracks."
   },
   {
     question: "What do I need to provide to get started?",
-    answer: "A short questionnaire, view-only access to your tools, and one 60-minute clarity session. We handle everything else."
+    answer: "Complete the Sequential Revenue\u2122 Friction Analysis, give us view-only access to your tools, and join one 60-minute clarity session. We handle everything else."
   },
   {
     question: "Will this disrupt my day-to-day operations?",
@@ -180,15 +174,15 @@ const faqs = [
   },
   {
     question: "What if I need changes after the system is live?",
-    answer: "That's expected. You get built-in review cycles at 30, 60, and 90 days — plus optional ongoing support."
+    answer: "That\u2019s expected. You get built-in review cycles at 30, 60, and 90 days \u2014 and ongoing optimization is included with your retainer."
   },
   {
-    question: "Do I have to replace the tools I'm already using?",
-    answer: "Almost never. We work with what you have — unless something truly can't support the systems we're building."
+    question: "Do I have to replace the tools I\u2019m already using?",
+    answer: "Almost never. We work with what you have \u2014 unless something truly can\u2019t support the systems we\u2019re building."
   },
   {
-    question: "What if I'm not ready for a full build?",
-    answer: "Start with just the Diagnostic. You'll get a clear roadmap you can implement yourself or bring us back when you're ready."
+    question: "What if I\u2019m not ready for a full build?",
+    answer: "Start with The AI Brain at $150/mo \u2014 it covers the capture essentials (chatbot, voice, SMS). You can upgrade to The AI System or AI Infrastructure anytime."
   },
   {
     question: "How do you measure success?",
@@ -196,7 +190,7 @@ const faqs = [
   },
   {
     question: "Will my team be trained on the new systems?",
-    answer: "Yes. Every Build engagement includes training sessions, documentation, and recordings so your team feels confident."
+    answer: "Yes. Every setup includes training sessions, documentation, and recordings so your team feels confident."
   }
 ];
 
@@ -215,7 +209,6 @@ function PhaseCard({ phase, index }: { phase: Phase; index: number }) {
       data-testid={`card-phase-${phase.number}`}
     >
       <div className="p-8 md:p-12 rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] via-white/[0.02] to-transparent backdrop-blur-sm">
-        {/* Phase Header */}
         <div className="flex flex-col md:flex-row md:items-start gap-6 mb-10">
           <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 hover:scale-105 hover:border-primary/50 transition-all duration-300">
             <Icon className="w-7 h-7 text-primary" />
@@ -233,9 +226,7 @@ function PhaseCard({ phase, index }: { phase: Phase; index: number }) {
           </div>
         </div>
 
-        {/* Two Column Content */}
         <div className="grid md:grid-cols-2 gap-10 mb-10">
-          {/* Left Column - What Happens */}
           <div>
             <h4 className="text-base font-semibold text-white mb-5">{phase.whatHappens.title}</h4>
             <ul className="space-y-4">
@@ -254,7 +245,6 @@ function PhaseCard({ phase, index }: { phase: Phase; index: number }) {
             </ul>
           </div>
 
-          {/* Right Column - What You Experience */}
           <div>
             <h4 className="text-base font-semibold text-white mb-5">{phase.whatYouExperience.title}</h4>
             <ul className="space-y-4">
@@ -274,7 +264,6 @@ function PhaseCard({ phase, index }: { phase: Phase; index: number }) {
           </div>
         </div>
 
-        {/* Timeline Box */}
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
@@ -302,11 +291,10 @@ export default function Process() {
     <Layout>
       <SEO 
         title="Our Process - How We Work With You | SimpleSequence"
-        description="Three-phase client journey: Diagnostic & Audit, Build & Deploy, and Optimize & Scale. Clear timelines, transparent communication, and no surprises."
+        description="Three-phase client journey: Diagnostic & Audit, Build & Deploy, and Optimize & Scale. From friction analysis to live AI infrastructure in 1-2 weeks."
         jsonLd={faqSchema}
       />
 
-      {/* Hero Section */}
       <section className="pt-44 pb-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(var(--primary),0.08),transparent_50%)]" />
         <CircuitBeams className="opacity-40" />
@@ -322,13 +310,12 @@ export default function Process() {
               How We <span className="text-primary">Work With You</span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto">
-              A structured process designed around your experience — not ours. Clear phases, honest timelines, and no surprises along the way.
+              A structured process designed around your experience &mdash; not ours. Clear phases, honest timelines, and no surprises along the way.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Phase Cards */}
       <section className="py-16 relative">
         <GridBeam showCenterBeam={false} gridOpacity={0.15} />
         <div className="container mx-auto px-6 relative z-10">
@@ -340,7 +327,6 @@ export default function Process() {
         </div>
       </section>
 
-      {/* Six Pillars Reference */}
       <section className="py-24 relative overflow-hidden border-t border-white/5">
         <div className="container mx-auto px-6">
           <motion.div 
@@ -350,18 +336,18 @@ export default function Process() {
             transition={fadeInUp.transition}
             className="text-center mb-12"
           >
-            <span className="text-sm font-mono text-primary mb-4 block">WHAT WE INSTALL</span>
+            <span className="text-sm font-mono text-primary mb-4 block">WHAT WE BUILD</span>
             <h2 className="text-3xl md:text-4xl font-display font-medium mb-6">
-              The <span className="text-primary">Six Pillars</span> We Deploy
+              Three Tiers of <span className="text-primary">AI Infrastructure</span>
             </h2>
             <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-              During the Build phase, we install the systems that matter most for your business. Each pillar is designed to work together as a unified operating engine.
+              During the Build phase, we deploy the tier that matches your biggest revenue gaps. Each tier builds on the one before it.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto mb-10">
-            {sixPillars.map((pillar, i) => {
-              const Icon = pillar.icon;
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-10">
+            {tierCards.map((card, i) => {
+              const Icon = card.icon;
               return (
                 <motion.div
                   key={i}
@@ -369,26 +355,27 @@ export default function Process() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.08 }}
-                  className="p-4 rounded-xl border border-white/10 bg-white/[0.02] hover:border-primary/30 transition-all duration-300 text-center"
+                  className="p-6 rounded-xl border border-white/10 bg-white/[0.02] hover:border-primary/30 transition-all duration-300 text-center"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-3">
-                    <Icon className="w-5 h-5 text-primary" />
+                  <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-4">
+                    <Icon className="w-6 h-6 text-primary" />
                   </div>
-                  <h4 className="text-sm font-medium text-white mb-1">{pillar.name}</h4>
-                  <p className="text-xs text-slate-500">{pillar.desc}</p>
+                  <h4 className="text-base font-semibold text-white mb-1">{card.name}</h4>
+                  <p className="text-xs font-mono text-primary mb-2">{card.tier}</p>
+                  <p className="text-sm text-slate-400">{card.desc}</p>
                 </motion.div>
               );
             })}
           </div>
 
           <div className="text-center">
-            <Link href="/solutions">
+            <Link href="/offers">
               <Button 
                 variant="outline" 
                 className="rounded-full border-white/20 hover:border-primary/50 hover:bg-primary/5"
-                data-testid="link-view-solutions"
+                data-testid="link-view-offers"
               >
-                Explore the Six Pillars in Detail
+                See Pricing & Tiers
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
@@ -396,7 +383,6 @@ export default function Process() {
         </div>
       </section>
 
-      {/* Why This Methodology Works */}
       <section className="py-28 relative overflow-hidden border-t border-white/5">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.05),transparent_50%)]" />
         <div className="container mx-auto px-6 relative z-10">
@@ -439,7 +425,6 @@ export default function Process() {
         </div>
       </section>
 
-      {/* FAQ Section */}
       <section className="py-28 relative border-t border-white/5">
         <div className="container mx-auto px-6">
           <motion.div 
@@ -459,7 +444,6 @@ export default function Process() {
 
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-6">
-              {/* Left Column FAQs */}
               <Accordion type="single" collapsible className="space-y-4">
                 {faqs.slice(0, 4).map((faq, i) => (
                   <AccordionItem 
@@ -483,7 +467,6 @@ export default function Process() {
                 ))}
               </Accordion>
 
-              {/* Right Column FAQs */}
               <Accordion type="single" collapsible className="space-y-4">
                 {faqs.slice(4).map((faq, i) => (
                   <AccordionItem 
@@ -511,7 +494,6 @@ export default function Process() {
         </div>
       </section>
 
-      {/* Bottom CTA */}
       <section className="py-36 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(var(--primary),0.1),transparent_50%)]" />
         <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
@@ -525,15 +507,15 @@ export default function Process() {
               Ready to <span className="text-primary">Get Started</span>?
             </h2>
             <p className="text-xl md:text-2xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed">
-              It starts with a conversation. Tell us about your business and we'll show you what's possible.
+              Run the free Sequential Revenue&trade; Friction Analysis and see exactly where your leads are falling through the cracks.
             </p>
-            <Link href="/book">
+            <Link href="/assessment">
               <Button 
                 size="lg"
                 className="bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-12 h-16 text-lg font-semibold shadow-[0_0_30px_-5px_var(--color-primary)]"
                 data-testid="button-process-cta"
               >
-                Book Your Discovery Call
+                Take the Free Assessment
               </Button>
             </Link>
           </motion.div>
