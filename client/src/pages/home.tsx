@@ -14,7 +14,7 @@ import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
-import aiPresenceImg from "@assets/AI-Presence_1772510479976.webp";
+import aiPresenceImg from "@assets/AI-Conversion-Presence_1772546750658.webp";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 
 const fadeIn = {
@@ -458,7 +458,7 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-2 lg:order-1"
             >
-              <div className="relative group">
+              <div className="relative group max-w-md mx-auto">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-400/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl">
                   <img 
