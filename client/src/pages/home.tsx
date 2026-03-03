@@ -463,7 +463,9 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-2 lg:order-1"
             >
-              <div className="relative group max-w-md mx-auto">
+              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 01 · CAPTURE</span>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-6" data-testid="text-pillar-capture">The 24/7 AI-Presence</h3>
+              <div className="relative group max-w-md mx-auto lg:mx-0">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-400/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl">
                   <img 
@@ -485,8 +487,6 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-1 lg:order-2"
             >
-              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 01 · CAPTURE</span>
-              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-capture">The 24/7 AI-Presence</h3>
               <p className="text-primary font-medium mb-4">Never miss a dollar.</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 Your marketing works, but your capture system is leaking. Leads reach out through your website, Google, text, and social — and get silence. By the time you reply, they've hired your competitor. We install an always-on AI layer that responds in under 60 seconds, qualifies intent, and books the appointment — 24/7, without adding staff.
@@ -527,8 +527,6 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-2 lg:order-1"
             >
-              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 02 · CONVERT</span>
-              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-convert">The 24/7 AI-Sales Rep</h3>
               <p className="text-primary font-medium mb-4">Squeeze every dollar from your pipeline.</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 You send a quote, follow up once, and forget about it. No-shows ghost you. Old estimates expire. Thousands of dollars rot in your CRM — leads you already paid to acquire. We deploy relentless, intelligent automation that chases every opportunity until it closes, declines, or books — and knows exactly when to hand off to your team.
@@ -562,7 +560,9 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-1 lg:order-2"
             >
-              <div className="relative group max-w-md mx-auto">
+              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 02 · CONVERT</span>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-6" data-testid="text-pillar-convert">The 24/7 AI-Sales Rep</h3>
+              <div className="relative group max-w-md mx-auto lg:mx-0">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-400/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl">
                   <img 
@@ -591,7 +591,9 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-2 lg:order-1"
             >
-              <div className="relative group max-w-md mx-auto">
+              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 03 · COMPOUND</span>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-6" data-testid="text-pillar-compound">The Compounding Engine</h3>
+              <div className="relative group max-w-md mx-auto lg:mx-0">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-400/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl">
                   <img 
@@ -613,8 +615,6 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-1 lg:order-2"
             >
-              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 03 · COMPOUND</span>
-              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-compound">The Compounding Engine</h3>
               <p className="text-primary font-medium mb-4">Turn past customers into future revenue.</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 You do great work, but you're ignoring the most profitable asset you already own — your existing customers and past leads. We install automated review collection that drives 5-star ratings at the perfect moment, intercept negative feedback before it goes public, and run database reactivation campaigns that turn dormant contacts into immediate cash — with zero additional ad spend.
