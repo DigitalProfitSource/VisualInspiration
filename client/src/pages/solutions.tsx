@@ -11,7 +11,6 @@ import {
   Route,
   RefreshCw,
   Globe,
-  Handshake,
   Star,
   Database,
 } from "lucide-react";
@@ -23,7 +22,6 @@ import { GridBeam } from "@/components/ui/grid-beam";
 import aiReadyWebConversion from "@assets/Ai-Ready-Web-Conversion_1771370273472.webp";
 import triageRoutingDiagram from "@assets/generated_images/intelligent_triage_routing_workflow_diagram.png";
 import followUpDiagram from "@assets/generated_images/follow-up_automation_sequence_diagram.png";
-import integrationRoiDiagram from "@assets/generated_images/integration_roi_dashboard_diagram.png";
 import reputationFlywheelDiagram from "@assets/reputation-trust-flywheel_1772499550007.webp";
 import databaseReactivationDiagram from "@assets/database-reactivation-ltv_1772503644259.webp";
 
@@ -323,6 +321,22 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
 
 const revenueFeatures = [
   {
+    icon: Globe,
+    title: "AI-Ready Web Conversion Layer",
+    image: aiReadyWebConversion,
+    frontDescription: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
+    impact: "Your website becomes a 24/7 sales assistant",
+    backIntro: "Simple Sequence turns passive traffic into active conversations and booked appointments—even when you're offline.",
+    backBullets: [
+      "AI chat that qualifies and books appointments instantly",
+      "Captures intent from visitors who would otherwise bounce",
+      "Answers common questions without human involvement",
+      "Routes complex inquiries to the right team member",
+      "Works after hours when competitors are offline"
+    ],
+    backOutcome: "More conversions from existing traffic, paid ad ROI that actually compounds, and zero missed after-hours opportunities."
+  },
+  {
     icon: Route,
     title: "Intelligent Triage & Routing",
     image: triageRoutingDiagram,
@@ -353,38 +367,6 @@ const revenueFeatures = [
       "Logs every interaction back into your CRM"
     ],
     backOutcome: "Predictable cash flow, silent churn eliminated, and revenue recovered without adding headcount."
-  },
-  {
-    icon: Globe,
-    title: "AI-Ready Web Conversion Layer",
-    image: aiReadyWebConversion,
-    frontDescription: "Your site looks fine—but it doesn't respond, qualify, or convert. Visitors leave without ever raising their hand.",
-    impact: "Your website becomes a 24/7 sales assistant",
-    backIntro: "Simple Sequence turns passive traffic into active conversations and booked appointments—even when you're offline.",
-    backBullets: [
-      "AI chat that qualifies and books appointments instantly",
-      "Captures intent from visitors who would otherwise bounce",
-      "Answers common questions without human involvement",
-      "Routes complex inquiries to the right team member",
-      "Works after hours when competitors are offline"
-    ],
-    backOutcome: "More conversions from existing traffic, paid ad ROI that actually compounds, and zero missed after-hours opportunities."
-  },
-  {
-    icon: Handshake,
-    title: "White-Glove Integration & ROI",
-    image: integrationRoiDiagram,
-    frontDescription: "We handle the plumbing—phones, calendars, CRM/EMR, and automation—so critical workflows run in the background, held together by your people, not duct tape.",
-    impact: "Critical workflows running consistently with human oversight maintained",
-    backIntro: "You don't need another disconnected tool. You need a system that reduces manual load while keeping human judgment where it matters most.",
-    backBullets: [
-      "Done-for-you setup across phone systems, chat widgets, GHL pipelines, calendars, and EMR/CRMs",
-      "Critical workflows running consistently in the background with zero intervention",
-      "Reduced manual load so your team focuses on judgment calls, not data entry",
-      "Dashboards that track calls handled, leads captured, show-rate, and projected revenue",
-      "System oversight preserved—humans stay in control of what matters"
-    ],
-    backOutcome: "A front desk you can actually measure and improve, with workflows that don't break when you step away—and real-time visibility into what's working."
   },
   {
     icon: Star,
@@ -831,7 +813,7 @@ function RevenueSystemSection() {
               transition={{ delay: 0.8 }}
             >
               <ChevronDown className="w-5 h-5 animate-bounce" />
-              <span>Scroll to explore our six core capabilities</span>
+              <span>Scroll to explore our five core capabilities</span>
             </motion.div>
           </motion.div>
         </div>
