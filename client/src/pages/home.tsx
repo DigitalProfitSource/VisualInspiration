@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { TechTicker } from "@/components/ui/tech-ticker";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
+import { GridBeam } from "@/components/ui/grid-beam";
 
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
@@ -428,6 +429,7 @@ export default function Home() {
       <TechTicker />
       {/* Section A: Sequential Revenue Intro */}
       <section className="py-24 md:py-32 relative overflow-hidden">
+        <GridBeam showCenterBeam={false} gridOpacity={0.08} />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -451,6 +453,7 @@ export default function Home() {
       </section>
       {/* Section B: Pillar 1 — CAPTURE */}
       <section className="py-16 md:py-24 relative overflow-hidden">
+        <GridBeam showCenterBeam={false} gridOpacity={0.08} />
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div
@@ -514,6 +517,7 @@ export default function Home() {
       </section>
       {/* Section C: Pillar 2 — CONVERT */}
       <section className="py-16 md:py-24 relative overflow-hidden">
+        <GridBeam showCenterBeam={false} gridOpacity={0.08} />
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div
@@ -577,6 +581,7 @@ export default function Home() {
       </section>
       {/* Section D: Pillar 3 — COMPOUND */}
       <section className="py-16 md:py-24 relative overflow-hidden">
+        <GridBeam showCenterBeam={false} gridOpacity={0.08} />
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div
@@ -712,6 +717,7 @@ export default function Home() {
       </section>
       {/* The Compound Effect Timeline + Loop CTA */}
       <section className="py-24 md:py-32 relative border-t border-white/5 overflow-hidden">
+        <GridBeam showCenterBeam={false} gridOpacity={0.06} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(103,232,249,0.03),transparent_60%)]" />
         <style>{`
           @keyframes timeline-glow-sweep {
