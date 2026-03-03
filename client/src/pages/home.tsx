@@ -377,7 +377,7 @@ export default function Home() {
             <motion.p variants={fadeIn} className="text-base md:text-lg text-primary/80 mb-3 md:mb-4 font-medium text-balance">AI Implementation Advisor™ — Capture. Convert. Compound.</motion.p>
             
             {/* Hide on mobile, show on desktop */}
-            <motion.p variants={fadeIn} className="hidden md:block text-lg md:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">We install an AI-powered system that captures every lead in under 60 seconds, closes your follow-up gaps automatically, and turns past customers into new deals — with zero additional ad spend.</motion.p>
+            <motion.p variants={fadeIn} className="hidden md:block text-lg md:text-xl text-muted-foreground mb-4 max-w-xl leading-relaxed">We install an AI-powered system that captures every lead in under 60 seconds, closes your follow-up gaps automatically, and turns past customers into new deals — with zero additional ad spend.</motion.p>
           </motion.div>
         </motion.div>
         
@@ -389,7 +389,7 @@ export default function Home() {
           initial="initial"
           animate="animate"
           variants={stagger}
-          className="hidden md:block container mx-auto px-6 absolute bottom-32 left-0 right-0 z-10"
+          className="hidden md:block container mx-auto px-6 mt-12 relative z-10"
         >
           <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
             <div className="relative group">
