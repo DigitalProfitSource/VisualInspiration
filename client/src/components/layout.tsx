@@ -48,7 +48,7 @@ function Header() {
             <img src={logoImage} alt="SimpleSequence" className="h-12 md:h-[72px] w-auto" />
           </Link>
           
-          <div className="hidden md:flex gap-10 text-sm font-medium text-muted-foreground">
+          <div className="hidden md:flex gap-10 items-center text-sm font-medium text-muted-foreground">
             {navLinks.map((link) => (
               <Link 
                 key={link.name}
@@ -58,6 +58,13 @@ function Header() {
                 {link.name}
               </Link>
             ))}
+            <Link
+              href="/book"
+              className="ml-2 px-5 py-2 bg-gradient-to-r from-primary to-cyan-400 text-black font-bold text-sm rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
+              data-testid="desktop-nav-book"
+            >
+              Book a Call
+            </Link>
           </div>
 
           <button
