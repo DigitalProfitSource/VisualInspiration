@@ -463,8 +463,8 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-2 lg:order-1"
             >
-              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 01 · CAPTURE</span>
-              <div className="relative group max-w-md mx-auto lg:mx-0">
+              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block text-center">PILLAR 01 · CAPTURE</span>
+              <div className="relative group max-w-md mx-auto">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-400/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl">
                   <img 
@@ -561,8 +561,8 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-1 lg:order-2"
             >
-              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 02 · CONVERT</span>
-              <div className="relative group max-w-md mx-auto lg:mx-0">
+              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block text-center">PILLAR 02 · CONVERT</span>
+              <div className="relative group max-w-md mx-auto">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-400/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl">
                   <img 
@@ -591,8 +591,8 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-2 lg:order-1"
             >
-              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-3 block">PILLAR 03 · COMPOUND</span>
-              <div className="relative group max-w-md mx-auto lg:mx-0">
+              <span className="text-sm font-mono text-primary uppercase tracking-widest mb-4 block text-center">PILLAR 03 · COMPOUND</span>
+              <div className="relative group max-w-md mx-auto">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-400/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl">
                   <img 
