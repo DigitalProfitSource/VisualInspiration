@@ -15,6 +15,7 @@ import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
 import aiPresenceImg from "@assets/AI-Conversion-Presence_1772546750658.webp";
+import aiSalesRepImg from "@assets/24-7_AI-Sales_Rep__1772549798980.webp";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 
 const fadeIn = {
@@ -556,9 +557,18 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-1 lg:order-2"
             >
-              {/* FOUNDER HOLOGRAM IMAGE: CONVERT PILLAR - Replace src with custom image */}
-              <div className="w-full aspect-[4/3] max-w-[600px] mx-auto rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-transparent flex items-center justify-center" data-testid="image-placeholder-convert">
-                <span className="text-primary/30 font-mono text-sm">CONVERT HOLOGRAM</span>
+              <div className="relative group max-w-md mx-auto">
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-400/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl">
+                  <img 
+                    src={aiSalesRepImg} 
+                    alt="AI-Powered Sales Rep vs Manual Follow-Up" 
+                    className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                    <p className="text-white font-mono text-xs tracking-widest uppercase">Pillar 02: Sales Engine</p>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
