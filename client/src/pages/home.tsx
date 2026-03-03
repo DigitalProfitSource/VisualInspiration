@@ -15,7 +15,7 @@ import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
 import aiPresenceImg from "@assets/AI-Conversion-Presence_1772546750658.webp";
-import aiSalesRepImg from "@assets/24-7_AI-Sales_Rep__1772549798980.webp";
+import aiSalesRepImg from "@assets/24-7__AI-Sales_Rep__1772550595021.webp";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 
 const fadeIn = {
