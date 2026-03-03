@@ -14,6 +14,7 @@ import { CircuitBeams } from "@/components/ui/circuit-beams";
 import { IndustryCarousel } from "@/components/ui/industry-carousel";
 import { SEO, organizationSchema, softwareApplicationSchema } from "@/components/seo";
 import { Layout } from "@/components/layout";
+import aiPresenceImg from "@assets/AI-Presence_1772510479976.webp";
 import founderPhoto from "@assets/Untitled_design_1764887004065.png";
 
 const fadeIn = {
@@ -457,9 +458,18 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-2 lg:order-1"
             >
-              {/* FOUNDER HOLOGRAM IMAGE: CAPTURE PILLAR - Replace src with custom image */}
-              <div className="w-full aspect-[4/3] max-w-[600px] mx-auto rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-transparent flex items-center justify-center" data-testid="image-placeholder-capture">
-                <span className="text-primary/30 font-mono text-sm">CAPTURE HOLOGRAM</span>
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-400/50 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-2xl">
+                  <img 
+                    src={aiPresenceImg} 
+                    alt="AI-Powered Capture vs Manual Process" 
+                    className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                    <p className="text-white font-mono text-xs tracking-widest uppercase">Pillar 01: Capture Engine</p>
+                  </div>
+                </div>
               </div>
             </motion.div>
 
