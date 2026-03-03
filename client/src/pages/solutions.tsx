@@ -13,6 +13,7 @@ import {
   Globe,
   Handshake,
   Star,
+  Database,
 } from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { SEO } from "@/components/seo";
@@ -24,6 +25,7 @@ import triageRoutingDiagram from "@assets/generated_images/intelligent_triage_ro
 import followUpDiagram from "@assets/generated_images/follow-up_automation_sequence_diagram.png";
 import integrationRoiDiagram from "@assets/generated_images/integration_roi_dashboard_diagram.png";
 import reputationFlywheelDiagram from "@assets/reputation-trust-flywheel_1772499550007.webp";
+import databaseReactivationDiagram from "@assets/database-reactivation-ltv_1772503644259.webp";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 40 },
@@ -399,6 +401,22 @@ const revenueFeatures = [
       "Compounding flywheel: more reviews → higher rankings → more leads → more customers → more reviews"
     ],
     backOutcome: "A self-sustaining trust engine that builds your reputation, boosts local search rankings, and drives inbound demand—without your team lifting a finger."
+  },
+  {
+    icon: Database,
+    title: "Database Reactivation & LTV Expansion",
+    image: databaseReactivationDiagram,
+    frontDescription: "Your biggest untapped asset isn't new leads—it's the hundreds of past customers and dormant contacts already sitting in your database. Most businesses never re-engage them. That's revenue you've already paid to acquire, going to waste.",
+    impact: "Dormant contacts become reactivated revenue without new ad spend",
+    backIntro: "Simple Sequence wakes up your dormant database and builds lifecycle automation that keeps customers coming back—turning one-time buyers into repeat revenue and maximizing lifetime value.",
+    backBullets: [
+      "AI-powered re-engagement campaigns that wake up dormant contacts via SMS and email",
+      "Lifecycle follow-up sequences timed to natural repurchase cycles",
+      "Segmented outreach based on service history, recency, and engagement signals",
+      "Automated win-back offers for lapsed customers who haven't booked in 60–180 days",
+      "LTV expansion tracking: measure reactivated revenue, repeat purchase rate, and total customer lifetime value"
+    ],
+    backOutcome: "Revenue recovered from contacts you've already paid to acquire—no new ad spend, no new leads needed. Just systematic reactivation that turns your database into a compounding asset."
   }
 ];
 
@@ -813,7 +831,7 @@ function RevenueSystemSection() {
               transition={{ delay: 0.8 }}
             >
               <ChevronDown className="w-5 h-5 animate-bounce" />
-              <span>Scroll to explore our five core capabilities</span>
+              <span>Scroll to explore our six core capabilities</span>
             </motion.div>
           </motion.div>
         </div>
