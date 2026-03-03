@@ -62,7 +62,7 @@ export function GridBeam({ className, showCenterBeam = true, gridOpacity = 0.15 
         style={{
           opacity: gridOpacity,
           backgroundImage: 'linear-gradient(to right, rgba(110, 224, 247, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(110, 224, 247, 0.25) 1px, transparent 1px)',
-          backgroundSize: '18px 18px'
+          backgroundSize: '48px 48px'
         }}
       />
 

@@ -996,7 +996,7 @@ export function ProfitLoopSection() {
             className="absolute inset-0"
             style={{
               backgroundImage: `linear-gradient(rgba(110,224,247,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(110,224,247,0.3) 1px, transparent 1px)`,
-              backgroundSize: "22px 22px",
+              backgroundSize: "48px 48px",
               maskImage: "linear-gradient(to bottom, black 40%, transparent 100%)",
               WebkitMaskImage: "linear-gradient(to bottom, black 40%, transparent 100%)",
             }}
