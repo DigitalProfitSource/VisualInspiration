@@ -991,24 +991,6 @@ export default function Solutions() {
           </div>
         </div>
       </section>
-      {/* SECTION 5: The Qualifier */}
-      <section className="py-24 relative border-t border-white/5">
-        <div className="container mx-auto px-6 max-w-3xl text-center relative z-10">
-          <motion.div
-            initial={fadeInUp.initial}
-            whileInView={fadeInUp.whileInView}
-            viewport={fadeInUp.viewport}
-            transition={fadeInUp.transition}
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-medium mb-8 text-white">
-              Is This For You?
-            </h2>
-            <p className="text-lg text-slate-400 leading-relaxed">
-              Sequential Revenue&trade; is specifically built for established service businesses with an active flow of leads and a history of past customers. If you're doing $50K+/month and have a database of past leads gathering dust, this system will pay for itself. If you don't have lead flow yet, we can't fix your flow &mdash; but if you have leads coming in that you're too busy to chase, we're your missing piece.
-            </p>
-          </motion.div>
-        </div>
-      </section>
       {/* SECTION 6: Beyond Basic Automation */}
       <RevenueSystemSection />
       {/* SECTION 7: CTA */}
