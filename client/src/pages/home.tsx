@@ -643,8 +643,15 @@ export default function Home() {
       {/* Industry Results Carousel */}
       <IndustryCarousel />
       {/* "Found Money" Guarantee */}
-      <section className="py-24 relative">
-        <div className="container mx-auto px-6 max-w-3xl relative z-10">
+      <section className="py-32 relative border-y border-white/5">
+        <div className="container mx-auto px-6 max-w-4xl relative z-10">
+          <motion.div
+            className="rounded-2xl border border-white/[0.08] bg-white/[0.015] p-8 md:p-12 lg:p-14"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+          >
           <motion.div
             initial={fadeInUpViewport.initial}
             whileInView={fadeInUpViewport.whileInView}
@@ -699,6 +706,7 @@ export default function Home() {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
+          </motion.div>
           </motion.div>
         </div>
       </section>
