@@ -184,10 +184,20 @@
           });
         }
         
+        var callStartTime = 0;
+        var GRACE_PERIOD = 15000;
+        
         function isCallUIPresent() {
           var selectors = [
+            '[class*="lc_text_widget"]',
+            '[class*="lc-text-widget"]',
             '[class*="lc_text_widget"] button[class*="end"]',
             '[class*="lc-text-widget"] button[class*="end"]',
+            '[id*="lc-chat"]',
+            '[id*="lc_chat"]',
+            'iframe[src*="leadconnector"]',
+            'iframe[src*="widgets.leadconnectorhq"]',
+            '[class*="chat-widget"]',
             '[class*="call-controls"]',
             '[class*="voice-call"]',
             '[class*="calling"]',
@@ -196,20 +206,29 @@
             'button[aria-label*="End"]',
             'button[aria-label*="Hang"]',
             '[class*="hangup"]',
-            '[class*="hang-up"]'
+            '[class*="hang-up"]',
+            '[class*="web_call"]',
+            '[class*="web-call"]'
           ];
           for (var i = 0; i < selectors.length; i++) {
-            if (document.querySelector(selectors[i])) return true;
+            try { if (document.querySelector(selectors[i])) return true; } catch(e) {}
           }
           return false;
         }
         
         setInterval(function() {
-          if (hasActiveStreams() && callWasActive && !isCallUIPresent()) {
-            console.log('[MicCleanup] Watchdog: Call UI gone but mic still active - killing streams');
-            stopAllMediaTracks();
+          if (hasActiveStreams() && callWasActive) {
+            if (!callStartTime) callStartTime = Date.now();
+            if (Date.now() - callStartTime < GRACE_PERIOD) return;
+            if (!isCallUIPresent()) {
+              console.log('[MicCleanup] Watchdog: Call UI gone but mic still active - killing streams');
+              stopAllMediaTracks();
+              callStartTime = 0;
+            }
+          } else {
+            callStartTime = 0;
           }
-        }, 2000);
+        }, 3000);
         
         var OriginalRTCPeerConnection = window.RTCPeerConnection;
         window.RTCPeerConnection = function(config) {
