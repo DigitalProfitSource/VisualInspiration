@@ -379,7 +379,7 @@ export default function Home() {
             {/* Hide on mobile, show on desktop */}
             <motion.p variants={fadeIn} className="hidden md:block text-lg md:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">We install an AI-powered system that captures every lead in under 60 seconds, closes your follow-up gaps automatically, and turns past customers into new deals — with zero additional ad spend.</motion.p>
 
-            <motion.div variants={fadeIn} className="hidden md:flex flex-row gap-6 items-center max-w-3xl">
+            <motion.div variants={fadeIn} className="hidden md:flex flex-row gap-8 items-center max-w-3xl mt-12">
               <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary to-cyan-400 rounded-full blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
                 <Link href="/book">
