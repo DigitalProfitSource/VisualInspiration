@@ -328,7 +328,7 @@ export default function Home() {
         }}
       />
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-start md:items-center pt-24 md:pt-20 overflow-hidden">
+      <section className="relative min-h-screen flex flex-col items-start md:items-start pt-24 md:pt-20 pb-40 overflow-hidden">
         {/* Art-directed Background with Mobile/Desktop Images */}
         <motion.div style={{ opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
           <motion.picture
@@ -385,11 +385,10 @@ export default function Home() {
 
         {/* Desktop CTA - positioned with content */}
         <motion.div 
-          style={{ y: contentY }}
           initial="initial"
           animate="animate"
           variants={stagger}
-          className="hidden md:block container mx-auto px-6 mt-12 relative z-10"
+          className="hidden md:block container mx-auto px-6 mt-20 relative z-10"
         >
           <motion.div variants={fadeIn} className="flex flex-row gap-6 items-center max-w-3xl">
             <div className="relative group">
