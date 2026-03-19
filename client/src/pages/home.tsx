@@ -237,9 +237,9 @@ function BentoGridSection() {
         >
           <div className="text-center max-w-4xl mx-auto mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-medium text-white leading-tight mb-6" data-testid="text-bento-headline">
-              We Align Your Entire Customer Journey Into One{" "}
+              We Automate Your Entire Customer Journey Into One{" "}
               <span className="bg-gradient-to-r from-primary to-cyan-300 bg-clip-text text-transparent">
-                Intelligent Flow.
+                Flow.
               </span>
             </h2>
             <p className="text-base md:text-lg text-slate-400 leading-relaxed max-w-3xl mx-auto">
