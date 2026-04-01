@@ -14,15 +14,40 @@ interface PDFGeneratorData {
   revenuePains: string[];
 }
 
+const PAGE_BOTTOM = 720;
+const LEFT = 50;
+const FULL_WIDTH = 512;
+
+function checkY(doc: InstanceType<typeof PDFDocument>, y: number, needed = 30): number {
+  if (y + needed > PAGE_BOTTOM) {
+    doc.addPage();
+    return 50;
+  }
+  return y;
+}
+
+function sectionHeading(
+  doc: InstanceType<typeof PDFDocument>,
+  y: number,
+  text: string,
+  color: string,
+  size = 16
+): number {
+  y = checkY(doc, y, size + 20);
+  doc.fontSize(size).fillColor(color).text(text, LEFT, y);
+  return y + size + 10;
+}
+
 export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({
       size: "LETTER",
-      margin: 50,
+      margin: LEFT,
+      bufferPages: true,
       info: {
-        Title: `Sequential Revenue™ Friction Analysis - ${data.result.businessName}`,
+        Title: `Sequential Revenue Friction Analysis - ${data.result.businessName}`,
         Author: "SimpleSequence",
-        Subject: "Sequential Revenue™ Friction Analysis Report",
+        Subject: "Sequential Revenue Friction Analysis Report",
       },
     });
 
@@ -33,321 +58,236 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
 
     const colors = {
       primary: "#0891b2",
-      cyan: "#67E8F9",
+      cyan: "#22d3ee",
       teal: "#14b8a6",
       amber: "#f59e0b",
-      red: "#ef4444",
       dark: "#18181b",
       slate: "#64748b",
       white: "#ffffff",
+      lightTeal: "#f0fdfa",
     };
 
-    doc.rect(0, 0, doc.page.width, 100).fill(colors.dark);
+    // ── Header bar (page 1 only) ──────────────────────────────────────────────
+    doc.rect(0, 0, doc.page.width, 90).fill(colors.dark);
+    doc.fontSize(22).fillColor(colors.white).text("SimpleSequence", LEFT, 28);
+    doc.fontSize(10).fillColor(colors.cyan).text("Sequential Revenue Friction Analysis", LEFT, 55);
+    doc.fontSize(9).fillColor(colors.slate).text(
+      `Generated: ${data.submittedAt.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`,
+      400, 55, { align: "right" }
+    );
 
-    doc
-      .fontSize(24)
-      .fillColor(colors.white)
-      .text("SimpleSequence", 50, 35);
+    let y = 108;
 
-    doc
-      .fontSize(10)
-      .fillColor(colors.cyan)
-      .text("Sequential Revenue™ Friction Analysis", 50, 65);
+    // ── Business Profile ──────────────────────────────────────────────────────
+    y = sectionHeading(doc, y, "Business Profile", colors.dark);
 
-    doc
-      .fontSize(9)
-      .fillColor(colors.slate)
-      .text(`Generated: ${data.submittedAt.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`, 400, 65, { align: "right" });
-
-    let y = 120;
-
-    doc
-      .fontSize(18)
-      .fillColor(colors.dark)
-      .text("Business Profile", 50, y);
-
-    y += 30;
-
-    const profileData = [
-      ["Company", data.result.businessName],
-      ["Contact", data.contactName],
-      ["Email", data.contactEmail],
-      ["Phone", data.contactPhone || "Not provided"],
-      ["Website", data.websiteUrl || "Not provided"],
-      ["Industry", data.result.industry],
+    const profileData: [string, string][] = [
+      ["Company",        data.result.businessName || "—"],
+      ["Contact",        data.contactName],
+      ["Email",          data.contactEmail],
+      ["Phone",          data.contactPhone || "Not provided"],
+      ["Website",        data.websiteUrl   || "Not provided"],
+      ["Industry",       data.result.industry],
       ["Specialization", data.result.niche],
-      ["Team Size", data.result.teamSize],
-      ["Avg Job Value", `$${data.result.avgJobValue.toLocaleString()}`],
-      ["Monthly Leads", String(data.result.monthlyLeads)],
-      ["Close Rate", `${Math.round(data.result.closeRate * 100)}%`],
+      ["Team Size",      data.result.teamSize],
+      ["Avg Job Value",  `$${data.result.avgJobValue.toLocaleString()}`],
+      ["Monthly Leads",  String(data.result.monthlyLeads)],
+      ["Close Rate",     `${Math.round(data.result.closeRate * 100)}%`],
     ];
 
     doc.fontSize(10);
     for (const [label, value] of profileData) {
-      doc.fillColor(colors.slate).text(label + ":", 50, y, { continued: true, width: 120 });
-      doc.fillColor(colors.dark).text(" " + value, { width: 400 });
+      y = checkY(doc, y, 18);
+      doc.fillColor(colors.slate).text(label + ":", LEFT, y, { continued: true, width: 120 });
+      doc.fillColor(colors.dark).text("  " + value, { width: 390 });
       y += 16;
     }
 
-    y += 20;
+    y += 12;
 
-    doc
-      .fontSize(18)
-      .fillColor(colors.dark)
-      .text("Primary Friction Points", 50, y);
-
-    y += 25;
-
-    doc.fontSize(10).fillColor(colors.slate);
-    for (const pain of data.revenuePains) {
-      doc.text("• " + pain, 60, y);
-      y += 16;
+    // ── Primary Friction Points ───────────────────────────────────────────────
+    if (data.revenuePains.length > 0) {
+      y = sectionHeading(doc, y, "Primary Friction Points", colors.dark);
+      doc.fontSize(10).fillColor(colors.slate);
+      for (const pain of data.revenuePains) {
+        y = checkY(doc, y, 18);
+        doc.text("  " + pain, LEFT + 10, y);
+        y += 16;
+      }
+      y += 10;
     }
 
-    y += 20;
+    // ── Score box ─────────────────────────────────────────────────────────────
+    y = checkY(doc, y, 110);
+    doc.rect(LEFT, y, FULL_WIDTH, 95).fillAndStroke(colors.lightTeal, colors.teal);
+    doc.fontSize(11).fillColor(colors.teal)
+       .text("SEQUENTIAL REVENUE SCORE", LEFT + 10, y + 10, { align: "center", width: FULL_WIDTH - 20 });
+    doc.fontSize(34).fillColor(colors.primary)
+       .text(`${data.result.overallScore}/100`, LEFT + 10, y + 27, { align: "center", width: FULL_WIDTH - 20 });
+    doc.fontSize(10).fillColor(colors.slate)
+       .text(
+         `Capture: ${data.result.captureScore.score}   |   Convert: ${data.result.convertScore.score}   |   Compound: ${data.result.compoundScore.score}`,
+         LEFT + 10, y + 65, { align: "center", width: FULL_WIDTH - 20 }
+       );
+    doc.fontSize(9).fillColor(colors.slate)
+       .text(
+         `Estimated monthly revenue gap: $${data.result.totalMonthlyGap.toLocaleString()}/mo  ($${data.result.annualizedGap.toLocaleString()}/yr)`,
+         LEFT + 10, y + 80, { align: "center", width: FULL_WIDTH - 20 }
+       );
+    y += 108;
 
-    doc.rect(50, y, 512, 100).fillAndStroke("#f0fdfa", colors.teal);
-
-    doc
-      .fontSize(11)
-      .fillColor(colors.teal)
-      .text("SEQUENTIAL REVENUE™ SCORE", 60, y + 10, { align: "center", width: 492 });
-
-    doc
-      .fontSize(36)
-      .fillColor(colors.primary)
-      .text(`${data.result.overallScore}/100`, 60, y + 28, { align: "center", width: 492 });
-
-    doc
-      .fontSize(10)
-      .fillColor(colors.slate)
-      .text(`Capture: ${data.result.captureScore.score}  |  Convert: ${data.result.convertScore.score}  |  Compound: ${data.result.compoundScore.score}`, 60, y + 70, { align: "center", width: 492 });
-
-    doc
-      .fontSize(10)
-      .fillColor(colors.slate)
-      .text(`Estimated monthly revenue gap: $${data.result.totalMonthlyGap.toLocaleString()}/mo ($${data.result.annualizedGap.toLocaleString()}/yr)`, 60, y + 85, { align: "center", width: 492 });
-
-    y += 115;
-
-    doc
-      .fontSize(18)
-      .fillColor(colors.dark)
-      .text("Pillar Breakdown", 50, y);
-
-    y += 30;
+    // ── Pillar Breakdown ──────────────────────────────────────────────────────
+    y = sectionHeading(doc, y, "Pillar Breakdown", colors.dark);
 
     const pillars = [
-      { name: "Capture", color: colors.teal, pillar: data.result.captureScore },
-      { name: "Convert", color: colors.amber, pillar: data.result.convertScore },
-      { name: "Compound", color: colors.primary, pillar: data.result.compoundScore },
+      { name: "Capture",  color: colors.teal,    pillar: data.result.captureScore  },
+      { name: "Convert",  color: colors.amber,   pillar: data.result.convertScore  },
+      { name: "Compound", color: colors.primary,  pillar: data.result.compoundScore },
     ];
 
     for (const { name, color, pillar } of pillars) {
-      doc.rect(50, y, 512, 20).fill(color + "15");
-      doc.rect(50, y, 512, 20).stroke(color);
+      // Header bar: 22px + findings (up to 3 × 15) + gap 10 ≈ 80 min
+      y = checkY(doc, y, 80);
 
-      doc
-        .fontSize(11)
-        .fillColor(color)
-        .text(name, 60, y + 5);
-
-      doc.text(`${pillar.score}/100`, 450, y + 5, { align: "right", width: 100 });
-
-      y += 28;
+      doc.rect(LEFT, y, FULL_WIDTH, 22).fill(color + "22");
+      doc.rect(LEFT, y, FULL_WIDTH, 22).stroke(color);
+      doc.fontSize(11).fillColor(color).text(name, LEFT + 8, y + 5);
+      doc.fontSize(11).fillColor(color).text(`${pillar.score}/100`, LEFT + 8, y + 5, { align: "right", width: FULL_WIDTH - 16 });
+      y += 26;
 
       doc.fontSize(9).fillColor(colors.slate);
-      for (const finding of pillar.findings.slice(0, 3)) {
-        doc.text("• " + finding, 60, y);
-        y += 14;
+      for (const finding of pillar.findings.slice(0, 4)) {
+        y = checkY(doc, y, 16);
+        doc.text("  " + finding, LEFT + 12, y, { width: FULL_WIDTH - 20 });
+        y += 15;
       }
-
-      y += 10;
+      y += 8;
     }
 
+    // ── Blindspots ────────────────────────────────────────────────────────────
     if (data.result.blindspots.length > 0) {
-      y += 10;
-      doc
-        .fontSize(18)
-        .fillColor(colors.dark)
-        .text("Blindspots", 50, y);
-
-      y += 25;
-
+      y = sectionHeading(doc, y, "Blindspots", colors.dark);
       doc.fontSize(9).fillColor(colors.slate);
-      for (const blindspot of data.result.blindspots.slice(0, 5)) {
-        doc.text("[!] " + blindspot, 60, y, { width: 480 });
-        y += 16;
+      for (const blindspot of data.result.blindspots.slice(0, 6)) {
+        y = checkY(doc, y, 28);
+        doc.text("[!] " + blindspot, LEFT + 10, y, { width: FULL_WIDTH - 20 });
+        y += 24;
       }
     }
 
-    doc.addPage();
+    // ── Action Plan ───────────────────────────────────────────────────────────
+    y = checkY(doc, y, 60);
+    // Always start action plan on a fresh section, add page if less than 80pt remain
+    if (y > PAGE_BOTTOM - 80) { doc.addPage(); y = 50; }
 
-    y = 50;
+    y = sectionHeading(doc, y, "Your 30-Day Action Plan", colors.dark);
 
-    doc
-      .fontSize(18)
-      .fillColor(colors.dark)
-      .text("Your 30-Day Action Plan", 50, y);
-
-    y += 30;
-
-    doc
-      .fontSize(13)
-      .fillColor(colors.teal)
-      .text("Quick Wins (First 7–14 Days)", 50, y);
-
+    y = checkY(doc, y, 30);
+    doc.fontSize(12).fillColor(colors.teal).text("Quick Wins  (first 7-14 days)", LEFT, y);
     y += 20;
 
     doc.fontSize(9).fillColor(colors.slate);
     for (const action of data.result.actionPlan.quickWins) {
-      doc.text("(+) " + action, 60, y, { width: 480 });
-      y += 16;
+      y = checkY(doc, y, 28);
+      doc.text("(+) " + action, LEFT + 10, y, { width: FULL_WIDTH - 20 });
+      y += 22;
     }
 
-    y += 15;
-
-    doc
-      .fontSize(13)
-      .fillColor(colors.amber)
-      .text("Supporting Actions (Rest of 30 Days)", 50, y);
-
+    y += 8;
+    y = checkY(doc, y, 30);
+    doc.fontSize(12).fillColor(colors.amber).text("Supporting Actions  (rest of 30 days)", LEFT, y);
     y += 20;
 
     doc.fontSize(9).fillColor(colors.slate);
     for (const action of data.result.actionPlan.supportingActions) {
-      doc.text("-> " + action, 60, y, { width: 480 });
-      y += 16;
+      y = checkY(doc, y, 28);
+      doc.text("->  " + action, LEFT + 10, y, { width: FULL_WIDTH - 20 });
+      y += 22;
     }
 
-    doc.addPage();
+    // ── Recommended Tier ──────────────────────────────────────────────────────
+    y = checkY(doc, y, 120);
+    if (y > PAGE_BOTTOM - 120) { doc.addPage(); y = 50; }
 
-    y = 50;
+    y += 10;
+    doc.rect(LEFT, y, FULL_WIDTH, 105).fill(colors.primary + "18");
+    doc.rect(LEFT, y, FULL_WIDTH, 105).stroke(colors.primary);
+    doc.fontSize(10).fillColor(colors.primary)
+       .text("RECOMMENDED SOLUTION", LEFT + 10, y + 12, { align: "center", width: FULL_WIDTH - 20 });
+    doc.fontSize(22).fillColor(colors.dark)
+       .text(`${data.result.recommendedTier} Tier`, LEFT + 10, y + 30, { align: "center", width: FULL_WIDTH - 20 });
+    doc.fontSize(9).fillColor(colors.slate)
+       .text(data.result.tierReason, LEFT + 20, y + 62, { align: "center", width: FULL_WIDTH - 40 });
+    y += 118;
 
-    doc.rect(50, y, 512, 100).fillAndStroke(colors.primary + "15", colors.primary);
-
-    doc
-      .fontSize(11)
-      .fillColor(colors.primary)
-      .text("RECOMMENDED SOLUTION", 60, y + 15, { align: "center", width: 492 });
-
-    doc
-      .fontSize(24)
-      .fillColor(colors.dark)
-      .text(`${data.result.recommendedTier} Tier`, 60, y + 35, { align: "center", width: 492 });
-
-    doc
-      .fontSize(10)
-      .fillColor(colors.slate)
-      .text(data.result.tierReason, 70, y + 65, { align: "center", width: 472 });
-
-    y += 130;
-
-    doc
-      .fontSize(18)
-      .fillColor(colors.dark)
-      .text("Tier Comparison", 50, y);
-
-    y += 30;
+    // ── Tier Comparison ───────────────────────────────────────────────────────
+    y = sectionHeading(doc, y, "Tier Comparison", colors.dark);
 
     const tiers = [
       {
-        name: "Frontline",
-        focus: "Capture pillar",
-        ideal: "Lead capture and response speed are your primary friction",
+        name:     "Frontline",
+        focus:    "Capture pillar",
+        ideal:    "Lead capture and response speed are your primary friction",
         includes: ["AI voice answering", "Instant lead capture", "After-hours coverage"],
       },
       {
-        name: "Specialist",
-        focus: "Capture + Convert pillars",
-        ideal: "Follow-up, conversion, and no-shows also create drag",
-        includes: [
-          "Everything in Frontline",
-          "No-show recovery automation",
-          "Quote follow-up sequences",
-          "Database reactivation",
-        ],
+        name:     "Specialist",
+        focus:    "Capture + Convert pillars",
+        ideal:    "Follow-up, conversion, and no-shows also create drag",
+        includes: ["Everything in Frontline", "No-show recovery automation", "Quote follow-up sequences"],
       },
       {
-        name: "Command",
-        focus: "All three pillars",
-        ideal: "Complex operations or high volume across Capture, Convert, and Compound",
-        includes: [
-          "Everything in Specialist",
-          "Full ops automation",
-          "Custom workflow integration",
-          "Enterprise-grade systems",
-        ],
+        name:     "Command",
+        focus:    "All three pillars",
+        ideal:    "Complex operations or high volume across all three pillars",
+        includes: ["Everything in Specialist", "Full ops automation", "Custom workflow integration"],
       },
     ];
 
     for (const tier of tiers) {
+      y = checkY(doc, y, 100);
       const isRecommended = tier.name === data.result.recommendedTier;
 
       if (isRecommended) {
-        doc.rect(50, y, 512, 90).fillAndStroke(colors.cyan + "20", colors.primary);
-      } else {
-        doc.rect(50, y, 512, 90).stroke(colors.slate);
+        doc.rect(LEFT, y, FULL_WIDTH, 90).fill(colors.cyan + "18");
       }
+      doc.rect(LEFT, y, FULL_WIDTH, 90).stroke(isRecommended ? colors.primary : colors.slate);
 
-      doc
-        .fontSize(12)
-        .fillColor(isRecommended ? colors.primary : colors.dark)
-        .text(tier.name + (isRecommended ? " [Recommended]" : ""), 60, y + 10);
+      doc.fontSize(12)
+         .fillColor(isRecommended ? colors.primary : colors.dark)
+         .text(tier.name + (isRecommended ? "  [Recommended]" : ""), LEFT + 10, y + 10);
 
-      doc
-        .fontSize(9)
-        .fillColor(colors.slate)
-        .text(`Focus: ${tier.focus}`, 60, y + 26);
+      doc.fontSize(9).fillColor(colors.slate).text(`Focus: ${tier.focus}`, LEFT + 10, y + 28);
+      doc.text(`Ideal when: ${tier.ideal}`, LEFT + 10, y + 42, { width: FULL_WIDTH - 20 });
 
-      doc.text(`Ideal when: ${tier.ideal}`, 60, y + 40);
-
-      doc.fontSize(8);
-      let includeY = y + 55;
+      let ix = y + 58;
       for (const item of tier.includes.slice(0, 2)) {
-        doc.text("• " + item, 70, includeY);
-        includeY += 10;
+        doc.fontSize(8).text("  " + item, LEFT + 14, ix);
+        ix += 12;
       }
 
-      y += 100;
+      y += 98;
     }
 
+    // ── CTA ───────────────────────────────────────────────────────────────────
+    y += 12;
+    y = checkY(doc, y, 60);
+    doc.fontSize(13).fillColor(colors.primary)
+       .text("Ready to Fix Your Revenue Friction?", LEFT, y, { align: "center", width: FULL_WIDTH });
     y += 20;
+    doc.fontSize(10).fillColor(colors.slate)
+       .text(
+         "Book a discovery call to discuss implementing these fixes with AI-powered automation.",
+         LEFT, y, { align: "center", width: FULL_WIDTH }
+       );
+    y += 22;
+    doc.fontSize(10).fillColor(colors.primary)
+       .text(
+         "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi",
+         LEFT, y,
+         { align: "center", width: FULL_WIDTH, link: "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi", underline: true }
+       );
 
-    doc
-      .fontSize(14)
-      .fillColor(colors.primary)
-      .text("Ready to Fix Your Revenue Friction?", 50, y, { align: "center", width: 512 });
-
-    y += 20;
-
-    doc
-      .fontSize(10)
-      .fillColor(colors.slate)
-      .text(
-        "Book a discovery call to discuss implementing these fixes with AI-powered automation.",
-        50,
-        y,
-        { align: "center", width: 512 }
-      );
-
-    y += 30;
-
-    doc
-      .fontSize(11)
-      .fillColor(colors.primary)
-      .text("https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi", 50, y, {
-        align: "center",
-        width: 512,
-        link: "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi",
-        underline: true,
-      });
-
-    const pageCount = doc.bufferedPageRange().count;
-    // We cannot reliably use switchToPage with buffers in some pdfkit versions
-    // Instead, we should handle footers during page creation or just before end
-    // For now, let's simplify and just end it. The error is coming from switchToPage.
-    
     doc.end();
   });
 }
