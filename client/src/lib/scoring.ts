@@ -490,9 +490,11 @@ function recommendTier(
   convertScore: number,
   compoundScore: number,
   monthlyLeads: number,
-  complexity: string
+  complexity: string,
+  adSpend: number
 ): { tier: 'Frontline' | 'Specialist' | 'Command'; reason: string } {
   const lowestScore = Math.min(captureScore, convertScore, compoundScore);
+  const overallScore = Math.round((captureScore + convertScore + compoundScore) / 3);
   let lowestPillar = "Capture";
   if (convertScore === lowestScore) lowestPillar = "Convert";
   else if (compoundScore === lowestScore) lowestPillar = "Compound";
@@ -501,6 +503,20 @@ function recommendTier(
     return {
       tier: 'Command',
       reason: `Your operations require full-system automation. Your ${lowestPillar} score (${lowestScore}/100) indicates the most urgent area for improvement.`
+    };
+  }
+
+  if (adSpend >= 5000 && overallScore < 65) {
+    return {
+      tier: 'Command',
+      reason: `You're spending $${adSpend.toLocaleString()}/mo on ads but your overall system score is ${overallScore}/100 — meaning significant ad spend is leaking into an under-optimized funnel. The full Revenue Loop maximizes every dollar you put in at the top.`
+    };
+  }
+
+  if (adSpend >= 2500 && lowestScore < 50) {
+    return {
+      tier: 'Command',
+      reason: `With $${adSpend.toLocaleString()}/mo in ad spend flowing into a ${lowestPillar} score of ${lowestScore}/100, you're paying to fill a leaky bucket. The full Revenue Loop closes the gaps that are costing you your ad ROI.`
     };
   }
 
@@ -580,12 +596,15 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
   const totalMonthlyGap = gapBreakdown.total;
   const annualizedGap = totalMonthlyGap * 12;
 
+  const adSpend = parseInt(data.ad_spend || "0") || 0;
+
   const { tier, reason } = recommendTier(
     adjusted.capture,
     adjusted.convert,
     adjusted.compound,
     monthlyLeads,
-    data.operational_complexity
+    data.operational_complexity,
+    adSpend
   );
 
   return {
