@@ -339,7 +339,7 @@ export default function Assessment() {
               <GlassLabel htmlFor="monthly_sales_volume">Monthly Sales Volume</GlassLabel>
               <span className={`font-mono font-medium ${watchedValues.monthly_sales_volume ? 'text-cyan-400' : 'text-slate-500'}`}>
                 {watchedValues.monthly_sales_volume 
-                  ? `$${parseInt(watchedValues.monthly_sales_volume).toLocaleString()}${parseInt(watchedValues.monthly_sales_volume) >= 500000 ? '+' : '/mo'}` 
+                  ? `${parseInt(watchedValues.monthly_sales_volume).toLocaleString()}${parseInt(watchedValues.monthly_sales_volume) >= 500000 ? '+' : '/mo'}` 
                   : "Select"}
               </span>
             </div>

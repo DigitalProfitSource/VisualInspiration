@@ -176,7 +176,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
 
       doc.fontSize(9).fillColor(colors.slate);
       for (const blindspot of data.result.blindspots.slice(0, 5)) {
-        doc.text("⚠ " + blindspot, 60, y, { width: 480 });
+        doc.text("[!] " + blindspot, 60, y, { width: 480 });
         y += 16;
       }
     }
@@ -201,7 +201,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
 
     doc.fontSize(9).fillColor(colors.slate);
     for (const action of data.result.actionPlan.quickWins) {
-      doc.text("✓ " + action, 60, y, { width: 480 });
+      doc.text("(+) " + action, 60, y, { width: 480 });
       y += 16;
     }
 
@@ -216,7 +216,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
 
     doc.fontSize(9).fillColor(colors.slate);
     for (const action of data.result.actionPlan.supportingActions) {
-      doc.text("→ " + action, 60, y, { width: 480 });
+      doc.text("-> " + action, 60, y, { width: 480 });
       y += 16;
     }
 
@@ -293,7 +293,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       doc
         .fontSize(12)
         .fillColor(isRecommended ? colors.primary : colors.dark)
-        .text(tier.name + (isRecommended ? " ✓ Recommended" : ""), 60, y + 10);
+        .text(tier.name + (isRecommended ? " [Recommended]" : ""), 60, y + 10);
 
       doc
         .fontSize(9)
