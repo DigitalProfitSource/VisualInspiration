@@ -280,9 +280,10 @@ function calculateConvertScore(data: AssessmentData): PillarScore {
     "We have some basic automations but not a full system": -8,
     "No — everything is done manually": -18
   };
-  const automationPenalty = automationScores[data.has_automations] || -10;
+  const automationValue = data.has_automations || "";
+  const automationPenalty = automationScores[automationValue] ?? -10;
   score += automationPenalty;
-  findings.push(`Automation: ${data.has_automations.split('(')[0].split('—')[0].trim()}`);
+  if (automationValue) findings.push(`Automation: ${automationValue.split('(')[0].split('—')[0].trim()}`);
   if (automationPenalty <= -8) {
     blindspots.push("Businesses with full CRM automation close 30-50% more deals than manual operations — every step that requires a human to remember is a step where leads go cold");
   }
@@ -348,17 +349,19 @@ function applyOperationalDrag(captureScore: number, convertScore: number, compou
     dragFindings.push(`${manualHours} hours/week on manual processes`);
   }
 
-  if (data.staff_repeat_questions.includes("Constantly")) {
+  const staffRepeat = data.staff_repeat_questions || "";
+  if (staffRepeat.includes("Constantly")) {
     dragMultiplier -= 0.04;
     dragFindings.push("Staff constantly interrupted by repeat questions — a shared knowledge base or AI assistant could eliminate this");
-  } else if (data.staff_repeat_questions.includes("Sometimes")) {
+  } else if (staffRepeat.includes("Sometimes")) {
     dragMultiplier -= 0.02;
   }
 
-  if (data.process_documentation.includes("Nothing documented")) {
+  const processDoc = data.process_documentation || "";
+  if (processDoc.includes("Nothing documented")) {
     dragMultiplier -= 0.03;
     dragFindings.push("No process documentation means every task depends on institutional memory — one departure can break your operations");
-  } else if (data.process_documentation.includes("Mostly in people's heads")) {
+  } else if (processDoc.includes("Mostly in people's heads")) {
     dragMultiplier -= 0.02;
     dragFindings.push("Critical processes undocumented — creates fragility and inconsistency across your team");
   }
@@ -410,15 +413,15 @@ function generateActionPlan(captureScore: PillarScore, convertScore: PillarScore
     supportingActions.push("Track your review velocity — aim for at least 2-4 new reviews per month");
   }
 
-  if (data.staff_repeat_questions.includes("Constantly")) {
+  if ((data.staff_repeat_questions || "").includes("Constantly")) {
     supportingActions.push("Document your top 10 most-asked customer questions into a shared FAQ or internal knowledge base for your team");
   }
 
-  if (data.process_documentation.includes("Nothing documented") || data.process_documentation.includes("Mostly in people's heads")) {
+  if ((data.process_documentation || "").includes("Nothing documented") || (data.process_documentation || "").includes("Mostly in people's heads")) {
     supportingActions.push("Start documenting your core processes — even a Google Doc SOP for your top 3 workflows can reduce training time and errors by 40%");
   }
 
-  if (data.has_automations.includes("No — everything is done manually")) {
+  if ((data.has_automations || "").includes("No — everything is done manually")) {
     supportingActions.push("Identify your top 3 manual tasks and map them to automation candidates — most CRMs can handle follow-up, reminders, and intake automatically");
   }
 
