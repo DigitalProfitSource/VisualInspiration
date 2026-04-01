@@ -95,7 +95,7 @@ export default function Assessment() {
       contact_channels: [],
       disclaimer_accepted: false,
       website_url: "",
-      monthly_sales_volume: "5000",
+      monthly_sales_volume: "50",
       ad_spend: "0"
     }
   });
@@ -338,8 +338,8 @@ export default function Assessment() {
             <div className="flex justify-between items-center">
               <GlassLabel htmlFor="monthly_sales_volume">Monthly Sales Volume</GlassLabel>
               <span className={`font-mono font-medium ${watchedValues.monthly_sales_volume ? 'text-cyan-400' : 'text-slate-500'}`}>
-                {watchedValues.monthly_sales_volume 
-                  ? `${parseInt(watchedValues.monthly_sales_volume).toLocaleString()}${parseInt(watchedValues.monthly_sales_volume) >= 500000 ? '+' : '/mo'}` 
+                {watchedValues.monthly_sales_volume
+                  ? `${parseInt(watchedValues.monthly_sales_volume)}${parseInt(watchedValues.monthly_sales_volume) >= 500 ? '+' : ''} jobs/mo`
                   : "Select"}
               </span>
             </div>
@@ -347,12 +347,12 @@ export default function Assessment() {
               control={control}
               name="monthly_sales_volume"
               render={({ field: sliderField }) => {
-                const value = sliderField.value ? parseInt(sliderField.value) : 5000;
+                const value = sliderField.value ? parseInt(sliderField.value) : 50;
                 return (
                   <GlassSlider
-                    min={5000}
-                    max={500000}
-                    step={5000}
+                    min={10}
+                    max={500}
+                    step={10}
                     value={[value]}
                     onValueChange={(vals) => sliderField.onChange(vals[0].toString())}
                     className={!sliderField.value ? "opacity-60" : ""}
@@ -360,7 +360,7 @@ export default function Assessment() {
                 );
               }}
             />
-            <p className="text-xs text-slate-500">Total revenue per month from all jobs/contracts</p>
+            <p className="text-xs text-slate-500">Total completed jobs or contracts per month</p>
             {errors.monthly_sales_volume && <p className="text-cyan-400 text-xs">{errors.monthly_sales_volume.message}</p>}
           </div>
         );
