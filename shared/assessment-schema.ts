@@ -5,7 +5,7 @@ export const RevenuePainItemSchema = z.object({
   severity: z.number().min(1).max(5)
 });
 
-export const RevenuePainSchema = z.array(RevenuePainItemSchema).min(1).max(3);
+export const RevenuePainSchema = z.array(RevenuePainItemSchema).min(1);
 
 export const IndustrySchema = z.enum([
   "HVAC",
@@ -23,6 +23,18 @@ export const IndustrySchema = z.enum([
   "Med Spa / Aesthetics",
   "Real Estate",
   "Auto Services",
+  "Pool & Spa",
+  "Flooring",
+  "Insulation",
+  "Garage Doors",
+  "Security Systems",
+  "Moving Services",
+  "Chiropractic",
+  "Dental",
+  "Financial Services",
+  "Insurance",
+  "Fitness / Wellness",
+  "Staffing / HR",
   "Other"
 ]);
 
@@ -168,10 +180,30 @@ export const ManualHoursSchema = z.enum([
   "I'm not sure"
 ]);
 
-export const KnowledgeBottleneckSchema = z.enum([
-  "Yes, major bottleneck (constant interruptions for the same questions)",
-  "Yes, but manageable (happens occasionally)",
-  "No (everything is straightforward or well-documented)"
+export const HasAutomationsSchema = z.enum([
+  "Yes — we have workflows set up (CRM sequences, auto-texts, etc.)",
+  "We have some basic automations but not a full system",
+  "No — everything is done manually"
+]);
+
+export const HasAIIntentSchema = z.enum([
+  "Yes — we use AI to route, qualify, or respond to leads",
+  "We've experimented with AI tools but nothing formal",
+  "No — we've looked into it but haven't implemented anything",
+  "No — we haven't explored AI tools yet"
+]);
+
+export const StaffRepeatQuestionsSchema = z.enum([
+  "Constantly — the same questions come up daily",
+  "Sometimes — a few recurring questions per week",
+  "Rarely — our team handles most things independently"
+]);
+
+export const ProcessDocumentationSchema = z.enum([
+  "Fully documented SOPs for all major processes",
+  "Some documentation, but gaps exist",
+  "Mostly in people's heads — little to nothing written down",
+  "Nothing documented at all"
 ]);
 
 export const OperationalComplexitySchema = z.enum([
@@ -190,6 +222,8 @@ export const AssessmentDataSchema = z.object({
   niche_specificity: z.string().min(1),
   team_size: TeamSizeSchema,
   avg_job_value: z.string().min(1),
+  monthly_sales_volume: z.string().min(1),
+  ad_spend: z.string().min(1),
   monthly_lead_volume: MonthlyLeadVolumeSchema,
   first_contact_speed: FirstContactSpeedSchema,
   lead_unavailability: LeadUnavailabilitySchema,
@@ -202,12 +236,15 @@ export const AssessmentDataSchema = z.object({
   contact_channels: z.array(ContactChannelSchema).min(1),
   ai_search_frequency: AISearchFrequencySchema,
   ai_readiness: AIReadinessSchema,
+  has_automations: HasAutomationsSchema,
+  has_ai_intent: HasAIIntentSchema,
   review_request: ReviewRequestSchema,
   close_rate: CloseRateSchema,
   intake_centralization: IntakeCentralizationSchema,
   pipeline_tracking: PipelineTrackingSchema,
   manual_hours: ManualHoursSchema,
-  knowledge_bottleneck: KnowledgeBottleneckSchema,
+  staff_repeat_questions: StaffRepeatQuestionsSchema,
+  process_documentation: ProcessDocumentationSchema,
   operational_complexity: OperationalComplexitySchema,
   contact_first_name: z.string().min(1),
   contact_last_name: z.string().min(1),

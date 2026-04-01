@@ -18,7 +18,7 @@ export const STEPS: Step[] = [
     id: "business",
     title: "About Your Business",
     description: "Help us understand your business context so we can calibrate our analysis.",
-    fields: ["industry", "niche_specificity", "team_size", "avg_job_value", "monthly_lead_volume"],
+    fields: ["industry", "niche_specificity", "team_size", "avg_job_value", "monthly_sales_volume", "ad_spend", "monthly_lead_volume"],
     progress: 12
   },
   {
@@ -64,11 +64,18 @@ export const STEPS: Step[] = [
     progress: 75
   },
   {
+    id: "automation",
+    title: "Automation & AI",
+    description: "How much of your sales and operations workflow is automated today?",
+    fields: ["has_automations", "has_ai_intent"],
+    progress: 82
+  },
+  {
     id: "chaos",
     title: "The Chaos Gap",
     description: "How much operational overhead is slowing you down?",
-    fields: ["manual_hours", "knowledge_bottleneck", "operational_complexity"],
-    progress: 85
+    fields: ["manual_hours", "staff_repeat_questions", "process_documentation", "operational_complexity"],
+    progress: 88
   },
   {
     id: "contact",
@@ -106,7 +113,19 @@ export const INDUSTRY_NICHE_MAP: Record<string, string[]> = {
   "Med Spa / Aesthetics": ["Injectables", "Body Contouring", "Laser Treatments", "Skin Care", "IV Therapy"],
   "Real Estate": ["Residential Sales", "Commercial Sales", "Property Management", "Luxury Homes"],
   "Auto Services": ["General Repair", "Collision Repair", "Detailing", "Oil Change", "Tire Services"],
-  "Other": ["Professional Services", "Healthcare", "Fitness", "Consulting", "Other"]
+  "Pool & Spa": ["Pool Installation", "Pool Maintenance", "Pool Repair", "Spa Services", "Pool Remodeling"],
+  "Flooring": ["Hardwood", "Tile & Stone", "LVP / Laminate", "Carpet", "Epoxy & Concrete"],
+  "Insulation": ["Attic Insulation", "Spray Foam", "Blown-In Insulation", "Commercial Insulation"],
+  "Garage Doors": ["Residential Garage Doors", "Commercial Garage Doors", "Garage Door Repair", "Garage Door Openers"],
+  "Security Systems": ["Home Security", "Commercial Security", "CCTV / Cameras", "Access Control", "Smart Home"],
+  "Moving Services": ["Local Moving", "Long-Distance Moving", "Commercial Moving", "Packing Services", "Storage"],
+  "Chiropractic": ["General Chiropractic", "Sports Chiropractic", "Pediatric Chiropractic", "Spinal Decompression"],
+  "Dental": ["General Dentistry", "Cosmetic Dentistry", "Orthodontics", "Implants", "Emergency Dental"],
+  "Financial Services": ["Financial Planning", "Tax Services", "Bookkeeping", "Payroll", "Business Consulting"],
+  "Insurance": ["Auto Insurance", "Home Insurance", "Business Insurance", "Life Insurance", "Health Insurance"],
+  "Fitness / Wellness": ["Personal Training", "Group Fitness", "Yoga / Pilates", "Nutrition Coaching", "Physical Therapy"],
+  "Staffing / HR": ["Temporary Staffing", "Direct Hire", "HR Consulting", "Payroll Services", "Executive Search"],
+  "Other": ["Professional Services", "Healthcare", "Retail", "Consulting", "Other"]
 };
 
 export const TEAM_SIZE_OPTIONS = ["Solo", "2–5", "6–15", "16–50", "50+"];
@@ -207,6 +226,32 @@ export const AI_READINESS_OPTIONS = [
   { value: "We don't have much of an online presence" }
 ];
 
+export const HAS_AUTOMATIONS_OPTIONS = [
+  { value: "Yes — we have workflows set up (CRM sequences, auto-texts, etc.)", subtitle: "Full automation in place" },
+  { value: "We have some basic automations but not a full system", subtitle: "Partial — gaps exist" },
+  { value: "No — everything is done manually", subtitle: "No automation yet" }
+];
+
+export const HAS_AI_INTENT_OPTIONS = [
+  { value: "Yes — we use AI to route, qualify, or respond to leads", subtitle: "AI-powered lead handling" },
+  { value: "We've experimented with AI tools but nothing formal", subtitle: "Tested but not deployed" },
+  { value: "No — we've looked into it but haven't implemented anything", subtitle: "Aware, not acting" },
+  { value: "No — we haven't explored AI tools yet", subtitle: "Haven't started" }
+];
+
+export const STAFF_REPEAT_QUESTIONS_OPTIONS = [
+  "Constantly — the same questions come up daily",
+  "Sometimes — a few recurring questions per week",
+  "Rarely — our team handles most things independently"
+];
+
+export const PROCESS_DOCUMENTATION_OPTIONS = [
+  "Fully documented SOPs for all major processes",
+  "Some documentation, but gaps exist",
+  "Mostly in people's heads — little to nothing written down",
+  "Nothing documented at all"
+];
+
 export const INTAKE_CENTRALIZATION_OPTIONS = [
   { value: "In a central CRM or booking system automatically" },
   { value: "In multiple tools (email, spreadsheets, notes)" },
@@ -242,12 +287,6 @@ export const MANUAL_HOURS_OPTIONS = [
   "11-20 hours/week (major time sink)",
   "20+ hours/week (overwhelming—drowning in admin)",
   "I'm not sure"
-];
-
-export const KNOWLEDGE_BOTTLENECK_OPTIONS = [
-  "Yes, major bottleneck (constant interruptions for the same questions)",
-  "Yes, but manageable (happens occasionally)",
-  "No (everything is straightforward or well-documented)"
 ];
 
 export const OPERATIONAL_COMPLEXITY_OPTIONS = [

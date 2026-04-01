@@ -28,12 +28,15 @@ import {
   CONTACT_CHANNEL_OPTIONS,
   AI_SEARCH_FREQUENCY_OPTIONS,
   AI_READINESS_OPTIONS,
+  HAS_AUTOMATIONS_OPTIONS,
+  HAS_AI_INTENT_OPTIONS,
+  STAFF_REPEAT_QUESTIONS_OPTIONS,
+  PROCESS_DOCUMENTATION_OPTIONS,
   INTAKE_CENTRALIZATION_OPTIONS,
   PIPELINE_TRACKING_OPTIONS,
   REVIEW_REQUEST_OPTIONS,
   CLOSE_RATE_OPTIONS,
   MANUAL_HOURS_OPTIONS,
-  KNOWLEDGE_BOTTLENECK_OPTIONS,
   OPERATIONAL_COMPLEXITY_OPTIONS
 } from "@/lib/constants";
 import { calculateResults, AssessmentResult } from "@/lib/scoring";
@@ -91,7 +94,9 @@ export default function Assessment() {
       revenue_pain: [],
       contact_channels: [],
       disclaimer_accepted: false,
-      website_url: ""
+      website_url: "",
+      monthly_sales_volume: "5000",
+      ad_spend: "0"
     }
   });
 
@@ -106,7 +111,7 @@ export default function Assessment() {
     
     if (existingIndex >= 0) {
       setValue('revenue_pain', currentPains.filter(p => p.value !== value));
-    } else if (currentPains.length < 3) {
+    } else {
       setValue('revenue_pain', [...currentPains, { value, severity: 3 }]);
     }
   };
@@ -173,7 +178,7 @@ export default function Assessment() {
         return (
           <div className="space-y-4 w-full">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-slate-500">{(watchedValues.revenue_pain || []).length}/3 selected</span>
+              <span className="text-sm text-slate-500">{(watchedValues.revenue_pain || []).length} selected</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {REVENUE_PAIN_OPTIONS.map(option => {
@@ -324,6 +329,74 @@ export default function Assessment() {
               }}
             />
             {errors.avg_job_value && <p className="text-cyan-400 text-xs">{errors.avg_job_value.message}</p>}
+          </div>
+        );
+
+      case 'monthly_sales_volume':
+        return (
+          <div className="space-y-4 w-full">
+            <div className="flex justify-between items-center">
+              <GlassLabel htmlFor="monthly_sales_volume">Monthly Sales Volume</GlassLabel>
+              <span className={`font-mono font-medium ${watchedValues.monthly_sales_volume ? 'text-cyan-400' : 'text-slate-500'}`}>
+                {watchedValues.monthly_sales_volume 
+                  ? `$${parseInt(watchedValues.monthly_sales_volume).toLocaleString()}${parseInt(watchedValues.monthly_sales_volume) >= 500000 ? '+' : '/mo'}` 
+                  : "Select"}
+              </span>
+            </div>
+            <Controller
+              control={control}
+              name="monthly_sales_volume"
+              render={({ field: sliderField }) => {
+                const value = sliderField.value ? parseInt(sliderField.value) : 5000;
+                return (
+                  <GlassSlider
+                    min={5000}
+                    max={500000}
+                    step={5000}
+                    value={[value]}
+                    onValueChange={(vals) => sliderField.onChange(vals[0].toString())}
+                    className={!sliderField.value ? "opacity-60" : ""}
+                  />
+                );
+              }}
+            />
+            <p className="text-xs text-slate-500">Total revenue per month from all jobs/contracts</p>
+            {errors.monthly_sales_volume && <p className="text-cyan-400 text-xs">{errors.monthly_sales_volume.message}</p>}
+          </div>
+        );
+
+      case 'ad_spend':
+        return (
+          <div className="space-y-4 w-full">
+            <div className="flex justify-between items-center">
+              <GlassLabel htmlFor="ad_spend">Monthly Ad Spend</GlassLabel>
+              <span className={`font-mono font-medium ${watchedValues.ad_spend ? 'text-cyan-400' : 'text-slate-500'}`}>
+                {watchedValues.ad_spend 
+                  ? parseInt(watchedValues.ad_spend) === 0 
+                    ? '$0 / organic only'
+                    : `$${parseInt(watchedValues.ad_spend).toLocaleString()}${parseInt(watchedValues.ad_spend) >= 50000 ? '+' : '/mo'}`
+                  : "Select"}
+              </span>
+            </div>
+            <Controller
+              control={control}
+              name="ad_spend"
+              render={({ field: sliderField }) => {
+                const value = sliderField.value ? parseInt(sliderField.value) : 0;
+                return (
+                  <GlassSlider
+                    min={0}
+                    max={50000}
+                    step={500}
+                    value={[value]}
+                    onValueChange={(vals) => sliderField.onChange(vals[0].toString())}
+                    className={!sliderField.value ? "opacity-60" : ""}
+                  />
+                );
+              }}
+            />
+            <p className="text-xs text-slate-500">Google Ads, Meta, LSA, etc. — enter $0 if running on referrals/organic only</p>
+            {errors.ad_spend && <p className="text-cyan-400 text-xs">{errors.ad_spend.message}</p>}
           </div>
         );
 
@@ -598,6 +671,56 @@ export default function Assessment() {
           </div>
         );
 
+      case 'has_automations':
+        return (
+          <div className="space-y-4 w-full">
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">WORKFLOW AUTOMATION</div>
+            <GlassLabel className="text-cyan-400 font-bold">Do you have automated workflows set up to handle leads or follow-ups?</GlassLabel>
+            <Controller
+              control={control}
+              name="has_automations"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={HAS_AUTOMATIONS_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value,
+                    subtitle: opt.subtitle
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.has_automations && <p className="text-cyan-400 text-xs">{errors.has_automations.message}</p>}
+          </div>
+        );
+
+      case 'has_ai_intent':
+        return (
+          <div className="space-y-4 w-full pt-4">
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">AI LEAD HANDLING</div>
+            <GlassLabel className="text-cyan-400 font-bold">Are you using any AI tools to route, qualify, or respond to inbound leads?</GlassLabel>
+            <Controller
+              control={control}
+              name="has_ai_intent"
+              render={({ field }) => (
+                <VisualCardSelector
+                  options={HAS_AI_INTENT_OPTIONS.map(opt => ({ 
+                    value: opt.value, 
+                    label: opt.value,
+                    subtitle: opt.subtitle
+                  }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.has_ai_intent && <p className="text-cyan-400 text-xs">{errors.has_ai_intent.message}</p>}
+          </div>
+        );
+
       case 'intake_centralization':
         return (
           <div className="space-y-4 w-full">
@@ -710,24 +833,45 @@ export default function Assessment() {
           </div>
         );
 
-      case 'knowledge_bottleneck':
+      case 'staff_repeat_questions':
         return (
-          <div className="space-y-3 w-full">
+          <div className="space-y-3 w-full pt-4">
             <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">OPERATIONAL DRAG</div>
-            <GlassLabel className="text-cyan-400 font-bold">Do you have repetitive questions that create bottlenecks?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">How often do staff get interrupted by the same customer questions repeatedly?</GlassLabel>
             <Controller
               control={control}
-              name="knowledge_bottleneck"
+              name="staff_repeat_questions"
               render={({ field }) => (
                 <GlassRadioGroup
-                  options={KNOWLEDGE_BOTTLENECK_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  options={STAFF_REPEAT_QUESTIONS_OPTIONS.map(opt => ({ value: opt, label: opt }))}
                   value={field.value}
                   onChange={field.onChange}
                   columns={1}
                 />
               )}
             />
-            {errors.knowledge_bottleneck && <p className="text-cyan-400 text-xs">{errors.knowledge_bottleneck.message}</p>}
+            {errors.staff_repeat_questions && <p className="text-cyan-400 text-xs">{errors.staff_repeat_questions.message}</p>}
+          </div>
+        );
+
+      case 'process_documentation':
+        return (
+          <div className="space-y-3 w-full pt-4">
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">OPERATIONAL DRAG</div>
+            <GlassLabel className="text-cyan-400 font-bold">How well documented are your core business processes (SOPs, scripts, workflows)?</GlassLabel>
+            <Controller
+              control={control}
+              name="process_documentation"
+              render={({ field }) => (
+                <GlassRadioGroup
+                  options={PROCESS_DOCUMENTATION_OPTIONS.map(opt => ({ value: opt, label: opt }))}
+                  value={field.value}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+            {errors.process_documentation && <p className="text-cyan-400 text-xs">{errors.process_documentation.message}</p>}
           </div>
         );
 

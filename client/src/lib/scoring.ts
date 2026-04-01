@@ -169,6 +169,18 @@ function calculateCaptureScore(data: AssessmentData): PillarScore {
     blindspots.push("AI-powered search (ChatGPT, Google AI Overviews) is becoming the new front door — without optimization, you're invisible to these platforms");
   }
 
+  const aiIntentScores: Record<string, number> = {
+    "Yes — we use AI to route, qualify, or respond to leads": 0,
+    "We've experimented with AI tools but nothing formal": -4,
+    "No — we've looked into it but haven't implemented anything": -6,
+    "No — we haven't explored AI tools yet": -8
+  };
+  const aiIntentPenalty = aiIntentScores[data.has_ai_intent] || -6;
+  score += aiIntentPenalty;
+  if (aiIntentPenalty <= -6) {
+    blindspots.push("AI-powered intent routing and lead qualification can dramatically cut your response time and qualify leads before they ever reach a human — you're missing this layer");
+  }
+
   const intakeScores: Record<string, number> = {
     "In a central CRM or booking system automatically": 0,
     "In multiple tools (email, spreadsheets, notes)": -6,
@@ -263,6 +275,18 @@ function calculateConvertScore(data: AssessmentData): PillarScore {
   };
   score += closeRateScores[data.close_rate] || -8;
 
+  const automationScores: Record<string, number> = {
+    "Yes — we have workflows set up (CRM sequences, auto-texts, etc.)": 0,
+    "We have some basic automations but not a full system": -8,
+    "No — everything is done manually": -18
+  };
+  const automationPenalty = automationScores[data.has_automations] || -10;
+  score += automationPenalty;
+  findings.push(`Automation: ${data.has_automations.split('(')[0].split('—')[0].trim()}`);
+  if (automationPenalty <= -8) {
+    blindspots.push("Businesses with full CRM automation close 30-50% more deals than manual operations — every step that requires a human to remember is a step where leads go cold");
+  }
+
   return {
     score: clampScore(score),
     findings,
@@ -324,9 +348,19 @@ function applyOperationalDrag(captureScore: number, convertScore: number, compou
     dragFindings.push(`${manualHours} hours/week on manual processes`);
   }
 
-  if (data.knowledge_bottleneck.includes("major bottleneck")) {
+  if (data.staff_repeat_questions.includes("Constantly")) {
     dragMultiplier -= 0.04;
-    dragFindings.push("Knowledge bottlenecks cause constant interruptions");
+    dragFindings.push("Staff constantly interrupted by repeat questions — a shared knowledge base or AI assistant could eliminate this");
+  } else if (data.staff_repeat_questions.includes("Sometimes")) {
+    dragMultiplier -= 0.02;
+  }
+
+  if (data.process_documentation.includes("Nothing documented")) {
+    dragMultiplier -= 0.03;
+    dragFindings.push("No process documentation means every task depends on institutional memory — one departure can break your operations");
+  } else if (data.process_documentation.includes("Mostly in people's heads")) {
+    dragMultiplier -= 0.02;
+    dragFindings.push("Critical processes undocumented — creates fragility and inconsistency across your team");
   }
 
   if (data.operational_complexity.includes("complex") || data.operational_complexity.includes("Enterprise")) {
@@ -376,8 +410,16 @@ function generateActionPlan(captureScore: PillarScore, convertScore: PillarScore
     supportingActions.push("Track your review velocity — aim for at least 2-4 new reviews per month");
   }
 
-  if (data.knowledge_bottleneck.includes("major bottleneck")) {
-    supportingActions.push("Document your top 10 most-asked customer questions into a shared FAQ for your team");
+  if (data.staff_repeat_questions.includes("Constantly")) {
+    supportingActions.push("Document your top 10 most-asked customer questions into a shared FAQ or internal knowledge base for your team");
+  }
+
+  if (data.process_documentation.includes("Nothing documented") || data.process_documentation.includes("Mostly in people's heads")) {
+    supportingActions.push("Start documenting your core processes — even a Google Doc SOP for your top 3 workflows can reduce training time and errors by 40%");
+  }
+
+  if (data.has_automations.includes("No — everything is done manually")) {
+    supportingActions.push("Identify your top 3 manual tasks and map them to automation candidates — most CRMs can handle follow-up, reminders, and intake automatically");
   }
 
   return { quickWins, supportingActions };
@@ -529,7 +571,7 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
   ];
 
   if (adjusted.dragFindings.length > 0) {
-    allBlindspots.push(...adjusted.dragFindings.filter(f => f.includes("drag") || f.includes("complexity")));
+    allBlindspots.push(...adjusted.dragFindings.filter(f => f.includes("drag") || f.includes("complexity") || f.includes("documented") || f.includes("interrupted")));
   }
 
   const actionPlan = generateActionPlan(captureScore, convertScore, compoundScore, data);

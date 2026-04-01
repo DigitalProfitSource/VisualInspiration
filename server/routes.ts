@@ -221,6 +221,47 @@ export async function registerRoutes(
     }
   });
 
+  // PDF download endpoint
+  app.get("/api/assessment/:leadId/pdf", async (req, res) => {
+    try {
+      const { leadId } = req.params;
+      const lead = await storage.getAssessmentLead(leadId);
+
+      if (!lead) {
+        res.status(404).json({ error: "Lead not found" });
+        return;
+      }
+
+      const assessmentData = lead.assessmentData as Parameters<typeof calculateResults>[0];
+      const result = calculateResults(assessmentData);
+
+      const rawData = assessmentData as unknown as Record<string, unknown>;
+      const websiteUrl = typeof rawData.website_url === "string" ? rawData.website_url : undefined;
+      const revenuePainRaw = rawData.revenue_pain;
+      const revenuePains = Array.isArray(revenuePainRaw)
+        ? (revenuePainRaw as { value: string }[]).map((p) => p.value)
+        : [];
+
+      const pdfBuffer = await generateAssessmentPDF({
+        contactName: lead.contactName || "Unknown",
+        contactEmail: lead.contactEmail || "",
+        contactPhone: lead.contactPhone || undefined,
+        websiteUrl: websiteUrl || undefined,
+        result,
+        submittedAt: lead.contactSubmittedAt || new Date(),
+        revenuePains,
+      });
+
+      const safeName = (result.businessName || "assessment").replace(/[^a-z0-9]/gi, "_").toLowerCase();
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", `attachment; filename="${safeName}_friction_analysis.pdf"`);
+      res.send(pdfBuffer);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      res.status(500).json({ error: "Failed to generate PDF" });
+    }
+  });
+
   // Feedback endpoint
   app.post("/api/feedback", async (req, res) => {
     try {
