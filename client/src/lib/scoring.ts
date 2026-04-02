@@ -42,8 +42,10 @@ export interface AssessmentResult {
   annualizedGap: number;
   gapBreakdown: GapBreakdown;
 
-  recommendedTier: 'Frontline' | 'Specialist' | 'Command';
+  recommendedTier: 'The AI Brain' | 'The AI System' | 'The AI Infrastructure';
   tierReason: string;
+  adSpend: number;
+  monthlySalesVolume: number;
 }
 
 function parseMonthlyLeads(value: string): number {
@@ -495,7 +497,7 @@ function recommendTier(
   monthlyLeads: number,
   complexity: string,
   adSpend: number
-): { tier: 'Frontline' | 'Specialist' | 'Command'; reason: string } {
+): { tier: 'The AI Brain' | 'The AI System' | 'The AI Infrastructure'; reason: string } {
   const lowestScore = Math.min(captureScore, convertScore, compoundScore);
   const overallScore = Math.round((captureScore + convertScore + compoundScore) / 3);
   let lowestPillar = "Capture";
@@ -504,49 +506,49 @@ function recommendTier(
 
   if (complexity.includes("Enterprise") || monthlyLeads > 150) {
     return {
-      tier: 'Command',
+      tier: 'The AI Infrastructure',
       reason: `Your operations require full-system automation. Your ${lowestPillar} score (${lowestScore}/100) indicates the most urgent area for improvement.`
     };
   }
 
   if (adSpend >= 5000 && overallScore < 65) {
     return {
-      tier: 'Command',
+      tier: 'The AI Infrastructure',
       reason: `You're spending $${adSpend.toLocaleString()}/mo on ads but your overall system score is ${overallScore}/100 — meaning significant ad spend is leaking into an under-optimized funnel. The full Revenue Loop maximizes every dollar you put in at the top.`
     };
   }
 
   if (adSpend >= 2500 && lowestScore < 50) {
     return {
-      tier: 'Command',
+      tier: 'The AI Infrastructure',
       reason: `With $${adSpend.toLocaleString()}/mo in ad spend flowing into a ${lowestPillar} score of ${lowestScore}/100, you're paying to fill a leaky bucket. The full Revenue Loop closes the gaps that are costing you your ad ROI.`
     };
   }
 
   if (complexity.includes("complex") && lowestScore < 50) {
     return {
-      tier: 'Command',
+      tier: 'The AI Infrastructure',
       reason: `Your ${lowestPillar} score (${lowestScore}/100) combined with operational complexity calls for comprehensive automation across all three pillars.`
     };
   }
 
   if (convertScore <= captureScore && convertScore <= compoundScore) {
     return {
-      tier: 'Specialist',
-      reason: `Your Convert score (${convertScore}/100) is your weakest pillar. Specialist addresses follow-up, no-show recovery, and pipeline tracking — the systems that turn leads into revenue.`
+      tier: 'The AI System',
+      reason: `Your Convert score (${convertScore}/100) is your weakest pillar. The AI System addresses follow-up, no-show recovery, and pipeline tracking — the systems that turn leads into revenue.`
     };
   }
 
   if (compoundScore <= captureScore && compoundScore <= convertScore) {
     return {
-      tier: 'Specialist',
-      reason: `Your Compound score (${compoundScore}/100) shows untapped growth potential. Specialist includes review automation and database reactivation to build compounding revenue.`
+      tier: 'The AI System',
+      reason: `Your Compound score (${compoundScore}/100) shows untapped growth potential. The AI System includes review automation and database reactivation to build compounding revenue.`
     };
   }
 
   return {
-    tier: 'Frontline',
-    reason: `Your Capture score (${captureScore}/100) is your biggest opportunity. Frontline provides instant response and AI-powered availability so no lead goes unanswered.`
+    tier: 'The AI Brain',
+    reason: `Your Capture score (${captureScore}/100) is your biggest opportunity. The AI Brain provides instant response and AI-powered availability so no lead goes unanswered.`
   };
 }
 
@@ -600,6 +602,7 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
   const annualizedGap = totalMonthlyGap * 12;
 
   const adSpend = parseInt(data.ad_spend || "0") || 0;
+  const monthlySalesVolume = parseInt(data.monthly_sales_volume || "0") || 0;
 
   const { tier, reason } = recommendTier(
     adjusted.capture,
@@ -632,6 +635,8 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     gapBreakdown,
 
     recommendedTier: tier,
-    tierReason: reason
+    tierReason: reason,
+    adSpend,
+    monthlySalesVolume,
   };
 }

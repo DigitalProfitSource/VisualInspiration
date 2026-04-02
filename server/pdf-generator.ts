@@ -219,22 +219,22 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
 
     const tiers = [
       {
-        name:     "Frontline",
-        focus:    "Capture pillar",
-        ideal:    "Lead capture and response speed are your primary friction",
-        includes: ["AI voice answering", "Instant lead capture", "After-hours coverage"],
+        name:     "The AI Brain",
+        focus:    "Capture pillar — $150/mo",
+        ideal:    "Lead capture and response speed are your primary friction point",
+        includes: ["24/7 Website AI Chatbot", "AI Voice Backup Receptionist"],
       },
       {
-        name:     "Specialist",
-        focus:    "Capture + Convert pillars",
-        ideal:    "Follow-up, conversion, and no-shows also create drag",
-        includes: ["Everything in Frontline", "No-show recovery automation", "Quote follow-up sequences"],
+        name:     "The AI System",
+        focus:    "Capture + Convert pillars — $250/mo",
+        ideal:    "Follow-up, no-show recovery, and pipeline drag are costing you",
+        includes: ["Everything in The AI Brain", "Proactive Quote / No-Show Recovery"],
       },
       {
-        name:     "Command",
-        focus:    "All three pillars",
-        ideal:    "Complex operations or high volume across all three pillars",
-        includes: ["Everything in Specialist", "Full ops automation", "Custom workflow integration"],
+        name:     "The AI Infrastructure",
+        focus:    "Full Loop — all three pillars — $350/mo",
+        ideal:    "Complex operations or high volume requiring full-system automation",
+        includes: ["Everything in The AI System", "Full ASO + DBR Campaign"],
       },
     ];
 

@@ -273,29 +273,27 @@ export default function Results() {
 
   const calendarUrl = "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi";
 
-  const frontlineFeatures = [
-    "AI Voice backup when team is busy/after-hours",
-    "24/7 website chatbot",
-    "Instant SMS text-back",
+  const brainFeatures = [
+    "24/7 Website AI Chatbot",
+    "AI Voice Backup Receptionist",
+    "Instant SMS Text-Back",
     "Speed-to-lead engine (<60 seconds)",
     "250 AI Voice Minutes/mo"
   ];
 
-  const specialistFeatures = [
-    "Everything in Frontline, plus:",
-    "Automated no-show recovery",
-    "Quote follow-up sequences",
-    "Database reactivation campaigns",
-    "Review request automation",
+  const systemFeatures = [
+    "Everything in The AI Brain, plus:",
+    "Proactive Quote / No-Show Recovery",
+    "Smart Lead Triage",
+    "90-Day Lead Nurture Sequences",
     "500 AI Voice Minutes/mo"
   ];
 
-  const commandFeatures = [
-    "Everything in Specialist, plus:",
-    "Internal AI Knowledge Base",
-    "Custom system integrations",
-    "Service delivery automation",
-    "Priority decision logic",
+  const infrastructureFeatures = [
+    "Everything in The AI System, plus:",
+    "Full ASO (AI Search Optimization)",
+    "The \"Found Money\" DBR Campaign",
+    "Automated Reputation Management",
     "1,000 AI Voice Minutes/mo"
   ];
 
@@ -349,14 +347,25 @@ export default function Results() {
           >
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
             <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-5">Your Business At A Glance</p>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-4">
               {[
                 { label: "Industry", value: result.industry },
                 { label: "Specialization", value: result.niche || "General" },
                 { label: "Monthly Leads", value: String(result.monthlyLeads) },
                 { label: "Team Size", value: result.teamSize },
-                { label: "Avg Job Value", value: `$${result.avgJobValue.toLocaleString()}` },
               ].map((item) => (
+                <div key={item.label}>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">{item.label}</p>
+                  <p className="text-sm font-bold text-white">{item.value}</p>
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {[
+                { label: "Avg Job Value", value: `$${result.avgJobValue.toLocaleString()}` },
+                result.monthlySalesVolume > 0 ? { label: "Monthly Job Volume", value: `${result.monthlySalesVolume} jobs/mo` } : null,
+                result.adSpend > 0 ? { label: "Monthly Ad Spend", value: `$${result.adSpend.toLocaleString()}/mo` } : null,
+              ].filter((item): item is { label: string; value: string } => item !== null).map((item) => (
                 <div key={item.label}>
                   <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">{item.label}</p>
                   <p className="text-sm font-bold text-white">{item.value}</p>
@@ -569,37 +578,36 @@ export default function Results() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <TierCard
-              tier="Frontline"
-              price="$297/mo"
-              setupFee="$500"
-              description="The Human-First Safety Net — Fix the Capture pillar first."
-              features={frontlineFeatures}
-              isRecommended={result.recommendedTier === 'Frontline'}
+              tier="The AI Brain"
+              price="$150/mo"
+              setupFee="$750"
+              description="Stop the Bleed. Capture Essentials — ensure every inquiry is answered in under 60 seconds, 24/7."
+              features={brainFeatures}
+              isRecommended={result.recommendedTier === 'The AI Brain'}
               ctaText="Get Started"
-              reason={result.recommendedTier === 'Frontline' ? result.tierReason : undefined}
+              reason={result.recommendedTier === 'The AI Brain' ? result.tierReason : undefined}
             />
             
             <TierCard
-              tier="Specialist"
-              price="$497/mo"
-              setupFee="$1,000"
-              description="The Revenue & Reputation Accelerator — Address Capture + Convert pillars."
-              features={specialistFeatures}
-              isRecommended={result.recommendedTier === 'Specialist'}
+              tier="The AI System"
+              price="$250/mo"
+              setupFee="$1,250"
+              description="The Invisible Sales Rep. Capture + Convert — automatically chase and recover stuck revenue in your pipeline."
+              features={systemFeatures}
+              isRecommended={result.recommendedTier === 'The AI System'}
               ctaText="Get Started"
-              reason={result.recommendedTier === 'Specialist' ? result.tierReason : undefined}
+              reason={result.recommendedTier === 'The AI System' ? result.tierReason : undefined}
             />
             
             <TierCard
-              tier="Command"
-              price="Starting at $997/mo"
-              setupFee="$2,500+"
-              description="The Autonomous Operations Engine — Full operational transformation across all pillars."
-              features={commandFeatures}
-              isRecommended={result.recommendedTier === 'Command'}
-              ctaText="Apply Now"
-              badge="By Application"
-              reason={result.recommendedTier === 'Command' ? result.tierReason : undefined}
+              tier="The AI Infrastructure"
+              price="$350/mo"
+              setupFee="$1,750"
+              description="Machine-Readable Dominance. Full Loop — total re-architecture of your digital presence across all three pillars."
+              features={infrastructureFeatures}
+              isRecommended={result.recommendedTier === 'The AI Infrastructure'}
+              ctaText="Get Started"
+              reason={result.recommendedTier === 'The AI Infrastructure' ? result.tierReason : undefined}
             />
           </div>
         </motion.div>
