@@ -1,8 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, Link } from "wouter";
 import { motion, useInView } from "framer-motion";
-import { ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw, Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Download, Calendar, ChevronDown } from "lucide-react";
-import { AssessmentResult, PillarScore } from "@/lib/scoring";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
+} from "recharts";
+import {
+  ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw,
+  Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Download, Calendar,
+  ChevronDown, TrendingDown, Info,
+} from "lucide-react";
+import { AssessmentResult, PillarScore, IndustryBenchmark } from "@/lib/scoring";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -37,27 +44,29 @@ function useCountUp(end: number, duration: number = 1500) {
   return { value, ref };
 }
 
-function PillarCard({ 
-  title, 
+function PillarCard({
+  title,
   pillar,
   icon,
   description,
   monthlyImpact,
   calcFormula,
-  calcLabel
-}: { 
-  title: string; 
+  calcLabel,
+  benchmarkNote,
+}: {
+  title: string;
   pillar: PillarScore;
   icon: React.ReactNode;
   description: string;
   monthlyImpact: number;
   calcFormula: string;
   calcLabel: string;
+  benchmarkNote: string;
 }) {
   const [showCalc, setShowCalc] = useState(false);
 
   return (
-    <div 
+    <div
       className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_1px_rgba(103,232,249,0.08)]"
       data-testid={`card-pillar-${title.toLowerCase().replace(/\s+/g, '-')}`}
     >
@@ -69,9 +78,9 @@ function PillarCard({
         </div>
         <h3 className="text-2xl font-heading font-bold text-white">{title}</h3>
       </div>
-      
+
       <p className="text-sm text-slate-400 leading-relaxed mb-6">{description}</p>
-      
+
       {pillar.findings.length > 0 && (
         <div className="mb-5">
           <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-3">What We Found</p>
@@ -85,7 +94,7 @@ function PillarCard({
           </ul>
         </div>
       )}
-      
+
       {pillar.blindspots.length > 0 && (
         <div className="pt-5 border-t border-[#1a2332] mb-6">
           <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-3">What's Causing This</p>
@@ -104,7 +113,7 @@ function PillarCard({
         <div className="flex items-end justify-between mb-1">
           <div>
             <p className="text-[10px] text-slate-500 uppercase tracking-[0.25em] font-semibold mb-2">Estimated Monthly Impact</p>
-            <p 
+            <p
               className="text-3xl md:text-4xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 leading-none"
               style={{ filter: 'drop-shadow(0 0 20px rgba(103, 232, 249, 0.15))' }}
             >
@@ -122,9 +131,9 @@ function PillarCard({
         </div>
 
         {showCalc && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }} 
-            animate={{ opacity: 1, height: 'auto' }} 
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
             className="mt-4 space-y-2"
           >
             <p className="text-xs text-slate-500">{calcLabel}</p>
@@ -134,61 +143,54 @@ function PillarCard({
           </motion.div>
         )}
       </div>
+
+      {benchmarkNote && (
+        <div className="mt-4 pt-4 border-t border-[#1a2332]">
+          <p className="text-xs text-slate-500 flex items-start gap-2">
+            <Info size={12} className="text-cyan-400/50 mt-0.5 flex-shrink-0" />
+            {benchmarkNote}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
 
 function TierCard({
   tier,
-  price,
-  setupFee,
   description,
   features,
   isRecommended,
-  ctaText,
-  badge,
-  reason
+  reason,
 }: {
   tier: string;
-  price: string;
-  setupFee: string;
   description: string;
   features: string[];
   isRecommended: boolean;
-  ctaText: string;
-  badge?: string;
   reason?: string;
 }) {
   return (
-    <div className={`relative rounded-2xl p-6 transition-all ${
-      isRecommended 
-        ? 'bg-gradient-to-br from-cyan-950/40 to-slate-900/80 border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(0,217,255,0.15)]' 
+    <div className={`relative rounded-2xl p-6 transition-all flex flex-col ${
+      isRecommended
+        ? 'bg-gradient-to-br from-cyan-950/40 to-slate-900/80 border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(0,217,255,0.15)]'
         : 'bg-slate-900/40 border border-slate-700/50'
     }`}>
       {isRecommended && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan-500 text-black text-xs font-bold px-3 py-1 rounded-full">
-          RECOMMENDED
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan-500 text-black text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+          Recommended based on your analysis
         </div>
       )}
-      {badge && (
-        <div className="absolute -top-3 right-4 bg-slate-700 text-white text-xs px-2 py-1 rounded">
-          {badge}
-        </div>
-      )}
-      
+
       <h3 className="text-xl font-heading font-bold text-white mb-1">{tier}</h3>
-      <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">{price}</p>
-      <p className="text-xs text-slate-500 mb-4">Setup: {setupFee}</p>
-      
       <p className="text-sm text-slate-400 mb-4">{description}</p>
-      
+
       {reason && (
         <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 mb-4">
           <p className="text-xs text-cyan-300">{reason}</p>
         </div>
       )}
-      
-      <ul className="space-y-2 mb-6">
+
+      <ul className="space-y-2 mb-6 flex-1">
         {features.map((feature, i) => (
           <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
             <CheckCircle size={16} className="text-cyan-400 mt-0.5 flex-shrink-0" />
@@ -196,13 +198,16 @@ function TierCard({
           </li>
         ))}
       </ul>
-      
-      <Button 
-        className={`w-full ${isRecommended ? 'bg-cyan-500 hover:bg-cyan-400 text-black' : 'bg-slate-700 hover:bg-slate-600'}`}
-        data-testid={`button-tier-${tier.toLowerCase()}`}
-      >
-        {ctaText}
-      </Button>
+
+      <Link href="/book">
+        <Button
+          className={`w-full ${isRecommended ? 'bg-cyan-500 hover:bg-cyan-400 text-black' : 'bg-slate-700 hover:bg-slate-600'}`}
+          data-testid={`button-tier-${tier.toLowerCase().replace(/\s+/g, '-')}`}
+        >
+          Discuss fit &amp; investment
+          <ArrowRight size={14} className="ml-2" />
+        </Button>
+      </Link>
     </div>
   );
 }
@@ -218,7 +223,7 @@ export default function Results() {
     const storedResult = sessionStorage.getItem('assessmentResult');
     const storedLeadId = sessionStorage.getItem('leadId');
     const storedEmail = sessionStorage.getItem('contactEmail');
-    
+
     if (storedResult) {
       const parsed = JSON.parse(storedResult) as AssessmentResult;
       if (!parsed.gapBreakdown) {
@@ -234,20 +239,14 @@ export default function Results() {
       }
       setResult(parsed);
     }
-    if (storedLeadId) {
-      setLeadId(storedLeadId);
-    }
-    if (storedEmail) {
-      setContactEmail(storedEmail);
-    }
+    if (storedLeadId) setLeadId(storedLeadId);
+    if (storedEmail) setContactEmail(storedEmail);
   }, []);
 
   useEffect(() => {
     if (!result) {
       const timer = setTimeout(() => {
-        if (!result) {
-          setLocation("/assessment");
-        }
+        if (!result) setLocation("/assessment");
       }, 1000);
       return () => clearTimeout(timer);
     }
@@ -264,12 +263,21 @@ export default function Results() {
     );
   }
 
-  const pillars = [
-    { name: "Capture", gap: result.gapBreakdown.captureGap },
-    { name: "Conversion", gap: result.gapBreakdown.convertGap },
-    { name: "Compounding", gap: result.gapBreakdown.compoundGap },
+  const fn = result.financialNarrative;
+  const bm = result.industryBenchmark ?? {
+    industryLabel: "service businesses",
+    captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+    convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+    compoundNote: "Dormant lead reactivation recovered 8-12% of old contacts at near-zero cost",
+  };
+
+  const pillarScores = [
+    { name: "Capture", score: result.captureScore.score, gap: result.gapBreakdown.captureGap },
+    { name: "Convert", score: result.convertScore.score, gap: result.gapBreakdown.convertGap },
+    { name: "Compound", score: result.compoundScore.score, gap: result.gapBreakdown.compoundGap },
   ];
-  const weakest = pillars.reduce((a, b) => a.gap >= b.gap ? a : b);
+  const weakestByScore = [...pillarScores].sort((a, b) => a.score - b.score)[0];
+  const weakestByGap = [...pillarScores].sort((a, b) => b.gap - a.gap)[0];
 
   const calendarUrl = "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi";
 
@@ -278,7 +286,7 @@ export default function Results() {
     "AI Voice Backup Receptionist",
     "Instant SMS Text-Back",
     "Speed-to-lead engine (<60 seconds)",
-    "250 AI Voice Minutes/mo"
+    "250 AI Voice Minutes/mo",
   ];
 
   const systemFeatures = [
@@ -286,21 +294,32 @@ export default function Results() {
     "Proactive Quote / No-Show Recovery",
     "Smart Lead Triage",
     "90-Day Lead Nurture Sequences",
-    "500 AI Voice Minutes/mo"
+    "500 AI Voice Minutes/mo",
   ];
 
   const infrastructureFeatures = [
     "Everything in The AI System, plus:",
     "Full ASO (AI Search Optimization)",
-    "The \"Found Money\" DBR Campaign",
+    'The "Found Money" DBR Campaign',
     "Automated Reputation Management",
-    "1,000 AI Voice Minutes/mo"
+    "1,000 AI Voice Minutes/mo",
   ];
+
+  const revenueSnapshotData = [
+    { name: "Current Annual\nRevenue", value: fn?.currentAnnualRevenue ?? 0, fill: "#334155" },
+    { name: "Potential w/ System\n(Conservative)", value: fn?.potentialAnnualRevenue ?? 0, fill: "#22d3ee" },
+  ];
+
+  const cumulativeChartData = (fn?.cumulativeGainByMonth ?? []).map((v, i) => ({
+    month: `M${i + 1}`,
+    value: v,
+  }));
 
   return (
     <div className="min-h-screen text-foreground font-sans selection:bg-primary/30 relative overflow-hidden bg-background">
       <div className="fixed inset-0 z-0 bg-grid-pattern pointer-events-none" />
       <div className="fixed inset-0 z-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
+
       <header className="fixed top-0 left-0 right-0 z-50 h-20 glass-panel flex items-center px-6 md:px-12 justify-between">
         <Link href="/">
           <div className="text-xl font-heading font-bold tracking-tighter hover:opacity-80 transition-opacity flex items-center gap-3 cursor-pointer">
@@ -308,16 +327,16 @@ export default function Results() {
             <span className="text-white text-lg tracking-wide">SimpleSequence</span>
           </div>
         </Link>
-        
-        <Link 
+        <Link
           href="/"
-          className="flex items-center gap-2 text-sm text-[#6b7280] hover:text-[#00D9FF] transition-colors" 
+          className="flex items-center gap-2 text-sm text-[#6b7280] hover:text-[#00D9FF] transition-colors"
           data-testid="link-back-to-main-site"
         >
           <span className="hidden md:inline">Back to Main Site</span>
           <ExternalLink size={16} />
         </Link>
       </header>
+
       <main className="relative z-10 pt-32 pb-20 px-4 md:px-8 max-w-[900px] mx-auto">
 
         {/* === TITLE === */}
@@ -334,14 +353,38 @@ export default function Results() {
           </p>
         </motion.div>
 
-        {/* === YOUR BUSINESS AT A GLANCE === */}
+        {/* === SECTION 1: EXECUTIVE SUMMARY === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.03 }}
+          className="mb-6"
+        >
+          <div className="rounded-2xl bg-[#080b10] border border-cyan-500/20 p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent" />
+            <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-4">Executive Summary</p>
+            <p className="text-base text-slate-300 leading-relaxed">
+              This analysis maps friction across your three revenue pillars — Capture, Convert, and Compound —
+              based on the operational data you provided. We identified a total monthly revenue gap of{" "}
+              <span className="font-mono font-bold text-cyan-400">${result.totalMonthlyGap.toLocaleString()}</span>,
+              which translates to{" "}
+              <span className="font-mono font-bold text-white">${result.annualizedGap.toLocaleString()}</span> in
+              annual revenue currently slipping through operational gaps. Your biggest drag is in{" "}
+              <span className="font-bold text-white">{weakestByScore.name}</span> (score:{" "}
+              <span className="font-mono text-cyan-400">{weakestByScore.score}/100</span>). Below is the full
+              breakdown — what's leaking, what it costs, and a 30-day plan to close the gap.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* === SECTION 2: BUSINESS AT A GLANCE === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
           className="mb-6"
         >
-          <div 
+          <div
             className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_1px_rgba(103,232,249,0.08)]"
             data-testid="card-business-glance"
           >
@@ -375,30 +418,28 @@ export default function Results() {
           </div>
         </motion.div>
 
-        {/* === TOTAL IMPACT SUMMARY === */}
+        {/* === SECTION 3: TOTAL IMPACT SUMMARY === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mb-12"
+          className="mb-8"
         >
-          <div 
+          <div
             className="rounded-2xl bg-[#080b10] border border-cyan-500/15 p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_1px_rgba(103,232,249,0.1)]"
             style={{ backgroundImage: 'radial-gradient(ellipse at 50% 30%, rgba(103,232,249,0.04) 0%, transparent 60%)' }}
             data-testid="card-total-impact"
           >
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
-
             <div className="flex items-center gap-2 mb-6">
               <div className="p-1.5 rounded-lg bg-cyan-500/10">
                 <TrendingUp size={18} className="text-cyan-400" />
               </div>
               <p className="text-base font-bold text-cyan-400">Total Impact Summary</p>
             </div>
-
             <div className="text-center mb-6" ref={scoreRef}>
               <p className="text-[10px] text-slate-500 uppercase tracking-[0.25em] font-semibold mb-3">Total Monthly Revenue Gap</p>
-              <p 
+              <p
                 className="text-5xl md:text-6xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#67E8F9] via-[#22d3ee] to-[#0ea5e9] leading-none mb-2"
                 style={{ filter: 'drop-shadow(0 0 30px rgba(103, 232, 249, 0.2)) drop-shadow(0 0 60px rgba(103, 232, 249, 0.08))' }}
                 data-testid="text-total-gap"
@@ -409,7 +450,6 @@ export default function Results() {
                 Annualized: <span className="font-mono font-semibold text-slate-300">${result.annualizedGap.toLocaleString()}</span>
               </p>
             </div>
-
             <div className="grid grid-cols-3 gap-4">
               {[
                 { label: "Capture Gap", amount: result.gapBreakdown.captureGap },
@@ -425,53 +465,310 @@ export default function Results() {
           </div>
         </motion.div>
 
-        {/* === Gap Analysis === */}
-        <motion.div 
+        {/* === SECTION 4: REVENUE SNAPSHOT === */}
+        {fn && fn.currentAnnualRevenue > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.12 }}
+            className="mb-8"
+          >
+            <div className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+              <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-2">Revenue Snapshot — Current vs. Potential</p>
+              <p className="text-xs text-slate-500 mb-6">
+                Conservative projection assumes capturing 50% of the identified monthly gap.
+              </p>
+              <div className="flex items-end justify-center gap-2 mb-2 text-sm font-mono font-bold text-cyan-400">
+                +${fn.conservativeAnnualGain.toLocaleString()}/yr potential
+              </div>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={revenueSnapshotData} barCategoryGap="35%">
+                  <XAxis
+                    dataKey="name"
+                    tick={{ fill: "#94a3b8", fontSize: 11 }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval={0}
+                  />
+                  <YAxis
+                    tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                    tick={{ fill: "#64748b", fontSize: 10 }}
+                    axisLine={false}
+                    tickLine={false}
+                    width={50}
+                  />
+                  <Tooltip
+                    formatter={(v: number) => [`$${v.toLocaleString()}`, ""]}
+                    contentStyle={{ background: "#0c1018", border: "1px solid #1a2332", borderRadius: 8, color: "#e2e8f0" }}
+                    cursor={{ fill: "rgba(103,232,249,0.04)" }}
+                  />
+                  <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                    {revenueSnapshotData.map((entry, index) => (
+                      <Cell key={index} fill={entry.fill} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+              <div className="grid grid-cols-2 gap-4 mt-4">
+                <div className="text-center">
+                  <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Current Annual Revenue</p>
+                  <p className="text-lg font-mono font-bold text-slate-400">${fn.currentAnnualRevenue.toLocaleString()}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Potential w/ System</p>
+                  <p className="text-lg font-mono font-bold text-cyan-400">${fn.potentialAnnualRevenue.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* === SECTION 5: GAP ANALYSIS (PILLAR CARDS) === */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="space-y-6 mb-12"
+          transition={{ delay: 0.14 }}
+          className="space-y-6 mb-8"
         >
           <h2 className="text-2xl font-heading font-bold text-white">Gap Analysis</h2>
-          
-          <PillarCard 
-            title="Capture" 
+
+          <PillarCard
+            title="Capture"
             pillar={result.captureScore}
             icon={<Eye size={20} className="text-cyan-400" />}
             description="Speed-to-lead is the #1 predictor of conversion. Research shows 78% of customers go with whoever responds first."
             monthlyImpact={result.gapBreakdown.captureGap}
             calcFormula={result.gapBreakdown.captureCalc}
             calcLabel="Capture Gap = Unavailable leads × Speed loss rate × Avg job value"
+            benchmarkNote={`Among ${bm.industryLabel}: ${bm.captureNote}.`}
           />
-          
-          <PillarCard 
-            title="Conversion" 
+
+          <PillarCard
+            title="Conversion"
             pillar={result.convertScore}
             icon={<Target size={20} className="text-cyan-400" />}
             description="Most revenue isn't lost at first contact — it's lost in the days and weeks after when no one follows up."
             monthlyImpact={result.gapBreakdown.convertGap}
             calcFormula={result.gapBreakdown.convertCalc}
             calcLabel="Conversion Gap = No-show recovery + Quote follow-up losses"
+            benchmarkNote={`Among ${bm.industryLabel}: ${bm.convertNote}.`}
           />
-          
-          <PillarCard 
-            title="Compounding" 
+
+          <PillarCard
+            title="Compounding"
             pillar={result.compoundScore}
             icon={<TrendingUp size={20} className="text-cyan-400" />}
             description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."
             monthlyImpact={result.gapBreakdown.compoundGap}
             calcFormula={result.gapBreakdown.compoundCalc}
             calcLabel="Compounding Gap = Database reactivation potential + Manual labor cost"
+            benchmarkNote={`Among ${bm.industryLabel}: ${bm.compoundNote}.`}
           />
         </motion.div>
 
-        {/* === BLINDSPOTS === */}
-        {result.blindspots.length > 0 && (
+        {/* === SECTION 6: SCENARIO ANALYSIS === */}
+        {fn && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.16 }}
+            className="mb-8"
+          >
+            <div className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+              <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-1">What Closing the Gap Looks Like</p>
+              <p className="text-xs text-slate-500 mb-5">Our projections use the conservative scenario — capturing just 50% of the identified gap.</p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[480px]">
+                  <thead>
+                    <tr className="border-b border-[#1a2332]">
+                      <th className="text-left text-[10px] font-bold text-slate-500 uppercase tracking-wider pb-3">Metric</th>
+                      <th className="text-right text-[10px] font-bold text-slate-500 uppercase tracking-wider pb-3">Current State</th>
+                      <th className="text-right text-[10px] font-bold text-cyan-400 uppercase tracking-wider pb-3">Conservative (50%)</th>
+                      <th className="text-right text-[10px] font-bold text-cyan-300 uppercase tracking-wider pb-3">Full Recovery (100%)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1a2332]">
+                    <tr>
+                      <td className="py-3 text-slate-400">Monthly Revenue</td>
+                      <td className="py-3 text-right font-mono text-slate-300">${fn.currentMonthlyRevenue.toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono text-cyan-400">${(fn.currentMonthlyRevenue + fn.conservativeMonthlyRecovery).toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono text-cyan-300">${(fn.currentMonthlyRevenue + fn.fullMonthlyRecovery).toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 text-slate-400">Additional Monthly</td>
+                      <td className="py-3 text-right font-mono text-slate-500">—</td>
+                      <td className="py-3 text-right font-mono text-cyan-400">+${fn.conservativeMonthlyRecovery.toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono text-cyan-300">+${fn.fullMonthlyRecovery.toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 text-slate-400">Additional Annual</td>
+                      <td className="py-3 text-right font-mono text-slate-500">—</td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-400">+${fn.conservativeAnnualGain.toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-300">+${fn.fullAnnualGain.toLocaleString()}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* === SECTION 7: 12-MONTH CUMULATIVE GAIN CHART === */}
+        {fn && fn.conservativeMonthlyRecovery > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.18 }}
+            className="mb-8"
+          >
+            <div className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+              <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-1">12-Month Projected Cumulative Gain (Conservative)</p>
+              <p className="text-xs text-slate-500 mb-5">Month-by-month accumulated recovery at 50% of identified gap.</p>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={cumulativeChartData} barCategoryGap="20%">
+                  <XAxis
+                    dataKey="month"
+                    tick={{ fill: "#64748b", fontSize: 10 }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                    tick={{ fill: "#64748b", fontSize: 10 }}
+                    axisLine={false}
+                    tickLine={false}
+                    width={50}
+                  />
+                  <Tooltip
+                    formatter={(v: number) => [`$${v.toLocaleString()}`, "Cumulative Gain"]}
+                    contentStyle={{ background: "#0c1018", border: "1px solid #1a2332", borderRadius: 8, color: "#e2e8f0" }}
+                    cursor={{ fill: "rgba(103,232,249,0.04)" }}
+                  />
+                  <Bar dataKey="value" fill="#22d3ee" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
+        )}
+
+        {/* === SECTION 8: COST OF INACTION === */}
+        {fn && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mb-12"
+            className="mb-8"
+          >
+            <div className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#e74c3c]/20 to-transparent" />
+              <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                <TrendingDown size={14} className="text-[#e07060]" />
+                The Cost of Inaction
+              </p>
+
+              <div className="rounded-xl border border-[#e74c3c]/25 bg-[#e74c3c]/05 p-5 mb-6">
+                <DailyCostCounter dailyCost={fn.dailyCostOfInaction} />
+                <p className="text-sm text-slate-400 mt-2">
+                  That's <span className="font-mono font-semibold text-slate-300">${fn.totalMonthlyGap.toLocaleString()}</span> per month in revenue that should be yours.
+                </p>
+              </div>
+
+              <div className="overflow-x-auto mb-6">
+                <table className="w-full text-sm min-w-[400px]">
+                  <thead>
+                    <tr className="border-b border-[#1a2332]">
+                      <th className="text-left text-[10px] font-bold text-slate-500 uppercase tracking-wider pb-3">Doing Nothing</th>
+                      <th className="text-left text-[10px] font-bold text-cyan-400 uppercase tracking-wider pb-3">With the Gap Closed</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1a2332]">
+                    {[
+                      ["Revenue continues to leak", "Revenue gap captured"],
+                      ["Competitors respond faster", "Leads answered in under 60 seconds"],
+                      ["Follow-up stays manual and inconsistent", "Pipeline works itself automatically"],
+                      ["Past customers stay dormant", "Dormant database generates found money"],
+                      ["Reputation growth stays slow", "5-star reviews compound automatically"],
+                    ].map(([bad, good], i) => (
+                      <tr key={i}>
+                        <td className="py-2.5 text-slate-500 pr-4">{bad}</td>
+                        <td className="py-2.5 text-slate-300">{good}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-3">Cumulative revenue left on the table</p>
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { label: "6 Months", value: fn.sixMonthInactionCost },
+                  { label: "12 Months", value: fn.twelveMonthInactionCost },
+                  { label: "3 Years", value: fn.threeYearInactionCost },
+                ].map((item) => (
+                  <div key={item.label} className="text-center bg-[#0c1018] rounded-xl p-4 border border-[#1a2332]">
+                    <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">{item.label}</p>
+                    <p className="text-xl font-mono font-bold text-[#e07060]">${item.value.toLocaleString()}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* === SECTION 9: LONG-TERM COMPOUNDING RETURNS === */}
+        {fn && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.22 }}
+            className="mb-8"
+          >
+            <div className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+              <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-1">Long-Term Compounding Returns</p>
+              <p className="text-xs text-slate-500 mb-5">Year 1 at conservative (50%), Years 2+ at full gap recovery as systems optimize.</p>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[380px]">
+                  <thead>
+                    <tr className="border-b border-[#1a2332]">
+                      <th className="text-left text-[10px] font-bold text-slate-500 uppercase tracking-wider pb-3">Timeframe</th>
+                      <th className="text-right text-[10px] font-bold text-slate-500 uppercase tracking-wider pb-3">Projected Gain</th>
+                      <th className="text-right text-[10px] font-bold text-slate-500 uppercase tracking-wider pb-3">Scenario Basis</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1a2332]">
+                    <tr>
+                      <td className="py-3 text-slate-300 font-semibold">Year 1</td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-400">${fn.yearOneGain.toLocaleString()}</td>
+                      <td className="py-3 text-right text-slate-500 text-xs">Conservative (50% gap)</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 text-slate-300 font-semibold">Year 3</td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-400">${fn.yearThreeGain.toLocaleString()}</td>
+                      <td className="py-3 text-right text-slate-500 text-xs">Yr 1 conservative, then full</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 text-slate-300 font-semibold">Year 5</td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-400">${fn.yearFiveGain.toLocaleString()}</td>
+                      <td className="py-3 text-right text-slate-500 text-xs">Yr 1 conservative, then full</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* === SECTION 10: BLINDSPOTS === */}
+        {result.blindspots.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.24 }}
+            className="mb-8"
           >
             <h2 className="text-2xl font-heading font-bold text-white mb-4">Your Blindspots</h2>
             <GlassCard className="p-6 border-cyan-500/10 bg-slate-900/40">
@@ -488,19 +785,19 @@ export default function Results() {
           </motion.div>
         )}
 
-        {/* === ACTION PLAN === */}
+        {/* === SECTION 11: ACTION PLAN === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="mb-12"
+          transition={{ delay: 0.26 }}
+          className="mb-8"
         >
           <h2 className="text-2xl font-heading font-bold text-cyan-400 mb-2">Your Next-30-Day Action Plan</h2>
           <p className="text-slate-300 mb-1">
-            Start here — tailored to your <span className="font-bold text-white">biggest gap: {weakest.name}</span>.
+            Start here — tailored to your <span className="font-bold text-white">biggest gap: {weakestByGap.name}</span>.
           </p>
           <p className="text-slate-500 text-sm mb-6">You can implement with or without SimpleSequence.</p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <GlassCard className="p-6 border-cyan-500/20 bg-cyan-950/10">
               <h3 className="text-lg font-heading font-semibold text-white mb-4 flex items-center gap-2">
@@ -533,18 +830,16 @@ export default function Results() {
             </GlassCard>
           </div>
 
-          {/* === DIY REALITY === */}
+          {/* === SECTION 12: DIY REALITY === */}
           <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
             <h3 className="text-xl font-heading font-bold text-white mb-2">The Reality of DIY Implementation</h3>
-            <p className="text-slate-400 text-sm mb-6">
-              Most businesses intend these fixes but never finish.
-            </p>
+            <p className="text-slate-400 text-sm mb-6">Most businesses intend these fixes but never finish.</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center bg-slate-900/50 rounded-xl p-6 border border-slate-800">
                 <Clock size={20} className="text-cyan-400/60 mx-auto mb-3" />
                 <p className="text-sm font-bold text-white uppercase tracking-wider mb-2">Time Investment</p>
                 <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">15–30 hrs</p>
-                <p className="text-xs text-slate-500">setup & troubleshooting</p>
+                <p className="text-xs text-slate-500">setup &amp; troubleshooting</p>
               </div>
               <div className="text-center bg-slate-900/50 rounded-xl p-6 border border-slate-800">
                 <Code size={20} className="text-cyan-400/60 mx-auto mb-3" />
@@ -556,63 +851,57 @@ export default function Results() {
                 <RefreshCw size={20} className="text-cyan-400/60 mx-auto mb-3" />
                 <p className="text-sm font-bold text-white uppercase tracking-wider mb-2">Ongoing Overhead</p>
                 <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">Constant</p>
-                <p className="text-xs text-slate-500">maintenance & monitoring</p>
+                <p className="text-xs text-slate-500">maintenance &amp; monitoring</p>
               </div>
             </div>
           </GlassCard>
         </motion.div>
 
-        {/* === TIER CARDS === */}
+        {/* === SECTION 13: TIER RECOMMENDATION === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           className="space-y-6 mb-12"
         >
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
             <div>
               <h2 className="text-2xl font-heading font-bold text-white mb-2">Your Prioritized Opportunities</h2>
-              <p className="text-slate-400">{result.tierReason}</p>
+              <p className="text-sm text-slate-400">
+                Based on your <span className="text-white font-semibold">{weakestByScore.name}</span> score of{" "}
+                <span className="font-mono text-cyan-400">{weakestByScore.score}/100</span> and a{" "}
+                <span className="font-mono text-cyan-400">${weakestByGap.gap.toLocaleString()}/mo</span> gap in{" "}
+                <span className="text-white font-semibold">{weakestByGap.name}</span>, here's where SimpleSequence fits.
+              </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <TierCard
               tier="The AI Brain"
-              price="$150/mo"
-              setupFee="$750"
               description="Stop the Bleed. Capture Essentials — ensure every inquiry is answered in under 60 seconds, 24/7."
               features={brainFeatures}
               isRecommended={result.recommendedTier === 'The AI Brain'}
-              ctaText="Get Started"
               reason={result.recommendedTier === 'The AI Brain' ? result.tierReason : undefined}
             />
-            
             <TierCard
               tier="The AI System"
-              price="$250/mo"
-              setupFee="$1,250"
               description="The Invisible Sales Rep. Capture + Convert — automatically chase and recover stuck revenue in your pipeline."
               features={systemFeatures}
               isRecommended={result.recommendedTier === 'The AI System'}
-              ctaText="Get Started"
               reason={result.recommendedTier === 'The AI System' ? result.tierReason : undefined}
             />
-            
             <TierCard
               tier="The AI Infrastructure"
-              price="$350/mo"
-              setupFee="$1,750"
               description="Machine-Readable Dominance. Full Loop — total re-architecture of your digital presence across all three pillars."
               features={infrastructureFeatures}
               isRecommended={result.recommendedTier === 'The AI Infrastructure'}
-              ctaText="Get Started"
               reason={result.recommendedTier === 'The AI Infrastructure' ? result.tierReason : undefined}
             />
           </div>
         </motion.div>
 
-        {/* === BOTTOM CTAs === */}
+        {/* === SECTION 14: FINAL CTA === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -622,27 +911,15 @@ export default function Results() {
           <GlassCard className="p-8 border-cyan-500/20 bg-gradient-to-br from-cyan-950/15 to-slate-900/40 text-center" data-testid="card-bottom-ctas">
             <div className="space-y-4">
               <Link href="/book">
-                <GlassButton 
+                <GlassButton
                   className="w-full md:w-auto min-w-[300px] bg-cyan-500 hover:bg-cyan-400 text-black text-lg font-bold py-4 px-8 rounded-xl shadow-[0_0_20px_rgba(103,232,249,0.2)]"
-                  data-testid="button-get-installed"
+                  data-testid="button-book-strategy-call"
                 >
-                  Get SimpleSequence Installed
+                  <Calendar size={18} className="mr-2" />
+                  Book Your 15-Minute Strategy Call
                   <ArrowRight size={18} className="ml-2" />
                 </GlassButton>
               </Link>
-
-              <div>
-                <a 
-                  href={calendarUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 transition-all text-base font-semibold"
-                  data-testid="button-book-strategy-call"
-                >
-                  <Calendar size={16} />
-                  Book 15-min Strategy Call
-                </a>
-              </div>
 
               <div>
                 <button
@@ -652,11 +929,11 @@ export default function Results() {
                       window.open(`/api/assessment/${storedLeadId}/pdf`, '_blank');
                     }
                   }}
-                  className="text-sm text-slate-400 hover:text-cyan-400 transition-colors inline-flex items-center gap-1.5 underline underline-offset-2"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-700/50 bg-slate-900/40 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/30 transition-all text-base font-semibold"
                   data-testid="link-download-pdf"
                 >
-                  <Download size={14} />
-                  Download PDF Results
+                  <Download size={16} />
+                  Download Your Full Analysis (PDF)
                 </button>
               </div>
 
@@ -678,16 +955,28 @@ export default function Results() {
           transition={{ delay: 0.4 }}
           className="mt-12 text-center"
         >
-          <Link 
+          <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[#2a3038] bg-[#12161a] text-[#c0c8d0] hover:text-[#00D9FF] hover:border-[#00D9FF]/40 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.3)] hover:shadow-[0_4px_16px_rgba(0,217,255,0.1)]" 
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[#2a3038] bg-[#12161a] text-[#c0c8d0] hover:text-[#00D9FF] hover:border-[#00D9FF]/40 transition-all shadow-[0_2px_8px_rgba(0,0,0,0.3)] hover:shadow-[0_4px_16px_rgba(0,217,255,0.1)]"
             data-testid="link-return-to-main-site"
           >
             <ArrowRight size={16} className="rotate-180" />
-            Return to simplesequence.ai
+            Back to SimpleSequence.ai
           </Link>
         </motion.div>
       </main>
+    </div>
+  );
+}
+
+function DailyCostCounter({ dailyCost }: { dailyCost: number }) {
+  const { value, ref } = useCountUp(dailyCost, 1200);
+  return (
+    <div ref={ref}>
+      <p className="text-sm text-slate-400 mb-1">Every day this gap stays open costs</p>
+      <p className="text-4xl font-mono font-bold" style={{ color: "#e07060" }}>
+        ${value > 0 ? value.toLocaleString() : dailyCost.toLocaleString()}
+      </p>
     </div>
   );
 }
@@ -700,35 +989,19 @@ function FeedbackSection() {
 
   const handleSubmit = async () => {
     if (!feedback.trim()) return;
-    
     setIsSubmitting(true);
     try {
       const leadId = sessionStorage.getItem('leadId');
-      
       const response = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          leadId: leadId || undefined,
-          feedback: feedback.trim() 
-        }),
+        body: JSON.stringify({ leadId: leadId || undefined, feedback: feedback.trim() }),
       });
-      
-      if (!response.ok) {
-        throw new Error("Failed to submit feedback");
-      }
-      
+      if (!response.ok) throw new Error("Failed to submit feedback");
       setSubmitted(true);
-      toast({
-        title: "Thank you!",
-        description: "Your feedback helps us improve the assessment.",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to submit feedback. Please try again.",
-        variant: "destructive",
-      });
+      toast({ title: "Thank you!", description: "Your feedback helps us improve the assessment." });
+    } catch {
+      toast({ title: "Error", description: "Failed to submit feedback. Please try again.", variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
@@ -736,12 +1009,7 @@ function FeedbackSection() {
 
   if (submitted) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.35 }}
-        className="mb-12"
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mb-12">
         <GlassCard className="p-6 border-cyan-500/20 bg-cyan-950/10">
           <div className="flex items-center gap-3">
             <CheckCircle className="text-cyan-400" size={24} />
@@ -756,12 +1024,7 @@ function FeedbackSection() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.35 }}
-      className="mb-12"
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mb-12">
       <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
         <h3 className="text-lg font-heading font-semibold text-white mb-2">Was this helpful?</h3>
         <p className="text-sm text-slate-400 mb-4">Your feedback helps us improve the assessment experience.</p>

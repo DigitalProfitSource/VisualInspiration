@@ -21,6 +21,35 @@ export interface GapBreakdown {
   compoundCalc: string;
 }
 
+export interface FinancialNarrative {
+  currentMonthlyRevenue: number;
+  totalMonthlyGap: number;
+  captureGap: number;
+  conversionGap: number;
+  compoundingGap: number;
+  conservativeMonthlyRecovery: number;
+  fullMonthlyRecovery: number;
+  conservativeAnnualGain: number;
+  fullAnnualGain: number;
+  currentAnnualRevenue: number;
+  potentialAnnualRevenue: number;
+  dailyCostOfInaction: number;
+  sixMonthInactionCost: number;
+  twelveMonthInactionCost: number;
+  threeYearInactionCost: number;
+  cumulativeGainByMonth: number[];
+  yearOneGain: number;
+  yearThreeGain: number;
+  yearFiveGain: number;
+}
+
+export interface IndustryBenchmark {
+  industryLabel: string;
+  captureNote: string;
+  convertNote: string;
+  compoundNote: string;
+}
+
 export interface AssessmentResult {
   businessName: string;
   industry: string;
@@ -46,6 +75,9 @@ export interface AssessmentResult {
   tierReason: string;
   adSpend: number;
   monthlySalesVolume: number;
+
+  financialNarrative: FinancialNarrative;
+  industryBenchmark: IndustryBenchmark;
 }
 
 function parseMonthlyLeads(value: string): number {
@@ -552,6 +584,231 @@ function recommendTier(
   };
 }
 
+function getIndustryBenchmark(industry: string): IndustryBenchmark {
+  const benchmarks: Record<string, IndustryBenchmark> = {
+    "HVAC": {
+      industryLabel: "HVAC companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes with AI speed-to-lead",
+      convertNote: "Lead follow-up rate improved from 31% to 89% with automated sequences",
+      compoundNote: "Estimate bookings increased 47% with automated follow-up systems",
+    },
+    "Plumbing": {
+      industryLabel: "plumbing companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Dormant lead reactivation recovered 8-12% of old contacts at near-zero cost",
+    },
+    "Electrical": {
+      industryLabel: "electrical contractors",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Estimate bookings increased 47% with automated speed-to-lead systems",
+    },
+    "Roofing": {
+      industryLabel: "roofing companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Estimate bookings increased 47% with automated follow-up",
+      compoundNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+    },
+    "Landscaping": {
+      industryLabel: "landscaping companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Estimate bookings increased 47% with automated follow-up systems",
+    },
+    "Cleaning": {
+      industryLabel: "cleaning services",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Customer reactivation campaigns recovered dormant leads at near-zero cost",
+    },
+    "Pest Control": {
+      industryLabel: "pest control companies",
+      captureNote: "Missed call rate reduced from 35% to under 2% with AI availability",
+      convertNote: "Response time reduced from 12+ hours to under 5 minutes",
+      compoundNote: "Recall scheduling reached 45% automation rate",
+    },
+    "Legal": {
+      industryLabel: "law firms",
+      captureNote: "Consultation availability expanded to 24/7 with 4.5x ROI in 6 months",
+      convertNote: "Qualified case intakes increased 67% with automated intake systems",
+      compoundNote: "Case follow-up automation reduced lead drop-off by over 60%",
+    },
+    "Med Spa / Aesthetics": {
+      industryLabel: "med spas",
+      captureNote: "Consultation bookings increased 127% with 24/7 AI scheduling",
+      convertNote: "No-show rate reduced 64% with automated rebooking systems",
+      compoundNote: "Treatment packages sold increased 203% through follow-up automation",
+    },
+    "Real Estate": {
+      industryLabel: "real estate teams",
+      captureNote: "Speed-to-lead improved from 1-2 hours to under 1 minute",
+      convertNote: "Portal lead conversion improved from 2% to 8% (+300%)",
+      compoundNote: "Lead nurture sequences recovered 15%+ of cold leads",
+    },
+    "Auto Services": {
+      industryLabel: "auto repair shops",
+      captureNote: "Missed call rate reduced from 35% to under 2%",
+      convertNote: "Recall scheduling reached 45% automation rate",
+      compoundNote: "Customer return rate improved significantly with automated follow-up",
+    },
+    "Dental": {
+      industryLabel: "dental practices",
+      captureNote: "Missed call rate reduced from 35% to under 2%",
+      convertNote: "New patient intake became available 24/7",
+      compoundNote: "Recall scheduling reached 45% automation rate",
+    },
+    "Chiropractic": {
+      industryLabel: "chiropractic practices",
+      captureNote: "Consultation bookings increased 127% with 24/7 AI scheduling",
+      convertNote: "No-show rate reduced 64% with automated rebooking systems",
+      compoundNote: "Patient reactivation campaigns recovered dormant patients at near-zero cost",
+    },
+    "Financial Services": {
+      industryLabel: "financial service firms",
+      captureNote: "Document collection time reduced from 3-5 days to under 4 hours",
+      convertNote: "Appointment show rate improved 22% with automated reminders",
+      compoundNote: "Tax season response became instant via AI agent",
+    },
+    "Insurance": {
+      industryLabel: "insurance agencies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Client reactivation campaigns recovered dormant leads at near-zero cost",
+    },
+    "Fitness / Wellness": {
+      industryLabel: "fitness and wellness businesses",
+      captureNote: "Consultation bookings increased 127% with 24/7 AI scheduling",
+      convertNote: "No-show rate reduced 64% with automated rebooking",
+      compoundNote: "Membership retention improved significantly through automated follow-up",
+    },
+    "Remodeling": {
+      industryLabel: "remodeling companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Estimate bookings increased 47% with automated follow-up",
+      compoundNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+    },
+    "Solar": {
+      industryLabel: "solar companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Estimate bookings increased 47% with automated systems",
+    },
+    "Pool & Spa": {
+      industryLabel: "pool and spa companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Customer reactivation campaigns recovered dormant leads at near-zero cost",
+    },
+    "Flooring": {
+      industryLabel: "flooring companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Estimate bookings increased 47% with automated follow-up",
+      compoundNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+    },
+    "Windows & Doors": {
+      industryLabel: "windows and doors companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Estimate bookings increased 47% with automated follow-up systems",
+    },
+    "Painting": {
+      industryLabel: "painting companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Customer reactivation campaigns recovered dormant leads at near-zero cost",
+    },
+    "Insulation": {
+      industryLabel: "insulation contractors",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Estimate bookings increased 47% with automated follow-up systems",
+    },
+    "Garage Doors": {
+      industryLabel: "garage door companies",
+      captureNote: "Missed call rate reduced from 35% to under 2% with AI availability",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Customer reactivation campaigns recovered dormant leads at near-zero cost",
+    },
+    "Security Systems": {
+      industryLabel: "security system companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Customer reactivation campaigns recovered dormant leads at near-zero cost",
+    },
+    "Moving Services": {
+      industryLabel: "moving companies",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Dormant lead reactivation recovered 8-12% of old contacts at near-zero cost",
+    },
+    "Staffing / HR": {
+      industryLabel: "staffing and HR firms",
+      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+      compoundNote: "Client reactivation campaigns recovered dormant contacts at near-zero cost",
+    },
+  };
+
+  return benchmarks[industry] ?? {
+    industryLabel: "service businesses",
+    captureNote: "Response time reduced from 12+ hours to under 5 minutes",
+    convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
+    compoundNote: "Dormant lead reactivation recovered 8-12% of old contacts at near-zero cost",
+  };
+}
+
+function calculateFinancialNarrative(
+  avgJobValue: number,
+  monthlySalesVolume: number,
+  totalMonthlyGap: number,
+  captureGap: number,
+  conversionGap: number,
+  compoundingGap: number
+): FinancialNarrative {
+  const currentMonthlyRevenue = avgJobValue * Math.max(monthlySalesVolume, 1);
+  const currentAnnualRevenue = currentMonthlyRevenue * 12;
+
+  const conservativeMonthlyRecovery = Math.round(totalMonthlyGap * 0.50);
+  const fullMonthlyRecovery = totalMonthlyGap;
+  const conservativeAnnualGain = conservativeMonthlyRecovery * 12;
+  const fullAnnualGain = fullMonthlyRecovery * 12;
+  const potentialAnnualRevenue = currentAnnualRevenue + conservativeAnnualGain;
+
+  const dailyCostOfInaction = Math.round(totalMonthlyGap / 30);
+  const sixMonthInactionCost = totalMonthlyGap * 6;
+  const twelveMonthInactionCost = totalMonthlyGap * 12;
+  const threeYearInactionCost = totalMonthlyGap * 36;
+
+  const cumulativeGainByMonth = Array.from({ length: 12 }, (_, i) => conservativeMonthlyRecovery * (i + 1));
+
+  const yearOneGain = conservativeAnnualGain;
+  const yearThreeGain = yearOneGain + (fullAnnualGain * 2);
+  const yearFiveGain = yearOneGain + (fullAnnualGain * 4);
+
+  return {
+    currentMonthlyRevenue,
+    totalMonthlyGap,
+    captureGap,
+    conversionGap,
+    compoundingGap,
+    conservativeMonthlyRecovery,
+    fullMonthlyRecovery,
+    conservativeAnnualGain,
+    fullAnnualGain,
+    currentAnnualRevenue,
+    potentialAnnualRevenue,
+    dailyCostOfInaction,
+    sixMonthInactionCost,
+    twelveMonthInactionCost,
+    threeYearInactionCost,
+    cumulativeGainByMonth,
+    yearOneGain,
+    yearThreeGain,
+    yearFiveGain,
+  };
+}
+
 export function calculateResults(data: AssessmentData): AssessmentResult {
   const monthlyLeads = parseMonthlyLeads(data.monthly_lead_volume);
   const avgJobValue = parseJobValue(data.avg_job_value);
@@ -613,6 +870,17 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     adSpend
   );
 
+  const financialNarrative = calculateFinancialNarrative(
+    avgJobValue,
+    monthlySalesVolume,
+    totalMonthlyGap,
+    gapBreakdown.captureGap,
+    gapBreakdown.convertGap,
+    gapBreakdown.compoundGap
+  );
+
+  const industryBenchmark = getIndustryBenchmark(data.industry);
+
   return {
     businessName: data.business_name || "Your Business",
     industry: data.industry,
@@ -638,5 +906,8 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     tierReason: reason,
     adSpend,
     monthlySalesVolume,
+
+    financialNarrative,
+    industryBenchmark,
   };
 }
