@@ -176,10 +176,6 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     }
 
     // ── Action Plan ───────────────────────────────────────────────────────────
-    y = checkY(doc, y, 60);
-    // Always start action plan on a fresh section, add page if less than 80pt remain
-    if (y > PAGE_BOTTOM - 80) { doc.addPage(); y = 50; }
-
     y = sectionHeading(doc, y, "Your 30-Day Action Plan", colors.dark);
 
     y = checkY(doc, y, 30);
@@ -207,8 +203,6 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
 
     // ── Recommended Tier ──────────────────────────────────────────────────────
     y = checkY(doc, y, 120);
-    if (y > PAGE_BOTTOM - 120) { doc.addPage(); y = 50; }
-
     y += 10;
     doc.rect(LEFT, y, FULL_WIDTH, 105).fill(colors.primary + "18");
     doc.rect(LEFT, y, FULL_WIDTH, 105).stroke(colors.primary);
