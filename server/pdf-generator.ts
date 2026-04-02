@@ -26,16 +26,27 @@ function checkY(doc: InstanceType<typeof PDFDocument>, y: number, needed = 30): 
   return y;
 }
 
+function sectionLabel(
+  doc: InstanceType<typeof PDFDocument>,
+  y: number,
+  text: string,
+): number {
+  y = checkY(doc, y, 30);
+  doc.fontSize(8).fillColor("#0891b2")
+     .text(text.toUpperCase(), LEFT, y, { characterSpacing: 1.5 });
+  return y + 16;
+}
+
 function sectionHeading(
   doc: InstanceType<typeof PDFDocument>,
   y: number,
   text: string,
   color: string,
-  size = 16
+  size = 14,
 ): number {
   y = checkY(doc, y, size + 20);
   doc.fontSize(size).fillColor(color).text(text, LEFT, y);
-  return y + size + 10;
+  return y + size + 8;
 }
 
 function drawBar(
@@ -44,9 +55,14 @@ function drawBar(
   y: number,
   w: number,
   h: number,
-  color: string
+  color: string,
 ): void {
   doc.rect(x, y, w, h).fill(color);
+}
+
+function dividerLine(doc: InstanceType<typeof PDFDocument>, y: number): number {
+  doc.moveTo(LEFT, y).lineTo(LEFT + FULL_WIDTH, y).strokeColor("#1a2332").lineWidth(0.5).stroke();
+  return y + 10;
 }
 
 export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buffer> {
@@ -56,7 +72,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       margin: LEFT,
       bufferPages: true,
       info: {
-        Title: `Sequential Revenue Friction Analysis - ${data.result.businessName}`,
+        Title: `Sequential Revenue Friction Analysis — ${data.result.businessName}`,
         Author: "SimpleSequence",
         Subject: "Sequential Revenue Friction Analysis Report",
       },
@@ -67,7 +83,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     doc.on("end", () => resolve(Buffer.concat(chunks)));
     doc.on("error", reject);
 
-    const colors = {
+    const C = {
       primary: "#0891b2",
       cyan: "#22d3ee",
       teal: "#14b8a6",
@@ -77,21 +93,9 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       white: "#ffffff",
       lightTeal: "#f0fdfa",
       coral: "#c0504d",
+      bg: "#f8fafc",
     };
 
-    // ── Header bar ────────────────────────────────────────────────────────────
-    doc.rect(0, 0, doc.page.width, 90).fill(colors.dark);
-    doc.fontSize(22).fillColor(colors.white).text("SimpleSequence", LEFT, 28);
-    doc.fontSize(10).fillColor(colors.cyan).text("Sequential Revenue Friction Analysis", LEFT, 55);
-    doc.fontSize(9).fillColor(colors.slate).text(
-      `Generated: ${data.submittedAt.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`,
-      400, 55, { align: "right" }
-    );
-
-    let y = 108;
-
-    // ── Executive Summary ─────────────────────────────────────────────────────
-    y = sectionHeading(doc, y, "Executive Summary", colors.dark);
     const fn = data.result.financialNarrative;
     const bm = data.result.industryBenchmark ?? {
       industryLabel: "service businesses",
@@ -106,164 +110,196 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       { name: "Compound", score: data.result.compoundScore.score },
     ];
     const weakest = [...pillarScores].sort((a, b) => a.score - b.score)[0];
+    const weakestByGap = [
+      { name: "Capture", gap: data.result.gapBreakdown.captureGap },
+      { name: "Convert", gap: data.result.gapBreakdown.convertGap },
+      { name: "Compound", gap: data.result.gapBreakdown.compoundGap },
+    ].sort((a, b) => b.gap - a.gap)[0];
+
+    // ── Header bar ────────────────────────────────────────────────────────────
+    doc.rect(0, 0, doc.page.width, 90).fill(C.dark);
+    doc.fontSize(22).fillColor(C.white).text("SimpleSequence", LEFT, 22);
+    doc.fontSize(11).fillColor(C.cyan).text("Sequential Revenue™ Friction Analysis", LEFT, 50);
+    doc.fontSize(9).fillColor(C.slate).text(
+      `Generated: ${data.submittedAt.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`,
+      LEFT + FULL_WIDTH - 100, 50,
+    );
+
+    let y = 108;
+
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 1 — EXECUTIVE SUMMARY
+    // ────────────────────────────────────────────────────────────────────────
+    y = sectionLabel(doc, y, "Section 1 — Executive Summary");
 
     const summaryText =
-      `This analysis maps friction across your three revenue pillars -- Capture, Convert, and Compound -- ` +
-      `based on the operational data you provided. We identified a total monthly revenue gap of ` +
-      `$${data.result.totalMonthlyGap.toLocaleString()}, which translates to $${data.result.annualizedGap.toLocaleString()} ` +
-      `in annual revenue currently slipping through operational gaps. Your biggest drag is in ` +
-      `${weakest.name} (score: ${weakest.score}/100). Below is the full breakdown -- what's leaking, ` +
-      `what it costs, and a 30-day plan to close the gap.`;
+      `This analysis maps friction across your three revenue pillars — Capture, Convert, and Compound — ` +
+      `based on the operational data provided by ${data.contactName}. We identified a total monthly ` +
+      `revenue gap of $${data.result.totalMonthlyGap.toLocaleString()}, translating to ` +
+      `$${data.result.annualizedGap.toLocaleString()} in annual revenue currently slipping through ` +
+      `operational gaps. Your biggest drag is in ${weakest.name} (score: ${weakest.score}/100). ` +
+      `Below is the full breakdown — what's leaking, what it costs, and a 30-day plan to close the gap.`;
 
-    y = checkY(doc, y, 60);
-    doc.fontSize(10).fillColor(colors.dark).text(summaryText, LEFT, y, { width: FULL_WIDTH });
-    y += doc.heightOfString(summaryText, { width: FULL_WIDTH }) + 16;
+    doc.fontSize(10).fillColor(C.dark).text(summaryText, LEFT, y, { width: FULL_WIDTH });
+    y += doc.heightOfString(summaryText, { width: FULL_WIDTH }) + 18;
+    y = dividerLine(doc, y);
 
-    // ── Business Profile ───────────────────────────────────────────────────────
-    y = sectionHeading(doc, y, "Business Profile", colors.dark);
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 2 — BUSINESS AT A GLANCE
+    // ────────────────────────────────────────────────────────────────────────
+    y = sectionLabel(doc, y, "Section 2 — Business At A Glance");
 
-    const profileData: [string, string][] = [
+    const glanceItems: [string, string][] = [
       ["Company",        data.result.businessName || "—"],
-      ["Contact",        data.contactName],
-      ["Email",          data.contactEmail],
-      ["Phone",          data.contactPhone || "Not provided"],
-      ["Website",        data.websiteUrl   || "Not provided"],
+      ["Contact",        `${data.contactName}  |  ${data.contactEmail}`],
       ["Industry",       data.result.industry],
-      ["Specialization", data.result.niche],
+      ["Specialization", data.result.niche || "General"],
       ["Team Size",      data.result.teamSize],
-      ["Avg Job Value",  `$${data.result.avgJobValue.toLocaleString()}`],
       ["Monthly Leads",  String(data.result.monthlyLeads)],
+      ["Avg Job Value",  `$${data.result.avgJobValue.toLocaleString()}`],
       ["Close Rate",     `${Math.round(data.result.closeRate * 100)}%`],
+      ...(data.result.adSpend > 0 ? [["Monthly Ad Spend", `$${data.result.adSpend.toLocaleString()}/mo`] as [string, string]] : []),
+      ...(data.result.monthlySalesVolume > 0 ? [["Monthly Job Volume", `${data.result.monthlySalesVolume} jobs/mo`] as [string, string]] : []),
+      ...(data.websiteUrl ? [["Website", data.websiteUrl] as [string, string]] : []),
     ];
 
-    doc.fontSize(10);
-    for (const [label, value] of profileData) {
-      y = checkY(doc, y, 18);
-      doc.fillColor(colors.slate).text(label + ":", LEFT, y, { continued: true, width: 120 });
-      doc.fillColor(colors.dark).text("  " + value, { width: 390 });
-      y += 16;
+    const halfW = FULL_WIDTH / 2 - 8;
+    let col = 0;
+    let rowY = y;
+    for (const [label, value] of glanceItems) {
+      const x = col === 0 ? LEFT : LEFT + FULL_WIDTH / 2 + 8;
+      rowY = checkY(doc, rowY, 18);
+      doc.fontSize(8).fillColor(C.slate).text(label + ":", x, rowY, { width: halfW });
+      doc.fontSize(9).fillColor(C.dark).text(value, x + 90, rowY, { width: halfW - 90 });
+      if (col === 1) { rowY += 16; col = 0; } else col = 1;
     }
+    if (col === 1) rowY += 16;
+    y = rowY + 12;
+    y = dividerLine(doc, y);
 
-    y += 12;
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 3 — TOTAL IMPACT
+    // ────────────────────────────────────────────────────────────────────────
+    y = sectionLabel(doc, y, "Section 3 — Total Impact");
 
-    // ── Primary Friction Points ────────────────────────────────────────────────
-    if (data.revenuePains.length > 0) {
-      y = sectionHeading(doc, y, "Primary Friction Points", colors.dark);
-      doc.fontSize(10).fillColor(colors.slate);
-      for (const pain of data.revenuePains) {
-        y = checkY(doc, y, 18);
-        doc.text("  " + pain, LEFT + 10, y);
-        y += 16;
-      }
-      y += 10;
-    }
-
-    // ── Score box ─────────────────────────────────────────────────────────────
-    y = checkY(doc, y, 110);
-    doc.rect(LEFT, y, FULL_WIDTH, 95).fillAndStroke(colors.lightTeal, colors.teal);
-    doc.fontSize(11).fillColor(colors.teal)
+    y = checkY(doc, y, 90);
+    doc.rect(LEFT, y, FULL_WIDTH, 80).fill(C.lightTeal);
+    doc.fontSize(10).fillColor(C.teal)
        .text("SEQUENTIAL REVENUE SCORE", LEFT + 10, y + 10, { align: "center", width: FULL_WIDTH - 20 });
-    doc.fontSize(34).fillColor(colors.primary)
-       .text(`${data.result.overallScore}/100`, LEFT + 10, y + 27, { align: "center", width: FULL_WIDTH - 20 });
-    doc.fontSize(10).fillColor(colors.slate)
+    doc.fontSize(30).fillColor(C.primary)
+       .text(`${data.result.overallScore}/100`, LEFT + 10, y + 24, { align: "center", width: FULL_WIDTH - 20 });
+    doc.fontSize(9).fillColor(C.slate)
        .text(
          `Capture: ${data.result.captureScore.score}   |   Convert: ${data.result.convertScore.score}   |   Compound: ${data.result.compoundScore.score}`,
-         LEFT + 10, y + 65, { align: "center", width: FULL_WIDTH - 20 }
+         LEFT + 10, y + 58, { align: "center", width: FULL_WIDTH - 20 },
        );
-    doc.fontSize(9).fillColor(colors.slate)
-       .text(
-         `Estimated monthly revenue gap: $${data.result.totalMonthlyGap.toLocaleString()}/mo  ($${data.result.annualizedGap.toLocaleString()}/yr)`,
-         LEFT + 10, y + 80, { align: "center", width: FULL_WIDTH - 20 }
-       );
-    y += 108;
+    y += 90;
 
-    // ── Revenue Snapshot (bar chart as colored rectangles) ────────────────────
+    // Gap breakdown below score box
+    const gapCols = [
+      { label: "Total Monthly Gap", val: `$${data.result.totalMonthlyGap.toLocaleString()}` },
+      { label: "Annualized", val: `$${data.result.annualizedGap.toLocaleString()}` },
+      { label: "Biggest Pillar Gap", val: `${weakestByGap.name} ($${weakestByGap.gap.toLocaleString()}/mo)` },
+    ];
+    const gcW = FULL_WIDTH / 3;
+    y = checkY(doc, y, 36);
+    gapCols.forEach((g, i) => {
+      doc.fontSize(8).fillColor(C.slate).text(g.label, LEFT + i * gcW, y, { width: gcW });
+      doc.fontSize(11).fillColor(C.primary).text(g.val, LEFT + i * gcW, y + 14, { width: gcW });
+    });
+    y += 36;
+    y = dividerLine(doc, y);
+
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 4 — REVENUE SNAPSHOT
+    // ────────────────────────────────────────────────────────────────────────
     if (fn && fn.currentAnnualRevenue > 0) {
-      y = checkY(doc, y, 120);
-      y = sectionHeading(doc, y, "Revenue Snapshot: Current vs. Potential", colors.dark);
-
-      doc.fontSize(9).fillColor(colors.slate)
+      y = sectionLabel(doc, y, "Section 4 — Revenue Snapshot: Current vs. Potential");
+      doc.fontSize(9).fillColor(C.slate)
          .text("Conservative projection: capturing 50% of identified monthly gap.", LEFT, y);
       y += 14;
 
       const maxVal = Math.max(fn.currentAnnualRevenue, fn.potentialAnnualRevenue, 1);
-      const chartMaxH = 60;
+      const chartMaxH = 55;
       const barW = (FULL_WIDTH / 2) - 20;
+      const currentH = Math.max(4, Math.round((fn.currentAnnualRevenue / maxVal) * chartMaxH));
+      const potentialH = Math.max(4, Math.round((fn.potentialAnnualRevenue / maxVal) * chartMaxH));
+      const chartBaseY = y + chartMaxH + 8;
 
-      const currentH = Math.round((fn.currentAnnualRevenue / maxVal) * chartMaxH);
-      const potentialH = Math.round((fn.potentialAnnualRevenue / maxVal) * chartMaxH);
-      const chartBaseY = y + chartMaxH + 10;
-
+      y = checkY(doc, y, chartMaxH + 50);
       drawBar(doc, LEFT, chartBaseY - currentH, barW, currentH, "#334155");
-      drawBar(doc, LEFT + barW + 20, chartBaseY - potentialH, barW, potentialH, colors.cyan);
+      drawBar(doc, LEFT + barW + 20, chartBaseY - potentialH, barW, potentialH, C.cyan);
 
-      y = chartBaseY + 4;
-      doc.fontSize(9).fillColor(colors.slate).text("Current Annual Revenue", LEFT, y, { width: barW, align: "center" });
-      doc.fontSize(9).fillColor(colors.slate).text("Potential w/ System (Conservative)", LEFT + barW + 20, y, { width: barW, align: "center" });
-      y += 12;
-      doc.fontSize(10).fillColor(colors.dark)
-         .text(`$${fn.currentAnnualRevenue.toLocaleString()}`, LEFT, y, { width: barW, align: "center" });
-      doc.fontSize(10).fillColor(colors.primary)
-         .text(`$${fn.potentialAnnualRevenue.toLocaleString()}`, LEFT + barW + 20, y, { width: barW, align: "center" });
-      y += 18;
-      doc.fontSize(9).fillColor(colors.primary)
-         .text(`Conservative annual gain: +$${fn.conservativeAnnualGain.toLocaleString()}`, LEFT, y, { align: "center", width: FULL_WIDTH });
-      y += 18;
+      doc.fontSize(9).fillColor(C.slate).text("Current Annual Revenue", LEFT, chartBaseY + 4, { width: barW, align: "center" });
+      doc.fontSize(9).fillColor(C.slate).text("Potential w/ System (Conservative)", LEFT + barW + 20, chartBaseY + 4, { width: barW, align: "center" });
+      doc.fontSize(10).fillColor(C.dark).text(`$${fn.currentAnnualRevenue.toLocaleString()}`, LEFT, chartBaseY + 16, { width: barW, align: "center" });
+      doc.fontSize(10).fillColor(C.primary).text(`$${fn.potentialAnnualRevenue.toLocaleString()}`, LEFT + barW + 20, chartBaseY + 16, { width: barW, align: "center" });
+      doc.fontSize(9).fillColor(C.primary)
+         .text(`Conservative annual gain: +$${fn.conservativeAnnualGain.toLocaleString()}`, LEFT, chartBaseY + 30, { align: "center", width: FULL_WIDTH });
+      y = chartBaseY + 46;
+      y = dividerLine(doc, y);
     }
 
-    // ── Pillar Breakdown ──────────────────────────────────────────────────────
-    y = sectionHeading(doc, y, "Pillar Breakdown", colors.dark);
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 5 — GAP ANALYSIS (PILLAR BREAKDOWN)
+    // ────────────────────────────────────────────────────────────────────────
+    y = sectionLabel(doc, y, "Section 5 — Gap Analysis");
 
     const pillarDefs = [
       {
         name: "Capture",
-        color: colors.teal,
+        color: C.teal,
         pillar: data.result.captureScore,
+        gap: data.result.gapBreakdown.captureGap,
         benchmarkNote: `Among ${bm.industryLabel}: ${bm.captureNote}.`,
       },
       {
         name: "Convert",
-        color: colors.amber,
+        color: C.amber,
         pillar: data.result.convertScore,
+        gap: data.result.gapBreakdown.convertGap,
         benchmarkNote: `Among ${bm.industryLabel}: ${bm.convertNote}.`,
       },
       {
         name: "Compound",
-        color: colors.primary,
+        color: C.primary,
         pillar: data.result.compoundScore,
+        gap: data.result.gapBreakdown.compoundGap,
         benchmarkNote: `Among ${bm.industryLabel}: ${bm.compoundNote}.`,
       },
     ];
 
-    for (const { name, color, pillar, benchmarkNote } of pillarDefs) {
-      y = checkY(doc, y, 100);
+    for (const { name, color, pillar, gap, benchmarkNote } of pillarDefs) {
+      y = checkY(doc, y, 90);
 
-      doc.rect(LEFT, y, FULL_WIDTH, 22).fill(color + "22");
-      doc.rect(LEFT, y, FULL_WIDTH, 22).stroke(color);
-      doc.fontSize(11).fillColor(color).text(name, LEFT + 8, y + 5);
-      doc.fontSize(11).fillColor(color).text(`${pillar.score}/100`, LEFT + 8, y + 5, { align: "right", width: FULL_WIDTH - 16 });
-      y += 26;
+      // Pillar header bar
+      doc.rect(LEFT, y, FULL_WIDTH, 20).fill(color + "22");
+      doc.fontSize(11).fillColor(color).text(name + `  (score: ${pillar.score}/100)`, LEFT + 8, y + 4);
+      doc.fontSize(10).fillColor(color).text(`~$${gap.toLocaleString()}/mo gap`, LEFT + 8, y + 4, { align: "right", width: FULL_WIDTH - 16 });
+      y += 24;
 
-      doc.fontSize(9).fillColor(colors.slate);
-      for (const finding of pillar.findings.slice(0, 4)) {
+      // Findings
+      doc.fontSize(9).fillColor(C.slate);
+      for (const finding of pillar.findings.slice(0, 3)) {
         y = checkY(doc, y, 16);
-        doc.text("  " + finding, LEFT + 12, y, { width: FULL_WIDTH - 20 });
-        y += 15;
+        doc.text("  " + finding, LEFT + 10, y, { width: FULL_WIDTH - 20 });
+        y += 14;
       }
 
-      y = checkY(doc, y, 16);
-      doc.fontSize(8).fillColor(colors.slate)
-         .text("[i] " + benchmarkNote, LEFT + 12, y, { width: FULL_WIDTH - 20 });
-      y += doc.heightOfString("[i] " + benchmarkNote, { width: FULL_WIDTH - 20 }) + 10;
+      // Benchmark callout
+      y = checkY(doc, y, 20);
+      doc.fontSize(8).fillColor("#0891b2")
+         .text("[Industry benchmark] " + benchmarkNote, LEFT + 10, y, { width: FULL_WIDTH - 20 });
+      y += doc.heightOfString("[Industry benchmark] " + benchmarkNote, { width: FULL_WIDTH - 20 }) + 12;
     }
+    y = dividerLine(doc, y);
 
-    // ── Scenario Analysis ─────────────────────────────────────────────────────
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 6 — SCENARIO ANALYSIS
+    // ────────────────────────────────────────────────────────────────────────
     if (fn) {
-      y = checkY(doc, y, 130);
-      y = sectionHeading(doc, y, "What Closing the Gap Looks Like", colors.dark);
-
-      doc.fontSize(9).fillColor(colors.slate)
-         .text("Conservative scenario = 50% gap recovery. Full = 100%.", LEFT, y);
+      y = sectionLabel(doc, y, "Section 6 — Scenario Analysis");
+      doc.fontSize(9).fillColor(C.slate).text("Conservative = 50% gap recovery. Full = 100%.", LEFT, y);
       y += 14;
 
       const colW = FULL_WIDTH / 4;
@@ -275,230 +311,251 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       ];
 
       y = checkY(doc, y, 18);
-      doc.rect(LEFT, y, FULL_WIDTH, 18).fill("#f0fdfa");
+      doc.rect(LEFT, y, FULL_WIDTH, 16).fill(C.lightTeal);
       headers.forEach((h, i) => {
-        doc.fontSize(8).fillColor(colors.teal).text(h, LEFT + i * colW, y + 4, { width: colW - 4 });
+        doc.fontSize(8).fillColor(C.teal).text(h, LEFT + i * colW, y + 3, { width: colW - 4 });
       });
-      y += 20;
+      y += 18;
 
       for (const row of rows) {
-        y = checkY(doc, y, 18);
+        y = checkY(doc, y, 16);
         row.forEach((cell, i) => {
-          doc.fontSize(9).fillColor(i === 0 ? colors.slate : i === 1 ? colors.dark : colors.primary)
-             .text(cell, LEFT + i * colW, y + 3, { width: colW - 4 });
+          doc.fontSize(9).fillColor(i === 0 ? C.slate : i === 1 ? C.dark : C.primary)
+             .text(cell, LEFT + i * colW, y + 2, { width: colW - 4 });
         });
-        y += 16;
+        y += 14;
       }
-      y += 10;
+      y += 8;
+      y = dividerLine(doc, y);
     }
 
-    // ── 12-Month Cumulative Gain Chart ────────────────────────────────────────
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 7 — 12-MONTH CUMULATIVE GAIN
+    // ────────────────────────────────────────────────────────────────────────
     if (fn && fn.cumulativeGainByMonth.length === 12 && fn.conservativeMonthlyRecovery > 0) {
-      y = checkY(doc, y, 110);
-      y = sectionHeading(doc, y, "12-Month Projected Cumulative Gain (Conservative)", colors.dark);
+      y = sectionLabel(doc, y, "Section 7 — 12-Month Projected Cumulative Gain (Conservative)");
 
-      const chartH = 60;
+      const chartH = 55;
       const maxCumulative = fn.cumulativeGainByMonth[11] || 1;
       const barW12 = Math.floor((FULL_WIDTH - 12) / 12);
       const chartBaseY = y + chartH;
 
+      y = checkY(doc, y, chartH + 30);
       fn.cumulativeGainByMonth.forEach((v, i) => {
         const h = Math.max(2, Math.round((v / maxCumulative) * chartH));
-        drawBar(doc, LEFT + i * barW12 + 1, chartBaseY - h, barW12 - 2, h, colors.cyan);
+        drawBar(doc, LEFT + i * barW12 + 1, chartBaseY - h, barW12 - 2, h, C.cyan);
       });
 
-      doc.fontSize(8).fillColor(colors.slate)
-         .text("M1", LEFT, chartBaseY + 4)
-         .text("M12", LEFT + FULL_WIDTH - 20, chartBaseY + 4);
-      doc.fontSize(9).fillColor(colors.primary)
-         .text(`Total: $${fn.conservativeAnnualGain.toLocaleString()}`, LEFT, chartBaseY + 4, { align: "right", width: FULL_WIDTH });
-      y = chartBaseY + 20;
+      doc.fontSize(8).fillColor(C.slate).text("Month 1", LEFT, chartBaseY + 4);
+      doc.fontSize(8).fillColor(C.slate).text("Month 12", LEFT + FULL_WIDTH - 40, chartBaseY + 4);
+      doc.fontSize(9).fillColor(C.primary)
+         .text(`12-month total: $${fn.conservativeAnnualGain.toLocaleString()}`, LEFT, chartBaseY + 4, { align: "right", width: FULL_WIDTH });
+      y = chartBaseY + 22;
+      y = dividerLine(doc, y);
     }
 
-    // ── Cost of Inaction ──────────────────────────────────────────────────────
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 8 — COST OF INACTION
+    // ────────────────────────────────────────────────────────────────────────
     if (fn) {
-      y = checkY(doc, y, 140);
-      y = sectionHeading(doc, y, "The Cost of Inaction", colors.dark);
+      y = sectionLabel(doc, y, "Section 8 — Cost of Inaction");
 
-      doc.rect(LEFT, y, FULL_WIDTH, 48).fill(colors.coral + "15");
-      doc.rect(LEFT, y, FULL_WIDTH, 48).stroke(colors.coral);
-      doc.fontSize(10).fillColor(colors.slate).text("Every day this gap stays open costs", LEFT + 10, y + 8);
-      doc.fontSize(20).fillColor(colors.coral)
-         .text(`$${fn.dailyCostOfInaction.toLocaleString()}`, LEFT + 10, y + 22);
-      y += 58;
+      y = checkY(doc, y, 50);
+      doc.rect(LEFT, y, FULL_WIDTH, 42).fill(C.coral + "15");
+      doc.fontSize(10).fillColor(C.slate).text("Every day this gap stays open costs:", LEFT + 10, y + 8);
+      doc.fontSize(18).fillColor(C.coral).text(`$${fn.dailyCostOfInaction.toLocaleString()}/day`, LEFT + 10, y + 22);
+      doc.fontSize(9).fillColor(C.slate)
+         .text(`($${fn.totalMonthlyGap.toLocaleString()}/month)`, LEFT + 200, y + 26);
+      y += 52;
 
-      doc.fontSize(9).fillColor(colors.slate)
-         .text("Cumulative revenue left on the table if nothing changes:", LEFT, y);
-      y += 14;
-
-      const inactionCols = [
-        ["6 Months", `$${fn.sixMonthInactionCost.toLocaleString()}`],
-        ["12 Months", `$${fn.twelveMonthInactionCost.toLocaleString()}`],
-        ["3 Years", `$${fn.threeYearInactionCost.toLocaleString()}`],
-      ];
       const inactionW = FULL_WIDTH / 3;
+      const inactionItems = [
+        { label: "6 Months", value: `$${fn.sixMonthInactionCost.toLocaleString()}` },
+        { label: "12 Months", value: `$${fn.twelveMonthInactionCost.toLocaleString()}` },
+        { label: "3 Years",  value: `$${fn.threeYearInactionCost.toLocaleString()}` },
+      ];
       y = checkY(doc, y, 40);
-      inactionCols.forEach(([label, value], i) => {
-        doc.rect(LEFT + i * inactionW, y, inactionW - 4, 36).fill(colors.coral + "10");
-        doc.fontSize(8).fillColor(colors.slate).text(label, LEFT + i * inactionW + 6, y + 5);
-        doc.fontSize(12).fillColor(colors.coral).text(value, LEFT + i * inactionW + 6, y + 17);
+      inactionItems.forEach(({ label, value }, i) => {
+        doc.rect(LEFT + i * inactionW, y, inactionW - 4, 34).fill(C.coral + "10");
+        doc.fontSize(8).fillColor(C.slate).text(label, LEFT + i * inactionW + 6, y + 5);
+        doc.fontSize(12).fillColor(C.coral).text(value, LEFT + i * inactionW + 6, y + 17);
       });
-      y += 46;
+      y += 44;
+      y = dividerLine(doc, y);
     }
 
-    // ── Long-Term Compounding Returns ─────────────────────────────────────────
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 9 — LONG-TERM PROJECTIONS
+    // ────────────────────────────────────────────────────────────────────────
     if (fn) {
-      y = checkY(doc, y, 100);
-      y = sectionHeading(doc, y, "Long-Term Compounding Returns", colors.dark);
-
-      doc.fontSize(9).fillColor(colors.slate)
-         .text("Year 1 at conservative (50% gap), Years 2+ at full gap recovery.", LEFT, y);
+      y = sectionLabel(doc, y, "Section 9 — Long-Term Compounding Returns");
+      doc.fontSize(9).fillColor(C.slate)
+         .text("Year 1 at conservative (50% gap); Years 2+ at full gap recovery as systems optimize.", LEFT, y);
       y += 14;
 
-      const projRows = [
-        ["Year 1", `$${fn.yearOneGain.toLocaleString()}`, "Conservative (50% gap)"],
-        ["Year 3", `$${fn.yearThreeGain.toLocaleString()}`, "Yr 1 conservative, then full"],
-        ["Year 5", `$${fn.yearFiveGain.toLocaleString()}`, "Yr 1 conservative, then full"],
-      ];
-
-      const pColW = [80, 130, FULL_WIDTH - 80 - 130];
-      y = checkY(doc, y, 18);
-      doc.rect(LEFT, y, FULL_WIDTH, 18).fill("#f0fdfa");
+      const pColW = [80, 140, FULL_WIDTH - 80 - 140];
+      y = checkY(doc, y, 16);
+      doc.rect(LEFT, y, FULL_WIDTH, 16).fill(C.lightTeal);
       ["Timeframe", "Projected Gain", "Scenario Basis"].forEach((h, i) => {
-        doc.fontSize(8).fillColor(colors.teal)
-           .text(h, LEFT + (i === 0 ? 0 : i === 1 ? pColW[0] : pColW[0] + pColW[1]), y + 4, { width: pColW[i] });
+        const xPos = LEFT + (i === 0 ? 0 : i === 1 ? pColW[0] : pColW[0] + pColW[1]);
+        doc.fontSize(8).fillColor(C.teal).text(h, xPos, y + 3, { width: pColW[i] });
       });
-      y += 20;
+      y += 18;
 
-      for (const [timeframe, gain, basis] of projRows) {
-        y = checkY(doc, y, 18);
-        doc.fontSize(10).fillColor(colors.dark).text(timeframe, LEFT, y + 2, { width: pColW[0] });
-        doc.fontSize(10).fillColor(colors.primary).text(gain, LEFT + pColW[0], y + 2, { width: pColW[1] });
-        doc.fontSize(8).fillColor(colors.slate).text(basis, LEFT + pColW[0] + pColW[1], y + 3, { width: pColW[2] });
-        y += 16;
+      for (const [timeframe, gain, basis] of [
+        ["Year 1", `$${fn.yearOneGain.toLocaleString()}`,   "Conservative (50% gap)"],
+        ["Year 3", `$${fn.yearThreeGain.toLocaleString()}`, "Yr 1 conservative, then full"],
+        ["Year 5", `$${fn.yearFiveGain.toLocaleString()}`,  "Yr 1 conservative, then full"],
+      ]) {
+        y = checkY(doc, y, 16);
+        doc.fontSize(10).fillColor(C.dark).text(timeframe, LEFT, y + 2, { width: pColW[0] });
+        doc.fontSize(10).fillColor(C.primary).text(gain, LEFT + pColW[0], y + 2, { width: pColW[1] });
+        doc.fontSize(8).fillColor(C.slate).text(basis, LEFT + pColW[0] + pColW[1], y + 3, { width: pColW[2] });
+        y += 14;
       }
-      y += 10;
+      y += 8;
+      y = dividerLine(doc, y);
     }
 
-    // ── Blindspots ────────────────────────────────────────────────────────────
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 10 — BLINDSPOTS
+    // ────────────────────────────────────────────────────────────────────────
     if (data.result.blindspots.length > 0) {
-      y = sectionHeading(doc, y, "Blindspots", colors.dark);
-      doc.fontSize(9).fillColor(colors.slate);
+      y = sectionLabel(doc, y, "Section 10 — Your Blindspots");
+      doc.fontSize(9).fillColor(C.slate);
       for (const blindspot of data.result.blindspots.slice(0, 6)) {
-        y = checkY(doc, y, 28);
+        y = checkY(doc, y, 24);
         doc.text("[!] " + blindspot, LEFT + 10, y, { width: FULL_WIDTH - 20 });
-        y += 24;
+        y += 20;
       }
+      y += 6;
+      y = dividerLine(doc, y);
     }
 
-    // ── Action Plan ───────────────────────────────────────────────────────────
-    y = sectionHeading(doc, y, "Your 30-Day Action Plan", colors.dark);
-
-    y = checkY(doc, y, 30);
-    doc.fontSize(12).fillColor(colors.teal).text("Quick Wins  (first 7-14 days)", LEFT, y);
-    y += 20;
-
-    doc.fontSize(9).fillColor(colors.slate);
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 11 — 30-DAY ACTION PLAN
+    // ────────────────────────────────────────────────────────────────────────
+    y = sectionLabel(doc, y, "Section 11 — Your 30-Day Action Plan");
+    doc.fontSize(11).fillColor(C.teal).text("Quick Wins  (first 7–14 days)", LEFT, y);
+    y += 16;
+    doc.fontSize(9).fillColor(C.slate);
     for (const action of data.result.actionPlan.quickWins) {
-      y = checkY(doc, y, 28);
-      doc.text("(+) " + action, LEFT + 10, y, { width: FULL_WIDTH - 20 });
-      y += 22;
+      y = checkY(doc, y, 24);
+      doc.text("[+] " + action, LEFT + 10, y, { width: FULL_WIDTH - 20 });
+      y += 20;
     }
 
-    y += 8;
-    y = checkY(doc, y, 30);
-    doc.fontSize(12).fillColor(colors.amber).text("Supporting Actions  (rest of 30 days)", LEFT, y);
-    y += 20;
-
-    doc.fontSize(9).fillColor(colors.slate);
+    y += 6;
+    doc.fontSize(11).fillColor(C.amber).text("Supporting Actions  (rest of 30 days)", LEFT, y);
+    y += 16;
+    doc.fontSize(9).fillColor(C.slate);
     for (const action of data.result.actionPlan.supportingActions) {
-      y = checkY(doc, y, 28);
-      doc.text("->  " + action, LEFT + 10, y, { width: FULL_WIDTH - 20 });
-      y += 22;
+      y = checkY(doc, y, 24);
+      doc.text([">"] + "  " + action, LEFT + 10, y, { width: FULL_WIDTH - 20 });
+      y += 20;
     }
+    y += 8;
+    y = dividerLine(doc, y);
 
-    // ── Recommended Tier ──────────────────────────────────────────────────────
-    y = checkY(doc, y, 120);
-    y += 10;
-    doc.rect(LEFT, y, FULL_WIDTH, 105).fill(colors.primary + "18");
-    doc.rect(LEFT, y, FULL_WIDTH, 105).stroke(colors.primary);
-    doc.fontSize(10).fillColor(colors.primary)
-       .text("RECOMMENDED SOLUTION", LEFT + 10, y + 12, { align: "center", width: FULL_WIDTH - 20 });
-    doc.fontSize(22).fillColor(colors.dark)
-       .text(`${data.result.recommendedTier}`, LEFT + 10, y + 30, { align: "center", width: FULL_WIDTH - 20 });
-    doc.fontSize(9).fillColor(colors.slate)
-       .text(data.result.tierReason, LEFT + 20, y + 62, { align: "center", width: FULL_WIDTH - 40 });
-    y += 118;
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 12 — DIY REALITY CHECK
+    // ────────────────────────────────────────────────────────────────────────
+    y = sectionLabel(doc, y, "Section 12 — The Reality of DIY Implementation");
+    doc.fontSize(9).fillColor(C.slate)
+       .text("Most businesses intend to implement these fixes but rarely finish them on their own.", LEFT, y, { width: FULL_WIDTH });
+    y += 16;
 
-    // ── Tier Comparison (no pricing) ──────────────────────────────────────────
-    y = sectionHeading(doc, y, "Tier Comparison", colors.dark);
+    const diyItems = [
+      { title: "Time Investment", detail: "15–30 hrs of setup, testing, and troubleshooting" },
+      { title: "Technical Complexity", detail: "API integrations, webhook logic, and ongoing maintenance required" },
+      { title: "Ongoing Overhead", detail: "Systems break; monitoring and updates never stop" },
+    ];
+    const diyW = FULL_WIDTH / 3;
+    y = checkY(doc, y, 52);
+    diyItems.forEach(({ title, detail }, i) => {
+      doc.rect(LEFT + i * diyW, y, diyW - 6, 48).fill("#f0fdfa");
+      doc.fontSize(9).fillColor(C.dark).text(title, LEFT + i * diyW + 6, y + 6, { width: diyW - 12 });
+      doc.fontSize(8).fillColor(C.slate).text(detail, LEFT + i * diyW + 6, y + 22, { width: diyW - 12 });
+    });
+    y += 56;
+    y = dividerLine(doc, y);
+
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 13 — TIER RECOMMENDATION
+    // ────────────────────────────────────────────────────────────────────────
+    y = sectionLabel(doc, y, "Section 13 — Recommended Solution");
+
+    y = checkY(doc, y, 100);
+    doc.rect(LEFT, y, FULL_WIDTH, 80).fill(C.primary + "18");
+    doc.fontSize(9).fillColor(C.primary)
+       .text("RECOMMENDED BASED ON YOUR ANALYSIS", LEFT + 10, y + 10, { align: "center", width: FULL_WIDTH - 20 });
+    doc.fontSize(20).fillColor(C.dark)
+       .text(data.result.recommendedTier, LEFT + 10, y + 26, { align: "center", width: FULL_WIDTH - 20 });
+    doc.fontSize(9).fillColor(C.slate)
+       .text(data.result.tierReason, LEFT + 20, y + 52, { align: "center", width: FULL_WIDTH - 40 });
+    y += 90;
 
     const tiers = [
       {
-        name:     "The AI Brain",
-        focus:    "Capture pillar — speed-to-lead and 24/7 AI availability",
-        ideal:    "Lead capture and response speed are your primary friction point",
-        includes: ["24/7 Website AI Chatbot", "AI Voice Backup Receptionist"],
+        name: "The AI Brain",
+        focus: "Capture pillar — speed-to-lead and 24/7 AI availability",
+        ideal: "Lead capture and response speed are your primary friction point",
       },
       {
-        name:     "The AI System",
-        focus:    "Capture + Convert pillars",
-        ideal:    "Follow-up, no-show recovery, and pipeline drag are costing you",
-        includes: ["Everything in The AI Brain", "Proactive Quote / No-Show Recovery"],
+        name: "The AI System",
+        focus: "Capture + Convert pillars",
+        ideal: "Follow-up, no-show recovery, and pipeline drag are costing you",
       },
       {
-        name:     "The AI Infrastructure",
-        focus:    "Full Loop -- all three pillars",
-        ideal:    "Complex operations or high volume requiring full-system automation",
-        includes: ["Everything in The AI System", "Full ASO + DBR Campaign"],
+        name: "The AI Infrastructure",
+        focus: "Full Loop — all three pillars",
+        ideal: "Complex operations or high volume requiring full-system automation",
       },
     ];
 
     for (const tier of tiers) {
-      y = checkY(doc, y, 100);
-      const isRecommended = tier.name === data.result.recommendedTier;
+      y = checkY(doc, y, 80);
+      const isRec = tier.name === data.result.recommendedTier;
+      if (isRec) doc.rect(LEFT, y, FULL_WIDTH, 72).fill(C.cyan + "18");
+      doc.rect(LEFT, y, FULL_WIDTH, 72).stroke(isRec ? C.primary : C.slate);
 
-      if (isRecommended) {
-        doc.rect(LEFT, y, FULL_WIDTH, 90).fill(colors.cyan + "18");
-      }
-      doc.rect(LEFT, y, FULL_WIDTH, 90).stroke(isRecommended ? colors.primary : colors.slate);
-
-      doc.fontSize(12)
-         .fillColor(isRecommended ? colors.primary : colors.dark)
-         .text(tier.name + (isRecommended ? "  [Recommended]" : ""), LEFT + 10, y + 10);
-
-      doc.fontSize(9).fillColor(colors.slate).text(`Focus: ${tier.focus}`, LEFT + 10, y + 28);
-      doc.text(`Ideal when: ${tier.ideal}`, LEFT + 10, y + 42, { width: FULL_WIDTH - 20 });
-      doc.fontSize(8).fillColor(colors.primary)
-         .text("Discuss fit & investment: simplesequence.ai/book", LEFT + 10, y + 60, { width: FULL_WIDTH - 20 });
-
-      let ix = y + 72;
-      for (const item of tier.includes.slice(0, 1)) {
-        doc.fontSize(8).fillColor(colors.slate).text("  " + item, LEFT + 14, ix);
-        ix += 12;
-      }
-
-      y += 98;
+      doc.fontSize(12).fillColor(isRec ? C.primary : C.dark)
+         .text(tier.name + (isRec ? "  [Recommended]" : ""), LEFT + 10, y + 10);
+      doc.fontSize(9).fillColor(C.slate).text(`Focus: ${tier.focus}`, LEFT + 10, y + 28, { width: FULL_WIDTH - 20 });
+      doc.text(`Best for: ${tier.ideal}`, LEFT + 10, y + 42, { width: FULL_WIDTH - 20 });
+      doc.fontSize(8).fillColor(C.primary)
+         .text("Discuss fit & investment: simplesequence.ai/book", LEFT + 10, y + 58, { width: FULL_WIDTH - 20 });
+      y += 80;
     }
+    y = dividerLine(doc, y);
 
-    // ── CTA ───────────────────────────────────────────────────────────────────
-    y += 12;
-    y = checkY(doc, y, 60);
-    doc.fontSize(13).fillColor(colors.primary)
-       .text("Ready to Fix Your Revenue Friction?", LEFT, y, { align: "center", width: FULL_WIDTH });
-    y += 20;
-    doc.fontSize(10).fillColor(colors.slate)
-       .text(
-         "Book your 15-minute strategy call to discuss implementing these fixes with AI-powered automation.",
-         LEFT, y, { align: "center", width: FULL_WIDTH }
-       );
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 14 — FINAL CTA
+    // ────────────────────────────────────────────────────────────────────────
+    y = sectionLabel(doc, y, "Section 14 — Next Steps");
+    y = checkY(doc, y, 70);
+    doc.fontSize(14).fillColor(C.primary)
+       .text("Book Your 15-Minute Strategy Call", LEFT, y, { align: "center", width: FULL_WIDTH });
     y += 22;
-    doc.fontSize(10).fillColor(colors.primary)
+    doc.fontSize(10).fillColor(C.slate)
        .text(
-         "simplesequence.ai/book",
-         LEFT, y,
-         { align: "center", width: FULL_WIDTH, link: "https://simplesequence.ai/book", underline: true }
+         "In 15 minutes, we'll confirm the gaps identified in this report, walk through which tier fits your situation, and give you a clear implementation roadmap — no obligation.",
+         LEFT, y, { align: "center", width: FULL_WIDTH },
        );
+    y += doc.heightOfString(
+      "In 15 minutes, we'll confirm the gaps identified in this report, walk through which tier fits your situation, and give you a clear implementation roadmap — no obligation.",
+      { width: FULL_WIDTH },
+    ) + 10;
+    doc.fontSize(11).fillColor(C.primary)
+       .text("simplesequence.ai/book", LEFT, y, {
+         align: "center", width: FULL_WIDTH,
+         link: "https://simplesequence.ai/book", underline: true,
+       });
+    y += 20;
+    doc.fontSize(9).fillColor(C.slate)
+       .text("Or download your analysis and share it with your team at: simplesequence.ai/assessment", LEFT, y, {
+         align: "center", width: FULL_WIDTH,
+       });
 
     doc.end();
   });

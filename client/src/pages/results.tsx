@@ -44,6 +44,43 @@ function useCountUp(end: number, duration: number = 1500) {
   return { value, ref };
 }
 
+function AnimatedMoney({
+  value,
+  duration = 1200,
+  prefix = "$",
+  className = "",
+}: {
+  value: number;
+  duration?: number;
+  prefix?: string;
+  className?: string;
+}) {
+  const [display, setDisplay] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (hasAnimated.current || !isInView || value === 0) return;
+    hasAnimated.current = true;
+    const startTime = performance.now();
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplay(Math.round(eased * value));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [isInView, value, duration]);
+
+  return (
+    <span ref={ref} className={className}>
+      {prefix}{display.toLocaleString()}
+    </span>
+  );
+}
+
 function PillarCard({
   title,
   pillar,
@@ -458,7 +495,9 @@ export default function Results() {
               ].map((g) => (
                 <div key={g.label} className="text-center">
                   <p className="text-xs font-bold text-cyan-400 mb-1">{g.label}</p>
-                  <p className="font-mono font-bold text-base text-slate-300">${g.amount.toLocaleString()}</p>
+                  <p className="font-mono font-bold text-base text-slate-300">
+                    <AnimatedMoney value={g.amount} />
+                  </p>
                 </div>
               ))}
             </div>
@@ -480,7 +519,7 @@ export default function Results() {
                 Conservative projection assumes capturing 50% of the identified monthly gap.
               </p>
               <div className="flex items-end justify-center gap-2 mb-2 text-sm font-mono font-bold text-cyan-400">
-                +${fn.conservativeAnnualGain.toLocaleString()}/yr potential
+                +<AnimatedMoney value={fn.conservativeAnnualGain} />/yr potential
               </div>
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={revenueSnapshotData} barCategoryGap="35%">
@@ -513,11 +552,15 @@ export default function Results() {
               <div className="grid grid-cols-2 gap-4 mt-4">
                 <div className="text-center">
                   <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Current Annual Revenue</p>
-                  <p className="text-lg font-mono font-bold text-slate-400">${fn.currentAnnualRevenue.toLocaleString()}</p>
+                  <p className="text-lg font-mono font-bold text-slate-400">
+                    <AnimatedMoney value={fn.currentAnnualRevenue} />
+                  </p>
                 </div>
                 <div className="text-center">
                   <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Potential w/ System</p>
-                  <p className="text-lg font-mono font-bold text-cyan-400">${fn.potentialAnnualRevenue.toLocaleString()}</p>
+                  <p className="text-lg font-mono font-bold text-cyan-400">
+                    <AnimatedMoney value={fn.potentialAnnualRevenue} />
+                  </p>
                 </div>
               </div>
             </div>
@@ -592,21 +635,21 @@ export default function Results() {
                   <tbody className="divide-y divide-[#1a2332]">
                     <tr>
                       <td className="py-3 text-slate-400">Monthly Revenue</td>
-                      <td className="py-3 text-right font-mono text-slate-300">${fn.currentMonthlyRevenue.toLocaleString()}</td>
-                      <td className="py-3 text-right font-mono text-cyan-400">${(fn.currentMonthlyRevenue + fn.conservativeMonthlyRecovery).toLocaleString()}</td>
-                      <td className="py-3 text-right font-mono text-cyan-300">${(fn.currentMonthlyRevenue + fn.fullMonthlyRecovery).toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono text-slate-300"><AnimatedMoney value={fn.currentMonthlyRevenue} /></td>
+                      <td className="py-3 text-right font-mono text-cyan-400"><AnimatedMoney value={fn.currentMonthlyRevenue + fn.conservativeMonthlyRecovery} /></td>
+                      <td className="py-3 text-right font-mono text-cyan-300"><AnimatedMoney value={fn.currentMonthlyRevenue + fn.fullMonthlyRecovery} /></td>
                     </tr>
                     <tr>
                       <td className="py-3 text-slate-400">Additional Monthly</td>
                       <td className="py-3 text-right font-mono text-slate-500">—</td>
-                      <td className="py-3 text-right font-mono text-cyan-400">+${fn.conservativeMonthlyRecovery.toLocaleString()}</td>
-                      <td className="py-3 text-right font-mono text-cyan-300">+${fn.fullMonthlyRecovery.toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono text-cyan-400">+<AnimatedMoney value={fn.conservativeMonthlyRecovery} prefix="" /></td>
+                      <td className="py-3 text-right font-mono text-cyan-300">+<AnimatedMoney value={fn.fullMonthlyRecovery} prefix="" /></td>
                     </tr>
                     <tr>
                       <td className="py-3 text-slate-400">Additional Annual</td>
                       <td className="py-3 text-right font-mono text-slate-500">—</td>
-                      <td className="py-3 text-right font-mono font-bold text-cyan-400">+${fn.conservativeAnnualGain.toLocaleString()}</td>
-                      <td className="py-3 text-right font-mono font-bold text-cyan-300">+${fn.fullAnnualGain.toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-400">+<AnimatedMoney value={fn.conservativeAnnualGain} prefix="" /></td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-300">+<AnimatedMoney value={fn.fullAnnualGain} prefix="" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -672,7 +715,7 @@ export default function Results() {
               <div className="rounded-xl border border-[#e74c3c]/25 bg-[#e74c3c]/05 p-5 mb-6">
                 <DailyCostCounter dailyCost={fn.dailyCostOfInaction} />
                 <p className="text-sm text-slate-400 mt-2">
-                  That's <span className="font-mono font-semibold text-slate-300">${fn.totalMonthlyGap.toLocaleString()}</span> per month in revenue that should be yours.
+                  That's <AnimatedMoney value={fn.totalMonthlyGap} className="font-mono font-semibold text-slate-300" /> per month in revenue that should be yours.
                 </p>
               </div>
 
@@ -710,7 +753,9 @@ export default function Results() {
                 ].map((item) => (
                   <div key={item.label} className="text-center bg-[#0c1018] rounded-xl p-4 border border-[#1a2332]">
                     <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">{item.label}</p>
-                    <p className="text-xl font-mono font-bold text-[#e07060]">${item.value.toLocaleString()}</p>
+                    <p className="text-xl font-mono font-bold text-[#e07060]">
+                      <AnimatedMoney value={item.value} />
+                    </p>
                   </div>
                 ))}
               </div>
@@ -742,17 +787,17 @@ export default function Results() {
                   <tbody className="divide-y divide-[#1a2332]">
                     <tr>
                       <td className="py-3 text-slate-300 font-semibold">Year 1</td>
-                      <td className="py-3 text-right font-mono font-bold text-cyan-400">${fn.yearOneGain.toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-400"><AnimatedMoney value={fn.yearOneGain} /></td>
                       <td className="py-3 text-right text-slate-500 text-xs">Conservative (50% gap)</td>
                     </tr>
                     <tr>
                       <td className="py-3 text-slate-300 font-semibold">Year 3</td>
-                      <td className="py-3 text-right font-mono font-bold text-cyan-400">${fn.yearThreeGain.toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-400"><AnimatedMoney value={fn.yearThreeGain} /></td>
                       <td className="py-3 text-right text-slate-500 text-xs">Yr 1 conservative, then full</td>
                     </tr>
                     <tr>
                       <td className="py-3 text-slate-300 font-semibold">Year 5</td>
-                      <td className="py-3 text-right font-mono font-bold text-cyan-400">${fn.yearFiveGain.toLocaleString()}</td>
+                      <td className="py-3 text-right font-mono font-bold text-cyan-400"><AnimatedMoney value={fn.yearFiveGain} /></td>
                       <td className="py-3 text-right text-slate-500 text-xs">Yr 1 conservative, then full</td>
                     </tr>
                   </tbody>
