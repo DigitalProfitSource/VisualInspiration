@@ -1,0 +1,446 @@
+# Replit AI Agent Prompt: Master Analysis Upgrade for Sequential Revenue Friction Analysis
+
+## PROJECT CONTEXT
+
+This is the SimpleSequence "Sequential Revenue Friction Analysis" — a free 11-step assessment tool for service business owners. After completing the assessment, users see a `/results` page and can download a PDF report.
+
+**Current architecture:**
+- Frontend scoring engine: `client/src/lib/scoring.ts` — runs all pillar calculations, revenue gap math, tier recommendation, and action plan generation client-side. Output stored in `sessionStorage`, user redirected to `/results`.
+- Backend mirror: `shared/scoring.ts` — identical scoring logic used exclusively by the server-side PDF generator (`server/pdf-generator.ts`).
+- Database: PostgreSQL stores raw form responses. Scores are always re-calculated on demand.
+- The `/results` page renders entirely from client-side scoring output.
+- The PDF is generated server-side by re-running scoring from stored lead data.
+
+**CRITICAL: Any changes to scoring logic or new calculation functions MUST be updated in BOTH `client/src/lib/scoring.ts` AND `shared/scoring.ts` to keep them in sync. The PDF generator in `server/pdf-generator.ts` must also be updated to render the new sections.**
+
+---
+
+## WHAT WE'RE BUILDING
+
+We're upgrading the `/results` page and PDF report from a basic diagnostic summary into a full "Master Analysis" — a financial narrative that shows the prospect not just where they're leaking revenue, but what closing the gap looks like over time, what inaction costs daily, and how results compound. All new data is derived from existing assessment inputs (no new form fields).
+
+**Brand rules (non-negotiable):**
+- Voice: Calm, diagnostic, specific. Never hype ("game-changer," "revolutionary," "cutting-edge"). No exclamation points.
+- Framework language: Sequential Revenue, Capture / Convert / Compound, Speed-to-Lead, DBR, Found Money.
+- Structure: Problem → Cost → Solution → Outcome.
+- REMOVE ALL PRICING from the results page and PDF. No dollar amounts for tiers. Replace with CTAs to book a strategy call. Pricing is discussed on calls only, never in written content.
+- Brand colors: Black `#000000`, Cyan/Blue `#1ab1d9`, White `#ffffff`.
+
+---
+
+## PHASE 1: NEW CALCULATION FUNCTIONS
+
+Add these functions to the scoring module (both `client/src/lib/scoring.ts` and `shared/scoring.ts`). They consume the existing scoring output — no new form inputs.
+
+### 1.1 Financial Narrative Calculations
+
+```typescript
+interface FinancialNarrative {
+  // Existing (already calculated)
+  currentMonthlyRevenue: number;      // avgJobValue * monthlyJobVolume
+  totalMonthlyGap: number;            // captureGap + conversionGap + compoundingGap
+  captureGap: number;
+  conversionGap: number;
+  compoundingGap: number;
+
+  // NEW — Scenario Modeling
+  conservativeMonthlyRecovery: number; // totalMonthlyGap * 0.50
+  fullMonthlyRecovery: number;         // totalMonthlyGap * 1.00
+  conservativeAnnualGain: number;      // conservativeMonthlyRecovery * 12
+  fullAnnualGain: number;              // fullMonthlyRecovery * 12
+
+  // NEW — Revenue Comparison
+  currentAnnualRevenue: number;        // currentMonthlyRevenue * 12
+  potentialAnnualRevenue: number;      // currentAnnualRevenue + conservativeAnnualGain
+
+  // NEW — Cost of Inaction
+  dailyCostOfInaction: number;         // totalMonthlyGap / 30 (rounded to nearest dollar)
+  sixMonthInactionCost: number;        // totalMonthlyGap * 6
+  twelveMonthInactionCost: number;     // totalMonthlyGap * 12
+  threeYearInactionCost: number;       // totalMonthlyGap * 36
+
+  // NEW — 12-Month Cumulative Gain (conservative)
+  cumulativeGainByMonth: number[];     // Array of 12 values: [month1Total, month2Total, ... month12Total]
+                                       // where monthN = conservativeMonthlyRecovery * N
+
+  // NEW — Long-Term Projections
+  yearOneGain: number;                 // conservativeAnnualGain (conservative — 50% gap)
+  yearThreeGain: number;               // yearOneGain + (fullAnnualGain * 2)  (year 1 conservative, years 2-3 full gap)
+  yearFiveGain: number;                // yearOneGain + (fullAnnualGain * 4)  (year 1 conservative, years 2-5 full gap)
+}
+```
+
+### 1.2 Industry Benchmark Lookup
+
+Add an industry benchmark mapping that returns 1-2 relevant stats based on the prospect's selected industry. This is used for social proof callouts in the report.
+
+```typescript
+const industryBenchmarks: Record<string, { stats: string[]; industryLabel: string }> = {
+  "hvac": {
+    industryLabel: "HVAC companies",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Estimate bookings increased 47% with automated speed-to-lead"
+    ]
+  },
+  "plumbing": {
+    industryLabel: "plumbing companies",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Response time reduced from 12+ hours to under 5 minutes"
+    ]
+  },
+  "roofing": {
+    industryLabel: "roofing companies",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Estimate bookings increased 47% with automated speed-to-lead"
+    ]
+  },
+  "electrical": {
+    industryLabel: "electrical contractors",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Response time reduced from 12+ hours to under 5 minutes"
+    ]
+  },
+  "landscaping": {
+    industryLabel: "landscaping companies",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Estimate bookings increased 47% with automated speed-to-lead"
+    ]
+  },
+  "general_contracting": {
+    industryLabel: "general contractors",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Estimate bookings increased 47% with automated speed-to-lead"
+    ]
+  },
+  "pest_control": {
+    industryLabel: "pest control companies",
+    stats: [
+      "Missed call rate reduced from 35% to under 2%",
+      "Response time reduced from 12+ hours to under 5 minutes"
+    ]
+  },
+  "cleaning": {
+    industryLabel: "cleaning services",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Response time reduced from 12+ hours to under 5 minutes"
+    ]
+  },
+  "legal": {
+    industryLabel: "law firms",
+    stats: [
+      "Qualified case intakes increased 67%",
+      "Consultation availability expanded to 24/7 with 4.5x ROI in 6 months"
+    ]
+  },
+  "personal_injury": {
+    industryLabel: "personal injury firms",
+    stats: [
+      "Qualified case intakes increased 67%",
+      "Consultation availability expanded to 24/7 with 4.5x ROI in 6 months"
+    ]
+  },
+  "medspa": {
+    industryLabel: "med spas",
+    stats: [
+      "Consultation bookings increased 127%",
+      "No-show rate reduced 64%, treatment packages sold increased 203%"
+    ]
+  },
+  "dental": {
+    industryLabel: "dental practices",
+    stats: [
+      "Missed call rate reduced from 35% to under 2%",
+      "Recall scheduling reached 45% automation rate, new patient intake available 24/7"
+    ]
+  },
+  "chiropractic": {
+    industryLabel: "chiropractic practices",
+    stats: [
+      "Consultation bookings increased 127%",
+      "No-show rate reduced 64% with automated rebooking"
+    ]
+  },
+  "fitness_wellness": {
+    industryLabel: "fitness and wellness businesses",
+    stats: [
+      "Consultation bookings increased 127%",
+      "No-show rate reduced 64%, membership retention improved significantly"
+    ]
+  },
+  "real_estate": {
+    industryLabel: "real estate teams",
+    stats: [
+      "Speed-to-lead improved from 1-2 hours to under 1 minute",
+      "Portal lead conversion improved from 2% to 8% (+300%)"
+    ]
+  },
+  "accounting": {
+    industryLabel: "accounting firms",
+    stats: [
+      "Document collection time reduced from 3-5 days to under 4 hours",
+      "Tax season response time became instant via AI agent, appointment shows +22%"
+    ]
+  },
+  "insurance": {
+    industryLabel: "insurance agencies",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Response time reduced from 12+ hours to under 5 minutes"
+    ]
+  },
+  "auto_repair": {
+    industryLabel: "auto repair shops",
+    stats: [
+      "Missed call rate reduced from 35% to under 2%",
+      "Recall scheduling reached 45% automation rate"
+    ]
+  },
+  "veterinary": {
+    industryLabel: "veterinary practices",
+    stats: [
+      "Missed call rate reduced from 35% to under 2%",
+      "Recall scheduling reached 45% automation rate"
+    ]
+  },
+  "salon_spa": {
+    industryLabel: "salons and spas",
+    stats: [
+      "Consultation bookings increased 127%",
+      "No-show rate reduced 64% with automated rebooking"
+    ]
+  },
+  "photography": {
+    industryLabel: "photography businesses",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Quote follow-up automation increased booking rate significantly"
+    ]
+  },
+  "property_management": {
+    industryLabel: "property management companies",
+    stats: [
+      "Response time reduced from 12+ hours to under 5 minutes",
+      "Lead follow-up rate improved from 31% to 89% (+187%)"
+    ]
+  },
+  "financial_services": {
+    industryLabel: "financial service firms",
+    stats: [
+      "Document collection time reduced from 3-5 days to under 4 hours",
+      "Appointment show rate improved 22% with automated reminders"
+    ]
+  },
+  "home_services_other": {
+    industryLabel: "home service businesses",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Response time reduced from 12+ hours to under 5 minutes"
+    ]
+  },
+  "healthcare_other": {
+    industryLabel: "healthcare practices",
+    stats: [
+      "Missed call rate reduced from 35% to under 2%",
+      "New patient intake became available 24/7"
+    ]
+  },
+  "professional_services_other": {
+    industryLabel: "professional service firms",
+    stats: [
+      "Lead follow-up rate improved from 31% to 89% (+187%)",
+      "Response time reduced from 12+ hours to under 5 minutes"
+    ]
+  }
+};
+```
+
+**IMPORTANT:** Match the keys in this map to the exact industry values used in your assessment dropdown. Adjust key names to match whatever string values your form currently uses. Add a fallback/default entry for any industry not explicitly listed:
+
+```typescript
+const defaultBenchmark = {
+  industryLabel: "service businesses",
+  stats: [
+    "Lead follow-up rate improved from 31% to 89% (+187%)",
+    "Response time reduced from 12+ hours to under 5 minutes"
+  ]
+};
+```
+
+---
+
+## PHASE 2: RESULTS PAGE (`/results`) — NEW SECTION LAYOUT
+
+Replace the current results page layout with the following section order. Keep the existing dark theme and brand styling (black background, cyan accents, card-based layout). Keep all existing sections that are listed below — they're being reorganized and augmented.
+
+### Section 1: Executive Summary (NEW)
+A short narrative block at the top, BEFORE "Business At A Glance." This is 3-4 sentences max that frames the entire report.
+
+**Template (dynamically populated):**
+> This analysis maps friction across your three revenue pillars — Capture, Convert, and Compound — based on the operational data you provided. We identified a total monthly revenue gap of **$[totalMonthlyGap]**, which translates to **$[totalMonthlyGap * 12]** in annual revenue that's currently slipping through operational gaps. Your biggest drag is in **[weakest pillar name]** (score: [weakest pillar score]/100). Below is the full breakdown — what's leaking, what it costs, and what closing even half the gap looks like.
+
+### Section 2: Business At A Glance (EXISTING — keep as-is)
+Industry, Specialization, Monthly Leads, Team Size, Avg Job Value, etc.
+
+### Section 3: Total Impact Summary (EXISTING — keep as-is)
+The big animated revenue gap number with the three pillar gap buckets.
+
+### Section 4: Revenue Snapshot — Current vs. Potential (NEW)
+A horizontal or vertical bar chart comparing:
+- **Current Annual Revenue:** $[currentAnnualRevenue] (use a muted/gray bar)
+- **Potential w/ System (Conservative):** $[potentialAnnualRevenue] (use cyan `#1ab1d9` bar)
+
+Label the difference above the bars: **"+$[conservativeAnnualGain]/yr"**
+
+Use a simple chart library already in your stack, or render with styled divs if no chart library is present. Keep it clean — two bars, clear labels, no clutter.
+
+### Section 5: Gap Analysis — Pillar Cards (EXISTING — enhanced)
+Keep the existing three pillar cards (Capture / Conversion / Compounding) with "What We Found," "What's Causing This," "Estimated Monthly Impact," and "Show calculation."
+
+**ADD to each card:** A one-line industry benchmark callout at the bottom of the card, styled as a subtle footnote or callout bar:
+> "[industryLabel] using AI systems to fix this pillar typically see: [relevant stat from industryBenchmarks]"
+
+Pick the most relevant stat for each pillar:
+- Capture card → use the stat about speed-to-lead or missed calls
+- Conversion card → use the stat about follow-up rate or close rate
+- Compounding card → use the stat about review growth or reactivation
+
+### Section 6: Scenario Analysis (NEW)
+A comparison table showing two scenarios. Style as a card with a table inside.
+
+**Header:** "What Closing the Gap Looks Like"
+**Subheader:** "Our projections use the conservative scenario — capturing just 50% of the identified gap."
+
+| Metric | Current State | Conservative (50% Gap) | Full Recovery (100%) |
+|--------|--------------|----------------------|---------------------|
+| Monthly Revenue | $[currentMonthlyRevenue] | $[currentMonthlyRevenue + conservativeMonthlyRecovery] | $[currentMonthlyRevenue + fullMonthlyRecovery] |
+| Additional Monthly Revenue | — | $[conservativeMonthlyRecovery] | $[fullMonthlyRecovery] |
+| Additional Annual Revenue | — | $[conservativeAnnualGain] | $[fullAnnualGain] |
+
+Use cyan text for the Conservative and Full Recovery columns. Current State in white/gray.
+
+### Section 7: 12-Month Cumulative Gain Chart (NEW)
+A bar chart showing month-by-month cumulative gain over 12 months (conservative scenario).
+
+- X-axis: M1, M2, M3 ... M12
+- Y-axis: Dollar amount
+- Bars in cyan, ascending
+- Label the final bar with the total: "$[conservativeAnnualGain]"
+- Title: "12-Month Projected Cumulative Gain (Conservative)"
+
+### Section 8: The Cost of Inaction (NEW)
+This section reframes the gap as a daily and long-term loss. Style as a prominent callout card with urgency (use a subtle red/warm accent for the daily cost number, not aggressive — maybe `#e74c3c` at 80% opacity or a muted coral).
+
+**Callout box:**
+> **Every day this gap stays open costs $[dailyCostOfInaction]**
+> That's $[totalMonthlyGap] per month in revenue that should be yours.
+
+**Below the callout, a "Doing Nothing vs. Closing the Gap" side-by-side:**
+
+| Doing Nothing | With the Gap Closed |
+|---------------|-------------------|
+| Revenue continues to leak | Revenue gap captured |
+| Competitors respond faster | Leads answered in under 60 seconds |
+| Follow-up stays manual and inconsistent | Pipeline works itself automatically |
+| Past customers stay dormant | Dormant database generates found money |
+| Reputation growth stays slow | 5-star reviews compound automatically |
+
+**Below that, a small table or three stat cards:**
+
+| 6 Months of Inaction | 12 Months | 3 Years |
+|---------------------|-----------|---------|
+| $[sixMonthInactionCost] | $[twelveMonthInactionCost] | $[threeYearInactionCost] |
+
+Label: "Cumulative revenue left on the table"
+
+### Section 9: Long-Term Compounding Returns (NEW)
+A table showing projected net gains over time. Reinforces the "Compound" pillar concept.
+
+| Timeframe | Projected Gain | Scenario Basis |
+|-----------|---------------|----------------|
+| Year 1 | $[yearOneGain] | Conservative (50% Gap) |
+| Year 3 | $[yearThreeGain] | Year 1 conservative, then full gap |
+| Year 5 | $[yearFiveGain] | Year 1 conservative, then full gap |
+
+### Section 10: Your Blindspots (EXISTING — keep as-is)
+The consolidated list of friction points.
+
+### Section 11: Your Next-30-Day Action Plan (EXISTING — keep as-is)
+Quick Wins + Supporting Actions.
+
+### Section 12: The Reality of DIY Implementation (EXISTING — keep as-is)
+Time Investment / Technical Debt / Ongoing Overhead cards.
+
+### Section 13: Your Prioritized Opportunities — Tier Recommendation (MODIFIED)
+Keep the three tier cards (The AI Brain, The AI System, The AI Infrastructure) with the recommended one highlighted based on the existing tier logic.
+
+**REMOVE all pricing** — no dollar amounts anywhere on the tier cards. No monthly cost, no setup fee.
+
+**REPLACE pricing with:**
+- Keep the tier name, tagline, and feature bullet list
+- Where the price was, show: **"Discuss fit & investment →"** as a linked CTA to `/book`
+- The recommended tier card should have a highlighted border (cyan) and a label: "Recommended based on your analysis"
+- Non-recommended tiers: standard border, same CTA text
+
+**ADD a one-line bridge between the diagnosis and the tiers** (above the tier cards):
+> "Based on your [weakest pillar name] score of [score]/100 and a $[weakest pillar gap]/mo gap in [weakest pillar name], here's where SimpleSequence fits."
+
+### Section 14: Final CTA (MODIFIED)
+Replace the current CTA block. New version:
+
+- Primary CTA button: **"Book Your 15-Minute Strategy Call →"** (links to `/book`)
+- Secondary: **"Download Your Full Analysis (PDF)"** (existing download functionality)
+- Tertiary text link: "Back to SimpleSequence.ai"
+
+Remove "GET SIMPLESEQUENCE INSTALLED →" as a CTA — it's too aggressive for a diagnostic report.
+
+---
+
+## PHASE 3: PDF REPORT UPDATE
+
+Update `server/pdf-generator.ts` to generate a PDF that mirrors the new results page structure. The PDF should include ALL sections from the results page in the same order.
+
+**PDF-specific notes:**
+- For charts (Revenue Snapshot bar chart, 12-Month Cumulative chart), render them as simple styled HTML tables or CSS-based bar charts within the PDF. If you're using a library like `puppeteer` or `html-pdf` to generate PDFs from HTML, the charts should render fine as styled divs. If using a pure PDF library like `pdfkit`, use colored rectangles for bar charts.
+- Include the Executive Summary as the first content after the cover/header.
+- The tier cards in the PDF should also have NO pricing — same "Discuss fit & investment" text.
+- Include the industry benchmark callouts in each pillar card.
+- The CTA at the bottom of the PDF: "Book your 15-minute strategy call at simplesequence.ai/book"
+
+---
+
+## PHASE 4: CLEANUP & CONSISTENCY
+
+1. **Remove all pricing references** — search the entire codebase for any hardcoded pricing values ($150, $250, $350, $750, $1,250, $1,750, or any tier pricing) and remove them from the results page and PDF. Do NOT remove pricing from the assessment form itself or from any other pages (like an offers page) — only from `/results` and the PDF output.
+
+2. **Sync scoring files** — after adding the new `FinancialNarrative` calculations and `industryBenchmarks` to the client-side scoring file, copy the exact same additions to `shared/scoring.ts`. Both files must stay identical in logic.
+
+3. **Test with edge cases:**
+   - Very small businesses (solo, 10 jobs/mo, $50 avg job) — make sure the numbers don't look absurd
+   - Very large businesses (50+ team, 500 jobs/mo, $5,000 avg job) — make sure charts scale properly
+   - Zero ad spend — should not break any calculations
+   - "I don't know" answers for lead volume or close rate — make sure defaults produce reasonable output
+
+4. **Responsive design** — all new sections must work on mobile. The bar charts should stack or resize for smaller screens. Tables should scroll horizontally on mobile if needed.
+
+5. **Animation** — if the existing results page uses animated counters or scroll-triggered animations, apply the same treatment to the new financial narrative numbers (daily cost, annual projections, cumulative gain). Keep it subtle.
+
+---
+
+## SUMMARY OF ALL CHANGES
+
+| Area | What Changes |
+|------|-------------|
+| `client/src/lib/scoring.ts` | Add `FinancialNarrative` calculations + `industryBenchmarks` lookup |
+| `shared/scoring.ts` | Mirror exact same additions |
+| `/results` page component | Add 6 new sections (Executive Summary, Revenue Snapshot chart, Scenario Analysis table, 12-Month Cumulative chart, Cost of Inaction, Long-Term Compounding Returns). Modify tier cards to remove pricing. Modify final CTA. Add industry callouts to pillar cards. |
+| `server/pdf-generator.ts` | Mirror all new sections in PDF output. Remove pricing from PDF tier cards. |
+| Pricing removal | Remove all dollar amounts from tier cards in results + PDF |
+
+**Do NOT change:** The 11-step assessment form, the scoring penalties/weights, the tier recommendation logic, the database schema, or the GHL webhook integration. Those stay exactly as they are.
