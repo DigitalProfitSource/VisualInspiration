@@ -761,12 +761,17 @@ function getIndustryBenchmark(industry: string): IndustryBenchmark {
 function calculateFinancialNarrative(
   avgJobValue: number,
   monthlySalesVolume: number,
+  monthlyLeads: number,
+  closeRate: number,
   totalMonthlyGap: number,
   captureGap: number,
   conversionGap: number,
   compoundingGap: number
 ): FinancialNarrative {
-  const currentMonthlyRevenue = avgJobValue * Math.max(monthlySalesVolume, 1);
+  const estimatedJobs = monthlySalesVolume > 0
+    ? monthlySalesVolume
+    : Math.round(monthlyLeads * closeRate);
+  const currentMonthlyRevenue = avgJobValue * Math.max(estimatedJobs, 1);
   const currentAnnualRevenue = currentMonthlyRevenue * 12;
 
   const conservativeMonthlyRecovery = Math.round(totalMonthlyGap * 0.50);
@@ -873,6 +878,8 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
   const financialNarrative = calculateFinancialNarrative(
     avgJobValue,
     monthlySalesVolume,
+    monthlyLeads,
+    closeRate,
     totalMonthlyGap,
     gapBreakdown.captureGap,
     gapBreakdown.convertGap,

@@ -154,7 +154,7 @@ function PillarCard({
               className="text-3xl md:text-4xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 leading-none"
               style={{ filter: 'drop-shadow(0 0 20px rgba(103, 232, 249, 0.15))' }}
             >
-              ~${monthlyImpact.toLocaleString()}
+              <AnimatedMoney value={monthlyImpact} prefix="~$" />
             </p>
           </div>
           <button
@@ -403,9 +403,9 @@ export default function Results() {
             <p className="text-base text-slate-300 leading-relaxed">
               This analysis maps friction across your three revenue pillars — Capture, Convert, and Compound —
               based on the operational data you provided. We identified a total monthly revenue gap of{" "}
-              <span className="font-mono font-bold text-cyan-400">${result.totalMonthlyGap.toLocaleString()}</span>,
+              <AnimatedMoney value={result.totalMonthlyGap} className="font-mono font-bold text-cyan-400" />,
               which translates to{" "}
-              <span className="font-mono font-bold text-white">${result.annualizedGap.toLocaleString()}</span> in
+              <AnimatedMoney value={result.annualizedGap} className="font-mono font-bold text-white" /> in
               annual revenue currently slipping through operational gaps. Your biggest drag is in{" "}
               <span className="font-bold text-white">{weakestByScore.name}</span> (score:{" "}
               <span className="font-mono text-cyan-400">{weakestByScore.score}/100</span>). Below is the full
@@ -484,7 +484,7 @@ export default function Results() {
                 ${animatedScore > 0 ? animatedScore.toLocaleString() : result.totalMonthlyGap.toLocaleString()}
               </p>
               <p className="text-sm text-slate-400">
-                Annualized: <span className="font-mono font-semibold text-slate-300">${result.annualizedGap.toLocaleString()}</span>
+                Annualized: <AnimatedMoney value={result.annualizedGap} className="font-mono font-semibold text-slate-300" />
               </p>
             </div>
             <div className="grid grid-cols-3 gap-4">
