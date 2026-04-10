@@ -90,6 +90,7 @@ function PillarCard({
   calcFormula,
   calcLabel,
   benchmarkNote,
+  foundMoneyPotential,
 }: {
   title: string;
   pillar: PillarScore;
@@ -99,6 +100,7 @@ function PillarCard({
   calcFormula: string;
   calcLabel: string;
   benchmarkNote: string;
+  foundMoneyPotential?: number;
 }) {
   const [showCalc, setShowCalc] = useState(false);
 
@@ -180,6 +182,18 @@ function PillarCard({
           </motion.div>
         )}
       </div>
+
+      {foundMoneyPotential != null && foundMoneyPotential > 0 && (
+        <div className="mt-5 rounded-xl border border-cyan-500/20 bg-cyan-950/15 p-4">
+          <p className="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1">Found Money Potential</p>
+          <p className="text-sm text-slate-300 leading-relaxed">
+            One-time DBR campaign on your existing database: <span className="font-mono font-bold text-cyan-400">~<AnimatedMoney value={foundMoneyPotential} /></span>
+          </p>
+          <p className="text-xs text-slate-500 mt-2">
+            This is a one-time campaign value, not a monthly figure. It's the fastest way to fund your first 90 days.
+          </p>
+        </div>
+      )}
 
       {benchmarkNote && (
         <div className="mt-4 pt-4 border-t border-[#1a2332]">
@@ -303,9 +317,9 @@ export default function Results() {
   const fn = result.financialNarrative;
   const bm = result.industryBenchmark ?? {
     industryLabel: "service businesses",
-    captureNote: "Response time reduced from 12+ hours to under 5 minutes",
-    convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
-    compoundNote: "Dormant lead reactivation recovered 8-12% of old contacts at near-zero cost",
+    captureStats: "Lead follow-up rate improved from 31% to 89% after closing speed gaps",
+    conversionStats: "Automated follow-up sequences recovered 20-35% of previously lost bookings",
+    compoundStats: "Automated review requests drove consistent 5-star growth month over month",
   };
 
   const pillarScores = [
@@ -409,7 +423,7 @@ export default function Results() {
               annual revenue currently slipping through operational gaps. Your biggest drag is in{" "}
               <span className="font-bold text-white">{weakestByScore.name}</span> (score:{" "}
               <span className="font-mono text-cyan-400">{weakestByScore.score}/100</span>). Below is the full
-              breakdown — what's leaking, what it costs, and a 30-day plan to close the gap.
+              breakdown — what's leaking, what it costs, and what closing even half the gap looks like.
             </p>
           </div>
         </motion.div>
@@ -584,7 +598,7 @@ export default function Results() {
             monthlyImpact={result.gapBreakdown.captureGap}
             calcFormula={result.gapBreakdown.captureCalc}
             calcLabel="Capture Gap = Unavailable leads × Speed loss rate × Avg job value"
-            benchmarkNote={`Among ${bm.industryLabel}: ${bm.captureNote}.`}
+            benchmarkNote={`Among ${bm.industryLabel}: ${bm.captureStats}.`}
           />
 
           <PillarCard
@@ -595,18 +609,19 @@ export default function Results() {
             monthlyImpact={result.gapBreakdown.convertGap}
             calcFormula={result.gapBreakdown.convertCalc}
             calcLabel="Conversion Gap = No-show recovery + Quote follow-up losses"
-            benchmarkNote={`Among ${bm.industryLabel}: ${bm.convertNote}.`}
+            benchmarkNote={`Among ${bm.industryLabel}: ${bm.conversionStats}.`}
           />
 
           <PillarCard
             title="Compounding"
             pillar={result.compoundScore}
             icon={<TrendingUp size={20} className="text-cyan-400" />}
-            description="Time spent on manual coordination and busywork is time not spent serving customers or closing deals."
+            description="Reviews are your compounding engine — every 5-star review generates future leads passively through better rankings and trust."
             monthlyImpact={result.gapBreakdown.compoundGap}
             calcFormula={result.gapBreakdown.compoundCalc}
-            calcLabel="Compounding Gap = Database reactivation potential + Manual labor cost"
-            benchmarkNote={`Among ${bm.industryLabel}: ${bm.compoundNote}.`}
+            calcLabel="Compounding Gap = Monthly leads × Review impact rate × Avg job value × Close rate"
+            benchmarkNote={`Among ${bm.industryLabel}: ${bm.compoundStats}.`}
+            foundMoneyPotential={fn?.foundMoneyPotential}
           />
         </motion.div>
 
@@ -719,29 +734,41 @@ export default function Results() {
                 </p>
               </div>
 
-              <div className="overflow-x-auto mb-6">
-                <table className="w-full text-sm min-w-[400px]">
-                  <thead>
-                    <tr className="border-b border-[#1a2332]">
-                      <th className="text-left text-[10px] font-bold text-slate-500 uppercase tracking-wider pb-3">Doing Nothing</th>
-                      <th className="text-left text-[10px] font-bold text-cyan-400 uppercase tracking-wider pb-3">With the Gap Closed</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#1a2332]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="rounded-xl border border-[#e74c3c]/20 bg-[#e74c3c]/05 p-5">
+                  <p className="text-[10px] font-bold text-[#e07060] uppercase tracking-wider mb-3">Doing Nothing</p>
+                  <ul className="space-y-2.5">
                     {[
-                      ["Revenue continues to leak", "Revenue gap captured"],
-                      ["Competitors respond faster", "Leads answered in under 60 seconds"],
-                      ["Follow-up stays manual and inconsistent", "Pipeline works itself automatically"],
-                      ["Past customers stay dormant", "Dormant database generates found money"],
-                      ["Reputation growth stays slow", "5-star reviews compound automatically"],
-                    ].map(([bad, good], i) => (
-                      <tr key={i}>
-                        <td className="py-2.5 text-slate-500 pr-4">{bad}</td>
-                        <td className="py-2.5 text-slate-300">{good}</td>
-                      </tr>
+                      "Revenue continues to leak",
+                      "Competitors answer first and win the job",
+                      "Follow-up stays manual and inconsistent",
+                      "Past customers stay dormant",
+                      "Reputation growth stays slow",
+                    ].map((item, i) => (
+                      <li key={i} className="text-sm text-slate-500 flex items-start gap-2">
+                        <span className="text-[#e07060]/60 mt-0.5 flex-shrink-0">–</span>
+                        {item}
+                      </li>
                     ))}
-                  </tbody>
-                </table>
+                  </ul>
+                </div>
+                <div className="rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-5">
+                  <p className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider mb-3">With the Gap Closed</p>
+                  <ul className="space-y-2.5">
+                    {[
+                      "Revenue gap captured",
+                      "Every lead answered in under 60 seconds",
+                      "Pipeline works itself automatically",
+                      "Dormant database generates found money",
+                      "5-star reviews compound automatically",
+                    ].map((item, i) => (
+                      <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
+                        <CheckCircle size={13} className="text-cyan-400/60 mt-0.5 flex-shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-3">Cumulative revenue left on the table</p>
@@ -803,6 +830,9 @@ export default function Results() {
                   </tbody>
                 </table>
               </div>
+              <p className="text-xs text-slate-500 mt-4">
+                Year 3+ projections assume the system matures to full gap recovery as AI is optimized and the review flywheel compounds.
+              </p>
             </div>
           </motion.div>
         )}
