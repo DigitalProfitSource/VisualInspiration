@@ -99,9 +99,9 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     const fn = data.result.financialNarrative;
     const bm = data.result.industryBenchmark ?? {
       industryLabel: "service businesses",
-      captureNote: "Response time reduced from 12+ hours to under 5 minutes",
-      convertNote: "Lead follow-up rate improved from 31% to 89% (+187%)",
-      compoundNote: "Dormant lead reactivation recovered 8-12% of old contacts at near-zero cost",
+      captureStats: "Lead follow-up rate improved from 31% to 89% after closing speed gaps",
+      conversionStats: "Automated follow-up sequences recovered 20-35% of previously lost bookings",
+      compoundStats: "Automated review requests drove consistent 5-star growth month over month",
     };
 
     const pillarScores = [
@@ -138,7 +138,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       `revenue gap of $${data.result.totalMonthlyGap.toLocaleString()}, translating to ` +
       `$${data.result.annualizedGap.toLocaleString()} in annual revenue currently slipping through ` +
       `operational gaps. Your biggest drag is in ${weakest.name} (score: ${weakest.score}/100). ` +
-      `Below is the full breakdown — what's leaking, what it costs, and a 30-day plan to close the gap.`;
+      `Below is the full breakdown — what's leaking, what it costs, and what closing even half the gap looks like.`;
 
     doc.fontSize(10).fillColor(C.dark).text(summaryText, LEFT, y, { width: FULL_WIDTH });
     y += doc.heightOfString(summaryText, { width: FULL_WIDTH }) + 18;
@@ -251,21 +251,21 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
         color: C.teal,
         pillar: data.result.captureScore,
         gap: data.result.gapBreakdown.captureGap,
-        benchmarkNote: `Among ${bm.industryLabel}: ${bm.captureNote}.`,
+        benchmarkNote: `Among ${bm.industryLabel}: ${bm.captureStats}.`,
       },
       {
         name: "Convert",
         color: C.amber,
         pillar: data.result.convertScore,
         gap: data.result.gapBreakdown.convertGap,
-        benchmarkNote: `Among ${bm.industryLabel}: ${bm.convertNote}.`,
+        benchmarkNote: `Among ${bm.industryLabel}: ${bm.conversionStats}.`,
       },
       {
         name: "Compound",
         color: C.primary,
         pillar: data.result.compoundScore,
         gap: data.result.gapBreakdown.compoundGap,
-        benchmarkNote: `Among ${bm.industryLabel}: ${bm.compoundNote}.`,
+        benchmarkNote: `Among ${bm.industryLabel}: ${bm.compoundStats}.`,
       },
     ];
 
@@ -284,6 +284,17 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
         y = checkY(doc, y, 16);
         doc.text("  " + finding, LEFT + 10, y, { width: FULL_WIDTH - 20 });
         y += 14;
+      }
+
+      // Found Money callout — Compounding pillar only
+      if (name === "Compound" && fn && fn.foundMoneyPotential > 0) {
+        y = checkY(doc, y, 36);
+        doc.rect(LEFT + 10, y, FULL_WIDTH - 20, 30).fill(C.cyan + "15");
+        doc.fontSize(8).fillColor(C.primary)
+           .text("FOUND MONEY POTENTIAL (one-time DBR campaign)", LEFT + 16, y + 5, { width: FULL_WIDTH - 32 });
+        doc.fontSize(9).fillColor(C.dark)
+           .text(`~$${fn.foundMoneyPotential.toLocaleString()} — one-time campaign value on your existing database. Not a monthly figure.`, LEFT + 16, y + 17, { width: FULL_WIDTH - 32 });
+        y += 38;
       }
 
       // Benchmark callout
@@ -413,7 +424,11 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
         doc.fontSize(8).fillColor(C.slate).text(basis, LEFT + pColW[0] + pColW[1], y + 3, { width: pColW[2] });
         y += 14;
       }
-      y += 8;
+      y += 4;
+      y = checkY(doc, y, 16);
+      doc.fontSize(8).fillColor(C.slate)
+         .text("Year 3+ projections assume the system matures to full gap recovery as AI is optimized and the review flywheel compounds.", LEFT, y, { width: FULL_WIDTH });
+      y += doc.heightOfString("Year 3+ projections assume the system matures to full gap recovery as AI is optimized and the review flywheel compounds.", { width: FULL_WIDTH }) + 10;
       y = dividerLine(doc, y);
     }
 
