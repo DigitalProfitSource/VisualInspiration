@@ -286,6 +286,15 @@ export default function Results() {
           captureCalc: "Calculation unavailable — retake assessment for full breakdown",
           convertCalc: "Calculation unavailable — retake assessment for full breakdown",
           compoundCalc: "Calculation unavailable — retake assessment for full breakdown",
+          captureGapLow: 0,
+          captureGapHigh: 0,
+          convertGapLow: 0,
+          convertGapHigh: 0,
+          compoundGapLow: 0,
+          compoundGapHigh: 0,
+          totalLow: 0,
+          totalHigh: parsed.totalMonthlyGap || 0,
+          confidenceBand: 0.25,
         };
       }
       setResult(parsed);

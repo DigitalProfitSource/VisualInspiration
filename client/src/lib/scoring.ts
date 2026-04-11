@@ -19,17 +19,31 @@ export interface GapBreakdown {
   captureCalc: string;
   convertCalc: string;
   compoundCalc: string;
+  // Confidence bands — ±% applied to each pillar based on data quality
+  captureGapLow: number;
+  captureGapHigh: number;
+  convertGapLow: number;
+  convertGapHigh: number;
+  compoundGapLow: number;
+  compoundGapHigh: number;
+  totalLow: number;
+  totalHigh: number;
+  confidenceBand: number; // e.g. 0.25 means ±25%
 }
 
 export interface FinancialNarrative {
   currentMonthlyRevenue: number;
   totalMonthlyGap: number;
+  totalMonthlyGapLow: number;
+  totalMonthlyGapHigh: number;
   captureGap: number;
   conversionGap: number;
   compoundingGap: number;
   conservativeMonthlyRecovery: number;
   fullMonthlyRecovery: number;
   conservativeAnnualGain: number;
+  conservativeAnnualGainLow: number;
+  conservativeAnnualGainHigh: number;
   fullAnnualGain: number;
   currentAnnualRevenue: number;
   potentialAnnualRevenue: number;
@@ -42,6 +56,25 @@ export interface FinancialNarrative {
   yearThreeGain: number;
   yearFiveGain: number;
   foundMoneyPotential: number;
+  foundMoneyPotentialLow: number;
+  foundMoneyPotentialHigh: number;
+  confidenceBand: number;
+}
+
+export type PillarKey = 'capture' | 'convert' | 'compound' | 'drag';
+
+export interface UserPainPoints {
+  topPain: { value: string; severity: number; pillar: PillarKey } | null;
+  pillarConcernScores: Record<PillarKey, number>;
+  primaryPillar: PillarKey;
+  summary: string;
+}
+
+export interface InputCoherence {
+  consistent: boolean;
+  warning: string | null;
+  impliedCloseRate: number | null;
+  impliedMonthlyLeads: number | null;
 }
 
 export interface IndustryBenchmark {
@@ -79,6 +112,8 @@ export interface AssessmentResult {
 
   financialNarrative: FinancialNarrative;
   industryBenchmark: IndustryBenchmark;
+  userPainPoints: UserPainPoints;
+  inputCoherence: InputCoherence;
 }
 
 function parseMonthlyLeads(value: string): number {
@@ -128,6 +163,138 @@ function parseManualHours(value: string): number {
 
 function clampScore(score: number): number {
   return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+// ---------------------------------------------------------------------------
+// Revenue pain → pillar mapping
+// Each self-reported pain point maps to the pillar it most affects so we can
+// surface the user's stated concerns next to the objective score.
+// ---------------------------------------------------------------------------
+const REVENUE_PAIN_PILLAR_MAP: Record<string, PillarKey> = {
+  "Leads go cold before we respond": 'capture',
+  "Can't answer calls when busy": 'capture',
+  "No-shows and cancellations hurt revenue": 'convert',
+  "Quotes sent but never closed": 'convert',
+  "Old leads sitting in the database": 'compound',
+  "Reputation not growing fast enough": 'compound',
+  "Too much time on manual admin work": 'drag',
+  "Inconsistent customer experience": 'drag',
+};
+
+function analyzeRevenuePain(
+  pain: AssessmentData['revenue_pain'] | undefined
+): UserPainPoints {
+  const pillarConcernScores: Record<PillarKey, number> = {
+    capture: 0,
+    convert: 0,
+    compound: 0,
+    drag: 0,
+  };
+  let topPain: UserPainPoints['topPain'] = null;
+
+  if (pain && Array.isArray(pain)) {
+    for (const item of pain) {
+      const pillar = REVENUE_PAIN_PILLAR_MAP[item.value] ?? 'drag';
+      pillarConcernScores[pillar] += item.severity;
+      if (!topPain || item.severity > topPain.severity) {
+        topPain = { value: item.value, severity: item.severity, pillar };
+      }
+    }
+  }
+
+  const entries = (Object.entries(pillarConcernScores) as [PillarKey, number][])
+    .sort((a, b) => b[1] - a[1]);
+  const primaryPillar: PillarKey = entries[0][1] > 0 ? entries[0][0] : 'capture';
+
+  let summary = "You haven't flagged a specific pain area yet.";
+  if (topPain) {
+    const pillarLabel =
+      topPain.pillar === 'capture'
+        ? 'Capture (how leads reach you)'
+        : topPain.pillar === 'convert'
+        ? 'Convert (how quotes become jobs)'
+        : topPain.pillar === 'compound'
+        ? 'Compound (how past customers create more revenue)'
+        : 'Operational execution';
+    summary = `You told us "${topPain.value}" is your most painful friction point (severity ${topPain.severity}/5). That maps to your ${pillarLabel} pillar.`;
+  }
+
+  return { topPain, pillarConcernScores, primaryPillar, summary };
+}
+
+// ---------------------------------------------------------------------------
+// Input coherence — cross-checks user-reported lead volume × close rate against
+// actual jobs/month. Flags obvious mismatches so the scoring doesn't silently
+// underestimate or inflate the gap.
+// ---------------------------------------------------------------------------
+function validateInputCoherence(
+  monthlyLeads: number,
+  monthlySalesVolume: number,
+  closeRate: number
+): InputCoherence {
+  if (monthlySalesVolume <= 0 || monthlyLeads <= 0 || closeRate <= 0) {
+    return {
+      consistent: true,
+      warning: null,
+      impliedCloseRate: null,
+      impliedMonthlyLeads: null,
+    };
+  }
+
+  const expectedJobs = monthlyLeads * closeRate;
+  const impliedCloseRate = Math.min(1, monthlySalesVolume / monthlyLeads);
+  const impliedMonthlyLeads = Math.round(monthlySalesVolume / Math.max(closeRate, 0.05));
+  const ratio = monthlySalesVolume / Math.max(expectedJobs, 1);
+
+  if (ratio > 1.8) {
+    return {
+      consistent: false,
+      warning: `You reported ~${monthlyLeads} leads/month at a ${Math.round(closeRate * 100)}% close rate — that implies ~${Math.round(expectedJobs)} jobs. But you report ${monthlySalesVolume} actual jobs/month. Either your lead volume is higher than selected (~${impliedMonthlyLeads} leads) or your close rate is higher than reported. We used your job volume as the anchor.`,
+      impliedCloseRate,
+      impliedMonthlyLeads,
+    };
+  }
+
+  if (ratio < 0.55) {
+    return {
+      consistent: false,
+      warning: `You reported ~${monthlyLeads} leads/month at a ${Math.round(closeRate * 100)}% close rate — that implies ~${Math.round(expectedJobs)} jobs. But you report only ${monthlySalesVolume} actual jobs/month. That gap is itself a signal: you're losing roughly ${Math.round(expectedJobs - monthlySalesVolume)} would-be jobs each month somewhere between lead and closed deal.`,
+      impliedCloseRate,
+      impliedMonthlyLeads,
+    };
+  }
+
+  return {
+    consistent: true,
+    warning: null,
+    impliedCloseRate,
+    impliedMonthlyLeads,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Confidence band — widens the low/high range on every dollar estimate when
+// users selected "I don't know" on core inputs.
+// ---------------------------------------------------------------------------
+function computeConfidenceBand(data: AssessmentData): number {
+  let band = 0.25; // default ±25%
+  const uncertains = [
+    data.monthly_lead_volume?.includes("I don't know"),
+    data.close_rate?.includes("I don't know"),
+    data.no_show_rate?.includes("I don't track"),
+    data.dormant_leads?.includes("I'm not sure"),
+    data.manual_hours?.includes("I'm not sure"),
+  ].filter(Boolean).length;
+  band += uncertains * 0.05;
+  return Math.min(band, 0.50);
+}
+
+function applyBand(value: number, band: number): { low: number; high: number } {
+  const round = (n: number) => Math.round(n / 50) * 50;
+  return {
+    low: round(value * (1 - band)),
+    high: round(value * (1 + band)),
+  };
 }
 
 function calculateCaptureScore(data: AssessmentData): PillarScore {
@@ -463,7 +630,13 @@ function generateActionPlan(captureScore: PillarScore, convertScore: PillarScore
   return { quickWins, supportingActions };
 }
 
-function estimateMonthlyGapBreakdown(data: AssessmentData, monthlyLeads: number, avgJobValue: number, closeRate: number): GapBreakdown {
+function estimateMonthlyGapBreakdown(
+  data: AssessmentData,
+  monthlyLeads: number,
+  avgJobValue: number,
+  closeRate: number,
+  confidenceBand: number
+): GapBreakdown {
   const unavailabilityLoss: Record<string, number> = {
     "Rarely (we're almost always available)": 0.05,
     "Sometimes (evenings/weekends we miss some)": 0.15,
@@ -483,10 +656,17 @@ function estimateMonthlyGapBreakdown(data: AssessmentData, monthlyLeads: number,
   };
   const speedLoss = speedLossRates[data.first_contact_speed] || 0.30;
 
-  const rawCaptureGap = monthlyLeads * unavailRate * speedLoss * avgJobValue * 0.5;
+  // CAPTURE GAP — fixed formula
+  // OLD: monthlyLeads × unavail × speedLoss × avgJobValue × 0.5 (arbitrary)
+  // NEW: monthlyLeads × unavail × speedLoss × closeRate × avgJobValue
+  // Rationale: only leads that *would* have closed represent real revenue loss,
+  // so closeRate is the correct conversion assumption. The old 0.5 was a
+  // placeholder that silently ignored the user's reported close rate entirely.
+  const rawCaptureGap = monthlyLeads * unavailRate * speedLoss * closeRate * avgJobValue;
   const captureGap = Math.round(rawCaptureGap / 50) * 50;
-  const captureCalc = `${monthlyLeads} leads × ${Math.round(unavailRate * 100)}% unavail × ${Math.round(speedLoss * 100)}% speed loss × $${avgJobValue.toLocaleString()}`;
+  const captureCalc = `${monthlyLeads} leads × ${Math.round(unavailRate * 100)}% unreached × ${Math.round(speedLoss * 100)}% lost to speed × ${Math.round(closeRate * 100)}% would-close × $${avgJobValue.toLocaleString()} avg job`;
 
+  // CONVERT GAP — no-show recovery + quote follow-up recovery
   const noShowRate = parseNoShowRate(data.no_show_rate);
   const noShowMonthly = monthlyLeads * closeRate * (noShowRate / 100) * 0.25 * avgJobValue;
   let quoteRecoveryRate = 0.20;
@@ -496,9 +676,9 @@ function estimateMonthlyGapBreakdown(data: AssessmentData, monthlyLeads: number,
   const quoteMonthly = monthlyLeads * closeRate * 0.50 * quoteRecoveryRate * avgJobValue;
   const rawConvertGap = noShowMonthly + quoteMonthly;
   const convertGap = Math.round(rawConvertGap / 50) * 50;
-  const convertCalc = `($${Math.round(noShowMonthly).toLocaleString()} no-show recovery) + ($${Math.round(quoteMonthly).toLocaleString()} quote follow-up)`;
+  const convertCalc = `($${Math.round(noShowMonthly).toLocaleString()} no-show recovery) + ($${Math.round(quoteMonthly).toLocaleString()} quote follow-up recovery)`;
 
-  // Compounding gap is now based on review/reputation compound — genuinely monthly and recurring
+  // COMPOUND GAP — review/reputation penalty on new business acquisition
   const reviewPenaltyRates: Record<string, number> = {
     "Yes, automatically (every customer gets a review request)": 0.02,
     "Yes, manually (we ask when we remember)": 0.07,
@@ -508,11 +688,33 @@ function estimateMonthlyGapBreakdown(data: AssessmentData, monthlyLeads: number,
   const reviewPenaltyRate = reviewPenaltyRates[data.review_request] || 0.07;
   const rawCompoundGap = monthlyLeads * reviewPenaltyRate * avgJobValue * closeRate;
   const compoundGap = Math.round(rawCompoundGap / 50) * 50;
-  const compoundCalc = `${monthlyLeads} leads × ${Math.round(reviewPenaltyRate * 100)}% review impact × $${avgJobValue.toLocaleString()} avg job × ${Math.round(closeRate * 100)}% close rate`;
+  const compoundCalc = `${monthlyLeads} leads × ${Math.round(reviewPenaltyRate * 100)}% reputation drag × ${Math.round(closeRate * 100)}% close rate × $${avgJobValue.toLocaleString()} avg job`;
 
   const total = captureGap + convertGap + compoundGap;
 
-  return { captureGap, convertGap, compoundGap, total, captureCalc, convertCalc, compoundCalc };
+  const captureBand = applyBand(captureGap, confidenceBand);
+  const convertBand = applyBand(convertGap, confidenceBand);
+  const compoundBand = applyBand(compoundGap, confidenceBand);
+  const totalBand = applyBand(total, confidenceBand);
+
+  return {
+    captureGap,
+    convertGap,
+    compoundGap,
+    total,
+    captureCalc,
+    convertCalc,
+    compoundCalc,
+    captureGapLow: captureBand.low,
+    captureGapHigh: captureBand.high,
+    convertGapLow: convertBand.low,
+    convertGapHigh: convertBand.high,
+    compoundGapLow: compoundBand.low,
+    compoundGapHigh: compoundBand.high,
+    totalLow: totalBand.low,
+    totalHigh: totalBand.high,
+    confidenceBand,
+  };
 }
 
 function recommendTier(
@@ -760,7 +962,8 @@ function calculateFinancialNarrative(
   captureGap: number,
   conversionGap: number,
   compoundingGap: number,
-  dormantLeads: string
+  dormantLeads: string,
+  confidenceBand: number
 ): FinancialNarrative {
   const estimatedJobs = monthlySalesVolume > 0
     ? monthlySalesVolume
@@ -773,6 +976,9 @@ function calculateFinancialNarrative(
   const conservativeAnnualGain = conservativeMonthlyRecovery * 12;
   const fullAnnualGain = fullMonthlyRecovery * 12;
   const potentialAnnualRevenue = currentAnnualRevenue + conservativeAnnualGain;
+
+  const totalGapBand = applyBand(totalMonthlyGap, confidenceBand);
+  const conservativeAnnualBand = applyBand(conservativeAnnualGain, confidenceBand);
 
   const dailyCostOfInaction = Math.round(totalMonthlyGap / 30);
   const sixMonthInactionCost = totalMonthlyGap * 6;
@@ -800,16 +1006,22 @@ function calculateFinancialNarrative(
     }
   }
   const foundMoneyPotential = Math.round(dormantLeadMidpoint * 0.08 * avgJobValue);
+  // Found money reactivation is especially uncertain — widen the band.
+  const foundMoneyBand = applyBand(foundMoneyPotential, Math.min(confidenceBand + 0.15, 0.60));
 
   return {
     currentMonthlyRevenue,
     totalMonthlyGap,
+    totalMonthlyGapLow: totalGapBand.low,
+    totalMonthlyGapHigh: totalGapBand.high,
     captureGap,
     conversionGap,
     compoundingGap,
     conservativeMonthlyRecovery,
     fullMonthlyRecovery,
     conservativeAnnualGain,
+    conservativeAnnualGainLow: conservativeAnnualBand.low,
+    conservativeAnnualGainHigh: conservativeAnnualBand.high,
     fullAnnualGain,
     currentAnnualRevenue,
     potentialAnnualRevenue,
@@ -822,13 +1034,30 @@ function calculateFinancialNarrative(
     yearThreeGain,
     yearFiveGain,
     foundMoneyPotential,
+    foundMoneyPotentialLow: foundMoneyBand.low,
+    foundMoneyPotentialHigh: foundMoneyBand.high,
+    confidenceBand,
   };
 }
 
 export function calculateResults(data: AssessmentData): AssessmentResult {
-  const monthlyLeads = parseMonthlyLeads(data.monthly_lead_volume);
+  const monthlyLeadsReported = parseMonthlyLeads(data.monthly_lead_volume);
   const avgJobValue = parseJobValue(data.avg_job_value);
   const closeRate = parseCloseRate(data.close_rate);
+  const adSpend = parseInt((data.ad_spend || "0").replace(/[$,]/g, '')) || 0;
+  const monthlySalesVolume = parseInt((data.monthly_sales_volume || "0").replace(/[$,]/g, '')) || 0;
+
+  // Cross-validate the user's reported lead volume against their job volume.
+  // If the numbers contradict each other, anchor the financial model to the
+  // actual job volume the user reported (most trustworthy signal).
+  const inputCoherence = validateInputCoherence(monthlyLeadsReported, monthlySalesVolume, closeRate);
+  const monthlyLeads =
+    !inputCoherence.consistent && inputCoherence.impliedMonthlyLeads
+      ? inputCoherence.impliedMonthlyLeads
+      : monthlyLeadsReported;
+
+  const userPainPoints = analyzeRevenuePain(data.revenue_pain);
+  const confidenceBand = computeConfidenceBand(data);
 
   const rawCapture = calculateCaptureScore(data);
   const rawConvert = calculateConvertScore(data);
@@ -854,28 +1083,54 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     blindspots: rawCompound.blindspots
   };
 
+  // Overall score weighting stays objective — we do NOT bias it with user
+  // self-reported pain (their pain is subjective; the score must not be).
   const overallScore = clampScore(Math.round(
     (adjusted.capture * 0.40) + (adjusted.convert * 0.35) + (adjusted.compound * 0.25)
   ));
 
-  const allBlindspots = [
-    ...captureScore.blindspots,
-    ...convertScore.blindspots,
-    ...compoundScore.blindspots
-  ];
+  // Order blindspots so the pillar the user flagged as their biggest pain
+  // surfaces first. This makes the report feel personal without distorting
+  // the numerical score.
+  const blindspotsByPillar: Record<PillarKey, string[]> = {
+    capture: captureScore.blindspots,
+    convert: convertScore.blindspots,
+    compound: compoundScore.blindspots,
+    drag: [],
+  };
+  const pillarOrder: PillarKey[] = (['capture', 'convert', 'compound'] as PillarKey[])
+    .sort((a, b) => {
+      const aConcern = userPainPoints.pillarConcernScores[a] ?? 0;
+      const bConcern = userPainPoints.pillarConcernScores[b] ?? 0;
+      return bConcern - aConcern;
+    });
+  const allBlindspots = pillarOrder.flatMap(p => blindspotsByPillar[p]);
+
+  // If the user explicitly flagged a pain we don't already have a blindspot
+  // for, echo it back so they see we heard them.
+  if (userPainPoints.topPain) {
+    const painEcho = `You told us "${userPainPoints.topPain.value}" is your biggest friction point — our analysis confirms this is a measurable gap, not just a feeling.`;
+    const alreadyMentioned = allBlindspots.some(b =>
+      b.toLowerCase().includes(userPainPoints.topPain!.value.toLowerCase().split(' ')[0])
+    );
+    if (!alreadyMentioned) allBlindspots.unshift(painEcho);
+  }
 
   if (adjusted.dragFindings.length > 0) {
     allBlindspots.push(...adjusted.dragFindings.filter(f => f.includes("drag") || f.includes("complexity") || f.includes("documented") || f.includes("interrupted")));
   }
 
+  // Prepend the coherence warning as a visible blindspot so users see it
+  // before acting on the dollar figures.
+  if (!inputCoherence.consistent && inputCoherence.warning) {
+    allBlindspots.unshift(`⚠ Data coherence check: ${inputCoherence.warning}`);
+  }
+
   const actionPlan = generateActionPlan(captureScore, convertScore, compoundScore, data);
 
-  const gapBreakdown = estimateMonthlyGapBreakdown(data, monthlyLeads, avgJobValue, closeRate);
+  const gapBreakdown = estimateMonthlyGapBreakdown(data, monthlyLeads, avgJobValue, closeRate, confidenceBand);
   const totalMonthlyGap = gapBreakdown.total;
   const annualizedGap = totalMonthlyGap * 12;
-
-  const adSpend = parseInt(data.ad_spend || "0") || 0;
-  const monthlySalesVolume = parseInt(data.monthly_sales_volume || "0") || 0;
 
   const { tier, reason } = recommendTier(
     adjusted.capture,
@@ -895,7 +1150,8 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     gapBreakdown.captureGap,
     gapBreakdown.convertGap,
     gapBreakdown.compoundGap,
-    data.dormant_leads
+    data.dormant_leads,
+    confidenceBand
   );
 
   const industryBenchmark = getIndustryBenchmark(data.industry);
@@ -928,5 +1184,7 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
 
     financialNarrative,
     industryBenchmark,
+    userPainPoints,
+    inputCoherence,
   };
 }
