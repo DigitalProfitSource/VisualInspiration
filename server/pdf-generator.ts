@@ -132,16 +132,48 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     // ────────────────────────────────────────────────────────────────────────
     y = sectionLabel(doc, y, "Section 1 — Executive Summary");
 
+    const gapRangeSuffix =
+      data.result.gapBreakdown.totalLow > 0 && data.result.gapBreakdown.totalHigh > 0
+        ? ` (range: $${data.result.gapBreakdown.totalLow.toLocaleString()}–$${data.result.gapBreakdown.totalHigh.toLocaleString()}, ±${Math.round((data.result.gapBreakdown.confidenceBand ?? 0.25) * 100)}% confidence)`
+        : "";
+
     const summaryText =
       `This analysis maps friction across your three revenue pillars — Capture, Convert, and Compound — ` +
       `based on the operational data provided by ${data.contactName}. We identified a total monthly ` +
-      `revenue gap of $${data.result.totalMonthlyGap.toLocaleString()}, translating to ` +
+      `revenue gap of $${data.result.totalMonthlyGap.toLocaleString()}${gapRangeSuffix}, translating to ` +
       `$${data.result.annualizedGap.toLocaleString()} in annual revenue currently slipping through ` +
       `operational gaps. Your biggest drag is in ${weakest.name} (score: ${weakest.score}/100). ` +
       `Below is the full breakdown — what's leaking, what it costs, and what closing even half the gap looks like.`;
 
     doc.fontSize(10).fillColor(C.dark).text(summaryText, LEFT, y, { width: FULL_WIDTH });
-    y += doc.heightOfString(summaryText, { width: FULL_WIDTH }) + 18;
+    y += doc.heightOfString(summaryText, { width: FULL_WIDTH }) + 12;
+
+    // User pain echo — quotes their top revenue pain directly
+    if (data.result.userPainPoints?.topPain) {
+      const painBoxH = 42;
+      y = checkY(doc, y, painBoxH + 10);
+      doc.rect(LEFT, y, FULL_WIDTH, painBoxH).fill(C.lightTeal);
+      doc.fontSize(8).fillColor(C.teal)
+         .text("WHAT YOU TOLD US", LEFT + 10, y + 8, { characterSpacing: 1.5 });
+      const painText = `You flagged "${data.result.userPainPoints.topPain.value}" as your most painful friction point (severity ${data.result.userPainPoints.topPain.severity}/5). The analysis below is ordered to address that pillar first.`;
+      doc.fontSize(9).fillColor(C.dark)
+         .text(painText, LEFT + 10, y + 20, { width: FULL_WIDTH - 20 });
+      y += painBoxH + 8;
+    }
+
+    // Data coherence warning — when user's inputs contradict each other
+    if (data.result.inputCoherence && !data.result.inputCoherence.consistent && data.result.inputCoherence.warning) {
+      const warnH = doc.heightOfString(data.result.inputCoherence.warning, { width: FULL_WIDTH - 20 }) + 30;
+      y = checkY(doc, y, warnH + 10);
+      doc.rect(LEFT, y, FULL_WIDTH, warnH).fill("#fef3c7");
+      doc.rect(LEFT, y, 3, warnH).fill(C.amber);
+      doc.fontSize(8).fillColor(C.amber)
+         .text("DATA COHERENCE CHECK", LEFT + 10, y + 8, { characterSpacing: 1.5 });
+      doc.fontSize(9).fillColor(C.dark)
+         .text(data.result.inputCoherence.warning, LEFT + 10, y + 20, { width: FULL_WIDTH - 20 });
+      y += warnH + 8;
+    }
+
     y = dividerLine(doc, y);
 
     // ────────────────────────────────────────────────────────────────────────
@@ -196,18 +228,26 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     y += 90;
 
     // Gap breakdown below score box
+    const gb = data.result.gapBreakdown;
+    const totalRangeSub =
+      gb.totalLow > 0 && gb.totalHigh > 0
+        ? `$${gb.totalLow.toLocaleString()}–$${gb.totalHigh.toLocaleString()}`
+        : "";
     const gapCols = [
-      { label: "Total Monthly Gap", val: `$${data.result.totalMonthlyGap.toLocaleString()}` },
-      { label: "Annualized", val: `$${data.result.annualizedGap.toLocaleString()}` },
-      { label: "Biggest Pillar Gap", val: `${weakestByGap.name} ($${weakestByGap.gap.toLocaleString()}/mo)` },
+      { label: "Total Monthly Gap", val: `$${data.result.totalMonthlyGap.toLocaleString()}`, sub: totalRangeSub },
+      { label: "Annualized", val: `$${data.result.annualizedGap.toLocaleString()}`, sub: "" },
+      { label: "Biggest Pillar Gap", val: `${weakestByGap.name} ($${weakestByGap.gap.toLocaleString()}/mo)`, sub: "" },
     ];
     const gcW = FULL_WIDTH / 3;
-    y = checkY(doc, y, 36);
+    y = checkY(doc, y, 48);
     gapCols.forEach((g, i) => {
       doc.fontSize(8).fillColor(C.slate).text(g.label, LEFT + i * gcW, y, { width: gcW });
       doc.fontSize(11).fillColor(C.primary).text(g.val, LEFT + i * gcW, y + 14, { width: gcW });
+      if (g.sub) {
+        doc.fontSize(7).fillColor(C.slate).text(g.sub, LEFT + i * gcW, y + 30, { width: gcW });
+      }
     });
-    y += 36;
+    y += 48;
     y = dividerLine(doc, y);
 
     // ────────────────────────────────────────────────────────────────────────
@@ -251,6 +291,8 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
         color: C.teal,
         pillar: data.result.captureScore,
         gap: data.result.gapBreakdown.captureGap,
+        gapLow: data.result.gapBreakdown.captureGapLow,
+        gapHigh: data.result.gapBreakdown.captureGapHigh,
         benchmarkNote: `Among ${bm.industryLabel}: ${bm.captureStats}.`,
       },
       {
@@ -258,6 +300,8 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
         color: C.amber,
         pillar: data.result.convertScore,
         gap: data.result.gapBreakdown.convertGap,
+        gapLow: data.result.gapBreakdown.convertGapLow,
+        gapHigh: data.result.gapBreakdown.convertGapHigh,
         benchmarkNote: `Among ${bm.industryLabel}: ${bm.conversionStats}.`,
       },
       {
@@ -265,18 +309,27 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
         color: C.primary,
         pillar: data.result.compoundScore,
         gap: data.result.gapBreakdown.compoundGap,
+        gapLow: data.result.gapBreakdown.compoundGapLow,
+        gapHigh: data.result.gapBreakdown.compoundGapHigh,
         benchmarkNote: `Among ${bm.industryLabel}: ${bm.compoundStats}.`,
       },
     ];
 
-    for (const { name, color, pillar, gap, benchmarkNote } of pillarDefs) {
-      y = checkY(doc, y, 90);
+    for (const { name, color, pillar, gap, gapLow, gapHigh, benchmarkNote } of pillarDefs) {
+      y = checkY(doc, y, 100);
 
       // Pillar header bar
       doc.rect(LEFT, y, FULL_WIDTH, 20).fill(color + "22");
       doc.fontSize(11).fillColor(color).text(name + `  (score: ${pillar.score}/100)`, LEFT + 8, y + 4);
       doc.fontSize(10).fillColor(color).text(`~$${gap.toLocaleString()}/mo gap`, LEFT + 8, y + 4, { align: "right", width: FULL_WIDTH - 16 });
       y += 24;
+
+      // Per-pillar confidence range
+      if (gapLow > 0 && gapHigh > 0) {
+        doc.fontSize(8).fillColor(C.slate)
+           .text(`Range: $${gapLow.toLocaleString()}–$${gapHigh.toLocaleString()}/mo`, LEFT + 10, y, { width: FULL_WIDTH - 20 });
+        y += 12;
+      }
 
       // Findings
       doc.fontSize(9).fillColor(C.slate);
