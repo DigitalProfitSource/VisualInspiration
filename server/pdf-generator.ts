@@ -87,12 +87,12 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       primary: "#0891b2",
       cyan: "#22d3ee",
       teal: "#14b8a6",
-      amber: "#f59e0b",
       dark: "#18181b",
       slate: "#64748b",
       white: "#ffffff",
       lightTeal: "#f0fdfa",
       coral: "#c0504d",
+      lightCoral: "#fdf0ef",
       bg: "#f8fafc",
     };
 
@@ -165,9 +165,9 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     if (data.result.inputCoherence && !data.result.inputCoherence.consistent && data.result.inputCoherence.warning) {
       const warnH = doc.heightOfString(data.result.inputCoherence.warning, { width: FULL_WIDTH - 20 }) + 30;
       y = checkY(doc, y, warnH + 10);
-      doc.rect(LEFT, y, FULL_WIDTH, warnH).fill("#fef3c7");
-      doc.rect(LEFT, y, 3, warnH).fill(C.amber);
-      doc.fontSize(8).fillColor(C.amber)
+      doc.rect(LEFT, y, FULL_WIDTH, warnH).fill(C.lightCoral);
+      doc.rect(LEFT, y, 3, warnH).fill(C.coral);
+      doc.fontSize(8).fillColor(C.coral)
          .text("DATA COHERENCE CHECK", LEFT + 10, y + 8, { characterSpacing: 1.5 });
       doc.fontSize(9).fillColor(C.dark)
          .text(data.result.inputCoherence.warning, LEFT + 10, y + 20, { width: FULL_WIDTH - 20 });
@@ -297,7 +297,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       },
       {
         name: "Convert",
-        color: C.amber,
+        color: C.coral,
         pillar: data.result.convertScore,
         gap: data.result.gapBreakdown.convertGap,
         gapLow: data.result.gapBreakdown.convertGapLow,
@@ -514,7 +514,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     }
 
     y += 6;
-    doc.fontSize(11).fillColor(C.amber).text("Supporting Actions  (rest of 30 days)", LEFT, y);
+    doc.fontSize(11).fillColor(C.coral).text("Supporting Actions  (rest of 30 days)", LEFT, y);
     y += 16;
     doc.fontSize(9).fillColor(C.slate);
     for (const action of data.result.actionPlan.supportingActions) {

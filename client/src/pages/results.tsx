@@ -486,11 +486,15 @@ export default function Results() {
             transition={{ delay: 0.08 }}
             className="mb-6"
           >
-            <div className="rounded-2xl bg-amber-950/20 border border-amber-500/30 p-5" data-testid="card-coherence-warning">
+            <div
+              className="rounded-2xl p-5 border"
+              style={{ backgroundColor: 'rgba(192,80,77,0.10)', borderColor: 'rgba(192,80,77,0.32)' }}
+              data-testid="card-coherence-warning"
+            >
               <div className="flex items-start gap-3">
-                <AlertTriangle size={18} className="text-amber-400 mt-0.5 flex-shrink-0" />
+                <AlertTriangle size={18} style={{ color: '#c0504d' }} className="mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-[10px] font-bold text-amber-400 uppercase tracking-[0.2em] mb-2">Data Coherence Check</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: '#c0504d' }}>Data Coherence Check</p>
                   <p className="text-sm text-slate-300 leading-relaxed">{result.inputCoherence.warning}</p>
                 </div>
               </div>
