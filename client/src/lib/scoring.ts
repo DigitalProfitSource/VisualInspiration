@@ -135,9 +135,13 @@ function parseJobValue(value: string): number {
 function parseCloseRate(value: string): number {
   if (value.includes("I don't know")) return 0.30;
   if (value.includes("9-10")) return 0.95;
+  if (value.includes("8-9")) return 0.85;
   if (value.includes("7-8")) return 0.75;
+  if (value.includes("6-7")) return 0.65;
   if (value.includes("5-6")) return 0.55;
+  if (value.includes("4-5")) return 0.45;
   if (value.includes("3-4")) return 0.35;
+  if (value.includes("2-3")) return 0.25;
   if (value.includes("1-2")) return 0.15;
   return 0.30;
 }
@@ -469,9 +473,13 @@ function calculateConvertScore(data: AssessmentData): PillarScore {
 
   const closeRateScores: Record<string, number> = {
     "1-2 out of 10 (10-20%)": -15,
+    "2-3 out of 10 (20-30%)": -12,
     "3-4 out of 10 (30-40%)": -8,
+    "4-5 out of 10 (40-50%)": -4,
     "5-6 out of 10 (50-60%)": 0,
+    "6-7 out of 10 (60-70%)": 0,
     "7-8 out of 10 (70-80%)": 0,
+    "8-9 out of 10 (80-90%)": 0,
     "9-10 out of 10 (90-100%)": 0,
     "I don't know": -10
   };

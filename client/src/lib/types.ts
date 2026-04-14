@@ -167,9 +167,13 @@ export const ReviewRequestSchema = z.enum([
 
 export const CloseRateSchema = z.enum([
   "1-2 out of 10 (10-20%)",
+  "2-3 out of 10 (20-30%)",
   "3-4 out of 10 (30-40%)",
+  "4-5 out of 10 (40-50%)",
   "5-6 out of 10 (50-60%)",
+  "6-7 out of 10 (60-70%)",
   "7-8 out of 10 (70-80%)",
+  "8-9 out of 10 (80-90%)",
   "9-10 out of 10 (90-100%)",
   "I don't know"
 ]);
