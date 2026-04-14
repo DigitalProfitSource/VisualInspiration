@@ -286,6 +286,15 @@ export default function Results() {
           captureCalc: "Calculation unavailable — retake assessment for full breakdown",
           convertCalc: "Calculation unavailable — retake assessment for full breakdown",
           compoundCalc: "Calculation unavailable — retake assessment for full breakdown",
+          captureGapLow: 0,
+          captureGapHigh: 0,
+          convertGapLow: 0,
+          convertGapHigh: 0,
+          compoundGapLow: 0,
+          compoundGapHigh: 0,
+          totalLow: 0,
+          totalHigh: parsed.totalMonthlyGap || 0,
+          confidenceBand: 0.25,
         };
       }
       setResult(parsed);
@@ -469,6 +478,45 @@ export default function Results() {
           </div>
         </motion.div>
 
+        {/* === DATA COHERENCE WARNING (when user's inputs contradict each other) === */}
+        {result.inputCoherence && !result.inputCoherence.consistent && result.inputCoherence.warning && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.08 }}
+            className="mb-6"
+          >
+            <div className="rounded-2xl bg-amber-950/20 border border-amber-500/30 p-5" data-testid="card-coherence-warning">
+              <div className="flex items-start gap-3">
+                <AlertTriangle size={18} className="text-amber-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-[10px] font-bold text-amber-400 uppercase tracking-[0.2em] mb-2">Data Coherence Check</p>
+                  <p className="text-sm text-slate-300 leading-relaxed">{result.inputCoherence.warning}</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* === USER PAIN ECHO (acknowledges what the user flagged as most painful) === */}
+        {result.userPainPoints && result.userPainPoints.topPain && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.09 }}
+            className="mb-6"
+          >
+            <div className="rounded-2xl bg-cyan-950/20 border border-cyan-500/20 p-5" data-testid="card-pain-echo">
+              <p className="text-[10px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-2">What You Told Us</p>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                You flagged <span className="font-semibold text-white">"{result.userPainPoints.topPain.value}"</span> as your
+                most painful friction point (severity {result.userPainPoints.topPain.severity}/5).
+                Our analysis below is ordered to address that pillar first.
+              </p>
+            </div>
+          </motion.div>
+        )}
+
         {/* === SECTION 3: TOTAL IMPACT SUMMARY === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -497,21 +545,32 @@ export default function Results() {
               >
                 ${animatedScore > 0 ? animatedScore.toLocaleString() : result.totalMonthlyGap.toLocaleString()}
               </p>
+              {result.gapBreakdown.totalLow > 0 && result.gapBreakdown.totalHigh > 0 && (
+                <p className="text-xs text-slate-500 font-mono mb-1">
+                  Range: ${result.gapBreakdown.totalLow.toLocaleString()} – ${result.gapBreakdown.totalHigh.toLocaleString()}
+                  <span className="text-slate-600"> (±{Math.round((result.gapBreakdown.confidenceBand ?? 0.25) * 100)}% confidence band)</span>
+                </p>
+              )}
               <p className="text-sm text-slate-400">
                 Annualized: <AnimatedMoney value={result.annualizedGap} className="font-mono font-semibold text-slate-300" />
               </p>
             </div>
             <div className="grid grid-cols-3 gap-4">
               {[
-                { label: "Capture Gap", amount: result.gapBreakdown.captureGap },
-                { label: "Conversion Gap", amount: result.gapBreakdown.convertGap },
-                { label: "Compounding Gap", amount: result.gapBreakdown.compoundGap },
+                { label: "Capture Gap", amount: result.gapBreakdown.captureGap, low: result.gapBreakdown.captureGapLow, high: result.gapBreakdown.captureGapHigh },
+                { label: "Conversion Gap", amount: result.gapBreakdown.convertGap, low: result.gapBreakdown.convertGapLow, high: result.gapBreakdown.convertGapHigh },
+                { label: "Compounding Gap", amount: result.gapBreakdown.compoundGap, low: result.gapBreakdown.compoundGapLow, high: result.gapBreakdown.compoundGapHigh },
               ].map((g) => (
                 <div key={g.label} className="text-center">
                   <p className="text-xs font-bold text-cyan-400 mb-1">{g.label}</p>
                   <p className="font-mono font-bold text-base text-slate-300">
                     <AnimatedMoney value={g.amount} />
                   </p>
+                  {g.low > 0 && g.high > 0 && (
+                    <p className="text-[10px] text-slate-600 font-mono mt-0.5">
+                      ${g.low.toLocaleString()}–${g.high.toLocaleString()}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
