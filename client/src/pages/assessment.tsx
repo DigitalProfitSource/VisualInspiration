@@ -1004,21 +1004,52 @@ export default function Assessment() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-cyan-400">
-              {currentStep.progress}% Complete
+              {currentStepIndex === STEPS.length - 1 ? '100' : currentStep.progress}% Complete
             </span>
-            {currentStepIndex < STEPS.length - 1 && (
-              <span className="text-sm text-slate-500">
-                Step {currentStepIndex + 1} of {STEPS.length - 1}
-              </span>
-            )}
+            <span className="text-sm font-semibold text-white">
+              {currentStep.title}
+            </span>
           </div>
-          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-            <motion.div 
+          <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-3">
+            <motion.div
               className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400"
               initial={{ width: 0 }}
               animate={{ width: `${currentStepIndex === STEPS.length - 1 ? 100 : currentStep.progress}%` }}
               transition={{ duration: 0.3 }}
             />
+          </div>
+          {/* Section label pills */}
+          <div className="flex gap-1.5 flex-wrap">
+            {STEPS.map((step, i) => {
+              const isActive = i === currentStepIndex;
+              const isDone = i < currentStepIndex;
+              const shortLabels: Record<string, string> = {
+                initial: 'Identity',
+                business: 'Business',
+                calibration: 'Pain Points',
+                speed: 'Speed Gap',
+                silence: 'Silence Gap',
+                engagement: 'Channels',
+                ai_visibility: 'AI Visibility',
+                intake: 'Intake',
+                automation: 'Automation',
+                chaos: 'Chaos Gap',
+                contact: 'Results',
+              };
+              return (
+                <span
+                  key={step.id}
+                  className="text-[10px] px-2 py-0.5 rounded-full font-medium transition-all"
+                  style={{
+                    backgroundColor: isActive ? 'rgba(34,211,238,0.15)' : isDone ? 'rgba(34,211,238,0.06)' : 'rgba(30,41,59,0.5)',
+                    color: isActive ? '#22d3ee' : isDone ? '#0891b2' : '#475569',
+                    border: isActive ? '1px solid rgba(34,211,238,0.4)' : '1px solid transparent',
+                  }}
+                >
+                  {isDone ? '✓ ' : ''}{shortLabels[step.id] ?? step.title}
+                </span>
+              );
+            })}
           </div>
         </div>
 

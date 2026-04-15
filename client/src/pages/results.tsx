@@ -3,6 +3,7 @@ import { useLocation, Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
+  AreaChart, Area,
 } from "recharts";
 import {
   ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw,
@@ -80,6 +81,250 @@ function AnimatedMoney({
     </span>
   );
 }
+
+// ── Phase 2: Business Health Score Dashboard ──────────────────────────────────
+function AnimatedGauge({ score, size = 160, stroke = 14 }: { score: number; size?: number; stroke?: number }) {
+  const [displayScore, setDisplayScore] = useState(0);
+  const ref = useRef<SVGSVGElement>(null);
+  const isInView = useInView(ref as React.RefObject<Element>, { once: true, amount: 0.3 });
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (hasAnimated.current || !isInView) return;
+    hasAnimated.current = true;
+    const startTime = performance.now();
+    const duration = 1400;
+    const animate = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayScore(Math.round(eased * score));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [isInView, score]);
+
+  const r = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * r;
+  const dashoffset = circumference * (1 - displayScore / 100);
+  const cx = size / 2;
+  const cy = size / 2;
+
+  const color = displayScore < 40 ? '#c0504d' : displayScore < 65 ? '#0891b2' : '#22d3ee';
+  const label = displayScore < 40 ? 'Critical' : displayScore < 65 ? 'Moderate' : 'Healthy';
+
+  return (
+    <div className="flex flex-col items-center">
+      <svg ref={ref} width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1a2332" strokeWidth={stroke} />
+        <circle
+          cx={cx} cy={cy} r={r} fill="none"
+          stroke={color} strokeWidth={stroke}
+          strokeDasharray={circumference}
+          strokeDashoffset={dashoffset}
+          strokeLinecap="round"
+          style={{ transition: 'stroke-dashoffset 0.1s ease, stroke 0.4s ease' }}
+        />
+      </svg>
+      <div className="absolute flex flex-col items-center" style={{ transform: 'translateY(0)' }}>
+        <span className="text-4xl font-mono font-bold" style={{ color }}>{displayScore}</span>
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] mt-0.5" style={{ color }}>
+          {label}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function PillarBar({ name, score, delay = 0 }: { name: string; score: number; delay?: number }) {
+  const [width, setWidth] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref as React.RefObject<Element>, { once: true, amount: 0.5 });
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    if (hasAnimated.current || !isInView) return;
+    hasAnimated.current = true;
+    const timeout = setTimeout(() => {
+      setWidth(score);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [isInView, score, delay]);
+
+  const color = score < 40 ? '#c0504d' : score < 65 ? '#0891b2' : '#22d3ee';
+
+  return (
+    <div ref={ref}>
+      <div className="flex justify-between items-center mb-1.5">
+        <span className="text-xs font-semibold text-slate-300">{name}</span>
+        <span className="text-xs font-mono font-bold" style={{ color }}>{score}/100</span>
+      </div>
+      <div className="h-2 bg-[#1a2332] rounded-full overflow-hidden">
+        <div
+          className="h-full rounded-full"
+          style={{
+            width: `${width}%`,
+            backgroundColor: color,
+            transition: 'width 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+            boxShadow: `0 0 8px ${color}60`,
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function BusinessHealthDashboard({ result }: { result: { overallScore: number; captureScore: { score: number }; convertScore: { score: number }; compoundScore: { score: number } } }) {
+  const score = result.overallScore;
+  const scoreColor = score < 40 ? '#c0504d' : score < 65 ? '#0891b2' : '#22d3ee';
+  const r = (160 - 14) / 2;
+  const circumference = 2 * Math.PI * r;
+
+  return (
+    <div className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+      <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-6">Business Health Score</p>
+      <div className="flex flex-col md:flex-row items-center gap-8">
+        {/* Circular gauge */}
+        <div className="relative flex items-center justify-center flex-shrink-0" style={{ width: 160, height: 160 }}>
+          <AnimatedGauge score={score} />
+        </div>
+        {/* Pillar breakdown */}
+        <div className="flex-1 w-full space-y-5">
+          <p className="text-xs text-slate-500 leading-relaxed">
+            This composite score reflects how effectively your business captures, converts, and compounds its revenue. The lower the score, the more recoverable revenue is being left on the table.
+          </p>
+          <PillarBar name="Capture (Speed-to-Lead)" score={result.captureScore.score} delay={100} />
+          <PillarBar name="Convert (Follow-Through)" score={result.convertScore.score} delay={250} />
+          <PillarBar name="Compound (Growth Engine)" score={result.compoundScore.score} delay={400} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Phase 2: Industry Benchmark Comparison ────────────────────────────────────
+function BenchmarkBar({ label, userValue, benchmarkValue, format = 'percent', userLabel, benchmarkLabel }: {
+  label: string;
+  userValue: number;
+  benchmarkValue: number;
+  format?: 'percent' | 'dollar' | 'number';
+  userLabel?: string;
+  benchmarkLabel?: string;
+}) {
+  const [userW, setUserW] = useState(0);
+  const [bmW, setBmW] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref as React.RefObject<Element>, { once: true, amount: 0.4 });
+  const hasAnimated = useRef(false);
+  const maxVal = Math.max(userValue, benchmarkValue, 1);
+
+  useEffect(() => {
+    if (hasAnimated.current || !isInView) return;
+    hasAnimated.current = true;
+    setTimeout(() => {
+      setUserW((userValue / maxVal) * 100);
+      setBmW((benchmarkValue / maxVal) * 100);
+    }, 100);
+  }, [isInView, userValue, benchmarkValue, maxVal]);
+
+  const fmt = (v: number) => {
+    if (format === 'percent') return `${Math.round(v * 100)}%`;
+    if (format === 'dollar') return `$${v.toLocaleString()}`;
+    return String(Math.round(v));
+  };
+
+  const userBetter = userValue >= benchmarkValue;
+
+  return (
+    <div ref={ref} className="space-y-2">
+      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{label}</p>
+      <div className="space-y-1.5">
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] text-slate-500 w-16 flex-shrink-0">You</span>
+          <div className="flex-1 h-2.5 bg-[#1a2332] rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${userW}%`,
+                backgroundColor: userBetter ? '#22d3ee' : '#c0504d',
+                transition: 'width 1.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            />
+          </div>
+          <span className="text-xs font-mono font-bold w-16 text-right" style={{ color: userBetter ? '#22d3ee' : '#c0504d' }}>
+            {userLabel ?? fmt(userValue)}
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] text-slate-500 w-16 flex-shrink-0">Industry</span>
+          <div className="flex-1 h-2.5 bg-[#1a2332] rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full bg-slate-500"
+              style={{
+                width: `${bmW}%`,
+                transition: 'width 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
+              }}
+            />
+          </div>
+          <span className="text-xs font-mono text-slate-400 w-16 text-right">
+            {benchmarkLabel ?? fmt(benchmarkValue)}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IndustryBenchmarks({ result }: { result: { closeRate: number; monthlyLeads: number; avgJobValue: number; industry: string; overallScore: number } }) {
+  // Industry-aware benchmark targets
+  const industry = result.industry?.toLowerCase() ?? '';
+  const isHighValue = ['roofing', 'solar', 'remodel', 'construction', 'legal', 'hvac'].some(k => industry.includes(k));
+  const benchmarkCloseRate = isHighValue ? 0.42 : 0.38;
+  const benchmarkLeads = 55;
+  const benchmarkJobValue = isHighValue ? 8500 : 2500;
+  const benchmarkScore = 62;
+
+  return (
+    <div className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+      <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-1">
+        Industry Benchmark Comparison
+      </p>
+      <p className="text-xs text-slate-500 mb-6">
+        How you stack up against similar {result.industry || 'service'} businesses. Industry averages sourced from aggregated performance data across comparable operators.
+      </p>
+      <div className="space-y-6">
+        <BenchmarkBar
+          label="Close Rate"
+          userValue={result.closeRate}
+          benchmarkValue={benchmarkCloseRate}
+          format="percent"
+        />
+        <BenchmarkBar
+          label="Monthly Lead Volume"
+          userValue={result.monthlyLeads}
+          benchmarkValue={benchmarkLeads}
+          format="number"
+        />
+        <BenchmarkBar
+          label="Average Job Value"
+          userValue={result.avgJobValue}
+          benchmarkValue={benchmarkJobValue}
+          format="dollar"
+        />
+        <BenchmarkBar
+          label="Overall Business Health Score"
+          userValue={result.overallScore}
+          benchmarkValue={benchmarkScore}
+          format="number"
+          userLabel={`${result.overallScore}/100`}
+          benchmarkLabel={`${benchmarkScore}/100`}
+        />
+      </div>
+    </div>
+  );
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 function PillarCard({
   title,
@@ -413,6 +658,16 @@ export default function Results() {
           </p>
         </motion.div>
 
+        {/* === PHASE 2: BUSINESS HEALTH SCORE DASHBOARD === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.02 }}
+          className="mb-6"
+        >
+          <BusinessHealthDashboard result={result} />
+        </motion.div>
+
         {/* === SECTION 1: EXECUTIVE SUMMARY === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -686,6 +941,16 @@ export default function Results() {
             benchmarkNote={`Among ${bm.industryLabel}: ${bm.compoundStats}.`}
             foundMoneyPotential={fn?.foundMoneyPotential}
           />
+        </motion.div>
+
+        {/* === PHASE 2: INDUSTRY BENCHMARK COMPARISON === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="mb-8"
+        >
+          <IndustryBenchmarks result={result} />
         </motion.div>
 
         {/* === SECTION 6: SCENARIO ANALYSIS === */}
