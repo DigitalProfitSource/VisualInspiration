@@ -93,6 +93,8 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       lightTeal: "#f0fdfa",
       coral: "#c0504d",
       lightCoral: "#fdf0ef",
+      lightCyan: "#e4f8fc",
+      lightPrimary: "#e0eff5",
       bg: "#f8fafc",
     };
 
@@ -342,7 +344,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       // Found Money callout — Compounding pillar only
       if (name === "Compound" && fn && fn.foundMoneyPotential > 0) {
         y = checkY(doc, y, 36);
-        doc.rect(LEFT + 10, y, FULL_WIDTH - 20, 30).fill(C.cyan + "15");
+        doc.rect(LEFT + 10, y, FULL_WIDTH - 20, 30).fill(C.lightCyan);
         doc.fontSize(8).fillColor(C.primary)
            .text("FOUND MONEY POTENTIAL (one-time DBR campaign)", LEFT + 16, y + 5, { width: FULL_WIDTH - 32 });
         doc.fontSize(9).fillColor(C.dark)
@@ -425,7 +427,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       y = sectionLabel(doc, y, "Section 8 — Cost of Inaction");
 
       y = checkY(doc, y, 50);
-      doc.rect(LEFT, y, FULL_WIDTH, 42).fill(C.coral + "15");
+      doc.rect(LEFT, y, FULL_WIDTH, 42).fill(C.lightCoral);
       doc.fontSize(10).fillColor(C.slate).text("Every day this gap stays open costs:", LEFT + 10, y + 8);
       doc.fontSize(18).fillColor(C.coral).text(`$${fn.dailyCostOfInaction.toLocaleString()}/day`, LEFT + 10, y + 22);
       doc.fontSize(9).fillColor(C.slate)
@@ -440,7 +442,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
       ];
       y = checkY(doc, y, 40);
       inactionItems.forEach(({ label, value }, i) => {
-        doc.rect(LEFT + i * inactionW, y, inactionW - 4, 34).fill(C.coral + "10");
+        doc.rect(LEFT + i * inactionW, y, inactionW - 4, 34).fill(C.lightCoral);
         doc.fontSize(8).fillColor(C.slate).text(label, LEFT + i * inactionW + 6, y + 5);
         doc.fontSize(12).fillColor(C.coral).text(value, LEFT + i * inactionW + 6, y + 17);
       });
@@ -554,7 +556,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     y = sectionLabel(doc, y, "Section 13 — Recommended Solution");
 
     y = checkY(doc, y, 100);
-    doc.rect(LEFT, y, FULL_WIDTH, 80).fill(C.primary + "18");
+    doc.rect(LEFT, y, FULL_WIDTH, 80).fill(C.lightPrimary);
     doc.fontSize(9).fillColor(C.primary)
        .text("RECOMMENDED BASED ON YOUR ANALYSIS", LEFT + 10, y + 10, { align: "center", width: FULL_WIDTH - 20 });
     doc.fontSize(20).fillColor(C.dark)
@@ -584,7 +586,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     for (const tier of tiers) {
       y = checkY(doc, y, 80);
       const isRec = tier.name === data.result.recommendedTier;
-      if (isRec) doc.rect(LEFT, y, FULL_WIDTH, 72).fill(C.cyan + "18");
+      if (isRec) doc.rect(LEFT, y, FULL_WIDTH, 72).fill(C.lightCyan);
       doc.rect(LEFT, y, FULL_WIDTH, 72).stroke(isRec ? C.primary : C.slate);
 
       doc.fontSize(12).fillColor(isRec ? C.primary : C.dark)
