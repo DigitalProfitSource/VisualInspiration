@@ -59,6 +59,11 @@ export interface FinancialNarrative {
   foundMoneyPotentialLow: number;
   foundMoneyPotentialHigh: number;
   confidenceBand: number;
+  // DBR as a recurring campaign engine (seasonal, new services, re-engagement)
+  dbrCampaignValue: number;       // per-campaign revenue
+  dbrCampaignsPerYear: number;    // conservative cadence
+  dbrAnnualPotential: number;     // annual revenue from DBR campaigns
+  dbrMonthlyEquivalent: number;   // annual ÷ 12, for side-by-side comparison
 }
 
 export type PillarKey = 'capture' | 'convert' | 'compound' | 'drag';
@@ -1019,6 +1024,14 @@ function calculateFinancialNarrative(
   // Found money reactivation is especially uncertain — widen the band.
   const foundMoneyBand = applyBand(foundMoneyPotential, Math.min(confidenceBand + 0.15, 0.60));
 
+  // DBR as a recurring campaign engine — not one-time.
+  // Seasonal campaigns, new service launches, re-engagement blasts = ~3x/year conservative.
+  // Each campaign targets the same dormant pool + new dormant leads that accumulate.
+  const dbrCampaignValue = foundMoneyPotential;
+  const dbrCampaignsPerYear = 3; // conservative: spring, fall, new service launch
+  const dbrAnnualPotential = dbrCampaignValue * dbrCampaignsPerYear;
+  const dbrMonthlyEquivalent = Math.round(dbrAnnualPotential / 12);
+
   return {
     currentMonthlyRevenue,
     totalMonthlyGap,
@@ -1047,6 +1060,10 @@ function calculateFinancialNarrative(
     foundMoneyPotentialLow: foundMoneyBand.low,
     foundMoneyPotentialHigh: foundMoneyBand.high,
     confidenceBand,
+    dbrCampaignValue,
+    dbrCampaignsPerYear,
+    dbrAnnualPotential,
+    dbrMonthlyEquivalent,
   };
 }
 
