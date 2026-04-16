@@ -684,7 +684,9 @@ function estimateMonthlyGapBreakdown(
   const quoteMonthly = monthlyLeads * closeRate * 0.50 * quoteRecoveryRate * avgJobValue;
   const rawConvertGap = noShowMonthly + quoteMonthly;
   const convertGap = Math.round(rawConvertGap / 50) * 50;
-  const convertCalc = `($${Math.round(noShowMonthly).toLocaleString()} no-show recovery) + ($${Math.round(quoteMonthly).toLocaleString()} quote follow-up recovery)`;
+  const noShowCalcLine = `No-show: ${monthlyLeads} leads × ${Math.round(closeRate * 100)}% close × ${noShowRate}% no-show × 25% recoverable × $${avgJobValue.toLocaleString()} = ~$${Math.round(noShowMonthly).toLocaleString()}`;
+  const quoteCalcLine = `Quote: ${monthlyLeads} leads × ${Math.round(closeRate * 100)}% close × 50% open quotes × ${Math.round(quoteRecoveryRate * 100)}% gap × $${avgJobValue.toLocaleString()} = ~$${Math.round(quoteMonthly).toLocaleString()}`;
+  const convertCalc = `${noShowCalcLine}\n${quoteCalcLine}`;
 
   // COMPOUND GAP — review/reputation penalty on new business acquisition
   const reviewPenaltyRates: Record<string, number> = {
@@ -742,7 +744,7 @@ function recommendTier(
   if (complexity.includes("Enterprise") || monthlyLeads > 150) {
     return {
       tier: 'The AI Infrastructure',
-      reason: `Your operations require full-system automation. Your ${lowestPillar} score (${lowestScore}/100) indicates the most urgent area for improvement.`
+      reason: `At ${monthlyLeads} leads/month, your volume demands full-system automation. Here's why each layer matters: The AI Brain stops Capture leaks (speed-to-lead, missed calls). The AI System fixes Conversion follow-through (quotes, no-shows, pipeline). The AI Infrastructure adds AI Search Optimization and the Found Money DBR Campaign — the layer that turns your dormant database into immediate revenue. With a ${lowestPillar} score of ${lowestScore}/100, you need all three working together.`
     };
   }
 

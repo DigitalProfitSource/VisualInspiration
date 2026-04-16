@@ -422,21 +422,31 @@ function PillarCard({
           >
             <p className="text-xs text-slate-500">{calcLabel}</p>
             <div className="rounded-lg bg-[#0c1018] border border-[#182030] px-4 py-3 shadow-[inset_0_1px_0_rgba(103,232,249,0.04)]">
-              <p className="text-sm font-mono text-slate-300">{calcFormula}</p>
+              <p className="text-sm font-mono text-slate-300 whitespace-pre-wrap leading-relaxed">{calcFormula}</p>
             </div>
           </motion.div>
         )}
       </div>
 
       {foundMoneyPotential != null && foundMoneyPotential > 0 && (
-        <div className="mt-5 rounded-xl border border-cyan-500/20 bg-cyan-950/15 p-4">
-          <p className="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1">Found Money Potential</p>
-          <p className="text-sm text-slate-300 leading-relaxed">
-            One-time DBR campaign on your existing database: <span className="font-mono font-bold text-cyan-400">~<AnimatedMoney value={foundMoneyPotential} /></span>
-          </p>
-          <p className="text-xs text-slate-500 mt-2">
-            This is a one-time campaign value, not a monthly figure. It's the fastest way to fund your first 90 days.
-          </p>
+        <div className="mt-6">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex-1 h-px bg-[#1a2332]" />
+            <span className="text-[10px] font-bold text-cyan-400/60 uppercase tracking-[0.2em] whitespace-nowrap">Separate Opportunity</span>
+            <div className="flex-1 h-px bg-[#1a2332]" />
+          </div>
+          <div className="rounded-xl border border-cyan-500/25 bg-cyan-950/20 p-4">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Found Money — DBR Campaign</span>
+              <span className="text-[10px] font-semibold text-cyan-500/60 bg-cyan-500/10 px-2 py-0.5 rounded-full">One-Time</span>
+            </div>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Your dormant lead database holds an estimated <span className="font-mono font-bold text-cyan-400">~<AnimatedMoney value={foundMoneyPotential} /></span> in reactivatable revenue. This is a one-time Database Reactivation campaign — not counted in the monthly gap above.
+            </p>
+            <p className="text-xs text-slate-500 mt-2">
+              A DBR campaign typically recovers 5–12% of dormant leads at near-zero acquisition cost. It's the fastest way to fund your first 90 days.
+            </p>
+          </div>
         </div>
       )}
 
@@ -684,10 +694,17 @@ export default function Results() {
               <AnimatedMoney value={result.totalMonthlyGap} className="font-mono font-bold text-cyan-400" />,
               which translates to{" "}
               <AnimatedMoney value={result.annualizedGap} className="font-mono font-bold text-white" /> in
-              annual revenue currently slipping through operational gaps. Your biggest drag is in{" "}
-              <span className="font-bold text-white">{weakestByScore.name}</span> (score:{" "}
-              <span className="font-mono text-cyan-400">{weakestByScore.score}/100</span>). Below is the full
-              breakdown — what's leaking, what it costs, and what closing even half the gap looks like.
+              annual revenue currently slipping through operational gaps. Your lowest-scoring pillar is{" "}
+              <span className="font-bold text-white">{weakestByScore.name}</span>{" "}
+              (score: <span className="font-mono text-cyan-400">{weakestByScore.score}/100</span>
+              {weakestByScore.name !== weakestByGap.name && (
+                <>
+                  {"), though your biggest dollar gap is in "}
+                  <span className="font-bold text-white">{weakestByGap.name}</span>{" "}
+                  (~<AnimatedMoney value={weakestByGap.gap} className="font-mono text-cyan-400" />/mo
+                </>
+              )}
+              ). Below is the full breakdown — what's leaking, what it costs, and what closing even half the gap looks like.
             </p>
           </div>
         </motion.div>
@@ -926,7 +943,7 @@ export default function Results() {
             description="Most revenue isn't lost at first contact — it's lost in the days and weeks after when no one follows up."
             monthlyImpact={result.gapBreakdown.convertGap}
             calcFormula={result.gapBreakdown.convertCalc}
-            calcLabel="Conversion Gap = No-show recovery + Quote follow-up losses"
+            calcLabel="Conversion Gap = (No-show losses) + (Quote follow-up losses) — full math below"
             benchmarkNote={`Among ${bm.industryLabel}: ${bm.conversionStats}.`}
           />
 
@@ -934,10 +951,10 @@ export default function Results() {
             title="Compounding"
             pillar={result.compoundScore}
             icon={<TrendingUp size={20} className="text-cyan-400" />}
-            description="Reviews are your compounding engine — every 5-star review generates future leads passively through better rankings and trust."
+            description="Reviews are your compounding engine — every 5-star review generates future leads passively through better rankings and trust. The monthly impact below reflects ongoing revenue lost to reputation drag. The 'Found Money' DBR opportunity below is a separate one-time initiative — not included in this monthly figure."
             monthlyImpact={result.gapBreakdown.compoundGap}
             calcFormula={result.gapBreakdown.compoundCalc}
-            calcLabel="Compounding Gap = Monthly leads × Review impact rate × Avg job value × Close rate"
+            calcLabel="Compounding Gap = Monthly leads × Reputation drag rate × Close rate × Avg job value (ongoing, recurring)"
             benchmarkNote={`Among ${bm.industryLabel}: ${bm.compoundStats}.`}
             foundMoneyPotential={fn?.foundMoneyPotential}
           />
