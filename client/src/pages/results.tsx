@@ -436,15 +436,31 @@ function PillarCard({
             <div className="flex-1 h-px bg-[#1a2332]" />
           </div>
           <div className="rounded-xl border border-cyan-500/25 bg-cyan-950/20 p-4">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">Found Money — DBR Campaign</span>
-              <span className="text-[10px] font-semibold text-cyan-500/60 bg-cyan-500/10 px-2 py-0.5 rounded-full">One-Time</span>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">DBR Campaign Engine</span>
+              <span className="text-[10px] font-semibold text-cyan-500/60 bg-cyan-500/10 px-2 py-0.5 rounded-full">Recurring · 3x/yr</span>
             </div>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Your dormant lead database holds an estimated <span className="font-mono font-bold text-cyan-400">~<AnimatedMoney value={foundMoneyPotential} /></span> in reactivatable revenue. This is a one-time Database Reactivation campaign — not counted in the monthly gap above.
+            <p className="text-sm text-slate-300 leading-relaxed mb-2">
+              Your dormant lead database generates an estimated{" "}
+              <span className="font-mono font-bold text-cyan-400">~<AnimatedMoney value={foundMoneyPotential} /></span> per campaign.
+              Run seasonally (spring push, fall push, new service launch) — this is a recurring revenue engine, not a one-time event.
             </p>
-            <p className="text-xs text-slate-500 mt-2">
-              A DBR campaign typically recovers 5–12% of dormant leads at near-zero acquisition cost. It's the fastest way to fund your first 90 days.
+            <div className="grid grid-cols-3 gap-3 mt-3 pt-3 border-t border-cyan-500/10">
+              <div className="text-center">
+                <p className="text-[9px] text-slate-500 uppercase tracking-wider mb-0.5">Per Campaign</p>
+                <p className="text-sm font-mono font-bold text-cyan-300"><AnimatedMoney value={foundMoneyPotential} /></p>
+              </div>
+              <div className="text-center border-x border-cyan-500/10">
+                <p className="text-[9px] text-slate-500 uppercase tracking-wider mb-0.5">Campaigns/yr</p>
+                <p className="text-sm font-mono font-bold text-cyan-300">3×</p>
+              </div>
+              <div className="text-center">
+                <p className="text-[9px] text-slate-500 uppercase tracking-wider mb-0.5">Annual Total</p>
+                <p className="text-sm font-mono font-bold text-cyan-300"><AnimatedMoney value={foundMoneyPotential * 3} /></p>
+              </div>
+            </div>
+            <p className="text-xs text-slate-500 mt-3">
+              Funds your setup cost upfront. As campaigns compound, they supplement the monthly retainer — dormant leads become a recurring revenue stream.
             </p>
           </div>
         </div>
@@ -658,55 +674,96 @@ export default function Results() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8 text-center"
+          className="mb-6 text-center"
         >
-          <h1 className="text-2xl md:text-3xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400 mb-3">
-            Sequential Revenue™ Friction Analysis: {result.businessName}
+          <p className="text-[11px] font-bold text-cyan-400/60 uppercase tracking-[0.25em] mb-2">Sequential Revenue™ Friction Analysis</p>
+          <h1 className="text-2xl md:text-3xl font-heading font-bold text-white">
+            {result.businessName}
           </h1>
-          <p className="text-base text-slate-400">
-            Here's what's really happening in your business — and exactly how much it's costing you.
-          </p>
         </motion.div>
 
-        {/* === PHASE 2: BUSINESS HEALTH SCORE DASHBOARD === */}
+        {/* === HERO: Gap + Health Score + Pain Echo === */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.02 }}
           className="mb-6"
         >
-          <BusinessHealthDashboard result={result} />
+          <div className="rounded-2xl bg-[#080b10] border border-cyan-500/30 relative overflow-hidden shadow-[0_0_60px_rgba(0,217,255,0.08),0_8px_32px_rgba(0,0,0,0.6)]"
+            style={{ backgroundImage: 'radial-gradient(ellipse at 30% 0%, rgba(103,232,249,0.06) 0%, transparent 55%)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+
+            <div className="p-6 md:p-8">
+              {/* Top row: big gap number + health score */}
+              <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-10 mb-6">
+                {/* Left: gap number */}
+                <div className="flex-1">
+                  <p className="text-[10px] font-bold text-cyan-400/70 uppercase tracking-[0.25em] mb-2">Monthly Revenue Gap Identified</p>
+                  <p className="text-5xl md:text-6xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-300 leading-none mb-1"
+                    style={{ filter: 'drop-shadow(0 0 30px rgba(103,232,249,0.25))' }}>
+                    <AnimatedMoney value={result.totalMonthlyGap} prefix="$" />
+                    <span className="text-2xl text-slate-400 font-normal">/mo</span>
+                  </p>
+                  <p className="text-sm text-slate-500 mb-4">
+                    <AnimatedMoney value={result.annualizedGap} className="font-mono font-semibold text-slate-400" /> annualized
+                    {fn && (
+                      <span className="text-slate-600"> · +<AnimatedMoney value={fn.dbrAnnualPotential} className="font-mono" /> DBR campaign revenue/yr</span>
+                    )}
+                  </p>
+
+                  {/* 3-pillar gap breakdown */}
+                  <div className="grid grid-cols-3 gap-3">
+                    {pillarScores.map((p) => (
+                      <div key={p.name} className={`rounded-xl p-3 border ${p.name === weakestByGap.name ? 'border-cyan-500/40 bg-cyan-950/30' : 'border-[#1a2332] bg-[#0c1018]'}`}>
+                        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-1">{p.name}</p>
+                        <p className={`text-base font-mono font-bold ${p.name === weakestByGap.name ? 'text-cyan-400' : 'text-slate-300'}`}>
+                          ~$<AnimatedMoney value={p.gap} prefix="" />
+                          <span className="text-[10px] text-slate-500 font-normal">/mo</span>
+                        </p>
+                        {p.name === weakestByGap.name && (
+                          <p className="text-[9px] text-cyan-500/70 font-semibold mt-0.5">Biggest gap</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: compact health score */}
+                <div className="flex flex-col items-center md:items-end flex-shrink-0">
+                  <p className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-2">Health Score</p>
+                  <div className="relative flex items-center justify-center" style={{ width: 100, height: 100 }}>
+                    <AnimatedGauge score={result.overallScore} size={100} stroke={9} />
+                  </div>
+                  <p className="text-[10px] text-slate-500 mt-1 text-center">
+                    Lowest: <span className="text-coral font-semibold" style={{ color: '#c0504d' }}>{weakestByScore.name} {weakestByScore.score}/100</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Bottom: pain echo */}
+              {result.userPainPoints?.topPain && (
+                <div className="flex items-start gap-3 pt-4 border-t border-[#1a2332]">
+                  <AlertTriangle size={14} className="text-cyan-400/60 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    You flagged{" "}
+                    <span className="font-semibold text-white">"{result.userPainPoints.topPain.value}"</span>{" "}
+                    as your most painful friction point. Our analysis below addresses that pillar first.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
         </motion.div>
 
-        {/* === SECTION 1: EXECUTIVE SUMMARY === */}
+        {/* === BUSINESS HEALTH SCORE DASHBOARD === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.03 }}
+          transition={{ delay: 0.04 }}
           className="mb-6"
         >
-          <div className="rounded-2xl bg-[#080b10] border border-cyan-500/20 p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent" />
-            <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-4">Executive Summary</p>
-            <p className="text-base text-slate-300 leading-relaxed">
-              This analysis maps friction across your three revenue pillars — Capture, Convert, and Compound —
-              based on the operational data you provided. We identified a total monthly revenue gap of{" "}
-              <AnimatedMoney value={result.totalMonthlyGap} className="font-mono font-bold text-cyan-400" />,
-              which translates to{" "}
-              <AnimatedMoney value={result.annualizedGap} className="font-mono font-bold text-white" /> in
-              annual revenue currently slipping through operational gaps. Your lowest-scoring pillar is{" "}
-              <span className="font-bold text-white">{weakestByScore.name}</span>{" "}
-              (score: <span className="font-mono text-cyan-400">{weakestByScore.score}/100</span>
-              {weakestByScore.name !== weakestByGap.name && (
-                <>
-                  {"), though your biggest dollar gap is in "}
-                  <span className="font-bold text-white">{weakestByGap.name}</span>{" "}
-                  (~<AnimatedMoney value={weakestByGap.gap} className="font-mono text-cyan-400" />/mo
-                </>
-              )}
-              ). Below is the full breakdown — what's leaking, what it costs, and what closing even half the gap looks like.
-            </p>
-          </div>
+          <BusinessHealthDashboard result={result} />
         </motion.div>
 
         {/* === SECTION 2: BUSINESS AT A GLANCE === */}
@@ -774,24 +831,7 @@ export default function Results() {
           </motion.div>
         )}
 
-        {/* === USER PAIN ECHO (acknowledges what the user flagged as most painful) === */}
-        {result.userPainPoints && result.userPainPoints.topPain && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.09 }}
-            className="mb-6"
-          >
-            <div className="rounded-2xl bg-cyan-950/20 border border-cyan-500/20 p-5" data-testid="card-pain-echo">
-              <p className="text-[10px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-2">What You Told Us</p>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                You flagged <span className="font-semibold text-white">"{result.userPainPoints.topPain.value}"</span> as your
-                most painful friction point (severity {result.userPainPoints.topPain.severity}/5).
-                Our analysis below is ordered to address that pillar first.
-              </p>
-            </div>
-          </motion.div>
-        )}
+        {/* Pain echo now lives in the Hero card above */}
 
         {/* === SECTION 3: TOTAL IMPACT SUMMARY === */}
         <motion.div
@@ -831,11 +871,12 @@ export default function Results() {
                 Annualized: <AnimatedMoney value={result.annualizedGap} className="font-mono font-semibold text-slate-300" />
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            {/* 3 steady monthly gaps */}
+            <div className="grid grid-cols-3 gap-4 mb-4">
               {[
                 { label: "Capture Gap", amount: result.gapBreakdown.captureGap, low: result.gapBreakdown.captureGapLow, high: result.gapBreakdown.captureGapHigh },
                 { label: "Conversion Gap", amount: result.gapBreakdown.convertGap, low: result.gapBreakdown.convertGapLow, high: result.gapBreakdown.convertGapHigh },
-                { label: "Compounding Gap", amount: result.gapBreakdown.compoundGap, low: result.gapBreakdown.compoundGapLow, high: result.gapBreakdown.compoundGapHigh },
+                { label: "Reviews Gap", amount: result.gapBreakdown.compoundGap, low: result.gapBreakdown.compoundGapLow, high: result.gapBreakdown.compoundGapHigh },
               ].map((g) => (
                 <div key={g.label} className="text-center">
                   <p className="text-xs font-bold text-cyan-400 mb-1">{g.label}</p>
@@ -850,6 +891,29 @@ export default function Results() {
                 </div>
               ))}
             </div>
+
+            {/* DBR Campaign Layer — recurring, separate from monthly gap */}
+            {fn && fn.dbrCampaignValue > 0 && (
+              <div className="rounded-xl border border-cyan-500/15 bg-cyan-950/10 p-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <p className="text-xs font-bold text-cyan-400 uppercase tracking-wider">+ DBR Campaign Layer</p>
+                      <span className="text-[10px] font-semibold text-cyan-500/60 bg-cyan-500/10 px-2 py-0.5 rounded-full">Recurring · {fn.dbrCampaignsPerYear}x/yr</span>
+                    </div>
+                    <p className="text-[11px] text-slate-500">Seasonal reactivation, new services, re-engagement — funds setup &amp; retainer</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-mono font-bold text-cyan-300">
+                      ~<AnimatedMoney value={fn.dbrMonthlyEquivalent} /><span className="text-slate-500 text-xs font-normal">/mo equiv</span>
+                    </p>
+                    <p className="text-[10px] text-slate-600 font-mono">
+                      <AnimatedMoney value={fn.dbrCampaignValue} />/campaign · <AnimatedMoney value={fn.dbrAnnualPotential} />/yr
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
 
@@ -948,13 +1012,13 @@ export default function Results() {
           />
 
           <PillarCard
-            title="Compounding"
+            title="Reviews & Reputation"
             pillar={result.compoundScore}
             icon={<TrendingUp size={20} className="text-cyan-400" />}
-            description="Reviews are your compounding engine — every 5-star review generates future leads passively through better rankings and trust. The monthly impact below reflects ongoing revenue lost to reputation drag. The 'Found Money' DBR opportunity below is a separate one-time initiative — not included in this monthly figure."
+            description="Every 5-star review generates future leads passively. This monthly gap reflects ongoing revenue lost to reputation drag — leads who chose a competitor with more reviews and trust signals. Closing this funds your monthly retainer by growing inbound leads organically."
             monthlyImpact={result.gapBreakdown.compoundGap}
             calcFormula={result.gapBreakdown.compoundCalc}
-            calcLabel="Compounding Gap = Monthly leads × Reputation drag rate × Close rate × Avg job value (ongoing, recurring)"
+            calcLabel="Reviews Gap = Monthly leads × Reputation drag rate × Close rate × Avg job value (ongoing, recurring)"
             benchmarkNote={`Among ${bm.industryLabel}: ${bm.compoundStats}.`}
             foundMoneyPotential={fn?.foundMoneyPotential}
           />
