@@ -567,19 +567,19 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
 
     const tiers = [
       {
-        name: "The AI Brain",
-        focus: "Capture pillar — speed-to-lead and 24/7 AI availability",
+        name: "Blueprint",
+        focus: "Capture pillar — the 24/7 AI Front Door (speed-to-lead, missed-call recovery, AI voice)",
         ideal: "Lead capture and response speed are your primary friction point",
       },
       {
-        name: "The AI System",
-        focus: "Capture + Convert pillars",
-        ideal: "Follow-up, no-show recovery, and pipeline drag are costing you",
+        name: "Growth Architecture",
+        focus: "Capture + Convert (or + Compound) — the Invisible Sales Rep + Compounding Engine",
+        ideal: "Follow-up, no-show recovery, reviews, or DBR are where the dollars are leaking",
       },
       {
-        name: "The AI Infrastructure",
-        focus: "Full Loop — all three pillars",
-        ideal: "Complex operations or high volume requiring full-system automation",
+        name: "Operating System",
+        focus: "Complete Sequential Revenue™ loop — all three pillars + AI Search Visibility",
+        ideal: "High volume, complex operations, or significant ad spend requiring full-system automation",
       },
     ];
 

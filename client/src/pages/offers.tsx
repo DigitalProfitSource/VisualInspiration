@@ -34,9 +34,9 @@ interface PricingTier {
 const pricingTiers: PricingTier[] = [
   {
     number: "01",
-    name: "The AI Brain",
+    name: "Blueprint",
     hook: "Stop the Bleed.",
-    descriptor: "Capture Essentials",
+    descriptor: "24/7 AI Front Door — Capture Essentials",
     buildFee: "$750",
     monthlyFee: "$150/mo",
     expandedBullets: [
@@ -45,46 +45,46 @@ const pricingTiers: PricingTier[] = [
       { title: "Instant SMS Text-Back", description: "Speed-to-Lead engine ensures every missed call gets a text response in under 60 seconds." }
     ],
     goal: "Ensure every inquiry is answered in <60 seconds, 24/7. Stop leaking leads to competitors while your team sleeps or is on the job.",
-    infrastructureFooter: "INCLUDES: 250 AI Voice Minutes/mo • Instant SMS Text-Back • Standard Security",
+    infrastructureFooter: "INCLUDES: 250 AI Voice Minutes/mo • Instant SMS Text-Back • Omnichannel Intake",
     ctaText: "Get Started",
-    ctaSource: "ai-brain"
+    ctaSource: "blueprint"
   },
   {
     number: "02",
-    name: "The AI System",
+    name: "Growth Architecture",
     hook: "The Invisible Sales Rep.",
-    descriptor: "Capture + Convert",
+    descriptor: "Capture + Convert + Compound",
     buildFee: "$1,250",
     monthlyFee: "$250/mo",
-    clarityLine: "Everything in The AI Brain, PLUS:",
+    clarityLine: "Everything in Blueprint, PLUS:",
     expandedBullets: [
       { title: "Proactive Quote / No-Show Recovery", description: "AI automatically follows up on unsent quotes and no-show appointments to rebook them." },
       { title: "Smart Lead Triage", description: "AI filters spam, prioritizes hot leads, and routes them to the right person on your team." },
       { title: "90-Day Lead Nurture", description: "Automated drip sequences that keep your business top-of-mind until the lead is ready to buy." }
     ],
-    goal: "Automatically chase and recover \"stuck\" revenue hiding in your pipeline. Quotes that went cold, no-shows that never rebooked, leads that went silent.",
-    infrastructureFooter: "INCLUDES: 500 AI Voice Minutes/mo • Smart Triage • 90-Day Nurture Sequences",
+    goal: "Automatically chase and recover stuck revenue hiding in your pipeline. Quotes that went cold, no-shows that never rebooked, leads that went silent.",
+    infrastructureFooter: "INCLUDES: 500 AI Voice Minutes/mo • Smart Triage • 90-Day Nurture • Review Automation",
     ctaText: "Get Started",
-    ctaSource: "ai-system",
+    ctaSource: "growth-architecture",
     isPopular: true
   },
   {
     number: "03",
-    name: "The AI Infrastructure",
-    hook: "Machine-Readable Dominance.",
-    descriptor: "The Full Loop",
+    name: "Operating System",
+    hook: "Total Revenue Loop.",
+    descriptor: "Complete Sequential Revenue™ Transformation",
     buildFee: "$1,750",
     monthlyFee: "$350/mo",
-    clarityLine: "Everything in The AI System, PLUS:",
+    clarityLine: "Everything in Growth Architecture, PLUS:",
     expandedBullets: [
-      { title: "Full ASO (AI Search Optimization)", description: "Re-architect your digital presence to be machine-readable for ChatGPT, Gemini, and the new Google." },
-      { title: "The \"Found Money\" DBR Campaign", description: "Targeted Database Reactivation campaign on your existing contacts to unlock dormant revenue." },
-      { title: "Automated Reputation Management", description: "Systematically capture 5-star reviews and route negative feedback internally before it goes public." }
+      { title: "AI Search Visibility", description: "Machine-readable schema injection (JSON-LD) so ChatGPT, Perplexity, and Google AI Overviews recommend your business." },
+      { title: "The \"Found Money\" DBR Campaign", description: "Targeted Database Reactivation campaign on your existing contacts — covered by our 14-day guarantee." },
+      { title: "Multi-Platform Reputation Engine", description: "Automated 5-star review collection, sentiment routing, and lifecycle reactivation across every platform." }
     ],
-    goal: "Total re-architecture of your digital presence to be machine-readable. When AI tools recommend businesses in your industry, yours shows up first.",
-    infrastructureFooter: "INCLUDES: 1,000 AI Voice Minutes/mo • Full ASO Implementation • DBR Campaign • Reputation Engine",
+    goal: "Complete the Sequential Revenue™ loop. Every lead captured, every dollar maximized, every customer compounding your growth — whether you're there or not.",
+    infrastructureFooter: "INCLUDES: 1,000 AI Voice Minutes/mo • AI Search Visibility • DBR Campaign • Full Reputation Engine",
     ctaText: "Get Started",
-    ctaSource: "ai-infrastructure"
+    ctaSource: "operating-system"
   }
 ];
 
@@ -387,7 +387,7 @@ function FoundMoneyGuarantee() {
                       <ul className="space-y-2 pl-4">
                         <li><span className="text-slate-400">List requirement.</span> Requires a permission-based list of 500+ contacts. Lists must comply with applicable messaging and consent regulations.</li>
                         <li><span className="text-slate-400">Client responsibility.</span> Client is responsible for final lead closing and fulfillment. SimpleSequence generates the conversations — your team closes them.</li>
-                        <li><span className="text-slate-400">Availability.</span> The Found Money Guarantee is available exclusively with The AI Infrastructure tier.</li>
+                        <li><span className="text-slate-400">Availability.</span> The Found Money Guarantee is available exclusively with the Operating System tier.</li>
                       </ul>
                     </div>
                   </motion.div>
@@ -410,23 +410,27 @@ interface ComparisonRow {
 }
 
 const comparisonRows: ComparisonRow[] = [
-  { label: "CAPTURE ESSENTIALS (AI Brain)", brain: "", system: "", infrastructure: "", isSection: true },
+  { label: "CAPTURE — 24/7 AI FRONT DOOR (Blueprint)", brain: "", system: "", infrastructure: "", isSection: true },
   { label: "24/7 Website AI Chatbot", brain: "Included", system: "Included", infrastructure: "Included" },
   { label: "AI Voice Backup Receptionist", brain: "Included", system: "Included", infrastructure: "Included" },
   { label: "Instant SMS Text-Back / Speed-to-Lead", brain: "Included", system: "Included", infrastructure: "Included" },
-  
-  { label: "CONVERSION ENGINE (AI System)", brain: "", system: "", infrastructure: "", isSection: true },
+  { label: "Omnichannel Intake Consolidation", brain: "Included", system: "Included", infrastructure: "Included" },
+
+  { label: "CONVERT + COMPOUND — INVISIBLE SALES REP (Growth Architecture)", brain: "", system: "", infrastructure: "", isSection: true },
   { label: "Proactive Quote / No-Show Recovery", brain: "\u2014", system: "Included", infrastructure: "Included" },
   { label: "Smart Lead Triage", brain: "\u2014", system: "Included", infrastructure: "Included" },
-  { label: "90-Day Lead Nurture", brain: "\u2014", system: "Included", infrastructure: "Included" },
-  
-  { label: "FULL LOOP (AI Infrastructure)", brain: "", system: "", infrastructure: "", isSection: true },
-  { label: "ASO / Machine-Readable Architecture", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
-  { label: "\"Found Money\" DBR Campaign", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
-  { label: "Automated Reputation Management", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
+  { label: "90-Day Lead Nurture Sequences", brain: "\u2014", system: "Included", infrastructure: "Included" },
+  { label: "5-Star Review Automation", brain: "\u2014", system: "Included", infrastructure: "Included" },
+  { label: "Sentiment-Based Review Routing", brain: "\u2014", system: "Included", infrastructure: "Included" },
+
+  { label: "FULL LOOP — SEQUENTIAL REVENUE™ (Operating System)", brain: "", system: "", infrastructure: "", isSection: true },
+  { label: "AI Search Visibility (JSON-LD Schema Injection)", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
+  { label: "ChatGPT / Perplexity / Google AI Overviews", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
+  { label: "\"Found Money\" DBR Campaign (14-day guarantee)", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
+  { label: "Database Segmentation & Lifecycle Reactivation", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
   { label: "Found Money Guarantee", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
 
-  { label: "INFRASTRUCTURE & LIMITS", brain: "", system: "", infrastructure: "", isSection: true },
+  { label: "LIMITS & INVESTMENT", brain: "", system: "", infrastructure: "", isSection: true },
   { label: "Included AI Voice Minutes", brain: "250/mo", system: "500/mo", infrastructure: "1,000/mo" },
   { label: "Setup Fee", brain: "$750", system: "$1,250", infrastructure: "$1,750" },
   { label: "Monthly Retainer", brain: "$150/mo", system: "$250/mo", infrastructure: "$350/mo" },
@@ -479,9 +483,9 @@ function ComparePlansSection() {
               <thead>
                 <tr className="border-b border-white/10">
                   <th className="text-left py-4 pr-6 text-xs font-mono text-slate-500 uppercase tracking-wider w-1/3"></th>
-                  <th className="py-4 px-4 text-center text-sm font-semibold text-white">AI Brain</th>
-                  <th className="py-4 px-4 text-center text-sm font-semibold text-primary bg-primary/[0.03]">AI System</th>
-                  <th className="py-4 px-4 text-center text-sm font-semibold text-white/80">AI Infrastructure</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-white">Blueprint</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-primary bg-primary/[0.03]">Growth Architecture</th>
+                  <th className="py-4 px-4 text-center text-sm font-semibold text-white/80">Operating System</th>
                 </tr>
               </thead>
               <tbody>
@@ -522,15 +526,15 @@ function ComparePlansSection() {
                   <p className="text-sm text-slate-300 font-medium mb-4 text-left">{row.label}</p>
                   <div className="grid grid-cols-3 gap-2 text-center">
                     <div>
-                      <p className="text-[10px] text-slate-500 mb-1">AI Brain</p>
+                      <p className="text-[10px] text-slate-500 mb-1">Blueprint</p>
                       <ComparisonCell value={row.brain} />
                     </div>
                     <div className="bg-primary/[0.03] rounded-lg py-1 px-1">
-                      <p className="text-[10px] text-primary mb-1">AI System</p>
+                      <p className="text-[10px] text-primary mb-1">Growth Arch.</p>
                       <ComparisonCell value={row.system} isPopular />
                     </div>
                     <div>
-                      <p className="text-[10px] text-slate-500 mb-1">AI Infra</p>
+                      <p className="text-[10px] text-slate-500 mb-1">Op. System</p>
                       <ComparisonCell value={row.infrastructure} />
                     </div>
                   </div>
@@ -587,7 +591,7 @@ export default function Offers() {
     <Layout>
       <SEO 
         title="Pricing & Offers | SimpleSequence"
-        description="Three tiers of AI-Native Infrastructure: The AI Brain ($150/mo), The AI System ($250/mo), and The AI Infrastructure ($350/mo). Capture, convert, and compound your revenue."
+        description="Three tiers of Sequential Revenue™ implementation: Blueprint ($150/mo), Growth Architecture ($250/mo), and Operating System ($350/mo). Capture, convert, and compound your revenue."
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "ItemList",

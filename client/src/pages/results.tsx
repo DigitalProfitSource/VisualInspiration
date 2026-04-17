@@ -8,7 +8,7 @@ import {
 import {
   ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw,
   Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Download, Calendar,
-  ChevronDown, TrendingDown, Info,
+  ChevronDown, TrendingDown, Info, Globe,
 } from "lucide-react";
 import { AssessmentResult, PillarScore, IndustryBenchmark } from "@/lib/scoring";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
@@ -612,27 +612,32 @@ export default function Results() {
 
   const calendarUrl = "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi";
 
-  const brainFeatures = [
+  const blueprintFeatures = [
     "24/7 Website AI Chatbot",
     "AI Voice Backup Receptionist",
-    "Instant SMS Text-Back",
+    "Instant SMS Text-Back on missed calls",
     "Speed-to-lead engine (<60 seconds)",
+    "Omnichannel intake consolidation",
     "250 AI Voice Minutes/mo",
   ];
 
-  const systemFeatures = [
-    "Everything in The AI Brain, plus:",
-    "Proactive Quote / No-Show Recovery",
-    "Smart Lead Triage",
+  const growthFeatures = [
+    "Everything in Blueprint, plus:",
+    "Proactive Quote / No-Show Recovery workflows",
+    "Smart Lead Triage & AI Qualification",
     "90-Day Lead Nurture Sequences",
+    "Automated 5-Star Review Collection",
+    "Sentiment-based review routing (public vs. private)",
     "500 AI Voice Minutes/mo",
   ];
 
-  const infrastructureFeatures = [
-    "Everything in The AI System, plus:",
-    "Full ASO (AI Search Optimization)",
-    'The "Found Money" DBR Campaign',
-    "Automated Reputation Management",
+  const operatingFeatures = [
+    "Everything in Growth Architecture, plus:",
+    'The "Found-Money" DBR Campaign (14-day guarantee)',
+    "AI Search Visibility (ChatGPT, Perplexity, Google AI Overviews)",
+    "Machine-readable schema injection (JSON-LD)",
+    "Multi-platform reputation management",
+    "Database segmentation & lifecycle reactivation",
     "1,000 AI Voice Minutes/mo",
   ];
 
@@ -677,9 +682,22 @@ export default function Results() {
           className="mb-6 text-center"
         >
           <p className="text-[11px] font-bold text-cyan-400/60 uppercase tracking-[0.25em] mb-2">Sequential Revenue™ Friction Analysis</p>
-          <h1 className="text-2xl md:text-3xl font-heading font-bold text-white">
+          <h1 className="text-2xl md:text-3xl font-heading font-bold text-white mb-3">
             {result.businessName}
           </h1>
+          {/* Methodology frame — positions the report as Step 1 of 4 */}
+          <div className="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-2 rounded-full border border-cyan-500/20 bg-cyan-950/20 text-[11px] text-slate-400">
+            <span className="font-bold text-cyan-300 uppercase tracking-wider">Step 1 of 4</span>
+            <span className="text-slate-500">·</span>
+            <span><span className="text-cyan-400 font-semibold">Diagnose Friction</span> (you are here)</span>
+            <span className="text-slate-600">→</span>
+            <span className="text-slate-500">Map Sequences</span>
+            <span className="text-slate-600">→</span>
+            <span className="text-slate-500">Locate Leverage</span>
+            <span className="text-slate-600">→</span>
+            <span className="text-slate-500">Architect the Flow</span>
+          </div>
+          <p className="text-[11px] text-slate-500 mt-2">The 30-minute audit below covers Steps 2–4.</p>
         </motion.div>
 
         {/* === HERO: Gap + Health Score + Pain Echo === */}
@@ -1024,6 +1042,54 @@ export default function Results() {
           />
         </motion.div>
 
+        {/* === AI SEARCH VISIBILITY CALLOUT === */}
+        {(result.aiSearchFrequency.includes("No") || result.aiSearchFrequency.includes("Not sure") || result.aiReadiness.includes("No") || result.aiReadiness.includes("We don't have") || result.aiReadiness.includes("basic SEO")) && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.145 }}
+            className="mb-8"
+          >
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-950/10 p-6 md:p-8 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+              <div className="flex flex-col md:flex-row gap-6 items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                    <Globe size={22} className="text-amber-400" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] font-bold text-amber-400/80 uppercase tracking-[0.25em]">Invisible Gap</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 font-semibold">AI Search Visibility</span>
+                  </div>
+                  <h3 className="text-lg font-heading font-bold text-white mb-2">
+                    Customers are asking ChatGPT, Perplexity & Google AI who to hire — and you're not in the answer.
+                  </h3>
+                  <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                    The way customers find service businesses has permanently changed. Before they visit your website, they're asking AI engines: <em className="text-slate-300">"Best HVAC company near me"</em> or <em className="text-slate-300">"Who has the best reviews for roofing in [city]?"</em> — and getting a named recommendation back. If your business isn't machine-readable, you're being cut out of a growing slice of inbound demand that your competitors are quietly capturing.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                    {[
+                      { label: "ChatGPT / Claude / Gemini", detail: "Your business needs structured data (JSON-LD schema) so AI engines can read, cite, and recommend you." },
+                      { label: "Google AI Overviews", detail: "Google's AI answers are replacing Page 1 clicks. Without schema markup, you're not in the answer box." },
+                      { label: "Perplexity & Voice AI", detail: "These engines pull from structured signals, not just SEO rankings. Different game, different rules." },
+                    ].map(item => (
+                      <div key={item.label} className="rounded-lg bg-amber-950/20 border border-amber-500/10 p-3">
+                        <p className="text-xs font-semibold text-amber-300 mb-1">{item.label}</p>
+                        <p className="text-xs text-slate-500">{item.detail}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    <span className="text-amber-400 font-semibold">We fix this with Operating System.</span> Machine-readable schema injection (JSON-LD), AI-optimized business citations, and a structured presence that makes you recommendable by every major AI engine.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* === PHASE 2: INDUSTRY BENCHMARK COMPARISON === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -1362,50 +1428,70 @@ export default function Results() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <TierCard
-              tier="The AI Brain"
-              description="Stop the Bleed. Capture Essentials — ensure every inquiry is answered in under 60 seconds, 24/7."
-              features={brainFeatures}
-              isRecommended={result.recommendedTier === 'The AI Brain'}
-              reason={result.recommendedTier === 'The AI Brain' ? result.tierReason : undefined}
+              tier="Blueprint"
+              description="Stop the bleed. We install the 24/7 AI Front Door — every inquiry answered in under 60 seconds, every missed call recovered, every channel consolidated into one inbox."
+              features={blueprintFeatures}
+              isRecommended={result.recommendedTier === 'Blueprint'}
+              reason={result.recommendedTier === 'Blueprint' ? result.tierReason : undefined}
             />
             <TierCard
-              tier="The AI System"
-              description="The Invisible Sales Rep. Capture + Convert — automatically chase and recover stuck revenue in your pipeline."
-              features={systemFeatures}
-              isRecommended={result.recommendedTier === 'The AI System'}
-              reason={result.recommendedTier === 'The AI System' ? result.tierReason : undefined}
+              tier="Growth Architecture"
+              description="Turn leads into booked revenue. We install the Invisible Sales Rep + Compounding Engine — automated follow-up, no-show recovery, quote chasing, and 5-star review collection running on autopilot."
+              features={growthFeatures}
+              isRecommended={result.recommendedTier === 'Growth Architecture'}
+              reason={result.recommendedTier === 'Growth Architecture' ? result.tierReason : undefined}
             />
             <TierCard
-              tier="The AI Infrastructure"
-              description="Machine-Readable Dominance. Full Loop — total re-architecture of your digital presence across all three pillars."
-              features={infrastructureFeatures}
-              isRecommended={result.recommendedTier === 'The AI Infrastructure'}
-              reason={result.recommendedTier === 'The AI Infrastructure' ? result.tierReason : undefined}
+              tier="Operating System"
+              description="Complete operational transformation. The entire Sequential Revenue™ loop — Capture, Convert, Compound — plus AI Search Visibility for ChatGPT, Perplexity, and Google AI Overviews, and the Found-Money DBR Campaign."
+              features={operatingFeatures}
+              isRecommended={result.recommendedTier === 'Operating System'}
+              reason={result.recommendedTier === 'Operating System' ? result.tierReason : undefined}
             />
           </div>
         </motion.div>
 
-        {/* === SECTION 14: FINAL CTA === */}
+        {/* === SECTION 14: FINAL CTA — "FOUND MONEY" GUARANTEE === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
           className="mb-12"
         >
-          <GlassCard className="p-8 border-cyan-500/20 bg-gradient-to-br from-cyan-950/15 to-slate-900/40 text-center" data-testid="card-bottom-ctas">
-            <div className="space-y-4">
+          <GlassCard className="p-8 md:p-10 border-cyan-500/30 bg-gradient-to-br from-cyan-950/30 to-slate-900/50 relative overflow-hidden" data-testid="card-bottom-ctas">
+            {/* Guarantee badge */}
+            <div className="absolute top-0 right-0 px-4 py-2 rounded-bl-xl bg-cyan-500 text-black text-[10px] font-bold uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(103,232,249,0.3)]">
+              Risk-Reversed Offer
+            </div>
+
+            <div className="text-center max-w-3xl mx-auto">
+              <p className="text-[11px] font-bold text-cyan-400/80 uppercase tracking-[0.3em] mb-3">The "Found Money" Guarantee</p>
+              <h3 className="text-3xl md:text-4xl font-heading font-bold text-white mb-5 leading-tight">
+                We'll find the money before you pay a dime for setup.
+              </h3>
+              <p className="text-base md:text-lg text-slate-300 mb-6 leading-relaxed">
+                Within the first 14 days of activation, we run a targeted Database Reactivation campaign on your existing contacts. <span className="text-white font-semibold">If the revenue opportunity we surface doesn't cover our setup fee, you don't pay us a dime for the implementation</span> — and you keep the lead intelligence report we generated.
+              </p>
+              <p className="text-sm text-slate-400 mb-8 italic">
+                You either get a self-funding system, or you get a free audit of your database. Either way, you win.
+              </p>
+
               <Link href="/book">
                 <GlassButton
-                  className="w-full md:w-auto min-w-[300px] bg-cyan-500 hover:bg-cyan-400 text-black text-lg font-bold py-4 px-8 rounded-xl shadow-[0_0_20px_rgba(103,232,249,0.2)]"
+                  className="w-full md:w-auto min-w-[340px] bg-cyan-500 hover:bg-cyan-400 text-black text-lg font-bold py-5 px-10 rounded-xl shadow-[0_0_30px_rgba(103,232,249,0.35)]"
                   data-testid="button-book-strategy-call"
                 >
-                  <Calendar size={18} className="mr-2" />
-                  Book Your 15-Minute Strategy Call
-                  <ArrowRight size={18} className="ml-2" />
+                  <Calendar size={20} className="mr-2" />
+                  Claim My Revenue Recovery Plan
+                  <ArrowRight size={20} className="ml-2" />
                 </GlassButton>
               </Link>
 
-              <div>
+              <p className="text-xs text-slate-500 mt-4">
+                30-minute Revenue Recovery Audit · No pitch deck · Walk away with a written plan either way
+              </p>
+
+              <div className="mt-8 pt-6 border-t border-slate-800/60">
                 <button
                   onClick={() => {
                     const storedLeadId = sessionStorage.getItem('leadId');
@@ -1413,20 +1499,20 @@ export default function Results() {
                       window.open(`/api/assessment/${storedLeadId}/pdf`, '_blank');
                     }
                   }}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-700/50 bg-slate-900/40 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/30 transition-all text-base font-semibold"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-700/50 bg-slate-900/40 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/30 transition-all text-sm font-medium"
                   data-testid="link-download-pdf"
                 >
-                  <Download size={16} />
+                  <Download size={14} />
                   Download Your Full Analysis (PDF)
                 </button>
-              </div>
 
-              {contactEmail && (
-                <p className="text-sm text-slate-500 mt-4">
-                  <CheckCircle size={14} className="inline text-cyan-400/60 mr-1.5" />
-                  Results emailed to {contactEmail}
-                </p>
-              )}
+                {contactEmail && (
+                  <p className="text-xs text-slate-500 mt-3">
+                    <CheckCircle size={12} className="inline text-cyan-400/60 mr-1" />
+                    Results also emailed to {contactEmail}
+                  </p>
+                )}
+              </div>
             </div>
           </GlassCard>
         </motion.div>

@@ -92,21 +92,10 @@ export default function Assessment() {
     mode: "onChange",
     defaultValues: {
       revenue_pain: [],
+      contact_channels: [],
       disclaimer_accepted: false,
       website_url: "",
       contact_phone: "",
-      // Hidden fields — defaulted to conservative middle-of-road values
-      // so scoring produces reasonable output without bloating the form.
-      niche_specificity: "General",
-      monthly_sales_volume: "50",
-      ad_spend: "0",
-      lead_unavailability: "Sometimes (evenings/weekends we miss some)",
-      digital_unavailable_handling: "We respond when we can",
-      contact_channels: ["Phone call", "Website form"],
-      ai_search_frequency: "Not sure — haven't checked",
-      intake_centralization: "In multiple tools (email, spreadsheets, notes)",
-      pipeline_tracking: "Partially (some data is tracked, some isn't)",
-      operational_complexity: "Single location, multiple service lines (moderate)",
     }
   });
 
@@ -1031,13 +1020,14 @@ export default function Assessment() {
               const isDone = i < currentStepIndex;
               const shortLabels: Record<string, string> = {
                 identity: 'Business',
-                volume: 'Numbers',
+                numbers: 'Numbers',
                 pain: 'Pain',
-                speed: 'Speed',
-                conversion: 'Convert',
-                compounding: 'Compound',
+                'capture-speed': 'Speed',
+                'capture-ai': 'AI Discovery',
+                convert: 'Convert',
+                compound: 'Compound',
                 automation: 'Automation',
-                ai: 'AI',
+                operations: 'Operations',
                 contact: 'Results',
               };
               return (
