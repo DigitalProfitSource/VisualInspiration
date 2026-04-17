@@ -96,21 +96,16 @@ export default function Assessment() {
       website_url: "",
       contact_phone: "",
       // Hidden fields — defaulted to conservative middle-of-road values
-      // so scoring produces reasonable output without asking 25 questions.
+      // so scoring produces reasonable output without bloating the form.
       niche_specificity: "General",
       monthly_sales_volume: "50",
       ad_spend: "0",
       lead_unavailability: "Sometimes (evenings/weekends we miss some)",
       digital_unavailable_handling: "We respond when we can",
-      no_show_rate: "11-20% (average—some no-shows)",
       contact_channels: ["Phone call", "Website form"],
       ai_search_frequency: "Not sure — haven't checked",
-      ai_readiness: "We've done basic SEO but nothing AI-specific",
-      has_ai_intent: "No — we haven't explored AI tools yet",
       intake_centralization: "In multiple tools (email, spreadsheets, notes)",
       pipeline_tracking: "Partially (some data is tracked, some isn't)",
-      staff_repeat_questions: "Sometimes — a few recurring questions per week",
-      process_documentation: "Some documentation, but gaps exist",
       operational_complexity: "Single location, multiple service lines (moderate)",
     }
   });
@@ -1039,8 +1034,10 @@ export default function Assessment() {
                 volume: 'Numbers',
                 pain: 'Pain',
                 speed: 'Speed',
-                followthrough: 'Follow-up',
-                systems: 'Systems',
+                conversion: 'Convert',
+                compounding: 'Compound',
+                automation: 'Automation',
+                ai: 'AI',
                 contact: 'Results',
               };
               return (

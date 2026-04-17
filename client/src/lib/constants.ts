@@ -10,43 +10,57 @@ export const STEPS: Step[] = [
   {
     id: "identity",
     title: "Let's start with your business",
-    description: "Two quick inputs so we can anchor the analysis to you.",
+    description: "A few quick inputs so we can anchor the analysis to you.",
     fields: ["business_name", "website_url", "industry"],
     progress: 0
   },
   {
     id: "volume",
     title: "Your numbers",
-    description: "The four numbers that drive every calculation in your report. Estimates are fine.",
+    description: "The four numbers that drive every dollar figure in your report. Estimates are fine.",
     fields: ["team_size", "monthly_lead_volume", "avg_job_value", "close_rate"],
-    progress: 16
+    progress: 11
   },
   {
     id: "pain",
     title: "What's hurting most right now?",
     description: "Pick the friction points you feel on a regular basis. We'll lead your report with whatever you flag here.",
     fields: ["revenue_pain"],
-    progress: 32
+    progress: 22
   },
   {
     id: "speed",
-    title: "Speed to first response",
+    title: "Speed & first response",
     description: "Most deals are won or lost in the first 5 minutes. Two questions on how you handle inbound.",
     fields: ["first_contact_speed", "phone_unavailable_handling"],
-    progress: 48
+    progress: 33
   },
   {
-    id: "followthrough",
-    title: "Follow-through & reactivation",
-    description: "What happens to quotes, no-shows, dormant leads, and past customers.",
-    fields: ["quote_followup", "no_show_recovery", "dormant_leads", "review_request"],
-    progress: 64
+    id: "conversion",
+    title: "Conversion & follow-up",
+    description: "What happens to quotes, no-shows, and appointments after first contact.",
+    fields: ["quote_followup", "no_show_recovery", "no_show_rate"],
+    progress: 44
   },
   {
-    id: "systems",
-    title: "Your current systems",
-    description: "Just enough to tell us what's automated today and how much manual lift your team is carrying.",
-    fields: ["has_automations", "manual_hours"],
+    id: "compounding",
+    title: "Compounding revenue",
+    description: "Past customers and reviews are the highest-margin revenue you already own.",
+    fields: ["dormant_leads", "review_request"],
+    progress: 55
+  },
+  {
+    id: "automation",
+    title: "Automation & efficiency",
+    description: "How much of your operation runs on systems vs. manual effort — this is where most of our recovered revenue comes from.",
+    fields: ["has_automations", "manual_hours", "staff_repeat_questions", "process_documentation"],
+    progress: 66
+  },
+  {
+    id: "ai",
+    title: "AI presence & readiness",
+    description: "Customers increasingly ask AI engines for recommendations before they ever visit your site. Where do you stand?",
+    fields: ["has_ai_intent", "ai_readiness"],
     progress: 80
   },
   {
@@ -54,7 +68,7 @@ export const STEPS: Step[] = [
     title: "Where should we send it?",
     description: "Your full Sequential Revenue™ report, including the PDF, goes straight to your inbox.",
     fields: ["contact_first_name", "contact_last_name", "contact_email", "disclaimer_accepted"],
-    progress: 95
+    progress: 92
   }
 ];
 
