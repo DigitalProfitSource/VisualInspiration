@@ -10,44 +10,65 @@ export const STEPS: Step[] = [
   {
     id: "identity",
     title: "Let's start with your business",
-    description: "Two quick inputs so we can anchor the analysis to you.",
-    fields: ["business_name", "website_url", "industry"],
+    description: "Four inputs so we can anchor the analysis to your specific market.",
+    fields: ["business_name", "website_url", "industry", "niche_specificity"],
     progress: 0
   },
   {
-    id: "volume",
+    id: "numbers",
     title: "Your numbers",
-    description: "The four numbers that drive every calculation in your report. Estimates are fine.",
-    fields: ["team_size", "monthly_lead_volume", "avg_job_value", "close_rate"],
-    progress: 16
+    description: "The figures that drive every dollar calculation in your report. Rough estimates are completely fine — we'll flag anything that looks off.",
+    fields: ["team_size", "monthly_lead_volume", "avg_job_value", "monthly_sales_volume", "ad_spend", "close_rate"],
+    progress: 10
   },
   {
     id: "pain",
     title: "What's hurting most right now?",
     description: "Pick the friction points you feel on a regular basis. We'll lead your report with whatever you flag here.",
     fields: ["revenue_pain"],
-    progress: 32
+    progress: 20
   },
   {
-    id: "speed",
-    title: "Speed to first response",
-    description: "Most deals are won or lost in the first 5 minutes. Two questions on how you handle inbound.",
-    fields: ["first_contact_speed", "phone_unavailable_handling"],
-    progress: 48
+    id: "capture-speed",
+    title: "Capture — Speed & availability",
+    description: "Most deals are won or lost in the first 5 minutes. Four questions on how fast you respond and what happens when you can't answer.",
+    fields: ["first_contact_speed", "lead_unavailability", "phone_unavailable_handling", "digital_unavailable_handling"],
+    progress: 30
   },
   {
-    id: "followthrough",
-    title: "Follow-through & reactivation",
-    description: "What happens to quotes, no-shows, dormant leads, and past customers.",
-    fields: ["quote_followup", "no_show_recovery", "dormant_leads", "review_request"],
-    progress: 64
+    id: "capture-ai",
+    title: "Capture — Channels & AI discovery",
+    description: "Customers increasingly ask ChatGPT, Perplexity, and Google AI Overviews for recommendations before they ever visit your site.",
+    fields: ["contact_channels", "ai_search_frequency", "ai_readiness"],
+    progress: 40
   },
   {
-    id: "systems",
-    title: "Your current systems",
-    description: "Just enough to tell us what's automated today and how much manual lift your team is carrying.",
-    fields: ["has_automations", "manual_hours"],
-    progress: 80
+    id: "convert",
+    title: "Convert — Persistence & follow-through",
+    description: "What happens to quotes, no-shows, and appointments after first contact. Every gap here is leaking revenue.",
+    fields: ["quote_followup", "no_show_recovery", "no_show_rate"],
+    progress: 55
+  },
+  {
+    id: "compound",
+    title: "Compound — Reputation & reactivation",
+    description: "Past customers and reviews are the highest-margin revenue you already own. Two questions to size the opportunity.",
+    fields: ["dormant_leads", "review_request"],
+    progress: 65
+  },
+  {
+    id: "automation",
+    title: "Systems & automation today",
+    description: "How much of your operation runs on systems vs. manual effort. This is where most of the recovered revenue in your report will come from.",
+    fields: ["has_automations", "has_ai_intent", "manual_hours", "staff_repeat_questions"],
+    progress: 75
+  },
+  {
+    id: "operations",
+    title: "Process maturity & scale",
+    description: "How your team captures data and how complex the operation is. This tells us what kind of build-out makes sense.",
+    fields: ["process_documentation", "intake_centralization", "pipeline_tracking", "operational_complexity"],
+    progress: 85
   },
   {
     id: "contact",

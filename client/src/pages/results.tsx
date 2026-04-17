@@ -8,7 +8,7 @@ import {
 import {
   ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw,
   Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Download, Calendar,
-  ChevronDown, TrendingDown, Info,
+  ChevronDown, TrendingDown, Info, Globe,
 } from "lucide-react";
 import { AssessmentResult, PillarScore, IndustryBenchmark } from "@/lib/scoring";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
@@ -479,14 +479,12 @@ function PillarCard({
 }
 
 function TierCard({
-  headline,
   tier,
   description,
   features,
   isRecommended,
   reason,
 }: {
-  headline: string;
   tier: string;
   description: string;
   features: string[];
@@ -505,8 +503,7 @@ function TierCard({
         </div>
       )}
 
-      <h3 className="text-xl font-heading font-bold text-white mb-1">{headline}</h3>
-      <p className="text-[10px] font-bold text-cyan-400/70 uppercase tracking-[0.2em] mb-3">{tier}</p>
+      <h3 className="text-xl font-heading font-bold text-white mb-1">{tier}</h3>
       <p className="text-sm text-slate-400 mb-4">{description}</p>
 
       {reason && (
@@ -615,27 +612,32 @@ export default function Results() {
 
   const calendarUrl = "https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi";
 
-  const brainFeatures = [
+  const blueprintFeatures = [
     "24/7 Website AI Chatbot",
     "AI Voice Backup Receptionist",
-    "Instant SMS Text-Back",
+    "Instant SMS Text-Back on missed calls",
     "Speed-to-lead engine (<60 seconds)",
+    "Omnichannel intake consolidation",
     "250 AI Voice Minutes/mo",
   ];
 
-  const systemFeatures = [
-    "Everything in The AI Brain, plus:",
-    "Proactive Quote / No-Show Recovery",
-    "Smart Lead Triage",
+  const growthFeatures = [
+    "Everything in Blueprint, plus:",
+    "Proactive Quote / No-Show Recovery workflows",
+    "Smart Lead Triage & AI Qualification",
     "90-Day Lead Nurture Sequences",
+    "Automated 5-Star Review Collection",
+    "Sentiment-based review routing (public vs. private)",
     "500 AI Voice Minutes/mo",
   ];
 
-  const infrastructureFeatures = [
-    "Everything in The AI System, plus:",
-    "Full ASO (AI Search Optimization)",
-    'The "Found Money" DBR Campaign',
-    "Automated Reputation Management",
+  const operatingFeatures = [
+    "Everything in Growth Architecture, plus:",
+    'The "Found-Money" DBR Campaign (14-day guarantee)',
+    "AI Search Visibility (ChatGPT, Perplexity, Google AI Overviews)",
+    "Machine-readable schema injection (JSON-LD)",
+    "Multi-platform reputation management",
+    "Database segmentation & lifecycle reactivation",
     "1,000 AI Voice Minutes/mo",
   ];
 
@@ -680,101 +682,261 @@ export default function Results() {
           className="mb-6 text-center"
         >
           <p className="text-[11px] font-bold text-cyan-400/60 uppercase tracking-[0.25em] mb-2">Sequential Revenue™ Friction Analysis</p>
-          <h1 className="text-2xl md:text-3xl font-heading font-bold text-white">
+          <h1 className="text-2xl md:text-3xl font-heading font-bold text-white mb-3">
             {result.businessName}
           </h1>
+          {/* Methodology frame — positions the report as Step 1 of 4 */}
+          <div className="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-2 rounded-full border border-cyan-500/20 bg-cyan-950/20 text-[11px] text-slate-400">
+            <span className="font-bold text-cyan-300 uppercase tracking-wider">Step 1 of 4</span>
+            <span className="text-slate-500">·</span>
+            <span><span className="text-cyan-400 font-semibold">Diagnose Friction</span> (you are here)</span>
+            <span className="text-slate-600">→</span>
+            <span className="text-slate-500">Map Sequences</span>
+            <span className="text-slate-600">→</span>
+            <span className="text-slate-500">Locate Leverage</span>
+            <span className="text-slate-600">→</span>
+            <span className="text-slate-500">Architect the Flow</span>
+          </div>
+          <p className="text-[11px] text-slate-500 mt-2">The 30-minute audit below covers Steps 2–4.</p>
         </motion.div>
 
-        {/* === HERO: One headline, one pain quote, one CTA === */}
+        {/* === HERO: Gap + Health Score + Pain Echo === */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.02 }}
-          className="mb-10"
+          className="mb-6"
         >
           <div className="rounded-2xl bg-[#080b10] border border-cyan-500/30 relative overflow-hidden shadow-[0_0_60px_rgba(0,217,255,0.08),0_8px_32px_rgba(0,0,0,0.6)]"
-            style={{ backgroundImage: 'radial-gradient(ellipse at 50% 0%, rgba(103,232,249,0.08) 0%, transparent 55%)' }}
+            style={{ backgroundImage: 'radial-gradient(ellipse at 30% 0%, rgba(103,232,249,0.06) 0%, transparent 55%)' }}
           >
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
 
-            <div className="p-8 md:p-12 text-center">
-              {/* Pain quote — the thing THEY said, up top where it belongs */}
+            <div className="p-6 md:p-8">
+              {/* Top row: big gap number + health score */}
+              <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-10 mb-6">
+                {/* Left: gap number */}
+                <div className="flex-1">
+                  <p className="text-[10px] font-bold text-cyan-400/70 uppercase tracking-[0.25em] mb-2">Monthly Revenue Gap Identified</p>
+                  <p className="text-5xl md:text-6xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-300 leading-none mb-1"
+                    style={{ filter: 'drop-shadow(0 0 30px rgba(103,232,249,0.25))' }}>
+                    <AnimatedMoney value={result.totalMonthlyGap} prefix="$" />
+                    <span className="text-2xl text-slate-400 font-normal">/mo</span>
+                  </p>
+                  <p className="text-sm text-slate-500 mb-4">
+                    <AnimatedMoney value={result.annualizedGap} className="font-mono font-semibold text-slate-400" /> annualized
+                    {fn && (
+                      <span className="text-slate-600"> · +<AnimatedMoney value={fn.dbrAnnualPotential} className="font-mono" /> DBR campaign revenue/yr</span>
+                    )}
+                  </p>
+
+                  {/* 3-pillar gap breakdown */}
+                  <div className="grid grid-cols-3 gap-3">
+                    {pillarScores.map((p) => (
+                      <div key={p.name} className={`rounded-xl p-3 border ${p.name === weakestByGap.name ? 'border-cyan-500/40 bg-cyan-950/30' : 'border-[#1a2332] bg-[#0c1018]'}`}>
+                        <p className="text-[9px] font-bold uppercase tracking-wider text-slate-500 mb-1">{p.name}</p>
+                        <p className={`text-base font-mono font-bold ${p.name === weakestByGap.name ? 'text-cyan-400' : 'text-slate-300'}`}>
+                          ~$<AnimatedMoney value={p.gap} prefix="" />
+                          <span className="text-[10px] text-slate-500 font-normal">/mo</span>
+                        </p>
+                        {p.name === weakestByGap.name && (
+                          <p className="text-[9px] text-cyan-500/70 font-semibold mt-0.5">Biggest gap</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: compact health score */}
+                <div className="flex flex-col items-center md:items-end flex-shrink-0">
+                  <p className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-2">Health Score</p>
+                  <div className="relative flex items-center justify-center" style={{ width: 100, height: 100 }}>
+                    <AnimatedGauge score={result.overallScore} size={100} stroke={9} />
+                  </div>
+                  <p className="text-[10px] text-slate-500 mt-1 text-center">
+                    Lowest: <span className="text-coral font-semibold" style={{ color: '#c0504d' }}>{weakestByScore.name} {weakestByScore.score}/100</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Bottom: pain echo */}
               {result.userPainPoints?.topPain && (
-                <p className="text-sm md:text-base text-slate-400 italic mb-6 max-w-xl mx-auto leading-relaxed">
-                  You told us: <span className="text-white not-italic font-medium">"{result.userPainPoints.topPain.value}."</span>
-                </p>
+                <div className="flex items-start gap-3 pt-4 border-t border-[#1a2332]">
+                  <AlertTriangle size={14} className="text-cyan-400/60 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    You flagged{" "}
+                    <span className="font-semibold text-white">"{result.userPainPoints.topPain.value}"</span>{" "}
+                    as your most painful friction point. Our analysis below addresses that pillar first.
+                  </p>
+                </div>
               )}
-
-              {/* ONE massive number */}
-              <p className="text-[10px] md:text-[11px] font-bold text-cyan-400/70 uppercase tracking-[0.3em] mb-3">
-                You're losing roughly
-              </p>
-              <p
-                className="text-6xl md:text-8xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#67E8F9] via-[#22d3ee] to-[#0891b2] leading-none mb-3"
-                style={{ filter: 'drop-shadow(0 0 40px rgba(103,232,249,0.28))' }}
-                ref={scoreRef}
-                data-testid="text-total-gap"
-              >
-                ${animatedScore > 0 ? animatedScore.toLocaleString() : result.totalMonthlyGap.toLocaleString()}
-              </p>
-              <p className="text-lg md:text-xl text-slate-400 mb-8">
-                every month — to problems you can fix in 30 days
-              </p>
-
-              {result.gapBreakdown.totalLow > 0 && result.gapBreakdown.totalHigh > 0 && (
-                <p className="text-xs text-slate-600 font-mono mb-6" title={`±${Math.round((result.gapBreakdown.confidenceBand ?? 0.25) * 100)}% confidence band on inputs you provided`}>
-                  Estimated range: ${result.gapBreakdown.totalLow.toLocaleString()} – ${result.gapBreakdown.totalHigh.toLocaleString()}/mo
-                  {result.inputCoherence && !result.inputCoherence.consistent && (
-                    <span className="ml-2 text-amber-500/60"> · some inputs didn't fully reconcile — tap to see which</span>
-                  )}
-                </p>
-              )}
-
-              {/* One CTA — nothing else competing */}
-              <Link href="/book">
-                <GlassButton
-                  className="w-full md:w-auto min-w-[320px] bg-cyan-500 hover:bg-cyan-400 text-black text-lg font-bold py-5 px-10 rounded-xl shadow-[0_0_30px_rgba(103,232,249,0.25)] inline-flex items-center justify-center"
-                  data-testid="button-hero-cta"
-                >
-                  <Calendar size={20} className="mr-2.5" />
-                  Claim My Revenue Recovery Plan
-                  <ArrowRight size={20} className="ml-2.5" />
-                </GlassButton>
-              </Link>
-              <p className="text-xs text-slate-500 mt-3">
-                Free 30-min audit · No pitch deck · Walk away with a written plan either way
-              </p>
             </div>
           </div>
         </motion.div>
 
-        {/* === Data coherence: inline subtle card ONLY if there's a real issue === */}
+        {/* === BUSINESS HEALTH SCORE DASHBOARD === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.04 }}
+          className="mb-6"
+        >
+          <BusinessHealthDashboard result={result} />
+        </motion.div>
+
+        {/* === SECTION 2: BUSINESS AT A GLANCE === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="mb-6"
+        >
+          <div
+            className="rounded-2xl bg-[#080b10] border border-[#1a2332] p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_1px_rgba(103,232,249,0.08)]"
+            data-testid="card-business-glance"
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
+            <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-5">Your Business At A Glance</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-4">
+              {[
+                { label: "Industry", value: result.industry },
+                { label: "Specialization", value: result.niche || "General" },
+                { label: "Monthly Leads", value: String(result.monthlyLeads) },
+                { label: "Team Size", value: result.teamSize },
+              ].map((item) => (
+                <div key={item.label}>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">{item.label}</p>
+                  <p className="text-sm font-bold text-white">{item.value}</p>
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {[
+                { label: "Avg Job Value", value: `$${result.avgJobValue.toLocaleString()}` },
+                result.monthlySalesVolume > 0 ? { label: "Monthly Job Volume", value: `${result.monthlySalesVolume} jobs/mo` } : null,
+                result.adSpend > 0 ? { label: "Monthly Ad Spend", value: `$${result.adSpend.toLocaleString()}/mo` } : null,
+              ].filter((item): item is { label: string; value: string } => item !== null).map((item) => (
+                <div key={item.label}>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">{item.label}</p>
+                  <p className="text-sm font-bold text-white">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* === DATA COHERENCE WARNING (when user's inputs contradict each other) === */}
         {result.inputCoherence && !result.inputCoherence.consistent && result.inputCoherence.warning && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.08 }}
             className="mb-6"
           >
             <div
-              className="rounded-lg px-4 py-3 border flex items-start gap-2.5"
-              style={{ backgroundColor: 'rgba(245,158,11,0.06)', borderColor: 'rgba(245,158,11,0.20)' }}
+              className="rounded-2xl p-5 border"
+              style={{ backgroundColor: 'rgba(192,80,77,0.10)', borderColor: 'rgba(192,80,77,0.32)' }}
               data-testid="card-coherence-warning"
             >
-              <Info size={14} className="text-amber-500/80 mt-0.5 flex-shrink-0" />
-              <p className="text-xs text-slate-400 leading-relaxed">
-                <span className="font-semibold text-amber-500/90">Quick note on your inputs:</span>{" "}
-                {result.inputCoherence.warning}
-              </p>
+              <div className="flex items-start gap-3">
+                <AlertTriangle size={18} style={{ color: '#c0504d' }} className="mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: '#c0504d' }}>Data Coherence Check</p>
+                  <p className="text-sm text-slate-300 leading-relaxed">{result.inputCoherence.warning}</p>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
 
-        {/* Legacy Total Impact Summary and Revenue Snapshot sections were removed —
-            the hero now carries the single gap number; pillar cards below carry the breakdown. */}
+        {/* Pain echo now lives in the Hero card above */}
 
-        {/* === (legacy) REVENUE SNAPSHOT — hidden to reduce duplication === */}
-        {false && fn && fn.currentAnnualRevenue > 0 && (
+        {/* === SECTION 3: TOTAL IMPACT SUMMARY === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-8"
+        >
+          <div
+            className="rounded-2xl bg-[#080b10] border border-cyan-500/15 p-6 md:p-8 relative overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_1px_rgba(103,232,249,0.1)]"
+            style={{ backgroundImage: 'radial-gradient(ellipse at 50% 30%, rgba(103,232,249,0.04) 0%, transparent 60%)' }}
+            data-testid="card-total-impact"
+          >
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent" />
+            <div className="flex items-center gap-2 mb-6">
+              <div className="p-1.5 rounded-lg bg-cyan-500/10">
+                <TrendingUp size={18} className="text-cyan-400" />
+              </div>
+              <p className="text-base font-bold text-cyan-400">Total Impact Summary</p>
+            </div>
+            <div className="text-center mb-6" ref={scoreRef}>
+              <p className="text-[10px] text-slate-500 uppercase tracking-[0.25em] font-semibold mb-3">Total Monthly Revenue Gap</p>
+              <p
+                className="text-5xl md:text-6xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#67E8F9] via-[#22d3ee] to-[#0ea5e9] leading-none mb-2"
+                style={{ filter: 'drop-shadow(0 0 30px rgba(103, 232, 249, 0.2)) drop-shadow(0 0 60px rgba(103, 232, 249, 0.08))' }}
+                data-testid="text-total-gap"
+              >
+                ${animatedScore > 0 ? animatedScore.toLocaleString() : result.totalMonthlyGap.toLocaleString()}
+              </p>
+              {result.gapBreakdown.totalLow > 0 && result.gapBreakdown.totalHigh > 0 && (
+                <p className="text-xs text-slate-500 font-mono mb-1">
+                  Range: ${result.gapBreakdown.totalLow.toLocaleString()} – ${result.gapBreakdown.totalHigh.toLocaleString()}
+                  <span className="text-slate-600"> (±{Math.round((result.gapBreakdown.confidenceBand ?? 0.25) * 100)}% confidence band)</span>
+                </p>
+              )}
+              <p className="text-sm text-slate-400">
+                Annualized: <AnimatedMoney value={result.annualizedGap} className="font-mono font-semibold text-slate-300" />
+              </p>
+            </div>
+            {/* 3 steady monthly gaps */}
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              {[
+                { label: "Capture Gap", amount: result.gapBreakdown.captureGap, low: result.gapBreakdown.captureGapLow, high: result.gapBreakdown.captureGapHigh },
+                { label: "Conversion Gap", amount: result.gapBreakdown.convertGap, low: result.gapBreakdown.convertGapLow, high: result.gapBreakdown.convertGapHigh },
+                { label: "Reviews Gap", amount: result.gapBreakdown.compoundGap, low: result.gapBreakdown.compoundGapLow, high: result.gapBreakdown.compoundGapHigh },
+              ].map((g) => (
+                <div key={g.label} className="text-center">
+                  <p className="text-xs font-bold text-cyan-400 mb-1">{g.label}</p>
+                  <p className="font-mono font-bold text-base text-slate-300">
+                    <AnimatedMoney value={g.amount} />
+                  </p>
+                  {g.low > 0 && g.high > 0 && (
+                    <p className="text-[10px] text-slate-600 font-mono mt-0.5">
+                      ${g.low.toLocaleString()}–${g.high.toLocaleString()}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* DBR Campaign Layer — recurring, separate from monthly gap */}
+            {fn && fn.dbrCampaignValue > 0 && (
+              <div className="rounded-xl border border-cyan-500/15 bg-cyan-950/10 p-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <p className="text-xs font-bold text-cyan-400 uppercase tracking-wider">+ DBR Campaign Layer</p>
+                      <span className="text-[10px] font-semibold text-cyan-500/60 bg-cyan-500/10 px-2 py-0.5 rounded-full">Recurring · {fn.dbrCampaignsPerYear}x/yr</span>
+                    </div>
+                    <p className="text-[11px] text-slate-500">Seasonal reactivation, new services, re-engagement — funds setup &amp; retainer</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-mono font-bold text-cyan-300">
+                      ~<AnimatedMoney value={fn.dbrMonthlyEquivalent} /><span className="text-slate-500 text-xs font-normal">/mo equiv</span>
+                    </p>
+                    <p className="text-[10px] text-slate-600 font-mono">
+                      <AnimatedMoney value={fn.dbrCampaignValue} />/campaign · <AnimatedMoney value={fn.dbrAnnualPotential} />/yr
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        {/* === SECTION 4: REVENUE SNAPSHOT === */}
+        {fn && fn.currentAnnualRevenue > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -880,10 +1042,66 @@ export default function Results() {
           />
         </motion.div>
 
-        {/* Industry Benchmark Comparison removed — benchmarks were not cited to a source. */}
+        {/* === AI SEARCH VISIBILITY CALLOUT === */}
+        {(result.aiSearchFrequency.includes("No") || result.aiSearchFrequency.includes("Not sure") || result.aiReadiness.includes("No") || result.aiReadiness.includes("We don't have") || result.aiReadiness.includes("basic SEO")) && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.145 }}
+            className="mb-8"
+          >
+            <div className="rounded-2xl border border-amber-500/30 bg-amber-950/10 p-6 md:p-8 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+              <div className="flex flex-col md:flex-row gap-6 items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                    <Globe size={22} className="text-amber-400" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] font-bold text-amber-400/80 uppercase tracking-[0.25em]">Invisible Gap</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 font-semibold">AI Search Visibility</span>
+                  </div>
+                  <h3 className="text-lg font-heading font-bold text-white mb-2">
+                    Customers are asking ChatGPT, Perplexity & Google AI who to hire — and you're not in the answer.
+                  </h3>
+                  <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                    The way customers find service businesses has permanently changed. Before they visit your website, they're asking AI engines: <em className="text-slate-300">"Best HVAC company near me"</em> or <em className="text-slate-300">"Who has the best reviews for roofing in [city]?"</em> — and getting a named recommendation back. If your business isn't machine-readable, you're being cut out of a growing slice of inbound demand that your competitors are quietly capturing.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                    {[
+                      { label: "ChatGPT / Claude / Gemini", detail: "Your business needs structured data (JSON-LD schema) so AI engines can read, cite, and recommend you." },
+                      { label: "Google AI Overviews", detail: "Google's AI answers are replacing Page 1 clicks. Without schema markup, you're not in the answer box." },
+                      { label: "Perplexity & Voice AI", detail: "These engines pull from structured signals, not just SEO rankings. Different game, different rules." },
+                    ].map(item => (
+                      <div key={item.label} className="rounded-lg bg-amber-950/20 border border-amber-500/10 p-3">
+                        <p className="text-xs font-semibold text-amber-300 mb-1">{item.label}</p>
+                        <p className="text-xs text-slate-500">{item.detail}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    <span className="text-amber-400 font-semibold">We fix this with Operating System.</span> Machine-readable schema injection (JSON-LD), AI-optimized business citations, and a structured presence that makes you recommendable by every major AI engine.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
-        {/* === (legacy) SCENARIO ANALYSIS — hidden to reduce number-recycling === */}
-        {false && fn && (
+        {/* === PHASE 2: INDUSTRY BENCHMARK COMPARISON === */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="mb-8"
+        >
+          <IndustryBenchmarks result={result} />
+        </motion.div>
+
+        {/* === SECTION 6: SCENARIO ANALYSIS === */}
+        {fn && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -930,8 +1148,8 @@ export default function Results() {
           </motion.div>
         )}
 
-        {/* === (legacy) 12-MONTH CUMULATIVE GAIN CHART — hidden; another view of same number === */}
-        {false && fn && fn.conservativeMonthlyRecovery > 0 && (
+        {/* === SECTION 7: 12-MONTH CUMULATIVE GAIN CHART === */}
+        {fn && fn.conservativeMonthlyRecovery > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -969,8 +1187,8 @@ export default function Results() {
           </motion.div>
         )}
 
-        {/* === (legacy) COST OF INACTION — hidden; hard-sell framing off-brand === */}
-        {false && fn && (
+        {/* === SECTION 8: COST OF INACTION === */}
+        {fn && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1047,8 +1265,8 @@ export default function Results() {
           </motion.div>
         )}
 
-        {/* === (legacy) LONG-TERM COMPOUNDING RETURNS — hidden to reduce duplication === */}
-        {false && fn && (
+        {/* === SECTION 9: LONG-TERM COMPOUNDING RETURNS === */}
+        {fn && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1162,6 +1380,31 @@ export default function Results() {
             </GlassCard>
           </div>
 
+          {/* === SECTION 12: DIY REALITY === */}
+          <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
+            <h3 className="text-xl font-heading font-bold text-white mb-2">The Reality of DIY Implementation</h3>
+            <p className="text-slate-400 text-sm mb-6">Most businesses intend these fixes but never finish.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                <Clock size={20} className="text-cyan-400/60 mx-auto mb-3" />
+                <p className="text-sm font-bold text-white uppercase tracking-wider mb-2">Time Investment</p>
+                <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">15–30 hrs</p>
+                <p className="text-xs text-slate-500">setup &amp; troubleshooting</p>
+              </div>
+              <div className="text-center bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                <Code size={20} className="text-cyan-400/60 mx-auto mb-3" />
+                <p className="text-sm font-bold text-white uppercase tracking-wider mb-2">Technical Debt</p>
+                <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">API Skills</p>
+                <p className="text-xs text-slate-500">needed to prevent failures</p>
+              </div>
+              <div className="text-center bg-slate-900/50 rounded-xl p-6 border border-slate-800">
+                <RefreshCw size={20} className="text-cyan-400/60 mx-auto mb-3" />
+                <p className="text-sm font-bold text-white uppercase tracking-wider mb-2">Ongoing Overhead</p>
+                <p className="text-2xl font-mono font-bold text-cyan-400 mb-1">Constant</p>
+                <p className="text-xs text-slate-500">maintenance &amp; monitoring</p>
+              </div>
+            </div>
+          </GlassCard>
         </motion.div>
 
         {/* === SECTION 13: TIER RECOMMENDATION === */}
@@ -1185,60 +1428,70 @@ export default function Results() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <TierCard
-              headline="Stop the Bleed"
-              tier="The AI Brain"
-              description="Close the Capture gap first. Every inquiry answered in under 60 seconds, 24/7 — so the speed-to-lead window stops costing you revenue."
-              features={brainFeatures}
-              isRecommended={result.recommendedTier === 'The AI Brain'}
-              reason={result.recommendedTier === 'The AI Brain' ? result.tierReason : undefined}
+              tier="Blueprint"
+              description="Stop the bleed. We install the 24/7 AI Front Door — every inquiry answered in under 60 seconds, every missed call recovered, every channel consolidated into one inbox."
+              features={blueprintFeatures}
+              isRecommended={result.recommendedTier === 'Blueprint'}
+              reason={result.recommendedTier === 'Blueprint' ? result.tierReason : undefined}
             />
             <TierCard
-              headline="Recover Lost Revenue"
-              tier="The AI System"
-              description="Close Capture + Conversion. Automated chase on quotes, no-shows, and stalled pipeline — the revenue that's already in your pipeline but isn't closing."
-              features={systemFeatures}
-              isRecommended={result.recommendedTier === 'The AI System'}
-              reason={result.recommendedTier === 'The AI System' ? result.tierReason : undefined}
+              tier="Growth Architecture"
+              description="Turn leads into booked revenue. We install the Invisible Sales Rep + Compounding Engine — automated follow-up, no-show recovery, quote chasing, and 5-star review collection running on autopilot."
+              features={growthFeatures}
+              isRecommended={result.recommendedTier === 'Growth Architecture'}
+              reason={result.recommendedTier === 'Growth Architecture' ? result.tierReason : undefined}
             />
             <TierCard
-              headline="Dominate the Whole Funnel"
-              tier="The AI Infrastructure"
-              description="Close every pillar, then go on offense. AI Search Optimization, the Found Money DBR Campaign, and an automated review flywheel that compounds over time."
-              features={infrastructureFeatures}
-              isRecommended={result.recommendedTier === 'The AI Infrastructure'}
-              reason={result.recommendedTier === 'The AI Infrastructure' ? result.tierReason : undefined}
+              tier="Operating System"
+              description="Complete operational transformation. The entire Sequential Revenue™ loop — Capture, Convert, Compound — plus AI Search Visibility for ChatGPT, Perplexity, and Google AI Overviews, and the Found-Money DBR Campaign."
+              features={operatingFeatures}
+              isRecommended={result.recommendedTier === 'Operating System'}
+              reason={result.recommendedTier === 'Operating System' ? result.tierReason : undefined}
             />
           </div>
         </motion.div>
 
-        {/* === FINAL CTA — weighty, matches the analysis === */}
+        {/* === SECTION 14: FINAL CTA — "FOUND MONEY" GUARANTEE === */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
           className="mb-12"
         >
-          <GlassCard className="p-8 md:p-10 border-cyan-500/25 bg-gradient-to-br from-cyan-950/20 to-slate-900/50 text-center" data-testid="card-bottom-ctas">
-            <p className="text-[11px] font-bold text-cyan-400/70 uppercase tracking-[0.25em] mb-3">Next step</p>
-            <h3 className="text-2xl md:text-3xl font-heading font-bold text-white mb-3">
-              Let's turn this analysis into a 30-day plan.
-            </h3>
-            <p className="text-sm md:text-base text-slate-400 mb-8 max-w-xl mx-auto leading-relaxed">
-              Book a 30-minute Revenue Recovery Audit. We'll walk through your specific gaps line by line, prioritize the highest-leverage fixes for your business, and leave you with a written implementation plan — whether you work with us or not.
-            </p>
-            <div className="space-y-4">
+          <GlassCard className="p-8 md:p-10 border-cyan-500/30 bg-gradient-to-br from-cyan-950/30 to-slate-900/50 relative overflow-hidden" data-testid="card-bottom-ctas">
+            {/* Guarantee badge */}
+            <div className="absolute top-0 right-0 px-4 py-2 rounded-bl-xl bg-cyan-500 text-black text-[10px] font-bold uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(103,232,249,0.3)]">
+              Risk-Reversed Offer
+            </div>
+
+            <div className="text-center max-w-3xl mx-auto">
+              <p className="text-[11px] font-bold text-cyan-400/80 uppercase tracking-[0.3em] mb-3">The "Found Money" Guarantee</p>
+              <h3 className="text-3xl md:text-4xl font-heading font-bold text-white mb-5 leading-tight">
+                We'll find the money before you pay a dime for setup.
+              </h3>
+              <p className="text-base md:text-lg text-slate-300 mb-6 leading-relaxed">
+                Within the first 14 days of activation, we run a targeted Database Reactivation campaign on your existing contacts. <span className="text-white font-semibold">If the revenue opportunity we surface doesn't cover our setup fee, you don't pay us a dime for the implementation</span> — and you keep the lead intelligence report we generated.
+              </p>
+              <p className="text-sm text-slate-400 mb-8 italic">
+                You either get a self-funding system, or you get a free audit of your database. Either way, you win.
+              </p>
+
               <Link href="/book">
                 <GlassButton
-                  className="w-full md:w-auto min-w-[340px] bg-cyan-500 hover:bg-cyan-400 text-black text-lg font-bold py-5 px-10 rounded-xl shadow-[0_0_30px_rgba(103,232,249,0.25)] inline-flex items-center justify-center"
+                  className="w-full md:w-auto min-w-[340px] bg-cyan-500 hover:bg-cyan-400 text-black text-lg font-bold py-5 px-10 rounded-xl shadow-[0_0_30px_rgba(103,232,249,0.35)]"
                   data-testid="button-book-strategy-call"
                 >
-                  <Calendar size={20} className="mr-2.5" />
+                  <Calendar size={20} className="mr-2" />
                   Claim My Revenue Recovery Plan
-                  <ArrowRight size={20} className="ml-2.5" />
+                  <ArrowRight size={20} className="ml-2" />
                 </GlassButton>
               </Link>
 
-              <div>
+              <p className="text-xs text-slate-500 mt-4">
+                30-minute Revenue Recovery Audit · No pitch deck · Walk away with a written plan either way
+              </p>
+
+              <div className="mt-8 pt-6 border-t border-slate-800/60">
                 <button
                   onClick={() => {
                     const storedLeadId = sessionStorage.getItem('leadId');
@@ -1246,20 +1499,20 @@ export default function Results() {
                       window.open(`/api/assessment/${storedLeadId}/pdf`, '_blank');
                     }
                   }}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-slate-700/50 bg-slate-900/40 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/30 transition-all text-sm font-semibold"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-700/50 bg-slate-900/40 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/30 transition-all text-sm font-medium"
                   data-testid="link-download-pdf"
                 >
                   <Download size={14} />
-                  Download the full PDF report
+                  Download Your Full Analysis (PDF)
                 </button>
-              </div>
 
-              {contactEmail && (
-                <p className="text-xs text-slate-500 mt-3">
-                  <CheckCircle size={12} className="inline text-cyan-400/60 mr-1.5" />
-                  Full report also sent to {contactEmail}
-                </p>
-              )}
+                {contactEmail && (
+                  <p className="text-xs text-slate-500 mt-3">
+                    <CheckCircle size={12} className="inline text-cyan-400/60 mr-1" />
+                    Results also emailed to {contactEmail}
+                  </p>
+                )}
+              </div>
             </div>
           </GlassCard>
         </motion.div>

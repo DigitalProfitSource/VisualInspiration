@@ -105,10 +105,13 @@ export interface AssessmentResult {
   annualizedGap: number;
   gapBreakdown: GapBreakdown;
 
-  recommendedTier: 'The AI Brain' | 'The AI System' | 'The AI Infrastructure';
+  recommendedTier: 'Blueprint' | 'Growth Architecture' | 'Operating System';
   tierReason: string;
   adSpend: number;
   monthlySalesVolume: number;
+
+  aiSearchFrequency: string;
+  aiReadiness: string;
 
   financialNarrative: FinancialNarrative;
   industryBenchmark: IndustryBenchmark;
@@ -732,7 +735,7 @@ function recommendTier(
   monthlyLeads: number,
   complexity: string,
   adSpend: number
-): { tier: 'The AI Brain' | 'The AI System' | 'The AI Infrastructure'; reason: string } {
+): { tier: 'Blueprint' | 'Growth Architecture' | 'Operating System'; reason: string } {
   const lowestScore = Math.min(captureScore, convertScore, compoundScore);
   const overallScore = Math.round((captureScore + convertScore + compoundScore) / 3);
   let lowestPillar = "Capture";
@@ -741,49 +744,49 @@ function recommendTier(
 
   if (complexity.includes("Enterprise") || monthlyLeads > 150) {
     return {
-      tier: 'The AI Infrastructure',
-      reason: `Your operations require full-system automation. Your ${lowestPillar} score (${lowestScore}/100) indicates the most urgent area for improvement.`
+      tier: 'Operating System',
+      reason: `At ${monthlyLeads} leads/month, your volume demands full operational transformation. Operating System deploys the complete Sequential Revenue™ loop: Capture (24/7 AI Front Door for speed-to-lead + missed calls), Convert (Invisible Sales Rep for quotes, no-shows, and pipeline), and Compound (review automation + the Found-Money DBR Campaign that turns your dormant database into immediate revenue). With a ${lowestPillar} score of ${lowestScore}/100, you need all three pillars working as one loop.`
     };
   }
 
   if (adSpend >= 5000 && overallScore < 65) {
     return {
-      tier: 'The AI Infrastructure',
-      reason: `You're spending $${adSpend.toLocaleString()}/mo on ads but your overall system score is ${overallScore}/100 — meaning significant ad spend is leaking into an under-optimized funnel. The full Revenue Loop maximizes every dollar you put in at the top.`
+      tier: 'Operating System',
+      reason: `You're spending $${adSpend.toLocaleString()}/mo on ads but your overall system score is ${overallScore}/100 — significant ad spend is leaking into an under-optimized funnel. Operating System maximizes every dollar you put in at the top of the pipeline.`
     };
   }
 
   if (adSpend >= 2500 && lowestScore < 50) {
     return {
-      tier: 'The AI Infrastructure',
-      reason: `With $${adSpend.toLocaleString()}/mo in ad spend flowing into a ${lowestPillar} score of ${lowestScore}/100, you're paying to fill a leaky bucket. The full Revenue Loop closes the gaps that are costing you your ad ROI.`
+      tier: 'Operating System',
+      reason: `With $${adSpend.toLocaleString()}/mo in ad spend flowing into a ${lowestPillar} score of ${lowestScore}/100, you're paying to fill a leaky bucket. Operating System closes the gaps that are costing you your ad ROI.`
     };
   }
 
   if (complexity.includes("complex") && lowestScore < 50) {
     return {
-      tier: 'The AI Infrastructure',
-      reason: `Your ${lowestPillar} score (${lowestScore}/100) combined with operational complexity calls for comprehensive automation across all three pillars.`
+      tier: 'Operating System',
+      reason: `Your ${lowestPillar} score (${lowestScore}/100) combined with operational complexity calls for comprehensive automation across all three Sequential Revenue™ pillars.`
     };
   }
 
   if (convertScore <= captureScore && convertScore <= compoundScore) {
     return {
-      tier: 'The AI System',
-      reason: `Your Convert score (${convertScore}/100) is your weakest pillar. The AI System addresses follow-up, no-show recovery, and pipeline tracking — the systems that turn leads into revenue.`
+      tier: 'Growth Architecture',
+      reason: `Your Convert score (${convertScore}/100) is your weakest pillar. Growth Architecture deploys the Invisible Sales Rep — automated follow-up sequences, no-show recovery workflows, and pipeline tracking that turn leads into booked revenue.`
     };
   }
 
   if (compoundScore <= captureScore && compoundScore <= convertScore) {
     return {
-      tier: 'The AI System',
-      reason: `Your Compound score (${compoundScore}/100) shows untapped growth potential. The AI System includes review automation and database reactivation to build compounding revenue.`
+      tier: 'Growth Architecture',
+      reason: `Your Compound score (${compoundScore}/100) shows untapped growth potential. Growth Architecture installs the Compounding Engine — automated review collection, sentiment routing, and database reactivation campaigns that turn past customers into future revenue.`
     };
   }
 
   return {
-    tier: 'The AI Brain',
-    reason: `Your Capture score (${captureScore}/100) is your biggest opportunity. The AI Brain provides instant response and AI-powered availability so no lead goes unanswered.`
+    tier: 'Blueprint',
+    reason: `Your Capture score (${captureScore}/100) is your biggest opportunity. Blueprint installs the 24/7 AI Front Door — instant response, AI qualification, and 24/7 availability so no lead goes unanswered.`
   };
 }
 
@@ -1189,6 +1192,9 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     tierReason: reason,
     adSpend,
     monthlySalesVolume,
+
+    aiSearchFrequency: data.ai_search_frequency,
+    aiReadiness: data.ai_readiness,
 
     financialNarrative,
     industryBenchmark,
