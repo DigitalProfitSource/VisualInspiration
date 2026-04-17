@@ -8,80 +8,52 @@ export interface Step {
 
 export const STEPS: Step[] = [
   {
-    id: "initial",
-    title: "Project Identity",
-    description: "Start by identifying your business. This helps us anchor the analysis to your specific brand.",
-    fields: ["business_name", "website_url"],
+    id: "identity",
+    title: "Let's start with your business",
+    description: "Two quick inputs so we can anchor the analysis to you.",
+    fields: ["business_name", "website_url", "industry"],
     progress: 0
   },
   {
-    id: "business",
-    title: "About Your Business",
-    description: "Help us understand your business context so we can calibrate our analysis.",
-    fields: ["industry", "niche_specificity", "team_size", "avg_job_value", "monthly_sales_volume", "ad_spend", "monthly_lead_volume"],
-    progress: 12
+    id: "volume",
+    title: "Your numbers",
+    description: "The four numbers that drive every calculation in your report. Estimates are fine.",
+    fields: ["team_size", "monthly_lead_volume", "avg_job_value", "close_rate"],
+    progress: 16
   },
   {
-    id: "calibration",
-    title: "Calibrate Your Efficiency Analysis",
-    description: "Select the scenarios that occur most frequently in your daily operations. This helps the AI isolate your primary friction points.",
+    id: "pain",
+    title: "What's hurting most right now?",
+    description: "Pick the friction points you feel on a regular basis. We'll lead your report with whatever you flag here.",
     fields: ["revenue_pain"],
-    progress: 24
+    progress: 32
   },
   {
     id: "speed",
-    title: "The Speed Gap",
-    description: "How quickly do leads get a response, and what happens when you're unavailable?",
-    fields: ["first_contact_speed", "lead_unavailability", "phone_unavailable_handling", "digital_unavailable_handling"],
-    progress: 36
-  },
-  {
-    id: "silence",
-    title: "The Silence Gap",
-    description: "What happens after the first conversation — do leads get followed up?",
-    fields: ["no_show_recovery", "quote_followup", "dormant_leads", "no_show_rate"],
+    title: "Speed to first response",
+    description: "Most deals are won or lost in the first 5 minutes. Two questions on how you handle inbound.",
+    fields: ["first_contact_speed", "phone_unavailable_handling"],
     progress: 48
   },
   {
-    id: "engagement",
-    title: "Channels & Engagement",
-    description: "How do leads find and reach you? How do you build trust after the job is done?",
-    fields: ["contact_channels", "review_request", "close_rate"],
-    progress: 55
+    id: "followthrough",
+    title: "Follow-through & reactivation",
+    description: "What happens to quotes, no-shows, dormant leads, and past customers.",
+    fields: ["quote_followup", "no_show_recovery", "dormant_leads", "review_request"],
+    progress: 64
   },
   {
-    id: "ai_visibility",
-    title: "AI Visibility",
-    description: "AI tools like ChatGPT, Siri, and Google AI are becoming how customers find businesses. Let's see where you stand.",
-    fields: ["ai_search_frequency", "ai_readiness"],
-    progress: 65
-  },
-  {
-    id: "intake",
-    title: "Intake & Pipeline",
-    description: "How do you capture and track leads once they come in?",
-    fields: ["intake_centralization", "pipeline_tracking"],
-    progress: 75
-  },
-  {
-    id: "automation",
-    title: "Automation & AI",
-    description: "How much of your sales and operations workflow is automated today?",
-    fields: ["has_automations", "has_ai_intent"],
-    progress: 82
-  },
-  {
-    id: "chaos",
-    title: "The Chaos Gap",
-    description: "How much operational overhead is slowing you down?",
-    fields: ["manual_hours", "staff_repeat_questions", "process_documentation", "operational_complexity"],
-    progress: 88
+    id: "systems",
+    title: "Your current systems",
+    description: "Just enough to tell us what's automated today and how much manual lift your team is carrying.",
+    fields: ["has_automations", "manual_hours"],
+    progress: 80
   },
   {
     id: "contact",
-    title: "Get Your Results",
-    description: "We'll send your personalized Sequential Revenue™ Friction Analysis to your inbox.",
-    fields: ["contact_first_name", "contact_last_name", "contact_email", "contact_phone", "disclaimer_accepted"],
+    title: "Where should we send it?",
+    description: "Your full Sequential Revenue™ report, including the PDF, goes straight to your inbox.",
+    fields: ["contact_first_name", "contact_last_name", "contact_email", "disclaimer_accepted"],
     progress: 95
   }
 ];
