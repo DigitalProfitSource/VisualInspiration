@@ -92,18 +92,33 @@ export default function Assessment() {
     mode: "onChange",
     defaultValues: {
       revenue_pain: [],
-      contact_channels: [],
       disclaimer_accepted: false,
       website_url: "",
+      contact_phone: "",
+      // Hidden fields — defaulted to conservative middle-of-road values
+      // so scoring produces reasonable output without asking 25 questions.
+      niche_specificity: "General",
       monthly_sales_volume: "50",
-      ad_spend: "0"
+      ad_spend: "0",
+      lead_unavailability: "Sometimes (evenings/weekends we miss some)",
+      digital_unavailable_handling: "We respond when we can",
+      no_show_rate: "11-20% (average—some no-shows)",
+      contact_channels: ["Phone call", "Website form"],
+      ai_search_frequency: "Not sure — haven't checked",
+      ai_readiness: "We've done basic SEO but nothing AI-specific",
+      has_ai_intent: "No — we haven't explored AI tools yet",
+      intake_centralization: "In multiple tools (email, spreadsheets, notes)",
+      pipeline_tracking: "Partially (some data is tracked, some isn't)",
+      staff_repeat_questions: "Sometimes — a few recurring questions per week",
+      process_documentation: "Some documentation, but gaps exist",
+      operational_complexity: "Single location, multiple service lines (moderate)",
     }
   });
 
   const watchedValues = useWatch({ control });
   const currentStep = STEPS[currentStepIndex];
 
-  const isStep3 = currentStep.id === 'calibration';
+  const isStep3 = currentStep.id === 'pain';
 
   const handlePainToggle = (value: string) => {
     const currentPains = (watchedValues.revenue_pain || []) as { value: string; severity: number }[];
@@ -674,8 +689,7 @@ export default function Assessment() {
       case 'has_automations':
         return (
           <div className="space-y-4 w-full">
-            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">WORKFLOW AUTOMATION</div>
-            <GlassLabel className="text-cyan-400 font-bold">Do you have automated workflows set up to handle leads or follow-ups?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">Do you have automated workflows handling leads or follow-ups?</GlassLabel>
             <Controller
               control={control}
               name="has_automations"
@@ -772,8 +786,7 @@ export default function Assessment() {
       case 'review_request':
         return (
           <div className="space-y-3 w-full">
-            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">COMPOUNDING ENGINE</div>
-            <GlassLabel className="text-cyan-400 font-bold">Do you systematically ask customers for reviews?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">Do you systematically ask every customer for a review?</GlassLabel>
             <Controller
               control={control}
               name="review_request"
@@ -793,9 +806,8 @@ export default function Assessment() {
       case 'close_rate':
         return (
           <div className="space-y-3 w-full">
-            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">CONVERSION PIPELINE</div>
             <GlassLabel className="text-cyan-400 font-bold">Out of every 10 leads, how many become paying customers?</GlassLabel>
-            <p className="text-xs text-slate-500 mb-2 text-center md:text-left">This is your close rate - just estimate if you don't track it exactly</p>
+            <p className="text-xs text-slate-500 mb-2 text-center md:text-left">Your close rate — ballpark is fine.</p>
             <Controller
               control={control}
               name="close_rate"
@@ -815,8 +827,7 @@ export default function Assessment() {
       case 'manual_hours':
         return (
           <div className="space-y-3 w-full">
-            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">OPERATIONAL DRAG</div>
-            <GlassLabel className="text-cyan-400 font-bold">How many hours per week do you spend on manual coordination?</GlassLabel>
+            <GlassLabel className="text-cyan-400 font-bold">How many hours per week does your team spend on manual follow-up, scheduling, and admin?</GlassLabel>
             <Controller
               control={control}
               name="manual_hours"
@@ -1024,16 +1035,12 @@ export default function Assessment() {
               const isActive = i === currentStepIndex;
               const isDone = i < currentStepIndex;
               const shortLabels: Record<string, string> = {
-                initial: 'Identity',
-                business: 'Business',
-                calibration: 'Pain Points',
-                speed: 'Speed Gap',
-                silence: 'Silence Gap',
-                engagement: 'Channels',
-                ai_visibility: 'AI Visibility',
-                intake: 'Intake',
-                automation: 'Automation',
-                chaos: 'Chaos Gap',
+                identity: 'Business',
+                volume: 'Numbers',
+                pain: 'Pain',
+                speed: 'Speed',
+                followthrough: 'Follow-up',
+                systems: 'Systems',
                 contact: 'Results',
               };
               return (
