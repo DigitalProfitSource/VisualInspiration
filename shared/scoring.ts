@@ -65,6 +65,8 @@ export type PillarKey = 'capture' | 'convert' | 'compound' | 'drag';
 
 export interface UserPainPoints {
   topPain: { value: string; severity: number; pillar: PillarKey } | null;
+  /** Every flagged pain item, sorted highest severity first. */
+  allPains: Array<{ value: string; severity: number; pillar: PillarKey }>;
   pillarConcernScores: Record<PillarKey, number>;
   primaryPillar: PillarKey;
   summary: string;
@@ -197,17 +199,22 @@ function analyzeRevenuePain(
     compound: 0,
     drag: 0,
   };
+  const allPainsRaw: Array<{ value: string; severity: number; pillar: PillarKey }> = [];
   let topPain: UserPainPoints['topPain'] = null;
 
   if (pain && Array.isArray(pain)) {
     for (const item of pain) {
       const pillar = REVENUE_PAIN_PILLAR_MAP[item.value] ?? 'drag';
       pillarConcernScores[pillar] += item.severity;
+      allPainsRaw.push({ value: item.value, severity: item.severity, pillar });
       if (!topPain || item.severity > topPain.severity) {
         topPain = { value: item.value, severity: item.severity, pillar };
       }
     }
   }
+
+  // Sort all pains highest severity first so consumers can render a ranked list.
+  const allPains = allPainsRaw.sort((a, b) => b.severity - a.severity);
 
   const entries = (Object.entries(pillarConcernScores) as [PillarKey, number][])
     .sort((a, b) => b[1] - a[1]);
@@ -223,10 +230,13 @@ function analyzeRevenuePain(
         : topPain.pillar === 'compound'
         ? 'Compound (how past customers create more revenue)'
         : 'Operational execution';
-    summary = `You told us "${topPain.value}" is your most painful friction point (severity ${topPain.severity}/5). That maps to your ${pillarLabel} pillar.`;
+    const count = allPains.length;
+    summary = count > 1
+      ? `You flagged ${count} friction areas. Your sharpest: "${topPain.value}" — that maps to your ${pillarLabel} pillar.`
+      : `You told us "${topPain.value}" is your most painful friction point. That maps to your ${pillarLabel} pillar.`;
   }
 
-  return { topPain, pillarConcernScores, primaryPillar, summary };
+  return { topPain, allPains, pillarConcernScores, primaryPillar, summary };
 }
 
 // ---------------------------------------------------------------------------

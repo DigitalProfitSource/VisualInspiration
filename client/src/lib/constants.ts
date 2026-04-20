@@ -10,8 +10,8 @@ export const STEPS: Step[] = [
   {
     id: "identity",
     title: "Let's start with your business",
-    description: "Four inputs so we can anchor the analysis to your specific market.",
-    fields: ["business_name", "website_url", "industry", "niche_specificity"],
+    description: "Just drop your website — we'll read it and fill in the rest. Adjust anything before you continue.",
+    fields: ["website_url", "business_name", "industry", "niche_specificity"],
     progress: 0
   },
   {
@@ -116,7 +116,26 @@ export const INDUSTRY_NICHE_MAP: Record<string, string[]> = {
   "Dental": ["General Dentistry", "Cosmetic Dentistry", "Orthodontics", "Implants", "Emergency Dental"],
   "Financial Services": ["Financial Planning", "Tax Services", "Bookkeeping", "Payroll", "Business Consulting"],
   "Insurance": ["Auto Insurance", "Home Insurance", "Business Insurance", "Life Insurance", "Health Insurance"],
-  "Fitness / Wellness": ["Personal Training", "Group Fitness", "Yoga / Pilates", "Nutrition Coaching", "Physical Therapy"],
+  "Fitness / Wellness": [
+    "Personal Training",
+    "Group Fitness",
+    "Yoga / Pilates",
+    "Nutrition Coaching",
+    "Physical Therapy",
+    "Colon Hydrotherapy",
+    "Detox & Cleansing",
+    "Holistic Wellness",
+    "Massage Therapy",
+    "Acupuncture & TCM",
+    "IV Therapy & Infusions",
+    "Meditation & Mindfulness",
+    "Functional Medicine",
+    "Naturopathic Care",
+    "Chiropractic Wellness",
+    "CrossFit / HIIT",
+    "Martial Arts",
+    "Dance & Movement"
+  ],
   "Staffing / HR": ["Temporary Staffing", "Direct Hire", "HR Consulting", "Payroll Services", "Executive Search"],
   "Other": ["Professional Services", "Healthcare", "Retail", "Consulting", "Other"]
 };

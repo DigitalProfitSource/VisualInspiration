@@ -112,8 +112,13 @@ function AnimatedGauge({ score, size = 160, stroke = 14 }: { score: number; size
   const color = displayScore < 40 ? '#c0504d' : displayScore < 65 ? '#0891b2' : '#22d3ee';
   const label = displayScore < 40 ? 'Critical' : displayScore < 65 ? 'Moderate' : 'Healthy';
 
+  // Scale text proportionally so numbers stay inside the circle at every size.
+  const numSize  = Math.round(size * 0.235); // ~37px at 160, ~23px at 100
+  const lblSize  = Math.max(7, Math.round(size * 0.072)); // ~11px at 160, ~7px at 100
+
   return (
-    <div className="flex flex-col items-center">
+    // Relative wrapper sized to exactly match the SVG so the overlay centres perfectly.
+    <div className="relative flex-shrink-0" style={{ width: size, height: size }}>
       <svg ref={ref} width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
         <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1a2332" strokeWidth={stroke} />
         <circle
@@ -125,9 +130,15 @@ function AnimatedGauge({ score, size = 160, stroke = 14 }: { score: number; size
           style={{ transition: 'stroke-dashoffset 0.1s ease, stroke 0.4s ease' }}
         />
       </svg>
-      <div className="absolute flex flex-col items-center" style={{ transform: 'translateY(0)' }}>
-        <span className="text-4xl font-mono font-bold" style={{ color }}>{displayScore}</span>
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] mt-0.5" style={{ color }}>
+      {/* Overlay centred over the SVG — inset-0 fills the relative wrapper, then flex centres the text */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="font-mono font-bold leading-none" style={{ color, fontSize: numSize }}>
+          {displayScore}
+        </span>
+        <span
+          className="font-bold uppercase tracking-[0.18em] mt-0.5 leading-none"
+          style={{ color, fontSize: lblSize }}
+        >
           {label}
         </span>
       </div>
@@ -185,9 +196,7 @@ function BusinessHealthDashboard({ result }: { result: { overallScore: number; c
       <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] mb-6">Business Health Score</p>
       <div className="flex flex-col md:flex-row items-center gap-8">
         {/* Circular gauge */}
-        <div className="relative flex items-center justify-center flex-shrink-0" style={{ width: 160, height: 160 }}>
-          <AnimatedGauge score={score} />
-        </div>
+        <AnimatedGauge score={score} />
         {/* Pillar breakdown */}
         <div className="flex-1 w-full space-y-5">
           <p className="text-xs text-slate-500 leading-relaxed">
@@ -750,26 +759,56 @@ export default function Results() {
                 {/* Right: compact health score */}
                 <div className="flex flex-col items-center md:items-end flex-shrink-0">
                   <p className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-2">Health Score</p>
-                  <div className="relative flex items-center justify-center" style={{ width: 100, height: 100 }}>
-                    <AnimatedGauge score={result.overallScore} size={100} stroke={9} />
-                  </div>
+                  <AnimatedGauge score={result.overallScore} size={100} stroke={9} />
                   <p className="text-[10px] text-slate-500 mt-1 text-center">
                     Lowest: <span className="text-coral font-semibold" style={{ color: '#c0504d' }}>{weakestByScore.name} {weakestByScore.score}/100</span>
                   </p>
                 </div>
               </div>
 
-              {/* Bottom: pain echo */}
-              {result.userPainPoints?.topPain && (
-                <div className="flex items-start gap-3 pt-4 border-t border-[#1a2332]">
-                  <AlertTriangle size={14} className="text-cyan-400/60 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    You flagged{" "}
-                    <span className="font-semibold text-white">"{result.userPainPoints.topPain.value}"</span>{" "}
-                    as your most painful friction point. Our analysis below addresses that pillar first.
-                  </p>
-                </div>
-              )}
+              {/* Bottom: pain echo — acknowledges all flagged areas, not just the top one */}
+              {result.userPainPoints?.topPain && (() => {
+                const allPains = result.userPainPoints.allPains ?? [];
+                const count = allPains.length;
+                const topPain = result.userPainPoints.topPain;
+                const others = allPains.filter(p => p.value !== topPain.value).slice(0, 4);
+
+                return (
+                  <div className="flex items-start gap-3 pt-4 border-t border-[#1a2332]">
+                    <AlertTriangle size={14} className="text-cyan-400/60 mt-0.5 flex-shrink-0" />
+                    <div className="space-y-1.5">
+                      <p className="text-sm text-slate-400 leading-relaxed">
+                        {count > 1 ? (
+                          <>
+                            You flagged{" "}
+                            <span className="font-semibold text-white">{count} friction areas</span>.{" "}
+                            Our analysis addresses all of them — starting with your sharpest:{" "}
+                            <span className="font-semibold text-white">"{topPain.value}"</span>.
+                          </>
+                        ) : (
+                          <>
+                            You flagged{" "}
+                            <span className="font-semibold text-white">"{topPain.value}"</span>{" "}
+                            as your biggest friction point. Our analysis addresses that pillar first.
+                          </>
+                        )}
+                      </p>
+                      {others.length > 0 && (
+                        <p className="text-[12px] text-slate-500 leading-relaxed">
+                          Also flagged:{" "}
+                          {others.map((p, i) => (
+                            <span key={p.value}>
+                              <span className="text-slate-400">{p.value}</span>
+                              {i < others.length - 1 ? <span className="text-slate-600"> · </span> : null}
+                            </span>
+                          ))}
+                          {allPains.length > 5 && <span className="text-slate-600"> · …</span>}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </motion.div>

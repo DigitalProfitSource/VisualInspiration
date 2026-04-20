@@ -9,36 +9,12 @@ export const RevenuePainSchema = z.array(RevenuePainItemSchema).min(1, "Select a
 
 export type RevenuePainItem = z.infer<typeof RevenuePainItemSchema>;
 
-export const IndustrySchema = z.enum([
-  "HVAC",
-  "Plumbing",
-  "Electrical",
-  "Roofing",
-  "Solar",
-  "Remodeling",
-  "Landscaping",
-  "Windows & Doors",
-  "Painting",
-  "Cleaning",
-  "Pest Control",
-  "Legal",
-  "Med Spa / Aesthetics",
-  "Real Estate",
-  "Auto Services",
-  "Pool & Spa",
-  "Flooring",
-  "Insulation",
-  "Garage Doors",
-  "Security Systems",
-  "Moving Services",
-  "Chiropractic",
-  "Dental",
-  "Financial Services",
-  "Insurance",
-  "Fitness / Wellness",
-  "Staffing / HR",
-  "Other"
-]);
+// Industry is a free-text label (NAICS-aligned when possible, e.g. "Specialty
+// Trade Contractor", "Offices of Dentists", "Other Personal Care Services").
+// Claude populates this automatically from the scraped website, but users can
+// override it manually. Scoring benchmarks fall back gracefully for any value
+// that doesn't match a known category — there's no hard whitelist.
+export const IndustrySchema = z.string().min(1, "Industry is required").max(120);
 
 export const TeamSizeSchema = z.enum([
   "Solo",
@@ -224,7 +200,7 @@ export const OperationalComplexitySchema = z.enum([
 export const AssessmentSchema = z.object({
   revenue_pain: RevenuePainSchema,
   business_name: z.string().min(1, "Company name is required"),
-  website_url: z.string().regex(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/, "Please enter a valid URL").or(z.literal("")),
+  website_url: z.string().min(1, "Website URL is required").regex(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/, "Please enter a valid URL"),
   industry: IndustrySchema,
   niche_specificity: z.string().min(1, "Select your specialization"),
   team_size: TeamSizeSchema,
