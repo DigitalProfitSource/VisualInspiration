@@ -302,6 +302,7 @@ export default function Assessment() {
               currentSpecialization={watchedValues.niche_specificity}
               specSuggestion={specSuggestion}
               suggestedIndustry={suggestedIndustry}
+              suggestedBusinessName={suggestedBusinessName}
               suggestedNaicsCode={suggestedNaicsCode}
               suggestedNaicsTitle={suggestedNaicsTitle}
               specStatus={specStatus}
