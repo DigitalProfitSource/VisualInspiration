@@ -109,13 +109,31 @@ function extractBusinessName(
 
   const generic = /^(home|welcome|homepage|index|about|contact|services)$/i;
 
-  // og:site_name is usually the brand — but some sites set it to a tagline.
-  // Trust it only if it looks related to the domain.
+  // Among multiple title segments, prefer the one LEAST similar to the domain.
+  // Rationale: the domain often encodes the geo/service area (e.g. "landscapingboise"),
+  // while the actual brand name ("Chamberlain & Sons") differs from the domain.
+  // Note: when the domain IS the brand (e.g. "sawtoothgutter.com"), Claude's
+  // businessName output provides a reliable authoritative second pass.
+  function pickLeastDomainLike(segs: string[]): string {
+    if (segs.length === 1) return segs[0];
+    let best = segs[0];
+    let bestScore = scoreSegmentAgainstDomain(segs[0], domain);
+    for (let i = 1; i < segs.length; i++) {
+      const s = scoreSegmentAgainstDomain(segs[i], domain);
+      if (s < bestScore) { bestScore = s; best = segs[i]; }
+    }
+    return best;
+  }
+
+  // og:site_name — trust it ONLY when it clearly differs from the domain.
+  // A high match score (>= 0.5) means it's a domain-derived SEO name
+  // (e.g. landscapingboise.com → "Landscaping Boise") — skip it so the title
+  // can reveal the actual brand ("Chamberlain & Sons").
   const ogName = metadata.ogSiteName?.trim();
   if (ogName && !generic.test(ogName)) {
     const score = scoreSegmentAgainstDomain(ogName, domain);
-    if (score >= 0.5) return ogName;
-    // Low score — keep going, the title likely has a better candidate.
+    if (score < 0.5) return ogName;
+    // Else: domain-derived SEO name — fall through to title extraction
   }
 
   const raw = metadata.ogTitle || metadata.title;
@@ -123,36 +141,24 @@ function extractBusinessName(
   const cleanSegments = (sep: RegExp) =>
     raw.split(sep).map(s => s.trim()).filter(Boolean).filter(s => !generic.test(s));
 
-  // 1. Colon convention — brand on LEFT
+  // For all separator types: pick the segment least similar to the domain.
+  // The brand name is whatever segment doesn't echo the domain/geo name.
   if (/:/.test(raw)) {
     const segs = cleanSegments(/\s*:\s*/);
-    if (segs.length >= 1) return segs[0];
+    if (segs.length >= 1) return pickLeastDomainLike(segs);
   }
 
-  // 2. Pipe / chevron convention — brand on RIGHT
   if (/[|»·]/.test(raw)) {
     const segs = cleanSegments(/\s*[|»·]\s*/);
-    if (segs.length >= 1) return segs[segs.length - 1];
+    if (segs.length >= 1) return pickLeastDomainLike(segs);
   }
 
-  // 3. Dash separators are ambiguous — use domain-matching tiebreaker
   if (/[—–\-]/.test(raw)) {
     const segs = cleanSegments(/\s*[—–\-]\s*/);
-    if (segs.length === 1) return segs[0];
-    if (segs.length > 1) {
-      let best = segs[0];
-      let bestScore = scoreSegmentAgainstDomain(segs[0], domain);
-      for (let i = 1; i < segs.length; i++) {
-        const s = scoreSegmentAgainstDomain(segs[i], domain);
-        if (s > bestScore) { bestScore = s; best = segs[i]; }
-      }
-      // If no segment matches the domain at all, fall back to last segment (pipe-like convention).
-      if (bestScore === 0) return segs[segs.length - 1];
-      return best;
-    }
+    if (segs.length >= 1) return pickLeastDomainLike(segs);
   }
 
-  // 4. No separator found
+  // No separator — return as-is (can't disambiguate without Claude)
   return generic.test(raw.trim()) ? undefined : raw.trim();
 }
 

@@ -45,4 +45,10 @@ export interface SpecializationResponse {
   naicsCode?: string | null;
   /** Official NAICS title, e.g. "All Other Specialty Trade Contractors". */
   naicsTitle?: string | null;
+  /**
+   * Claude's best determination of the actual brand/trading name.
+   * Overrides the scraper's heuristic extraction when the domain is an SEO/geo name
+   * (e.g. landscapingboise.com → "Landscaping Boise" scraper vs "Chamberlain & Sons" Claude).
+   */
+  businessName?: string | null;
 }

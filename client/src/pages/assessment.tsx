@@ -121,6 +121,7 @@ export default function Assessment() {
     suggestedIndustry,
     suggestedNaicsCode,
     suggestedNaicsTitle,
+    suggestedBusinessName,
     status: specStatus,
     showFallback: showSpecFallback,
     generateFromManual: generateSpecFromManual,
@@ -145,8 +146,9 @@ export default function Assessment() {
     }
   }, [scrapeStatus, scrapeInsights]);
 
-  // Auto-apply Claude-classified industry + specialization the moment they arrive.
-  // Claude's classification is authoritative — keyword-matched hints are ignored.
+  // Auto-apply Claude-classified industry + specialization + corrected business name.
+  // Claude is authoritative — it corrects the scraper when the domain is a geo/SEO name
+  // (e.g. landscapingboise.com → scraper: "Landscaping Boise", Claude: "Chamberlain & Sons").
   React.useEffect(() => {
     if (specStatus !== 'suggested') return;
 
@@ -160,7 +162,19 @@ export default function Assessment() {
     if (specSuggestion && !watchedValues.niche_specificity) {
       setValue('niche_specificity', specSuggestion, { shouldValidate: true, shouldDirty: true });
     }
-  }, [specStatus, specSuggestion, suggestedIndustry]);
+
+    // Apply Claude's corrected business name if the scraper got it wrong.
+    // Only override if the current value matches the domain-derived scraper value
+    // (i.e. the user hasn't manually typed something different).
+    if (suggestedBusinessName) {
+      const current = watchedValues.business_name;
+      const scraperName = scrapeInsights?.businessName;
+      // Override if: field is empty OR still showing the scraper's (potentially wrong) value
+      if (!current || current === scraperName) {
+        setValue('business_name', suggestedBusinessName, { shouldValidate: true, shouldDirty: true });
+      }
+    }
+  }, [specStatus, specSuggestion, suggestedIndustry, suggestedBusinessName]);
 
   const isStep3 = currentStep.id === 'pain';
 

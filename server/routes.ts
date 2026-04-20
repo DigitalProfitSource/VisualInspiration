@@ -349,6 +349,7 @@ export async function registerRoutes(
             industry: classification.industry,
             naicsCode: classification.naicsCode || null,
             naicsTitle: classification.naicsTitle || null,
+            businessName: classification.businessName || null,
           });
         }
         return res.json({
@@ -357,6 +358,7 @@ export async function registerRoutes(
           industry: null,
           naicsCode: null,
           naicsTitle: null,
+          businessName: null,
         });
       }
 

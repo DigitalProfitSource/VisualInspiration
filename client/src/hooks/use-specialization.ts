@@ -37,6 +37,11 @@ export interface UseSpecializationResult {
   suggestedNaicsCode: string | null;
   /** Official NAICS 2022 title, or null */
   suggestedNaicsTitle: string | null;
+  /**
+   * Claude's corrected business name — overrides the scraper's domain-derived extraction
+   * when the domain is a geo/SEO name rather than the actual brand.
+   */
+  suggestedBusinessName: string | null;
   status: SpecializationStatus;
   showFallback: boolean;
   generateFromManual: (specialty: string, idealCustomer: string) => void;
@@ -45,9 +50,10 @@ export interface UseSpecializationResult {
 
 const CACHE_PREFIX = "spec:";
 // Bump this when the classifier payload shape changes so cached responses from
-// an older shape don't poison the new flow (e.g. "Other" stuck in place after
-// the NAICS rebuild).
-const CACHE_VERSION = "v2";
+// an older shape don't poison the new flow.
+// v2: NAICS rebuild (industry enum → free-text)
+// v3: businessName field added; scraper domain-match heuristic inverted
+const CACHE_VERSION = "v3";
 
 function makeCacheKey(scope: string, suffix: string): string {
   return `${CACHE_PREFIX}${CACHE_VERSION}:${scope}:${suffix}`;
@@ -68,6 +74,7 @@ export function useSpecialization(
   const [suggestedIndustry, setSuggestedIndustry] = useState<string | null>(null);
   const [suggestedNaicsCode, setSuggestedNaicsCode] = useState<string | null>(null);
   const [suggestedNaicsTitle, setSuggestedNaicsTitle] = useState<string | null>(null);
+  const [suggestedBusinessName, setSuggestedBusinessName] = useState<string | null>(null);
   const [status, setStatus] = useState<SpecializationStatus>("idle");
   const inflightRef = useRef<AbortController | null>(null);
   const lastKeyRef = useRef<string | null>(null);
@@ -92,6 +99,7 @@ export function useSpecialization(
             setSuggestedIndustry(parsed.industry ?? null);
             setSuggestedNaicsCode(parsed.naicsCode ?? null);
             setSuggestedNaicsTitle(parsed.naicsTitle ?? null);
+            setSuggestedBusinessName(parsed.businessName ?? null);
             setStatus("suggested");
             return;
           }
@@ -127,6 +135,7 @@ export function useSpecialization(
           setSuggestedIndustry(data.industry ?? null);
           setSuggestedNaicsCode(data.naicsCode ?? null);
           setSuggestedNaicsTitle(data.naicsTitle ?? null);
+          setSuggestedBusinessName(data.businessName ?? null);
           setStatus("suggested");
           try {
             sessionStorage.setItem(cacheKey, JSON.stringify(data));
@@ -178,6 +187,7 @@ export function useSpecialization(
       setSuggestedIndustry(null);
       setSuggestedNaicsCode(null);
       setSuggestedNaicsTitle(null);
+      setSuggestedBusinessName(null);
       setStatus("idle");
       lastKeyRef.current = null;
     }
@@ -209,6 +219,7 @@ export function useSpecialization(
     setSuggestedIndustry(null);
     setSuggestedNaicsCode(null);
     setSuggestedNaicsTitle(null);
+    setSuggestedBusinessName(null);
     setStatus("dismissed");
     inflightRef.current?.abort();
     lastKeyRef.current = null;
@@ -219,6 +230,7 @@ export function useSpecialization(
     suggestedIndustry,
     suggestedNaicsCode,
     suggestedNaicsTitle,
+    suggestedBusinessName,
     status,
     showFallback: showFallback as boolean,
     generateFromManual,

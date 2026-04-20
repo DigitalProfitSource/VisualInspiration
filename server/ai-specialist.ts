@@ -46,6 +46,12 @@ export interface BusinessClassification {
   naicsTitle: string;
   /** Precise 2–6 word specialization label. */
   specialization: string;
+  /**
+   * The actual trading/brand name of the business as it appears on the site.
+   * Corrects cases where the scraper extracted the domain-derived SEO name
+   * (e.g. "Landscaping Boise") instead of the real brand ("Chamberlain & Sons").
+   */
+  businessName?: string;
 }
 
 // --------------------------------------------------------------------------
@@ -94,11 +100,12 @@ function buildClassificationPrompt(input: ClassificationContext): string {
 
 Your job: analyze the scraped website context below and return a precise industry classification using U.S. NAICS 2022 standards, plus a specialization label.
 
-Return ONLY a minified JSON object with these four keys (no prose, no markdown, no code fences):
+Return ONLY a minified JSON object with these five keys (no prose, no markdown, no code fences):
   - "industry": a short, human-readable industry label (2–5 words) suitable for display in a form. NAICS-aligned. Examples: "Specialty Trade Contractor", "Offices of Dentists", "Law Firm", "Med Spa", "Pest Control Services", "Landscaping Services", "Auto Repair Shop", "Residential HVAC Contractor", "Management Consulting", "Commercial Printing".
   - "naicsCode": the 6-digit NAICS code as a string (e.g. "238990").
   - "naicsTitle": the official NAICS 2022 title (e.g. "All Other Specialty Trade Contractors").
   - "specialization": a 2–6 word label that describes precisely what THIS business does within their industry. More specific than "industry" — captures the actual service mix.
+  - "businessName": the actual trading/brand name of the business as it appears on their website. Look for it in their description, page headings, or company branding — NOT the domain name. Example: domain "landscapingboise.com" might belong to "Chamberlain & Sons Landscaping Company". If you cannot confidently determine a brand name distinct from the domain, omit this field entirely.
 
 Rules:
   - Classify based on their PRIMARY service. If a company does gutters, not roofs, classify as specialty trade contractor (238990), not roofing contractor (238160).
@@ -208,6 +215,7 @@ export async function classifyBusiness(
       naicsCode?: unknown;
       naicsTitle?: unknown;
       specialization?: unknown;
+      businessName?: unknown;
     };
     const industry = typeof parsed.industry === "string"
       ? parsed.industry.replace(/^["'`]|["'`]$/g, "").trim().slice(0, 120)
@@ -221,10 +229,11 @@ export async function classifyBusiness(
     const specialization = typeof parsed.specialization === "string"
       ? parsed.specialization.replace(/^["'`]|["'`]$/g, "").replace(/\.$/, "").trim().slice(0, 80)
       : "";
+    const businessName = typeof parsed.businessName === "string"
+      ? parsed.businessName.replace(/^["'`]|["'`]$/g, "").trim().slice(0, 120) || undefined
+      : undefined;
 
-    // Industry + specialization are required; NAICS fields are nice-to-have
-    // (we don't hard-fail the assessment if Claude omits them — but in practice
-    // the prompt is explicit enough that all four come back together).
+    // Industry + specialization are required; NAICS + businessName fields are nice-to-have.
     if (!industry || !specialization) return null;
 
     return {
@@ -232,6 +241,7 @@ export async function classifyBusiness(
       naicsCode: /^\d{6}$/.test(naicsCode) ? naicsCode : "",
       naicsTitle,
       specialization,
+      businessName,
     };
   } catch (err) {
     console.error("[ai-specialist] JSON parse failed:", cleaned.slice(0, 200));
