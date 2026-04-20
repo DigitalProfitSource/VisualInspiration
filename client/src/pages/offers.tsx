@@ -78,7 +78,7 @@ const pricingTiers: PricingTier[] = [
     clarityLine: "Everything in Growth Architecture, PLUS:",
     expandedBullets: [
       { title: "AI Search Visibility", description: "Machine-readable schema injection (JSON-LD) so ChatGPT, Perplexity, and Google AI Overviews recommend your business." },
-      { title: "The \"Found Money\" DBR Campaign", description: "Targeted Database Reactivation campaign on your existing contacts — covered by our 14-day guarantee." },
+      { title: "The \"Found Money\" DBR Campaign", description: "Targeted Database Reactivation campaign on your existing contacts — covered by our 30-day guarantee." },
       { title: "Multi-Platform Reputation Engine", description: "Automated 5-star review collection, sentiment routing, and lifecycle reactivation across every platform." }
     ],
     goal: "Complete the Sequential Revenue™ loop. Every lead captured, every dollar maximized, every customer compounding your growth — whether you're there or not.",
@@ -426,7 +426,7 @@ const comparisonRows: ComparisonRow[] = [
   { label: "FULL LOOP — SEQUENTIAL REVENUE™ (Operating System)", brain: "", system: "", infrastructure: "", isSection: true },
   { label: "AI Search Visibility (JSON-LD Schema Injection)", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
   { label: "ChatGPT / Perplexity / Google AI Overviews", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
-  { label: "\"Found Money\" DBR Campaign (14-day guarantee)", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
+  { label: "\"Found Money\" DBR Campaign (30-day guarantee)", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
   { label: "Database Segmentation & Lifecycle Reactivation", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
   { label: "Found Money Guarantee", brain: "\u2014", system: "\u2014", infrastructure: "Included" },
 

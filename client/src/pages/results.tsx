@@ -642,7 +642,7 @@ export default function Results() {
 
   const operatingFeatures = [
     "Everything in Growth Architecture, plus:",
-    'The "Found-Money" DBR Campaign (14-day guarantee)',
+    'The "Found Money" DBR Campaign (30-day guarantee)',
     "AI Search Visibility (ChatGPT, Perplexity, Google AI Overviews)",
     "Machine-readable schema injection (JSON-LD)",
     "Multi-platform reputation management",
@@ -1509,15 +1509,15 @@ export default function Results() {
             </div>
 
             <div className="text-center max-w-3xl mx-auto">
-              <p className="text-[11px] font-bold text-cyan-400/80 uppercase tracking-[0.3em] mb-3">The "Found Money" Guarantee</p>
+              <p className="text-[11px] font-bold text-cyan-400/80 uppercase tracking-[0.3em] mb-3">Our Guarantee</p>
               <h3 className="text-3xl md:text-4xl font-heading font-bold text-white mb-5 leading-tight">
-                We'll find the money before you pay a dime for setup.
+                The &ldquo;Found Money&rdquo; Guarantee
               </h3>
               <p className="text-base md:text-lg text-slate-300 mb-6 leading-relaxed">
-                Within the first 14 days of activation, we run a targeted Database Reactivation campaign on your existing contacts. <span className="text-white font-semibold">If the revenue opportunity we surface doesn't cover our setup fee, you don't pay us a dime for the implementation</span> — and you keep the lead intelligence report we generated.
+                Within your first 30 days on SimpleSequence, we run a targeted Database Reactivation campaign on your existing contacts. <span className="text-white font-semibold">If we don&rsquo;t uncover enough revenue opportunities to meaningfully offset your setup and first month&rsquo;s fees, we&rsquo;ll run a second full reactivation campaign at no additional service cost.</span>
               </p>
               <p className="text-sm text-slate-400 mb-8 italic">
-                You either get a self-funding system, or you get a free audit of your database. Either way, you win.
+                You get a system designed to turn past customers into new cash flow &mdash; without increasing your ad spend.
               </p>
 
               <Link href="/book">
