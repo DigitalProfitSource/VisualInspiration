@@ -691,9 +691,14 @@ export default function Results() {
           className="mb-6 text-center"
         >
           <p className="text-[11px] font-bold text-cyan-400/60 uppercase tracking-[0.25em] mb-2">Sequential Revenue™ Friction Analysis</p>
-          <h1 className="text-2xl md:text-3xl font-heading font-bold text-white mb-3">
+          <h1 className="text-2xl md:text-3xl font-heading font-bold text-white mb-2">
             {result.businessName}
           </h1>
+          {result.niche && (
+            <p className="text-sm md:text-base text-cyan-400/80 mb-3 font-medium">
+              {result.niche}
+            </p>
+          )}
           {/* Methodology frame — positions the report as Step 1 of 4 */}
           <div className="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-2 rounded-full border border-cyan-500/20 bg-cyan-950/20 text-[11px] text-slate-400">
             <span className="font-bold text-cyan-300 uppercase tracking-wider">Step 1 of 4</span>
