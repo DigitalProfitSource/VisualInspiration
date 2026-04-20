@@ -279,14 +279,46 @@ const GlassSlider = React.forwardRef<
 ))
 GlassSlider.displayName = SliderPrimitive.Root.displayName
 
-export { 
-  GlassButton, 
-  GlassCard, 
-  GlassInput, 
-  GlassLabel, 
-  GlassSelect, 
-  GlassSelectItem, 
-  GlassSlider, 
-  GlassRadioGroup, 
-  VisualCardSelector 
+const GlassSelectGroup = SelectPrimitive.Group;
+
+const GlassSelectSeparator = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Separator>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Separator
+    ref={ref}
+    className={cn("mx-1 my-1 h-px bg-slate-700/60", className)}
+    {...props}
+  />
+));
+GlassSelectSeparator.displayName = SelectPrimitive.Separator.displayName;
+
+const GlassSelectLabel = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Label>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
+>(({ className, ...props }, ref) => (
+  <SelectPrimitive.Label
+    ref={ref}
+    className={cn(
+      "px-4 py-1.5 text-[10px] font-bold tracking-[0.15em] uppercase text-slate-500",
+      className
+    )}
+    {...props}
+  />
+));
+GlassSelectLabel.displayName = SelectPrimitive.Label.displayName;
+
+export {
+  GlassButton,
+  GlassCard,
+  GlassInput,
+  GlassLabel,
+  GlassSelect,
+  GlassSelectItem,
+  GlassSelectGroup,
+  GlassSelectSeparator,
+  GlassSelectLabel,
+  GlassSlider,
+  GlassRadioGroup,
+  VisualCardSelector
 }
