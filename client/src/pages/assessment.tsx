@@ -12,8 +12,8 @@ import {
   ContactChannel,
   IndustrySchema
 } from "@/lib/types";
-import { 
-  STEPS, 
+import {
+  STEPS,
   REVENUE_PAIN_OPTIONS,
   TEAM_SIZE_OPTIONS,
   MONTHLY_LEAD_VOLUME_OPTIONS,
@@ -37,7 +37,8 @@ import {
   REVIEW_REQUEST_OPTIONS,
   CLOSE_RATE_OPTIONS,
   MANUAL_HOURS_OPTIONS,
-  OPERATIONAL_COMPLEXITY_OPTIONS
+  OPERATIONAL_COMPLEXITY_OPTIONS,
+  INDUSTRY_NICHE_MAP
 } from "@/lib/constants";
 import { calculateResults, AssessmentResult } from "@/lib/scoring";
 import {
@@ -137,6 +138,10 @@ export default function Assessment() {
   const [manualSpecialty, setManualSpecialty] = useState("");
   const [manualCustomer, setManualCustomer] = useState("");
   const [showManualForm, setShowManualForm] = useState(false);
+
+  // State for industry dropdown suggestions
+  const [showIndustrySuggestions, setShowIndustrySuggestions] = useState(false);
+  const [industryFilter, setIndustryFilter] = useState("");
 
   // Auto-fill business name the moment scrape completes (only if field is empty)
   React.useEffect(() => {
@@ -332,11 +337,35 @@ export default function Assessment() {
         );
 
       case 'industry': {
-        // Free-text industry field. Claude classifies to a NAICS-aligned label
+        // Free-text industry field with smart suggestions. Claude classifies to a NAICS-aligned label
         // (e.g. "Specialty Trade Contractor", "Offices of Dentists", "Med Spa").
-        // User can override if they disagree. We surface the NAICS code inline
-        // for credibility when Claude has returned one.
+        // Dropdown shows relevant industries based on scraped hints or user input.
         const showNaics = !!suggestedNaicsCode && watchedValues.industry === suggestedIndustry;
+
+        // Get all available industries from INDUSTRY_NICHE_MAP
+        const allIndustries = Object.keys(INDUSTRY_NICHE_MAP);
+
+        // Smart filtering: prioritize scraped hints, then filter by typed input
+        const getFilteredSuggestions = () => {
+          const currentInput = watchedValues.industry?.toLowerCase() || '';
+
+          // If scrape hints exist, show them first, otherwise show all industries
+          let suggested = (scrapeInsights?.success && scrapeInsights.industryHints && scrapeInsights.industryHints.length > 0)
+            ? scrapeInsights.industryHints
+            : allIndustries;
+
+          // Filter by current input if user is typing
+          if (currentInput.trim()) {
+            suggested = suggested.filter(ind =>
+              ind.toLowerCase().includes(currentInput)
+            );
+          }
+
+          return suggested.slice(0, 8); // Limit to 8 suggestions
+        };
+
+        const filteredIndustries = getFilteredSuggestions();
+        const shouldShowSuggestions = showIndustrySuggestions && filteredIndustries.length > 0;
 
         return (
           <div className="space-y-2 w-full">
@@ -352,20 +381,57 @@ export default function Assessment() {
                 </span>
               )}
             </div>
-            <GlassInput
-              id="industry"
-              placeholder="e.g. Roofing Contractor, Med Spa, Law Firm"
-              {...register('industry', {
-                onChange: () => {
+
+            {/* Industry input with dropdown trigger */}
+            <div className="relative">
+              <GlassInput
+                id="industry"
+                placeholder="e.g. Roofing Contractor, Med Spa, Law Firm"
+                value={watchedValues.industry || ''}
+                onChange={(e) => {
+                  setValue('industry', e.target.value);
                   // Clear specialization when user manually overrides industry
-                  // so the niche field doesn't end up stale.
                   if (watchedValues.niche_specificity) {
                     setValue('niche_specificity', '');
                   }
-                },
-              })}
-              data-testid="input-industry"
-            />
+                  setShowIndustrySuggestions(true);
+                }}
+                onFocus={() => setShowIndustrySuggestions(true)}
+                onBlur={() => setTimeout(() => setShowIndustrySuggestions(false), 200)}
+                data-testid="input-industry"
+              />
+
+              {/* Dropdown suggestions */}
+              {shouldShowSuggestions && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="absolute top-full left-0 right-0 mt-1 bg-[#0f1419] border border-cyan-500/30 rounded-xl shadow-2xl overflow-hidden z-50"
+                  data-testid="industry-suggestions-dropdown"
+                >
+                  {filteredIndustries.map((industry) => (
+                    <button
+                      key={industry}
+                      type="button"
+                      onClick={() => {
+                        setValue('industry', industry, { shouldValidate: true, shouldDirty: true });
+                        setShowIndustrySuggestions(false);
+                      }}
+                      className={`w-full px-4 py-3 text-left text-sm transition-colors ${
+                        watchedValues.industry === industry
+                          ? 'bg-cyan-500/20 text-cyan-300'
+                          : 'text-slate-300 hover:bg-cyan-500/10 hover:text-cyan-400'
+                      }`}
+                      data-testid={`industry-suggestion-${industry.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
+                      {industry}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </div>
+
             {showNaics && suggestedNaicsTitle && (
               <p className="text-[11px] text-slate-500 leading-tight">
                 {suggestedNaicsTitle}
@@ -417,7 +483,7 @@ export default function Assessment() {
                         ? "Select your industry first"
                         : isGenerating
                         ? "Analyzing your business…"
-                        : "e.g. What's your main service or specialty?"
+                        : "e.g. (what's the main services you offer)"
                     }
                     disabled={!industryValue || isGenerating}
                     data-testid="input-niche-specificity"
