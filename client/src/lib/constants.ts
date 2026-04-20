@@ -140,6 +140,274 @@ export const INDUSTRY_NICHE_MAP: Record<string, string[]> = {
   "Other": ["Professional Services", "Healthcare", "Retail", "Consulting", "Other"]
 };
 
+// ---------------------------------------------------------------------------
+// Industry-aware numeric slider configurations
+// Each entry defines realistic ranges for avg job value, monthly jobs/appointments,
+// monthly leads, and ad spend — so sliders start in a sensible range for the industry.
+// ---------------------------------------------------------------------------
+export interface SliderConfig {
+  min: number;
+  max: number;
+  step: number;
+  default: number;
+}
+
+export interface IndustryNumericConfig {
+  avgJobValue: SliderConfig;
+  monthlyJobs: SliderConfig;
+  monthlyLeads: SliderConfig;
+  adSpend: SliderConfig;
+  /** Singular label used in the UI: "job", "appointment", "case", "project" */
+  jobUnit: string;
+  /** Keywords (lowercase) used to match free-text industry/niche strings */
+  keywords: string[];
+}
+
+// Default fallback — used when industry doesn't match any entry
+export const DEFAULT_INDUSTRY_CONFIG: IndustryNumericConfig = {
+  avgJobValue:  { min: 100,   max: 25000,  step: 100,   default: 2500  },
+  monthlyJobs:  { min: 1,     max: 300,    step: 1,     default: 20    },
+  monthlyLeads: { min: 1,     max: 500,    step: 1,     default: 40    },
+  adSpend:      { min: 0,     max: 15000,  step: 250,   default: 1000  },
+  jobUnit: "job",
+  keywords: [],
+};
+
+export const INDUSTRY_NUMERIC_CONFIGS: IndustryNumericConfig[] = [
+  {
+    avgJobValue:  { min: 150,   max: 8000,   step: 50,    default: 1200  },
+    monthlyJobs:  { min: 5,     max: 200,    step: 5,     default: 35    },
+    monthlyLeads: { min: 5,     max: 400,    step: 5,     default: 70    },
+    adSpend:      { min: 0,     max: 10000,  step: 250,   default: 2000  },
+    jobUnit: "job",
+    keywords: ["hvac", "heating", "cooling", "air conditioning", "heat pump", "furnace"],
+  },
+  {
+    avgJobValue:  { min: 150,   max: 5000,   step: 50,    default: 800   },
+    monthlyJobs:  { min: 5,     max: 250,    step: 5,     default: 40    },
+    monthlyLeads: { min: 5,     max: 500,    step: 5,     default: 80    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1500  },
+    jobUnit: "job",
+    keywords: ["plumbing", "plumber", "drain", "water heater", "sewer"],
+  },
+  {
+    avgJobValue:  { min: 200,   max: 8000,   step: 100,   default: 1500  },
+    monthlyJobs:  { min: 5,     max: 150,    step: 5,     default: 25    },
+    monthlyLeads: { min: 5,     max: 300,    step: 5,     default: 50    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1500  },
+    jobUnit: "job",
+    keywords: ["electrical", "electrician", "wiring", "panel", "ev charger"],
+  },
+  {
+    avgJobValue:  { min: 2000,  max: 35000,  step: 500,   default: 10000 },
+    monthlyJobs:  { min: 1,     max: 50,     step: 1,     default: 10    },
+    monthlyLeads: { min: 2,     max: 120,    step: 2,     default: 25    },
+    adSpend:      { min: 0,     max: 20000,  step: 500,   default: 3000  },
+    jobUnit: "project",
+    keywords: ["roofing", "roof", "shingle", "gutter", "seamless gutter"],
+  },
+  {
+    avgJobValue:  { min: 12000, max: 80000,  step: 1000,  default: 30000 },
+    monthlyJobs:  { min: 1,     max: 25,     step: 1,     default: 5     },
+    monthlyLeads: { min: 2,     max: 100,    step: 2,     default: 20    },
+    adSpend:      { min: 0,     max: 30000,  step: 500,   default: 4000  },
+    jobUnit: "project",
+    keywords: ["solar", "photovoltaic", "battery storage"],
+  },
+  {
+    avgJobValue:  { min: 3000,  max: 100000, step: 500,   default: 20000 },
+    monthlyJobs:  { min: 1,     max: 20,     step: 1,     default: 5     },
+    monthlyLeads: { min: 2,     max: 80,     step: 2,     default: 15    },
+    adSpend:      { min: 0,     max: 20000,  step: 500,   default: 3000  },
+    jobUnit: "project",
+    keywords: ["remodel", "renovation", "kitchen", "bathroom remodel", "home addition", "basement"],
+  },
+  {
+    avgJobValue:  { min: 150,   max: 5000,   step: 50,    default: 600   },
+    monthlyJobs:  { min: 10,    max: 300,    step: 5,     default: 50    },
+    monthlyLeads: { min: 10,    max: 500,    step: 5,     default: 80    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1000  },
+    jobUnit: "job",
+    keywords: ["landscaping", "lawn", "landscape", "irrigation", "tree service", "hardscape"],
+  },
+  {
+    avgJobValue:  { min: 400,   max: 12000,  step: 100,   default: 3000  },
+    monthlyJobs:  { min: 3,     max: 80,     step: 1,     default: 15    },
+    monthlyLeads: { min: 5,     max: 150,    step: 5,     default: 30    },
+    adSpend:      { min: 0,     max: 10000,  step: 250,   default: 2000  },
+    jobUnit: "project",
+    keywords: ["windows", "doors", "window replacement", "entry door", "siding"],
+  },
+  {
+    avgJobValue:  { min: 400,   max: 8000,   step: 100,   default: 1500  },
+    monthlyJobs:  { min: 3,     max: 60,     step: 1,     default: 12    },
+    monthlyLeads: { min: 5,     max: 120,    step: 5,     default: 25    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1200  },
+    jobUnit: "project",
+    keywords: ["painting", "painter", "interior paint", "exterior paint", "cabinet"],
+  },
+  {
+    avgJobValue:  { min: 80,    max: 600,    step: 10,    default: 180   },
+    monthlyJobs:  { min: 20,    max: 400,    step: 5,     default: 80    },
+    monthlyLeads: { min: 20,    max: 600,    step: 5,     default: 120   },
+    adSpend:      { min: 0,     max: 5000,   step: 100,   default: 600   },
+    jobUnit: "appointment",
+    keywords: ["cleaning", "maid", "janitorial", "carpet cleaning", "move-in"],
+  },
+  {
+    avgJobValue:  { min: 80,    max: 600,    step: 10,    default: 200   },
+    monthlyJobs:  { min: 15,    max: 300,    step: 5,     default: 60    },
+    monthlyLeads: { min: 15,    max: 500,    step: 5,     default: 90    },
+    adSpend:      { min: 0,     max: 6000,   step: 100,   default: 800   },
+    jobUnit: "job",
+    keywords: ["pest control", "exterminator", "termite", "wildlife removal", "rodent"],
+  },
+  {
+    avgJobValue:  { min: 500,   max: 50000,  step: 500,   default: 5000  },
+    monthlyJobs:  { min: 1,     max: 40,     step: 1,     default: 8     },
+    monthlyLeads: { min: 2,     max: 100,    step: 2,     default: 20    },
+    adSpend:      { min: 0,     max: 25000,  step: 500,   default: 3000  },
+    jobUnit: "case",
+    keywords: ["legal", "attorney", "lawyer", "law firm", "family law", "personal injury", "criminal", "estate planning"],
+  },
+  {
+    avgJobValue:  { min: 150,   max: 3000,   step: 50,    default: 500   },
+    monthlyJobs:  { min: 15,    max: 200,    step: 5,     default: 60    },
+    monthlyLeads: { min: 20,    max: 400,    step: 5,     default: 100   },
+    adSpend:      { min: 0,     max: 15000,  step: 250,   default: 2500  },
+    jobUnit: "appointment",
+    keywords: ["med spa", "medspa", "botox", "filler", "laser", "coolsculpting", "injectable", "aesthetics", "microneedling"],
+  },
+  {
+    avgJobValue:  { min: 3000,  max: 50000,  step: 500,   default: 12000 },
+    monthlyJobs:  { min: 1,     max: 25,     step: 1,     default: 5     },
+    monthlyLeads: { min: 2,     max: 80,     step: 2,     default: 20    },
+    adSpend:      { min: 0,     max: 20000,  step: 500,   default: 3000  },
+    jobUnit: "transaction",
+    keywords: ["real estate", "realtor", "homes for sale", "brokerage", "property management"],
+  },
+  {
+    avgJobValue:  { min: 50,    max: 2000,   step: 25,    default: 350   },
+    monthlyJobs:  { min: 15,    max: 300,    step: 5,     default: 60    },
+    monthlyLeads: { min: 20,    max: 500,    step: 5,     default: 100   },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1000  },
+    jobUnit: "job",
+    keywords: ["auto", "mechanic", "oil change", "tire", "collision", "detailing", "car wash"],
+  },
+  {
+    avgJobValue:  { min: 150,   max: 15000,  step: 100,   default: 1500  },
+    monthlyJobs:  { min: 3,     max: 100,    step: 1,     default: 20    },
+    monthlyLeads: { min: 5,     max: 200,    step: 5,     default: 40    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1200  },
+    jobUnit: "job",
+    keywords: ["pool", "spa service", "pool installation", "pool maintenance", "pool repair"],
+  },
+  {
+    avgJobValue:  { min: 400,   max: 10000,  step: 100,   default: 2500  },
+    monthlyJobs:  { min: 3,     max: 60,     step: 1,     default: 12    },
+    monthlyLeads: { min: 5,     max: 120,    step: 5,     default: 25    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1200  },
+    jobUnit: "project",
+    keywords: ["flooring", "hardwood", "tile", "lvp", "laminate", "epoxy", "carpet install"],
+  },
+  {
+    avgJobValue:  { min: 800,   max: 15000,  step: 200,   default: 4000  },
+    monthlyJobs:  { min: 3,     max: 50,     step: 1,     default: 10    },
+    monthlyLeads: { min: 5,     max: 100,    step: 5,     default: 20    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1500  },
+    jobUnit: "project",
+    keywords: ["insulation", "spray foam", "attic insulation", "blown-in"],
+  },
+  {
+    avgJobValue:  { min: 150,   max: 2500,   step: 50,    default: 700   },
+    monthlyJobs:  { min: 10,    max: 200,    step: 5,     default: 40    },
+    monthlyLeads: { min: 10,    max: 400,    step: 5,     default: 80    },
+    adSpend:      { min: 0,     max: 6000,   step: 100,   default: 800   },
+    jobUnit: "job",
+    keywords: ["garage door", "garage opener"],
+  },
+  {
+    avgJobValue:  { min: 400,   max: 5000,   step: 100,   default: 1500  },
+    monthlyJobs:  { min: 3,     max: 80,     step: 1,     default: 15    },
+    monthlyLeads: { min: 5,     max: 150,    step: 5,     default: 30    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1200  },
+    jobUnit: "installation",
+    keywords: ["security system", "home security", "cctv", "surveillance", "alarm", "access control"],
+  },
+  {
+    avgJobValue:  { min: 400,   max: 5000,   step: 100,   default: 1200  },
+    monthlyJobs:  { min: 5,     max: 120,    step: 5,     default: 25    },
+    monthlyLeads: { min: 5,     max: 200,    step: 5,     default: 40    },
+    adSpend:      { min: 0,     max: 6000,   step: 100,   default: 800   },
+    jobUnit: "move",
+    keywords: ["moving", "movers", "relocation", "long-distance moving", "packing"],
+  },
+  {
+    avgJobValue:  { min: 40,    max: 250,    step: 5,     default: 80    },
+    monthlyJobs:  { min: 30,    max: 500,    step: 5,     default: 120   },
+    monthlyLeads: { min: 30,    max: 600,    step: 5,     default: 150   },
+    adSpend:      { min: 0,     max: 6000,   step: 100,   default: 800   },
+    jobUnit: "visit",
+    keywords: ["chiropractic", "chiropractor", "spinal", "chiro"],
+  },
+  {
+    avgJobValue:  { min: 80,    max: 5000,   step: 50,    default: 400   },
+    monthlyJobs:  { min: 20,    max: 400,    step: 5,     default: 100   },
+    monthlyLeads: { min: 20,    max: 500,    step: 5,     default: 120   },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1200  },
+    jobUnit: "appointment",
+    keywords: ["dental", "dentist", "orthodontic", "implant", "cosmetic dentistry"],
+  },
+  {
+    avgJobValue:  { min: 300,   max: 10000,  step: 100,   default: 2000  },
+    monthlyJobs:  { min: 3,     max: 80,     step: 1,     default: 15    },
+    monthlyLeads: { min: 5,     max: 150,    step: 5,     default: 30    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1000  },
+    jobUnit: "client",
+    keywords: ["financial", "tax", "bookkeeping", "payroll", "cpa", "accounting"],
+  },
+  {
+    avgJobValue:  { min: 200,   max: 5000,   step: 50,    default: 1000  },
+    monthlyJobs:  { min: 3,     max: 80,     step: 1,     default: 15    },
+    monthlyLeads: { min: 5,     max: 150,    step: 5,     default: 30    },
+    adSpend:      { min: 0,     max: 8000,   step: 250,   default: 1000  },
+    jobUnit: "policy",
+    keywords: ["insurance", "auto insurance", "home insurance", "life insurance", "broker"],
+  },
+  {
+    avgJobValue:  { min: 50,    max: 2000,   step: 25,    default: 300   },
+    monthlyJobs:  { min: 20,    max: 400,    step: 5,     default: 80    },
+    monthlyLeads: { min: 20,    max: 500,    step: 5,     default: 100   },
+    adSpend:      { min: 0,     max: 6000,   step: 100,   default: 800   },
+    jobUnit: "session",
+    keywords: [
+      "fitness", "wellness", "personal training", "yoga", "pilates", "gym",
+      "crossfit", "hiit", "martial arts", "dance", "massage", "acupuncture",
+      "holistic", "naturopathic", "colon hydrotherapy", "iv therapy", "detox",
+      "meditation", "functional medicine", "physical therapy", "nutrition",
+    ],
+  },
+];
+
+/**
+ * Resolve the best-matching IndustryNumericConfig for a given industry label and niche.
+ * Matches by keyword presence in either string. Falls back to DEFAULT_INDUSTRY_CONFIG.
+ */
+export function resolveIndustryConfig(
+  industry: string | undefined,
+  niche: string | undefined
+): IndustryNumericConfig {
+  if (!industry && !niche) return DEFAULT_INDUSTRY_CONFIG;
+  const haystack = `${industry ?? ""} ${niche ?? ""}`.toLowerCase();
+  let best: IndustryNumericConfig | null = null;
+  let bestHits = 0;
+  for (const cfg of INDUSTRY_NUMERIC_CONFIGS) {
+    const hits = cfg.keywords.filter(kw => haystack.includes(kw)).length;
+    if (hits > bestHits) { bestHits = hits; best = cfg; }
+  }
+  return best ?? DEFAULT_INDUSTRY_CONFIG;
+}
+
 export const TEAM_SIZE_OPTIONS = ["Solo", "2–5", "6–15", "16–50", "50+"];
 
 export const MONTHLY_LEAD_VOLUME_OPTIONS = [

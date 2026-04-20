@@ -22,15 +22,9 @@ export const TeamSizeSchema = z.enum([
   "50+"
 ]);
 
-export const MonthlyLeadVolumeSchema = z.enum([
-  "1-10 leads/month",
-  "11-25 leads/month",
-  "26-50 leads/month",
-  "51-100 leads/month",
-  "101-200 leads/month",
-  "200+ leads/month",
-  "I don't know"
-]);
+// Accepts both the new numeric slider value ("45") and legacy enum strings
+// ("26-50 leads/month") so old sessionStorage sessions still score correctly.
+export const MonthlyLeadVolumeSchema = z.string().min(1);
 
 export const FirstContactSpeedSchema = z.enum([
   "Under 5 minutes (excellent—top 10%)",
@@ -78,12 +72,9 @@ export const QuoteFollowUpSchema = z.enum([
   "Nothing (once we quote, we wait for them to decide)"
 ]);
 
-export const DormantLeadsSchema = z.enum([
-  "500+ (large reactivation opportunity)",
-  "100–499",
-  "Under 100",
-  "I'm not sure / we don't track this"
-]);
+// Accepts both the new numeric slider value ("250") and legacy enum strings
+// ("100–499") so old sessionStorage sessions still score correctly.
+export const DormantLeadsSchema = z.string().min(1);
 
 export const NoShowRateSchema = z.enum([
   "0-10% (excellent—very reliable customers)",
@@ -138,18 +129,9 @@ export const ReviewRequestSchema = z.enum([
   "We rely on organic reviews / we don't really ask"
 ]);
 
-export const CloseRateSchema = z.enum([
-  "1-2 out of 10 (10-20%)",
-  "2-3 out of 10 (20-30%)",
-  "3-4 out of 10 (30-40%)",
-  "4-5 out of 10 (40-50%)",
-  "5-6 out of 10 (50-60%)",
-  "6-7 out of 10 (60-70%)",
-  "7-8 out of 10 (70-80%)",
-  "8-9 out of 10 (80-90%)",
-  "9-10 out of 10 (90-100%)",
-  "I don't know"
-]);
+// Accepts both the new numeric percentage slider value ("45") and legacy enum strings
+// ("4-5 out of 10 (40-50%)") so old sessionStorage sessions still score correctly.
+export const CloseRateSchema = z.string().min(1);
 
 export const ManualHoursSchema = z.enum([
   "0-2 hours/week (minimal—very streamlined)",
