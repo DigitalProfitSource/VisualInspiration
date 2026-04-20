@@ -33,6 +33,11 @@ interface ScrapeInsightPanelProps {
   specSuggestion?: string | null;
   /** AI-classified industry (NAICS-aligned label) from Claude */
   suggestedIndustry?: string | null;
+  /**
+   * Claude's corrected business name — overrides the scraper's domain-derived
+   * extraction when the domain is an SEO/geo name (e.g. "Landscaping Boise" → "Chamberlain & Sons").
+   */
+  suggestedBusinessName?: string | null;
   /** 6-digit NAICS code — shown beneath the industry row for credibility */
   suggestedNaicsCode?: string | null;
   /** Official NAICS 2022 title — shown as a tooltip on the code badge */
@@ -52,6 +57,7 @@ export function ScrapeInsightPanel({
   currentSpecialization,
   specSuggestion,
   suggestedIndustry,
+  suggestedBusinessName,
   suggestedNaicsCode,
   suggestedNaicsTitle,
   specStatus,
@@ -113,18 +119,28 @@ export function ScrapeInsightPanel({
           </div>
 
           <div className="space-y-2.5 text-[13px]">
-            {/* Business name — show "Use this" if not yet applied, "Applied" if it was */}
-            {insights.businessName && (
-              insights.businessName === currentBusinessName ? (
-                <AutoAppliedRow label="Business name" value={insights.businessName} />
-              ) : onApplyBusinessName ? (
-                <InsightRow
-                  label="Business name"
-                  value={insights.businessName}
-                  onApply={() => onApplyBusinessName(insights.businessName!)}
-                />
-              ) : null
-            )}
+            {/* Business name — Claude's corrected name takes priority over the scraper's
+                domain-derived extraction (e.g. "Chamberlain & Sons" > "Landscaping Boise").
+                Falls back to the scraper value if Claude hasn't returned one yet. */}
+            {(() => {
+              const displayName = suggestedBusinessName || insights.businessName;
+              const isAiCorrected = !!suggestedBusinessName && suggestedBusinessName !== insights.businessName;
+              if (!displayName) return null;
+              if (displayName === currentBusinessName) {
+                return <AutoAppliedRow label="Business name" value={displayName} aiCorrected={isAiCorrected} />;
+              }
+              if (onApplyBusinessName) {
+                return (
+                  <InsightRow
+                    label="Business name"
+                    value={displayName}
+                    aiCorrected={isAiCorrected}
+                    onApply={() => onApplyBusinessName(displayName)}
+                  />
+                );
+              }
+              return null;
+            })()}
 
             {/* Industry — Claude's NAICS-based classification.
                 While Claude is still thinking, show a loading row.
@@ -218,14 +234,30 @@ export function ScrapeInsightPanel({
 /**
  * A row showing a value that was already auto-applied.
  */
-function AutoAppliedRow({ label, value }: { label: string; value: string }) {
+function AutoAppliedRow({
+  label,
+  value,
+  aiCorrected = false,
+}: {
+  label: string;
+  value: string;
+  aiCorrected?: boolean;
+}) {
   return (
     <div className="flex items-center justify-between gap-3">
       <div className="flex items-start gap-2 min-w-0 flex-1">
         <span className="text-slate-500 text-[11px] tracking-wide uppercase mt-0.5 shrink-0 w-20">
           {label}
         </span>
-        <span className="text-white text-[13px] font-medium truncate">{value}</span>
+        <span className="flex items-center gap-1.5 min-w-0">
+          <span className="text-white text-[13px] font-medium truncate">{value}</span>
+          {aiCorrected && (
+            <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-semibold tracking-wide bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 shrink-0">
+              <Sparkles size={8} />
+              AI
+            </span>
+          )}
+        </span>
       </div>
       <span className="flex items-center gap-1 px-2 py-1 text-emerald-400 text-[11px] font-medium shrink-0">
         <Check size={11} />
@@ -241,10 +273,12 @@ function AutoAppliedRow({ label, value }: { label: string; value: string }) {
 function InsightRow({
   label,
   value,
+  aiCorrected = false,
   onApply,
 }: {
   label: string;
   value: string;
+  aiCorrected?: boolean;
   onApply: () => void;
 }) {
   return (
@@ -253,7 +287,15 @@ function InsightRow({
         <span className="text-slate-500 text-[11px] tracking-wide uppercase mt-0.5 shrink-0 w-20">
           {label}
         </span>
-        <span className="text-white text-[13px] font-medium truncate">{value}</span>
+        <span className="flex items-center gap-1.5 min-w-0">
+          <span className="text-white text-[13px] font-medium truncate">{value}</span>
+          {aiCorrected && (
+            <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-semibold tracking-wide bg-cyan-500/15 text-cyan-400 border border-cyan-500/20 shrink-0">
+              <Sparkles size={8} />
+              AI
+            </span>
+          )}
+        </span>
       </div>
       <button
         type="button"
