@@ -128,6 +128,10 @@ export interface AssessmentResult {
 }
 
 function parseMonthlyLeads(value: string): number {
+  // New format: plain integer from slider ("45")
+  const direct = parseInt(value, 10);
+  if (!isNaN(direct) && /^\d+$/.test(value.trim())) return Math.max(1, direct);
+  // Legacy enum strings (backward compat for old sessionStorage sessions)
   if (value.includes("I don't know")) return 50;
   if (value.includes("200+")) return 250;
   if (value.includes("101-200")) return 150;
@@ -144,6 +148,12 @@ function parseJobValue(value: string): number {
 }
 
 function parseCloseRate(value: string): number {
+  // New format: plain integer percentage from slider ("45" → 0.45)
+  const direct = parseInt(value, 10);
+  if (!isNaN(direct) && /^\d+$/.test(value.trim())) {
+    return Math.min(1, Math.max(0.01, direct / 100));
+  }
+  // Legacy enum strings (backward compat for old sessionStorage sessions)
   if (value.includes("I don't know")) return 0.30;
   if (value.includes("9-10")) return 0.95;
   if (value.includes("8-9")) return 0.85;
@@ -489,19 +499,32 @@ function calculateConvertScore(data: AssessmentData): PillarScore {
     }
   }
 
-  const closeRateScores: Record<string, number> = {
-    "1-2 out of 10 (10-20%)": -15,
-    "2-3 out of 10 (20-30%)": -12,
-    "3-4 out of 10 (30-40%)": -8,
-    "4-5 out of 10 (40-50%)": -4,
-    "5-6 out of 10 (50-60%)": 0,
-    "6-7 out of 10 (60-70%)": 0,
-    "7-8 out of 10 (70-80%)": 0,
-    "8-9 out of 10 (80-90%)": 0,
-    "9-10 out of 10 (90-100%)": 0,
-    "I don't know": -10
-  };
-  score += closeRateScores[data.close_rate] || -8;
+  // Close rate penalty — handles both new numeric % format and legacy enum strings
+  let closeRatePenalty = -8;
+  const crNum = parseInt(data.close_rate, 10);
+  if (!isNaN(crNum) && /^\d+$/.test(data.close_rate.trim())) {
+    // New format: plain percentage integer ("45")
+    if (crNum <= 20) closeRatePenalty = -15;
+    else if (crNum <= 30) closeRatePenalty = -12;
+    else if (crNum <= 40) closeRatePenalty = -8;
+    else if (crNum <= 50) closeRatePenalty = -4;
+    else closeRatePenalty = 0;
+  } else {
+    const closeRateScores: Record<string, number> = {
+      "1-2 out of 10 (10-20%)": -15,
+      "2-3 out of 10 (20-30%)": -12,
+      "3-4 out of 10 (30-40%)": -8,
+      "4-5 out of 10 (40-50%)": -4,
+      "5-6 out of 10 (50-60%)": 0,
+      "6-7 out of 10 (60-70%)": 0,
+      "7-8 out of 10 (70-80%)": 0,
+      "8-9 out of 10 (80-90%)": 0,
+      "9-10 out of 10 (90-100%)": 0,
+      "I don't know": -10
+    };
+    closeRatePenalty = closeRateScores[data.close_rate] ?? -8;
+  }
+  score += closeRatePenalty;
 
   const automationScores: Record<string, number> = {
     "Yes — we have workflows set up (CRM sequences, auto-texts, etc.)": 0,
@@ -528,15 +551,29 @@ function calculateCompoundScore(data: AssessmentData): PillarScore {
   const findings: string[] = [];
   const blindspots: string[] = [];
 
-  const dormantScores: Record<string, number> = {
-    "500+ (large reactivation opportunity)": -30,
-    "100–499": -18,
-    "Under 100": -8,
-    "I'm not sure / we don't track this": -20
-  };
-  const dormantPenalty = dormantScores[data.dormant_leads] || -15;
+  // Dormant leads penalty — handles both new numeric format and legacy enum strings
+  let dormantPenalty = -15;
+  let dormantLabel = data.dormant_leads;
+  const dormantNum = parseInt(data.dormant_leads, 10);
+  if (!isNaN(dormantNum) && /^\d+$/.test(data.dormant_leads.trim())) {
+    // New format: score based on actual count
+    if (dormantNum >= 500) { dormantPenalty = -30; dormantLabel = `${dormantNum} dormant contacts`; }
+    else if (dormantNum >= 100) { dormantPenalty = -18; dormantLabel = `${dormantNum} dormant contacts`; }
+    else if (dormantNum >= 25) { dormantPenalty = -8; dormantLabel = `${dormantNum} dormant contacts`; }
+    else { dormantPenalty = -3; dormantLabel = `${dormantNum} dormant contacts`; }
+  } else {
+    // Legacy enum strings
+    const dormantScores: Record<string, number> = {
+      "500+ (large reactivation opportunity)": -30,
+      "100–499": -18,
+      "Under 100": -8,
+      "I'm not sure / we don't track this": -20
+    };
+    dormantPenalty = dormantScores[data.dormant_leads] ?? -15;
+    dormantLabel = data.dormant_leads.split('(')[0].trim();
+  }
   score += dormantPenalty;
-  findings.push(`Dormant lead database: ${data.dormant_leads.split('(')[0].trim()}`);
+  findings.push(`Dormant lead database: ${dormantLabel}`);
   if (dormantPenalty <= -18) {
     blindspots.push("Your dormant database is an untapped asset — reactivation campaigns typically recover 5-12% of old leads at near-zero acquisition cost");
   }
@@ -1020,17 +1057,21 @@ function calculateFinancialNarrative(
   const yearFiveGain = yearOneGain + (fullAnnualGain * 4);
 
   // Found Money Potential — one-time DBR campaign, kept separate from monthly gap
-  const dormantMidpoints: Record<string, number> = {
-    "500+": 600,
-    "100–499": 250,
-    "Under 100": 50,
-    "I'm not sure": 100
-  };
   let dormantLeadMidpoint = 100;
-  for (const [key, midpoint] of Object.entries(dormantMidpoints)) {
-    if (dormantLeads.includes(key)) {
-      dormantLeadMidpoint = midpoint;
-      break;
+  // New format: plain integer from slider ("250")
+  const dormantDirect = parseInt(dormantLeads, 10);
+  if (!isNaN(dormantDirect) && /^\d+$/.test(dormantLeads.trim())) {
+    dormantLeadMidpoint = Math.max(0, dormantDirect);
+  } else {
+    // Legacy enum strings (backward compat)
+    const dormantMidpoints: Record<string, number> = {
+      "500+": 600,
+      "100–499": 250,
+      "Under 100": 50,
+      "I'm not sure": 100
+    };
+    for (const [key, midpoint] of Object.entries(dormantMidpoints)) {
+      if (dormantLeads.includes(key)) { dormantLeadMidpoint = midpoint; break; }
     }
   }
   const foundMoneyPotential = Math.round(dormantLeadMidpoint * 0.08 * avgJobValue);
