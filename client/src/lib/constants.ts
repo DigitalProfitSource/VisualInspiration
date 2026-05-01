@@ -74,7 +74,7 @@ export const STEPS: Step[] = [
     id: "contact",
     title: "Where should we send it?",
     description: "Your full Sequential Revenue™ report, including the PDF, goes straight to your inbox.",
-    fields: ["contact_first_name", "contact_last_name", "contact_email", "disclaimer_accepted"],
+    fields: ["contact_first_name", "contact_last_name", "contact_email", "contact_phone", "disclaimer_accepted"],
     progress: 95
   }
 ];
