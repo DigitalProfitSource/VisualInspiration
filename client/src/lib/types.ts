@@ -17,11 +17,12 @@ export type RevenuePainItem = z.infer<typeof RevenuePainItemSchema>;
 export const IndustrySchema = z.string().min(1, "Industry is required").max(120);
 
 export const TeamSizeSchema = z.enum([
-  "Solo",
   "2–5",
-  "6–15",
-  "16–50",
-  "50+"
+  "6–10",
+  "11–15",
+  "16–20",
+  "21–30",
+  "30+"
 ]);
 
 // Accepts both the new numeric slider value ("45") and legacy enum strings
@@ -158,6 +159,27 @@ export const HasAIIntentSchema = z.enum([
   "No — we haven't explored AI tools yet"
 ]);
 
+export const AIVoiceBookingAwarenessSchema = z.enum([
+  "Yes — we have something like this running",
+  "I've heard of it but nothing is set up",
+  "I've seen it but wasn't sure it applied to my business",
+  "No — this is completely new to me"
+]);
+
+export const AIOmnichannelAwarenessSchema = z.enum([
+  "Yes — we're using something like this",
+  "I've heard of it but haven't set it up",
+  "I've seen it but wasn't sure it applied to my business",
+  "No — this is new to me"
+]);
+
+export const AICampaignsReviewsAwarenessSchema = z.enum([
+  "Yes — some of this is already running",
+  "I've heard of it but nothing is active",
+  "I've seen ads for it but don't fully understand it",
+  "No — first time hearing about this"
+]);
+
 export const StaffRepeatQuestionsSchema = z.enum([
   "Constantly — the same questions come up daily",
   "Sometimes — a few recurring questions per week",
@@ -208,14 +230,21 @@ export const AssessmentSchema = z.object({
   intake_centralization: IntakeCentralizationSchema,
   pipeline_tracking: PipelineTrackingSchema,
   manual_hours: ManualHoursSchema,
-  staff_repeat_questions: StaffRepeatQuestionsSchema,
-  process_documentation: ProcessDocumentationSchema,
-  operational_complexity: OperationalComplexitySchema,
+  ai_voice_booking_awareness: AIVoiceBookingAwarenessSchema.optional(),
+  ai_omnichannel_awareness: AIOmnichannelAwarenessSchema.optional(),
+  ai_campaigns_reviews_awareness: AICampaignsReviewsAwarenessSchema.optional(),
+  staff_repeat_questions: StaffRepeatQuestionsSchema.optional(),
+  process_documentation: ProcessDocumentationSchema.optional(),
+  operational_complexity: OperationalComplexitySchema.optional(),
   contact_first_name: z.string().min(1, "First name is required"),
   contact_last_name: z.string().min(1, "Last name is required"),
   contact_email: z.string().email("Valid email is required"),
   contact_phone: z.string().optional(),
   disclaimer_accepted: z.boolean().refine(val => val === true, { message: "You must accept the disclaimer" }),
+  // Referral vs. paid lead split — "0"-"100" percentage string from slider.
+  referral_lead_split: z.string().optional(),
+  // Paid lead close rate — shown conditionally when referral split < 100.
+  paid_close_rate: z.string().optional(),
 });
 
 export type AssessmentData = z.infer<typeof AssessmentSchema>;

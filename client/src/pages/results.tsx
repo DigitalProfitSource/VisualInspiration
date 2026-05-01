@@ -345,6 +345,9 @@ function PillarCard({
   calcLabel,
   benchmarkNote,
   foundMoneyPotential,
+  dbrCampaignFrame,
+  dbrDescription,
+  dbrCampaignsPerYear,
 }: {
   title: string;
   pillar: PillarScore;
@@ -355,6 +358,9 @@ function PillarCard({
   calcLabel: string;
   benchmarkNote: string;
   foundMoneyPotential?: number;
+  dbrCampaignFrame?: string;
+  dbrDescription?: string;
+  dbrCampaignsPerYear?: number;
 }) {
   const [showCalc, setShowCalc] = useState(false);
 
@@ -447,12 +453,14 @@ function PillarCard({
           <div className="rounded-xl border border-cyan-500/25 bg-cyan-950/20 p-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">DBR Campaign Engine</span>
-              <span className="text-[10px] font-semibold text-cyan-500/60 bg-cyan-500/10 px-2 py-0.5 rounded-full">Recurring · 3x/yr</span>
+              <span className="text-[10px] font-semibold text-cyan-500/60 bg-cyan-500/10 px-2 py-0.5 rounded-full">
+                {dbrCampaignFrame ?? 'Re-Engagement'} · {dbrCampaignsPerYear ?? 2}x/yr
+              </span>
             </div>
             <p className="text-sm text-slate-300 leading-relaxed mb-2">
-              Your dormant lead database generates an estimated{" "}
-              <span className="font-mono font-bold text-cyan-400">~<AnimatedMoney value={foundMoneyPotential} /></span> per campaign.
-              Run seasonally (spring push, fall push, new service launch) — this is a recurring revenue engine, not a one-time event.
+              Your dormant contact database generates an estimated{" "}
+              <span className="font-mono font-bold text-cyan-400">~<AnimatedMoney value={foundMoneyPotential} /></span> per campaign.{" "}
+              {dbrDescription ?? "Targeted re-engagement campaigns turn past clients into referrals and repeat revenue."}
             </p>
             <div className="grid grid-cols-3 gap-3 mt-3 pt-3 border-t border-cyan-500/10">
               <div className="text-center">
@@ -543,11 +551,29 @@ function TierCard({
   );
 }
 
+function AnswerGroup({ label, rows }: { label: string; rows: [string, string][] }) {
+  return (
+    <div>
+      <p className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2">{label}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1.5">
+        {rows.map(([key, val]) => (
+          <div key={key} className="flex gap-2">
+            <span className="text-[11px] text-slate-500 min-w-[130px] shrink-0">{key}:</span>
+            <span className="text-[11px] text-slate-300 leading-snug">{val}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Results() {
   const [, setLocation] = useLocation();
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [leadId, setLeadId] = useState<string>('');
   const [contactEmail, setContactEmail] = useState<string>('');
+  const [assessmentData, setAssessmentData] = useState<Record<string, unknown> | null>(null);
+  const [showAnswers, setShowAnswers] = useState(false);
   const { value: animatedScore, ref: scoreRef } = useCountUp(result?.totalMonthlyGap ?? 0);
 
   useEffect(() => {
@@ -555,6 +581,10 @@ export default function Results() {
     const storedLeadId = sessionStorage.getItem('leadId');
     const storedEmail = sessionStorage.getItem('contactEmail');
 
+    const storedAssessmentData = sessionStorage.getItem('assessmentData');
+    if (storedAssessmentData) {
+      try { setAssessmentData(JSON.parse(storedAssessmentData)); } catch {}
+    }
     if (storedResult) {
       const parsed = JSON.parse(storedResult) as AssessmentResult;
       if (!parsed.gapBreakdown) {
@@ -866,6 +896,92 @@ export default function Results() {
                 </div>
               ))}
             </div>
+
+            {/* === WHAT YOU TOLD US — expandable === */}
+            {assessmentData && (
+              <div className="mt-6 pt-5 border-t border-[#1a2332]">
+                <button
+                  onClick={() => setShowAnswers(v => !v)}
+                  className="flex items-center gap-2 text-[11px] font-bold text-cyan-400 uppercase tracking-[0.2em] hover:text-cyan-300 transition-colors w-full"
+                >
+                  <ChevronDown size={14} className={`transition-transform duration-200 ${showAnswers ? 'rotate-180' : ''}`} />
+                  What You Told Us
+                </button>
+
+                {showAnswers && (
+                  <div className="mt-4 space-y-5">
+                    {/* Business Basics */}
+                    <AnswerGroup label="Business Basics" rows={[
+                      ["Business Name", String(assessmentData.business_name ?? "—")],
+                      ["Website", String(assessmentData.website_url ?? "—")],
+                      ["Industry", String(assessmentData.industry ?? "—")],
+                      ["Specialization", String(assessmentData.niche_specificity ?? "—")],
+                      ["Team Size", String(assessmentData.team_size ?? "—")],
+                    ]} />
+
+                    {/* Your Numbers */}
+                    <AnswerGroup label="Your Numbers" rows={[
+                      ["Monthly Leads", String(assessmentData.monthly_lead_volume ?? "—")],
+                      ["Avg Job Value", `$${Number(assessmentData.avg_job_value ?? 0).toLocaleString()}`],
+                      ["Monthly Jobs Completed", String(assessmentData.monthly_sales_volume ?? "—")],
+                      ["Monthly Ad Spend", `$${Number(assessmentData.ad_spend ?? 0).toLocaleString()}`],
+                      ["Close Rate", `${assessmentData.close_rate ?? "—"}%`],
+                    ]} />
+
+                    {/* Lead Capture */}
+                    <AnswerGroup label="Lead Capture" rows={[
+                      ["Contact Channels", Array.isArray(assessmentData.contact_channels) ? (assessmentData.contact_channels as string[]).join(", ") : "—"],
+                      ["First Contact Speed", String(assessmentData.first_contact_speed ?? "—")],
+                      ["Lead Unavailability", String(assessmentData.lead_unavailability ?? "—")],
+                      ["Phone Miss Handling", String(assessmentData.phone_unavailable_handling ?? "—")],
+                      ["Digital Miss Handling", String(assessmentData.digital_unavailable_handling ?? "—")],
+                    ]} />
+
+                    {/* Conversion */}
+                    <AnswerGroup label="Lead Conversion" rows={[
+                      ["Quote Follow-Up", String(assessmentData.quote_followup ?? "—")],
+                      ["No-Show Rate", String(assessmentData.no_show_rate ?? "—")],
+                      ["No-Show Recovery", String(assessmentData.no_show_recovery ?? "—")],
+                      ["Dormant Leads (est.)", String(assessmentData.dormant_leads ?? "—")],
+                      ["Review Request", String(assessmentData.review_request ?? "—")],
+                    ]} />
+
+                    {/* Operations */}
+                    <AnswerGroup label="Operations & Systems" rows={[
+                      ["Intake Centralization", String(assessmentData.intake_centralization ?? "—")],
+                      ["Pipeline Tracking", String(assessmentData.pipeline_tracking ?? "—")],
+                      ["Manual Admin Hours", String(assessmentData.manual_hours ?? "—")],
+                      ["AI Voice & Booking Awareness", String(assessmentData.ai_voice_booking_awareness ?? "—")],
+                      ["AI Omnichannel Awareness", String(assessmentData.ai_omnichannel_awareness ?? "—")],
+                      ["AI Campaigns & Reviews Awareness", String(assessmentData.ai_campaigns_reviews_awareness ?? "—")],
+                    ]} />
+
+                    {/* Automation & AI */}
+                    <AnswerGroup label="Automation & AI" rows={[
+                      ["Automations in Place", String(assessmentData.has_automations ?? "—")],
+                      ["AI Tools Used", String(assessmentData.has_ai_intent ?? "—")],
+                      ["AI Search Visibility", String(assessmentData.ai_search_frequency ?? "—")],
+                      ["AI Readiness", String(assessmentData.ai_readiness ?? "—")],
+                    ]} />
+
+                    {/* Revenue Pains */}
+                    {Array.isArray(assessmentData.revenue_pain) && (assessmentData.revenue_pain as {value:string;severity:number}[]).length > 0 && (
+                      <div>
+                        <p className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-2">Revenue Pains Identified</p>
+                        <div className="space-y-1">
+                          {(assessmentData.revenue_pain as {value:string;severity:number}[]).map((p, i) => (
+                            <div key={i} className="flex items-center gap-2">
+                              <span className="text-xs text-slate-300">{p.value}</span>
+                              <span className="text-[10px] text-slate-500">· severity {p.severity}/5</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </motion.div>
 
@@ -961,9 +1077,9 @@ export default function Results() {
                   <div>
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="text-xs font-bold text-cyan-400 uppercase tracking-wider">+ DBR Campaign Layer</p>
-                      <span className="text-[10px] font-semibold text-cyan-500/60 bg-cyan-500/10 px-2 py-0.5 rounded-full">Recurring · {fn.dbrCampaignsPerYear}x/yr</span>
+                      <span className="text-[10px] font-semibold text-cyan-500/60 bg-cyan-500/10 px-2 py-0.5 rounded-full">{fn.dbrCampaignFrame} · {fn.dbrCampaignsPerYear}x/yr</span>
                     </div>
-                    <p className="text-[11px] text-slate-500">Seasonal reactivation, new services, re-engagement — funds setup &amp; retainer</p>
+                    <p className="text-[11px] text-slate-500">{fn.dbrDescription}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-mono font-bold text-cyan-300">
@@ -1080,9 +1196,12 @@ export default function Results() {
             description="Every 5-star review generates future leads passively. This monthly gap reflects ongoing revenue lost to reputation drag — leads who chose a competitor with more reviews and trust signals. Closing this funds your monthly retainer by growing inbound leads organically."
             monthlyImpact={result.gapBreakdown.compoundGap}
             calcFormula={result.gapBreakdown.compoundCalc}
-            calcLabel="Reviews Gap = Monthly leads × Reputation drag rate × Close rate × Avg job value (ongoing, recurring)"
+            calcLabel="Reviews Gap = Monthly leads × Reputation drag rate × Close rate × Avg job value"
             benchmarkNote={`Among ${bm.industryLabel}: ${bm.compoundStats}.`}
             foundMoneyPotential={fn?.foundMoneyPotential}
+            dbrCampaignFrame={fn?.dbrCampaignFrame}
+            dbrDescription={fn?.dbrDescription}
+            dbrCampaignsPerYear={fn?.dbrCampaignsPerYear}
           />
         </motion.div>
 
@@ -1537,8 +1656,39 @@ export default function Results() {
 
               <div className="mt-8 pt-6 border-t border-slate-800/60">
                 <button
-                  onClick={() => {
+                  onClick={async () => {
                     const storedLeadId = sessionStorage.getItem('leadId');
+                    const storedData = sessionStorage.getItem('assessmentData');
+                    const storedEmail = sessionStorage.getItem('contactEmail');
+
+                    // Prefer direct endpoint (no DB needed) when we have the raw data
+                    if (storedData) {
+                      try {
+                        const parsed = JSON.parse(storedData);
+                        const resp = await fetch('/api/assessment/pdf-direct', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            assessmentData: parsed,
+                            contactName: `${parsed.contact_first_name ?? ''} ${parsed.contact_last_name ?? ''}`.trim(),
+                            contactEmail: storedEmail || parsed.contact_email || '',
+                            contactPhone: parsed.contact_phone || '',
+                            websiteUrl: parsed.website_url || '',
+                          }),
+                        });
+                        if (resp.ok) {
+                          const blob = await resp.blob();
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = 'friction_analysis.pdf';
+                          a.click();
+                          URL.revokeObjectURL(url);
+                          return;
+                        }
+                      } catch {}
+                    }
+                    // Fallback to leadId-based endpoint
                     if (storedLeadId) {
                       window.open(`/api/assessment/${storedLeadId}/pdf`, '_blank');
                     }

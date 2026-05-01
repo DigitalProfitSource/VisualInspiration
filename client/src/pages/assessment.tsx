@@ -14,6 +14,7 @@ import {
 } from "@/lib/types";
 import {
   STEPS,
+  Step,
   REVENUE_PAIN_OPTIONS,
   TEAM_SIZE_OPTIONS,
   MONTHLY_LEAD_VOLUME_OPTIONS,
@@ -60,6 +61,21 @@ import { ScrapeInsightPanel } from "@/components/ScrapeInsightPanel";
 
 // getJobValueConfig replaced by resolveIndustryConfig from constants.ts
 
+// ── Lead Sources step — inserted between numbers (index 1) and pain (index 2) ──
+const LEAD_SOURCES_STEP: Step = {
+  id: "lead-sources",
+  title: "Sources & Marketing",
+  description: "Where your new clients come from and what you invest to get them.",
+  fields: [],   // all non-schema; validated separately
+  progress: 15, // between numbers (10) and pain (20)
+};
+
+const ASSESSMENT_STEPS: Step[] = [
+  ...STEPS.slice(0, 2),
+  LEAD_SOURCES_STEP,
+  ...STEPS.slice(2),
+];
+
 export default function Assessment() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -72,6 +88,7 @@ export default function Assessment() {
     trigger,
     setValue,
     getValues,
+    watch,
     formState: { errors }
   } = useForm<AssessmentData>({
     resolver: zodResolver(AssessmentSchema),
@@ -81,11 +98,57 @@ export default function Assessment() {
       contact_channels: [],
       disclaimer_accepted: false,
       contact_phone: "",
+      monthly_lead_volume: "0",
+      ad_spend: "0",
+      close_rate: "0",
     }
   });
 
   const watchedValues = useWatch({ control });
-  const currentStep = STEPS[currentStepIndex];
+  const currentStep = ASSESSMENT_STEPS[currentStepIndex];
+
+  // ── Step 2: new vs existing split (0–100, default 50 = even split) ──────────
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const newVsExistingSplit = parseInt((watch as any)('new_vs_existing_split') ?? '50') || 50;
+
+  // ── Step 3: lead source fields — WARM (Organic + Referral) vs PAID ──────────
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const warmVsPaidSplit = parseInt((watch as any)('warm_vs_paid_split') ?? '50') || 50;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const warmCloseRate   = parseInt((watch as any)('warm_close_rate')   ?? '65') || 65;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const marketingSpend  = parseInt((watch as any)('total_marketing_spend') ?? '0')  || 0;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const paidCloseRate   = parseInt((watch as any)('paid_close_rate_ls')    ?? '30') || 30;
+
+  // ── Wire legacy scoring fields from lead source inputs (transparent, not hidden) ──
+  // Derives: monthly_lead_volume (from new jobs), close_rate (blended warm+paid), ad_spend
+  // Blended close rate = (warmLeads × warmCR + paidLeads × paidCR) / totalLeads
+  React.useEffect(() => {
+    const totalJobs = parseInt(watchedValues.monthly_sales_volume ?? '0') || 0;
+    const newJobs   = Math.round(totalJobs * (newVsExistingSplit / 100));
+
+    if (newJobs > 0 && warmCloseRate > 0) {
+      // Estimate total leads from new jobs and warm close rate
+      const estimatedLeads = Math.round(newJobs / (warmCloseRate / 100));
+
+      // Split leads: warm vs paid
+      const warmLeads = Math.round(estimatedLeads * (warmVsPaidSplit / 100));
+      const paidLeads = estimatedLeads - warmLeads;
+
+      // Blended close rate: (warm_leads × warm_cr + paid_leads × paid_cr) / total_leads
+      let blendedCloseRate = warmCloseRate;
+      if (paidLeads > 0 && marketingSpend > 0) {
+        const blendedNum = (warmLeads * warmCloseRate) + (paidLeads * paidCloseRate);
+        blendedCloseRate = Math.round(blendedNum / estimatedLeads);
+      }
+
+      setValue('monthly_lead_volume', String(estimatedLeads));
+      setValue('close_rate', String(blendedCloseRate));
+    }
+
+    setValue('ad_spend', String(marketingSpend));
+  }, [newVsExistingSplit, warmCloseRate, warmVsPaidSplit, paidCloseRate, marketingSpend, watchedValues.monthly_sales_volume]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Trigger Firecrawl scrape when user enters their website URL.
   // Auto-applies business name + industry when detected (only if fields are empty).
@@ -185,12 +248,19 @@ export default function Assessment() {
   };
 
   const handleNext = async () => {
-    const fieldsToValidate = currentStep.fields as (keyof AssessmentData)[];
+    // Numbers step only validates the 3 fields we actually render;
+    // the rest are pre-filled in defaultValues above.
+    const fieldsToValidate: (keyof AssessmentData)[] =
+      currentStep.id === 'numbers'
+        ? ['team_size', 'avg_job_value', 'monthly_sales_volume']
+        : currentStep.id === 'lead-sources'
+        ? []
+        : (currentStep.fields as (keyof AssessmentData)[]);
     const isValid = await trigger(fieldsToValidate);
-    
+
     if (!isValid) return;
 
-    if (currentStepIndex === STEPS.length - 1) {
+    if (currentStepIndex === ASSESSMENT_STEPS.length - 1) {
       setIsSubmitting(true);
       const data = getValues();
       
@@ -212,6 +282,7 @@ export default function Assessment() {
         const responseData = await response.json();
         
         sessionStorage.setItem('assessmentResult', JSON.stringify(result));
+        sessionStorage.setItem('assessmentData', JSON.stringify(data));
         sessionStorage.setItem('leadId', responseData.leadId || '');
         sessionStorage.setItem('contactEmail', data.contact_email || '');
         
@@ -224,7 +295,7 @@ export default function Assessment() {
       return;
     }
 
-    setCurrentStepIndex(prev => Math.min(prev + 1, STEPS.length - 1));
+    setCurrentStepIndex(prev => Math.min(prev + 1, ASSESSMENT_STEPS.length - 1));
   };
 
   const handleBack = () => {
@@ -637,6 +708,13 @@ export default function Assessment() {
         const indCfg2 = resolveIndustryConfig(watchedValues.industry, watchedValues.niche_specificity);
         const msvCfg = indCfg2.monthlyJobs;
         const jobUnit2 = indCfg2.jobUnit;
+        const _leadsNum = parseInt(watchedValues.monthly_lead_volume ?? "0") || 0;
+        const _closeRateNum = parseInt(watchedValues.close_rate ?? "0") / 100 || 0;
+        const _jobsNum = parseInt(watchedValues.monthly_sales_volume ?? "0") || 0;
+        // Compare only new-client jobs (not total sessions which include repeat clients)
+        const _newJobsNum = Math.round(_jobsNum * (newVsExistingSplit / 100));
+        const _expectedJobs = Math.round(_leadsNum * _closeRateNum * 1.20);
+        const showJobsCoherenceNote = _leadsNum > 0 && _closeRateNum > 0 && _newJobsNum > _expectedJobs;
         return (
           <div className="space-y-4 w-full">
             <div className="flex justify-between items-center">
@@ -670,6 +748,11 @@ export default function Assessment() {
               <span>{msvCfg.max}+ {jobUnit2}s/mo</span>
             </div>
             <p className="text-xs text-slate-500">Total completed {jobUnit2}s or contracts per month</p>
+            {showJobsCoherenceNote && (
+              <p className="text-xs text-slate-400 italic">
+                Your completed jobs are higher than your close rate predicts — likely from repeat customers or referrals not counted as new leads. We'll account for this.
+              </p>
+            )}
             {errors.monthly_sales_volume && <p className="text-cyan-400 text-xs">{errors.monthly_sales_volume.message}</p>}
           </div>
         );
@@ -898,6 +981,12 @@ export default function Assessment() {
       case 'dormant_leads': {
         const dormantVal = watchedValues.dormant_leads ?? "";
         const dormantNum = /^\d+$/.test(dormantVal.trim()) ? parseInt(dormantVal) : 150;
+        const avgJobValueNum = parseInt(watchedValues.avg_job_value ?? "0") || 0;
+        // Reactivation range: 10% conservative, 20% realistic
+        const reactivate10 = Math.round(dormantNum * 0.10);
+        const reactivate20 = Math.round(dormantNum * 0.20);
+        const dbrLow  = reactivate10 * avgJobValueNum;
+        const dbrHigh = reactivate20 * avgJobValueNum;
         return (
           <div className="space-y-4 w-full pt-4">
             <div className="flex justify-between items-center">
@@ -930,12 +1019,29 @@ export default function Assessment() {
             </div>
             <p className="text-xs text-slate-500">
               Past customers, old quotes, and unresponsive leads — anyone who went cold.
-              {dormantNum > 0 && (
-                <span className="text-cyan-400/70 ml-1 font-medium">
-                  That's ~${Math.round(dormantNum * 0.08).toLocaleString()} in potential DBR revenue at your job value.
-                </span>
-              )}
             </p>
+            {dormantNum > 0 && avgJobValueNum > 0 && (
+              <div className="mt-2 p-3 rounded-xl bg-cyan-500/5 border border-cyan-500/20 space-y-2">
+                <p className="text-xs font-semibold text-cyan-400">One-time reactivation opportunity</p>
+                <div className="space-y-1">
+                  <p className="text-xs text-slate-300">
+                    Conservative <span className="text-slate-500">(10% respond)</span>:{" "}
+                    <span className="font-mono font-bold text-cyan-400">
+                      ~{reactivate10} client{reactivate10 !== 1 ? 's' : ''} × ${avgJobValueNum.toLocaleString()} = ~${dbrLow.toLocaleString()}
+                    </span>
+                  </p>
+                  <p className="text-xs text-slate-300">
+                    Realistic <span className="text-slate-500">(20% respond)</span>:{" "}
+                    <span className="font-mono font-bold text-emerald-400">
+                      ~{reactivate20} client{reactivate20 !== 1 ? 's' : ''} × ${avgJobValueNum.toLocaleString()} = ~${dbrHigh.toLocaleString()}
+                    </span>
+                  </p>
+                </div>
+                <p className="text-[10px] text-slate-600 pt-1 border-t border-slate-800">
+                  This is a one-time campaign, not monthly recurring. Your dormant pool keeps growing as clients cycle through — this opportunity compounds over time.
+                </p>
+              </div>
+            )}
             {errors.dormant_leads && <p className="text-cyan-400 text-xs">{errors.dormant_leads.message}</p>}
           </div>
         );
@@ -1201,6 +1307,126 @@ export default function Assessment() {
         );
       }
 
+      case 'referral_lead_split': {
+        const rlsVal = watchedValues.referral_lead_split ?? "";
+        const rlsNum = /^\d+$/.test(rlsVal.trim()) ? parseInt(rlsVal) : 50;
+        const overallCrNum = /^\d+$/.test((watchedValues.close_rate ?? "").trim())
+          ? parseInt(watchedValues.close_rate!) : 35;
+        const totalLeadsNum = /^\d+$/.test((watchedValues.monthly_lead_volume ?? "").trim())
+          ? parseInt(watchedValues.monthly_lead_volume!) : 40;
+        const referralLeadsNum = Math.round(totalLeadsNum * rlsNum / 100);
+        const paidLeadsNum = totalLeadsNum - referralLeadsNum;
+        const hasPaidLeads = rlsNum < 100 && paidLeadsNum > 0;
+
+        const pcrVal = watchedValues.paid_close_rate ?? "";
+        const pcrNum = /^\d+$/.test(pcrVal.trim()) ? parseInt(pcrVal) : null;
+        const showPaidCallout = pcrNum !== null && (overallCrNum - pcrNum) >= 20;
+
+        return (
+          <div className="space-y-5 w-full">
+            {/* Referral split slider */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <GlassLabel htmlFor="referral_lead_split">
+                  Lead Mix — Referral vs. Paid
+                </GlassLabel>
+                <span className="font-mono font-bold text-cyan-400">
+                  {rlsNum}% referral
+                </span>
+              </div>
+              <Controller
+                control={control}
+                name="referral_lead_split"
+                render={({ field: sliderField }) => {
+                  const val = /^\d+$/.test((sliderField.value ?? "").trim()) ? parseInt(sliderField.value!) : 50;
+                  return (
+                    <GlassSlider
+                      min={0}
+                      max={100}
+                      step={5}
+                      value={[val]}
+                      onValueChange={(vals) => sliderField.onChange(vals[0].toString())}
+                    />
+                  );
+                }}
+              />
+              <div className="flex justify-between text-[10px] text-slate-600">
+                <span>100% paid</span>
+                <span>50 / 50 mix</span>
+                <span>100% referral</span>
+              </div>
+              {totalLeadsNum > 0 && (
+                <div className="flex gap-6 text-xs">
+                  <span className="text-emerald-400">↑ ~{referralLeadsNum} referral leads/mo</span>
+                  {paidLeadsNum > 0 && (
+                    <span className="text-amber-400">↑ ~{paidLeadsNum} paid leads/mo</span>
+                  )}
+                </div>
+              )}
+              <p className="text-xs text-slate-500">
+                Referral leads close higher and cost nothing — this split tells us how to read your close rate and ad spend efficiency.
+              </p>
+            </div>
+
+            {/* Paid close rate — shown only when there are paid leads */}
+            {hasPaidLeads && (
+              <div className="space-y-4 border-t border-slate-800 pt-5">
+                <div className="flex items-center justify-between">
+                  <GlassLabel htmlFor="paid_close_rate">
+                    Paid Lead Close Rate{" "}
+                    <span className="text-slate-500 font-normal text-xs">(optional)</span>
+                  </GlassLabel>
+                  {pcrNum !== null && (
+                    <span className={`font-mono font-bold ${showPaidCallout ? 'text-amber-400' : 'text-cyan-400'}`}>
+                      {pcrNum}%
+                    </span>
+                  )}
+                </div>
+                <Controller
+                  control={control}
+                  name="paid_close_rate"
+                  render={({ field: sliderField }) => {
+                    const val = /^\d+$/.test((sliderField.value ?? "").trim())
+                      ? parseInt(sliderField.value!)
+                      : overallCrNum;
+                    return (
+                      <GlassSlider
+                        min={5}
+                        max={100}
+                        step={5}
+                        value={[val]}
+                        onValueChange={(vals) => sliderField.onChange(vals[0].toString())}
+                      />
+                    );
+                  }}
+                />
+                <div className="flex justify-between text-[10px] text-slate-600">
+                  <span>5%</span>
+                  <span>50%</span>
+                  <span>100%</span>
+                </div>
+                <p className="text-xs text-slate-500">
+                  If paid leads close differently than referrals, dial it in. We'll use this to flag efficiency gaps.
+                </p>
+
+                {/* Paid close rate callout — fires when gap ≥ 20 pts */}
+                {showPaidCallout && (
+                  <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1">
+                    <p className="text-xs font-semibold text-amber-300">⚡ Paid lead efficiency gap detected</p>
+                    <p className="text-xs text-amber-200/80">
+                      Your overall close rate is {overallCrNum}% but paid leads close at {pcrNum}% — a{" "}
+                      <strong>{overallCrNum - pcrNum}-point gap</strong>. You're spending ad budget on leads that convert{" "}
+                      {Math.round((overallCrNum - pcrNum) / Math.max(overallCrNum, 1) * 100)}% less often than the rest
+                      of your pipeline. We'll surface this in your report.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      }
+
       case 'manual_hours':
         return (
           <div className="space-y-3 w-full">
@@ -1218,6 +1444,84 @@ export default function Assessment() {
               )}
             />
             {errors.manual_hours && <p className="text-cyan-400 text-xs">{errors.manual_hours.message}</p>}
+          </div>
+        );
+
+      case 'ai_voice_booking_awareness':
+        return (
+          <div className="space-y-3 w-full pt-4">
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">AI AGENT READINESS — VOICE & BOOKING</div>
+            <GlassLabel className="text-cyan-400 font-bold">Have you heard of or used AI agents that can answer inbound calls, book appointments, and reschedule in real time — without a human picking up?</GlassLabel>
+            <p className="text-xs text-slate-500">Think: a virtual receptionist that never sleeps, qualifies the lead, and locks in the appointment automatically.</p>
+            <Controller
+              control={control}
+              name="ai_voice_booking_awareness"
+              render={({ field }) => (
+                <GlassRadioGroup
+                  options={[
+                    { value: "Yes — we have something like this running", label: "Yes — we have something like this running" },
+                    { value: "I've heard of it but nothing is set up", label: "I've heard of it but nothing is set up" },
+                    { value: "I've seen it but wasn't sure it applied to my business", label: "I've seen it but wasn't sure it applied to my business" },
+                    { value: "No — this is completely new to me", label: "No — this is completely new to me" },
+                  ]}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+          </div>
+        );
+
+      case 'ai_omnichannel_awareness':
+        return (
+          <div className="space-y-3 w-full pt-4">
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">AI AGENT READINESS — OMNICHANNEL</div>
+            <GlassLabel className="text-cyan-400 font-bold">Have you heard of or used AI that holds real conversations over SMS, web chat, or social DMs — qualifying leads and moving them toward a booking automatically?</GlassLabel>
+            <p className="text-xs text-slate-500">One agent, every channel — SMS, chat, DMs — all running without you manually following up.</p>
+            <Controller
+              control={control}
+              name="ai_omnichannel_awareness"
+              render={({ field }) => (
+                <GlassRadioGroup
+                  options={[
+                    { value: "Yes — we're using something like this", label: "Yes — we're using something like this" },
+                    { value: "I've heard of it but haven't set it up", label: "I've heard of it but haven't set it up" },
+                    { value: "I've seen it but wasn't sure it applied to my business", label: "I've seen it but wasn't sure it applied to my business" },
+                    { value: "No — this is new to me", label: "No — this is new to me" },
+                  ]}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
+          </div>
+        );
+
+      case 'ai_campaigns_reviews_awareness':
+        return (
+          <div className="space-y-3 w-full pt-4">
+            <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase mb-2 text-center md:text-left">AI AGENT READINESS — CAMPAIGNS & REVIEWS</div>
+            <GlassLabel className="text-cyan-400 font-bold">Have you heard of or used AI that runs follow-up campaigns, replies to reviews, and reactivates cold leads — all on autopilot?</GlassLabel>
+            <p className="text-xs text-slate-500">Your dormant database and review profile are two revenue streams most businesses leave completely untouched.</p>
+            <Controller
+              control={control}
+              name="ai_campaigns_reviews_awareness"
+              render={({ field }) => (
+                <GlassRadioGroup
+                  options={[
+                    { value: "Yes — some of this is already running", label: "Yes — some of this is already running" },
+                    { value: "I've heard of it but nothing is active", label: "I've heard of it but nothing is active" },
+                    { value: "I've seen ads for it but don't fully understand it", label: "I've seen ads for it but don't fully understand it" },
+                    { value: "No — first time hearing about this", label: "No — first time hearing about this" },
+                  ]}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  columns={1}
+                />
+              )}
+            />
           </div>
         );
 
@@ -1273,8 +1577,8 @@ export default function Assessment() {
               name="operational_complexity"
               render={({ field }) => (
                 <VisualCardSelector
-                  options={OPERATIONAL_COMPLEXITY_OPTIONS.map(opt => ({ 
-                    value: opt.value, 
+                  options={OPERATIONAL_COMPLEXITY_OPTIONS.map(opt => ({
+                    value: opt.value,
                     label: opt.value
                   }))}
                   value={field.value}
@@ -1365,6 +1669,209 @@ export default function Assessment() {
     }
   };
 
+  /** Numbers step — "Jobs & Revenue" layout */
+  const renderNumbersStep = () => {
+    const totalJobsNum = parseInt(watchedValues.monthly_sales_volume ?? '0') || 0;
+    const newJobsNum   = Math.round(totalJobsNum * (newVsExistingSplit / 100));
+    const repeatJobsNum = totalJobsNum - newJobsNum;
+
+    return (
+      <>
+        {renderField('team_size')}
+        {renderField('monthly_sales_volume')}
+        {renderField('avg_job_value')}
+
+        {/* Field 4 — New vs Existing split slider */}
+        <div className="space-y-4 w-full">
+          <div className="flex justify-between items-center">
+            <GlassLabel>New vs Existing Clients</GlassLabel>
+            <span className="font-mono font-bold text-cyan-400">
+              {newVsExistingSplit === 50
+                ? '50 / 50 split'
+                : newVsExistingSplit < 50
+                ? `${100 - newVsExistingSplit}% existing`
+                : `${newVsExistingSplit}% new`}
+            </span>
+          </div>
+          <GlassSlider
+            min={0} max={100} step={5}
+            value={[newVsExistingSplit]}
+            onValueChange={(vals) => {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (setValue as any)('new_vs_existing_split', String(vals[0]));
+            }}
+          />
+          <div className="flex justify-between text-[10px] text-slate-600">
+            <span>All existing / repeat</span>
+            <span>Even split</span>
+            <span>All new clients</span>
+          </div>
+          {totalJobsNum > 0 && (
+            <div className="flex gap-6 text-xs pt-1">
+              <span className="text-cyan-400">
+                ~{newJobsNum} new client job{newJobsNum !== 1 ? 's' : ''}/mo
+              </span>
+              <span className="text-slate-400">
+                ~{repeatJobsNum} repeat client job{repeatJobsNum !== 1 ? 's' : ''}/mo
+              </span>
+            </div>
+          )}
+        </div>
+      </>
+    );
+  };
+
+  /** Step 3 — Sources & Marketing: Organic vs Paid */
+  const renderLeadSourcesStep = () => {
+    const totalJobsNum = parseInt(watchedValues.monthly_sales_volume ?? '0') || 0;
+    const newJobsNum   = Math.round(totalJobsNum * (newVsExistingSplit / 100));
+
+    // Split new jobs by warm vs paid
+    const warmJobsNum = Math.round(newJobsNum * (warmVsPaidSplit / 100));
+    const paidJobsNum = newJobsNum - warmJobsNum;
+
+    // Callout: paid close rate is objectively low (absolute < 35% threshold)
+    const showLowPaidCR = marketingSpend > 0 && paidCloseRate < 35;
+
+    return (
+      <div className="space-y-8 w-full">
+
+        {/* ── HEADER: Organic vs Paid ──────────────────────────────────── */}
+        <div className="space-y-5">
+          <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase">
+            Organic vs Paid
+          </div>
+          <div className="text-xs text-slate-400 font-medium">
+            Organic/Referrals vs Paid
+          </div>
+
+          {/* Organic vs Paid split slider */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <GlassLabel>Lead Mix — Organic vs Paid</GlassLabel>
+              <span className="font-mono font-bold text-cyan-400 text-sm">
+                {warmVsPaidSplit === 50
+                  ? '50 / 50 split'
+                  : warmVsPaidSplit < 50
+                  ? `${100 - warmVsPaidSplit}% paid`
+                  : `${warmVsPaidSplit}% organic`}
+              </span>
+            </div>
+            <GlassSlider
+              min={0} max={100} step={5}
+              value={[100 - warmVsPaidSplit]}
+              onValueChange={(vals) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (setValue as any)('warm_vs_paid_split', String(100 - vals[0]));
+              }}
+            />
+            <div className="flex justify-between text-[10px] text-slate-600">
+              <span>All organic / referral</span>
+              <span>Even split</span>
+              <span>All paid / Google Ads / LSA</span>
+            </div>
+            {newJobsNum > 0 && (
+              <div className="text-xs pt-1 space-y-1">
+                <p className="text-slate-500">
+                  Of your ~{newJobsNum} new client{newJobsNum !== 1 ? 's' : ''}/mo:
+                </p>
+                <div className="flex gap-6">
+                  <span className="text-emerald-400">~{warmJobsNum} from organic / referrals</span>
+                  {paidJobsNum > 0 && (
+                    <span className="text-cyan-400">~{paidJobsNum} from paid ads</span>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ── Conversion Rate header ─────────────────────────────────── */}
+          <div className="text-xs font-bold tracking-[0.2em] text-cyan-400 uppercase pt-2">
+            Conversion Rate
+          </div>
+
+          {/* Organic Lead Close Rate */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <GlassLabel>Organic Leads</GlassLabel>
+              <span className="font-mono font-bold text-cyan-400 text-sm">{warmCloseRate}%</span>
+            </div>
+            <GlassSlider
+              min={5} max={100} step={5}
+              value={[warmCloseRate]}
+              onValueChange={(vals) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (setValue as any)('warm_close_rate', String(vals[0]));
+              }}
+            />
+            <div className="flex justify-between text-[10px] text-slate-600">
+              <span>5% (cold leads)</span>
+              <span>50%</span>
+              <span>100% (all close)</span>
+            </div>
+          </div>
+
+          {/* Paid Lead Close Rate — always visible (not conditional) */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <GlassLabel>Paid Leads</GlassLabel>
+              <span className={`font-mono font-bold text-sm ${showLowPaidCR ? 'text-red-400' : 'text-cyan-400'}`}>
+                {paidCloseRate}%
+              </span>
+            </div>
+            <GlassSlider
+              min={5} max={100} step={5}
+              value={[paidCloseRate]}
+              onValueChange={(vals) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (setValue as any)('paid_close_rate_ls', String(vals[0]));
+              }}
+            />
+            <div className="flex justify-between text-[10px] text-slate-600">
+              <span>5% (cold traffic)</span>
+              <span>50%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          {/* Monthly Ad Spend */}
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <GlassLabel>Monthly Ad Spend</GlassLabel>
+              <span className="font-mono font-bold text-cyan-400 text-sm">
+                {marketingSpend === 0 ? '$0 / organic only' : `$${marketingSpend.toLocaleString()}/mo`}
+              </span>
+            </div>
+            <GlassSlider
+              min={0} max={5000} step={250}
+              value={[marketingSpend]}
+              onValueChange={(vals) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (setValue as any)('total_marketing_spend', String(vals[0]));
+              }}
+            />
+            <div className="flex justify-between text-[10px] text-slate-600">
+              <span>$0 organic</span>
+              <span>$2,500</span>
+              <span>$5,000+/mo</span>
+            </div>
+
+            {/* Low paid CR callout — fires only when rate is objectively poor (<35%) */}
+            {showLowPaidCR && (
+              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 space-y-1 mt-2">
+                <p className="text-xs font-semibold text-red-400">⚠ Paid leads closing below 35%</p>
+                <p className="text-xs text-red-300/80">
+                  At <strong>{paidCloseRate}%</strong>, your ad budget is funding a low-efficiency pipeline.
+                  We'll flag this in your report and identify where the conversion drop-off is happening.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   /**
    * Step 1 custom render — shows ONLY the Website URL input up front, then
    * progressively reveals the other fields once the scrape has completed (or
@@ -1443,7 +1950,7 @@ export default function Assessment() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-cyan-400">
-              {currentStepIndex === STEPS.length - 1 ? '100' : currentStep.progress}% Complete
+              {currentStepIndex === ASSESSMENT_STEPS.length - 1 ? '100' : currentStep.progress}% Complete
             </span>
             <span className="text-sm font-semibold text-white">
               {currentStep.title}
@@ -1453,18 +1960,19 @@ export default function Assessment() {
             <motion.div
               className="h-full bg-gradient-to-r from-cyan-500 to-cyan-400"
               initial={{ width: 0 }}
-              animate={{ width: `${currentStepIndex === STEPS.length - 1 ? 100 : currentStep.progress}%` }}
+              animate={{ width: `${currentStepIndex === ASSESSMENT_STEPS.length - 1 ? 100 : currentStep.progress}%` }}
               transition={{ duration: 0.3 }}
             />
           </div>
           {/* Section label pills */}
           <div className="flex gap-1.5 flex-wrap">
-            {STEPS.map((step, i) => {
+            {ASSESSMENT_STEPS.map((step, i) => {
               const isActive = i === currentStepIndex;
               const isDone = i < currentStepIndex;
               const shortLabels: Record<string, string> = {
                 identity: 'Business',
-                numbers: 'Numbers',
+                numbers: 'Jobs & Revenue',
+                'lead-sources': 'Sources',
                 pain: 'Pain',
                 'capture-speed': 'Speed',
                 'capture-ai': 'AI Discovery',
@@ -1507,7 +2015,7 @@ export default function Assessment() {
                   </span>
                 )}
                 <h2 className="text-2xl md:text-3xl font-heading font-bold text-white mb-3">
-                  {currentStep.title}
+                  {currentStep.id === 'numbers' ? 'Jobs & Revenue' : currentStep.title}
                 </h2>
                 <p className="text-slate-400 text-sm md:text-base leading-relaxed">
                   {currentStep.description}
@@ -1517,6 +2025,10 @@ export default function Assessment() {
               <div className="space-y-6">
                 {currentStep.id === "identity"
                   ? renderIdentityStep()
+                  : currentStep.id === "numbers"
+                  ? renderNumbersStep()
+                  : currentStep.id === "lead-sources"
+                  ? renderLeadSourcesStep()
                   : currentStep.fields.map(field => (
                       <div key={field}>{renderField(field)}</div>
                     ))}
@@ -1544,7 +2056,7 @@ export default function Assessment() {
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Analyzing...
                     </>
-                  ) : currentStepIndex === STEPS.length - 1 ? (
+                  ) : currentStepIndex === ASSESSMENT_STEPS.length - 1 ? (
                     <>
                       Get Results
                       <ArrowRight className="ml-2 h-4 w-4" />
