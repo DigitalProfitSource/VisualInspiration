@@ -21,6 +21,7 @@ interface GHLWebhookData {
   result: AssessmentResult;
   revenuePains: string[];
   submittedAt: Date;
+  rawAssessmentData?: Record<string, unknown>;
 }
 
 async function sendToGHL(data: GHLWebhookData) {
@@ -64,17 +65,67 @@ async function sendToGHL(data: GHLWebhookData) {
       result: data.result,
       submittedAt: data.submittedAt,
       revenuePains: data.revenuePains,
+      rawAssessmentData: data.rawAssessmentData,
     });
 
     const pdfBase64 = pdfBuffer.toString("base64");
 
+    const r = data.result;
+    const raw = (data as GHLWebhookData & { rawAssessmentData?: Record<string, unknown> }).rawAssessmentData || {};
     const payload: Record<string, string> = {
+      // Contact
       first_name: data.contactName.split(" ")[0],
       last_name: data.contactName.split(" ").slice(1).join(" ") || "",
       email: data.contactEmail,
       phone: data.contactPhone || "",
       company_name: data.businessName,
       website: data.websiteUrl || "",
+      // Scores
+      overall_score: String(r.overallScore),
+      capture_score: String(r.captureScore.score),
+      convert_score: String(r.convertScore.score),
+      compound_score: String(r.compoundScore.score),
+      total_monthly_gap: String(r.totalMonthlyGap),
+      annualized_gap: String(r.annualizedGap),
+      recommended_tier: r.recommendedTier || "",
+      // Business profile
+      industry: r.industry,
+      specialization: r.niche || "",
+      team_size: r.teamSize,
+      avg_job_value: String(r.avgJobValue),
+      monthly_leads: String(r.monthlyLeads),
+      monthly_jobs: String(r.monthlySalesVolume),
+      ad_spend: String(r.adSpend),
+      close_rate: String(Math.round(r.closeRate * 100)),
+      // Raw answers (all assessment fields for onboarding matrix & discovery call)
+      first_contact_speed: String(raw.first_contact_speed ?? ""),
+      lead_unavailability: String(raw.lead_unavailability ?? ""),
+      phone_unavailable_handling: String(raw.phone_unavailable_handling ?? ""),
+      digital_unavailable_handling: String(raw.digital_unavailable_handling ?? ""),
+      no_show_rate: String(raw.no_show_rate ?? ""),
+      no_show_recovery: String(raw.no_show_recovery ?? ""),
+      quote_followup: String(raw.quote_followup ?? ""),
+      dormant_leads: String(raw.dormant_leads ?? ""),
+      review_request: String(raw.review_request ?? ""),
+      contact_channels: Array.isArray(raw.contact_channels) ? (raw.contact_channels as string[]).join(", ") : "",
+      intake_centralization: String(raw.intake_centralization ?? ""),
+      pipeline_tracking: String(raw.pipeline_tracking ?? ""),
+      manual_hours: String(raw.manual_hours ?? ""),
+      staff_repeat_questions: String(raw.staff_repeat_questions ?? ""),
+      process_documentation: String(raw.process_documentation ?? ""),
+      operational_complexity: String(raw.operational_complexity ?? ""),
+      has_automations: String(raw.has_automations ?? ""),
+      has_ai_intent: String(raw.has_ai_intent ?? ""),
+      ai_search_frequency: String(raw.ai_search_frequency ?? ""),
+      ai_readiness: String(raw.ai_readiness ?? ""),
+      // Referral vs. paid lead split
+      referral_lead_split: String(raw.referral_lead_split ?? ""),
+      paid_close_rate: String(raw.paid_close_rate ?? ""),
+      referral_leads_per_month: String(r.referralLeadsPerMonth ?? ""),
+      paid_leads_per_month: String(r.paidLeadsPerMonth ?? ""),
+      paid_close_gap: r.paidCloseGap !== null ? String(r.paidCloseGap) : "",
+      revenue_pains: data.revenuePains.join(", "),
+      // Report content
       assessment_email_html: emailHtml,
       assessment_pdf_base64: pdfBase64,
     };
@@ -185,6 +236,7 @@ export async function registerRoutes(
       result,
       revenuePains: data.assessmentData.revenue_pain.map(p => p.value),
       submittedAt: new Date(),
+      rawAssessmentData: data.assessmentData as unknown as Record<string, unknown>,
     }).catch(err => console.error("GHL webhook error:", err));
 
     // Always succeed — the results page is computed client-side so it doesn't
@@ -239,6 +291,41 @@ export async function registerRoutes(
     }
   });
 
+  // Direct PDF endpoint — accepts full assessmentData in the body, no DB required.
+  // Used by the results page when a leadId is unavailable (e.g. local dev without DB).
+  app.post("/api/assessment/pdf-direct", async (req, res) => {
+    try {
+      const { assessmentData, contactName, contactEmail, contactPhone, websiteUrl } = req.body;
+      if (!assessmentData) {
+        res.status(400).json({ error: "assessmentData required" });
+        return;
+      }
+      const result = calculateResults(assessmentData);
+      const rawData = assessmentData as Record<string, unknown>;
+      const revenuePainRaw = rawData.revenue_pain;
+      const revenuePains = Array.isArray(revenuePainRaw)
+        ? (revenuePainRaw as { value: string }[]).map((p) => p.value)
+        : [];
+      const pdfBuffer = await generateAssessmentPDF({
+        contactName: contactName || result.businessName || "Unknown",
+        contactEmail: contactEmail || "",
+        contactPhone: contactPhone || undefined,
+        websiteUrl: websiteUrl || undefined,
+        result,
+        submittedAt: new Date(),
+        revenuePains,
+        rawAssessmentData: rawData,
+      });
+      const safeName = (result.businessName || "assessment").replace(/[^a-z0-9]/gi, "_").toLowerCase();
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", `attachment; filename="${safeName}_friction_analysis.pdf"`);
+      res.send(pdfBuffer);
+    } catch (error) {
+      console.error("Error generating direct PDF:", error);
+      res.status(500).json({ error: "Failed to generate PDF" });
+    }
+  });
+
   // PDF download endpoint
   app.get("/api/assessment/:leadId/pdf", async (req, res) => {
     try {
@@ -268,6 +355,7 @@ export async function registerRoutes(
         result,
         submittedAt: lead.contactSubmittedAt || new Date(),
         revenuePains,
+        rawAssessmentData: rawData,
       });
 
       const safeName = (result.businessName || "assessment").replace(/[^a-z0-9]/gi, "_").toLowerCase();

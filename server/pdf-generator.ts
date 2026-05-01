@@ -12,6 +12,7 @@ interface PDFGeneratorData {
   result: AssessmentResult;
   submittedAt: Date;
   revenuePains: string[];
+  rawAssessmentData?: Record<string, unknown>;
 }
 
 const PAGE_BOTTOM = 720;
@@ -210,6 +211,106 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
     if (col === 1) rowY += 16;
     y = rowY + 12;
     y = dividerLine(doc, y);
+
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 2b — WHAT YOU TOLD US (full raw answers)
+    // ────────────────────────────────────────────────────────────────────────
+    if (data.rawAssessmentData) {
+      const raw = data.rawAssessmentData;
+      y = sectionLabel(doc, y, "What You Told Us — Full Answer Log");
+
+      const answerGroups: { heading: string; rows: [string, string][] }[] = [
+        {
+          heading: "Lead Capture",
+          rows: [
+            ["Contact Channels", Array.isArray(raw.contact_channels) ? (raw.contact_channels as string[]).join(", ") : "—"],
+            ["First Contact Speed", String(raw.first_contact_speed ?? "—")],
+            ["Lead Unavailability", String(raw.lead_unavailability ?? "—")],
+            ["Phone Miss Handling", String(raw.phone_unavailable_handling ?? "—")],
+            ["Digital Miss Handling", String(raw.digital_unavailable_handling ?? "—")],
+          ],
+        },
+        {
+          heading: "Lead Conversion",
+          rows: [
+            ["Quote Follow-Up", String(raw.quote_followup ?? "—")],
+            ["No-Show Rate", String(raw.no_show_rate ?? "—")],
+            ["No-Show Recovery", String(raw.no_show_recovery ?? "—")],
+            ["Dormant Leads (est.)", String(raw.dormant_leads ?? "—")],
+            ["Review Requests", String(raw.review_request ?? "—")],
+            // Referral / paid split
+            ...(raw.referral_lead_split != null
+              ? [["Referral Lead Split", `${raw.referral_lead_split}% from referrals`] as [string, string]]
+              : []),
+            ...(raw.paid_close_rate != null && String(raw.paid_close_rate).length > 0
+              ? [["Paid Lead Close Rate", `${raw.paid_close_rate}%`] as [string, string]]
+              : []),
+          ],
+        },
+        {
+          heading: "Operations & Systems",
+          rows: [
+            ["Intake Centralization", String(raw.intake_centralization ?? "—")],
+            ["Pipeline Tracking", String(raw.pipeline_tracking ?? "—")],
+            ["Manual Admin Hours/Week", String(raw.manual_hours ?? "—")],
+            ["Staff Repeat Questions", String(raw.staff_repeat_questions ?? "—")],
+            ["Process Documentation", String(raw.process_documentation ?? "—")],
+            ["Operational Complexity", String(raw.operational_complexity ?? "—")],
+          ],
+        },
+        {
+          heading: "Automation & AI",
+          rows: [
+            ["Automations in Place", String(raw.has_automations ?? "—")],
+            ["AI Tools Used", String(raw.has_ai_intent ?? "—")],
+            ["AI Search Visibility", String(raw.ai_search_frequency ?? "—")],
+            ["AI Readiness", String(raw.ai_readiness ?? "—")],
+          ],
+        },
+      ];
+
+      // Revenue pains
+      if (Array.isArray(raw.revenue_pain) && (raw.revenue_pain as {value:string;severity:number}[]).length > 0) {
+        const painStr = (raw.revenue_pain as {value:string;severity:number}[])
+          .map(p => `${p.value} (severity ${p.severity}/5)`)
+          .join("  ·  ");
+        answerGroups.unshift({ heading: "Revenue Pains Identified", rows: [["Pains", painStr]] });
+      }
+
+      for (const group of answerGroups) {
+        y = checkY(doc, y, 20);
+        doc.fontSize(8).fillColor("#0891b2").text(group.heading, LEFT, y, { characterSpacing: 0.8 });
+        y += 14;
+        for (const [label, value] of group.rows) {
+          y = checkY(doc, y, 14);
+          doc.fontSize(7.5).fillColor("#64748b").text(label + ":", LEFT, y, { width: 130, continued: false });
+          doc.fontSize(7.5).fillColor("#334155").text(value, LEFT + 135, y, { width: FULL_WIDTH - 135 });
+          y += 13;
+        }
+        y += 4;
+      }
+
+      // ── Paid close rate callout ──────────────────────────────────────────
+      const paidCloseGap = data.result.paidCloseGap;
+      if (paidCloseGap !== null && paidCloseGap >= 20) {
+        y = checkY(doc, y, 50);
+        doc.rect(LEFT, y, FULL_WIDTH, 44).fill("#7c2d0e"); // amber-dark box
+        doc.fontSize(8).fillColor("#fbbf24")
+           .text("⚡ PAID LEAD EFFICIENCY GAP DETECTED", LEFT + 8, y + 7, { characterSpacing: 0.5 });
+        const paidPct = data.result.paidCloseRate ?? 0;
+        const overallPct = Math.round(data.result.closeRate * 100);
+        doc.fontSize(7.5).fillColor("#fde68a")
+           .text(
+             `Your overall close rate is ${overallPct}% but paid leads close at only ${paidPct}% — ` +
+             `a ${paidCloseGap}-point gap. Targeted nurture sequences on paid leads could recover ` +
+             `this conversion shortfall.`,
+             LEFT + 8, y + 20, { width: FULL_WIDTH - 16 },
+           );
+        y += 54;
+      }
+
+      y = dividerLine(doc, y);
+    }
 
     // ────────────────────────────────────────────────────────────────────────
     // SECTION 3 — TOTAL IMPACT

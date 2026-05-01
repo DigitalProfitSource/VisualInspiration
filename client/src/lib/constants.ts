@@ -18,7 +18,7 @@ export const STEPS: Step[] = [
     id: "numbers",
     title: "Your numbers",
     description: "The figures that drive every dollar calculation in your report. Rough estimates are completely fine — we'll flag anything that looks off.",
-    fields: ["team_size", "monthly_lead_volume", "avg_job_value", "monthly_sales_volume", "ad_spend", "close_rate"],
+    fields: ["team_size", "monthly_lead_volume", "avg_job_value", "monthly_sales_volume", "ad_spend", "close_rate", "referral_lead_split"],
     progress: 10
   },
   {
@@ -60,14 +60,14 @@ export const STEPS: Step[] = [
     id: "automation",
     title: "Systems & automation today",
     description: "How much of your operation runs on systems vs. manual effort. This is where most of the recovered revenue in your report will come from.",
-    fields: ["has_automations", "has_ai_intent", "manual_hours", "staff_repeat_questions"],
+    fields: ["has_automations", "has_ai_intent", "manual_hours"],
     progress: 75
   },
   {
     id: "operations",
-    title: "Process maturity & scale",
-    description: "How your team captures data and how complex the operation is. This tells us what kind of build-out makes sense.",
-    fields: ["process_documentation", "intake_centralization", "pipeline_tracking", "operational_complexity"],
+    title: "AI Agent Readiness",
+    description: "We cover every angle of AI and automation — voice, chat, campaigns, and more. Let's see where you stand.",
+    fields: ["intake_centralization", "pipeline_tracking", "ai_voice_booking_awareness", "ai_omnichannel_awareness", "ai_campaigns_reviews_awareness"],
     progress: 85
   },
   {
@@ -85,7 +85,7 @@ export const REVENUE_PAIN_OPTIONS = [
   { value: "Quotes sent but never closed", subtitle: "Persistence problem" },
   { value: "Old leads sitting in the database", subtitle: "Reactivation problem" },
   { value: "Too much time on manual admin work", subtitle: "Efficiency problem" },
-  { value: "Inconsistent customer experience", subtitle: "Process problem" },
+  { value: "Can't track lead conversion or ad spend ROI", subtitle: "Attribution problem" },
   { value: "Reputation not growing fast enough", subtitle: "Review problem" },
   { value: "Can't answer calls when busy", subtitle: "Availability problem" }
 ];
@@ -165,9 +165,9 @@ export interface IndustryNumericConfig {
 
 // Default fallback — used when industry doesn't match any entry
 export const DEFAULT_INDUSTRY_CONFIG: IndustryNumericConfig = {
-  avgJobValue:  { min: 100,   max: 25000,  step: 100,   default: 2500  },
-  monthlyJobs:  { min: 1,     max: 300,    step: 1,     default: 20    },
-  monthlyLeads: { min: 1,     max: 500,    step: 1,     default: 40    },
+  avgJobValue:  { min: 250,   max: 25000,  step: 250,   default: 2500  },
+  monthlyJobs:  { min: 5,     max: 300,    step: 5,     default: 20    },
+  monthlyLeads: { min: 5,     max: 500,    step: 5,     default: 40    },
   adSpend:      { min: 0,     max: 15000,  step: 250,   default: 1000  },
   jobUnit: "job",
   keywords: [],
@@ -408,7 +408,7 @@ export function resolveIndustryConfig(
   return best ?? DEFAULT_INDUSTRY_CONFIG;
 }
 
-export const TEAM_SIZE_OPTIONS = ["Solo", "2–5", "6–15", "16–50", "50+"];
+export const TEAM_SIZE_OPTIONS = ["2–5", "6–10", "11–15", "16–20", "21–30", "30+"];
 
 export const MONTHLY_LEAD_VOLUME_OPTIONS = [
   "1-10 leads/month",

@@ -119,6 +119,13 @@ export interface AssessmentResult {
   industryBenchmark: IndustryBenchmark;
   userPainPoints: UserPainPoints;
   inputCoherence: InputCoherence;
+
+  // Referral vs. paid lead split
+  referralLeadSplit: number;        // 0–100 (% referral)
+  referralLeadsPerMonth: number;    // absolute count
+  paidLeadsPerMonth: number;        // absolute count
+  paidCloseRate: number | null;     // null when not provided
+  paidCloseGap: number | null;      // overallCloseRate% - paidCloseRate% (null when N/A)
 }
 
 function parseMonthlyLeads(value: string): number {
@@ -307,10 +314,9 @@ function computeConfidenceBand(data: AssessmentData): number {
 }
 
 function applyBand(value: number, band: number): { low: number; high: number } {
-  const round = (n: number) => Math.round(n / 50) * 50;
   return {
-    low: round(value * (1 - band)),
-    high: round(value * (1 + band)),
+    low: Math.round(value * (1 - band)),
+    high: Math.round(value * (1 + band)),
   };
 }
 
@@ -589,7 +595,7 @@ function applyOperationalDrag(captureScore: number, convertScore: number, compou
     dragFindings.push("Critical processes undocumented — creates fragility and inconsistency across your team");
   }
 
-  if (data.operational_complexity.includes("complex") || data.operational_complexity.includes("Enterprise")) {
+  if (data.operational_complexity?.includes("complex") || data.operational_complexity?.includes("Enterprise")) {
     dragMultiplier -= 0.03;
     dragFindings.push("High operational complexity amplifies friction across all systems");
   }
@@ -738,13 +744,67 @@ function estimateMonthlyGapBreakdown(
   };
 }
 
+function analyzeAIReadiness(data: AssessmentData): {
+  awarenessScore: number;
+  captureInsight: string | null;
+  convertInsight: string | null;
+  compoundInsight: string | null;
+  quickWins: string[];
+} {
+  const score = (answer: string | undefined): number => {
+    if (!answer) return 3;
+    if (answer.startsWith("Yes")) return 0;
+    if (answer.includes("heard of it")) return 1;
+    if (answer.includes("seen it") || answer.includes("seen ads")) return 2;
+    return 3;
+  };
+
+  const voiceScore    = score(data.ai_voice_booking_awareness);
+  const omniScore     = score(data.ai_omnichannel_awareness);
+  const campaignScore = score(data.ai_campaigns_reviews_awareness);
+  const awarenessScore = voiceScore + omniScore + campaignScore;
+
+  const captureInsights: Record<number, string> = {
+    0: "You're already running AI for calls and booking — let's audit the gaps and make sure it's fully connected inside your pipeline.",
+    1: "You know AI Voice & Booking Agents exist — activation inside GHL is faster than you think. Your front door could be open 24/7 this week.",
+    2: "AI Voice & Booking Agents answer every call, qualify the lead, and lock in the appointment automatically. This applies directly to your business.",
+    3: "AI Voice & Booking Agents can answer every call, book the appointment, and send a confirmation — 24/7, without you picking up. This is your single biggest untapped Capture lever.",
+  };
+  const convertInsights: Record<number, string> = {
+    0: "You're running conversational AI across channels — let's make sure SMS, chat, and DMs are all feeding the same pipeline.",
+    1: "You know omnichannel AI agents exist — SimpleSequence runs SMS, chat, and DM conversations as one unified agent inside GHL.",
+    2: "An Omnichannel AI Agent holds real conversations across SMS, web chat, and social DMs — moving leads toward a booking without manual follow-up.",
+    3: "Most of your unconverted leads are sitting in silence right now. An Omnichannel AI Agent picks up every conversation and keeps moving them toward a yes, automatically.",
+  };
+  const compoundInsights: Record<number, string> = {
+    0: "You're running AI campaigns and review management — let's benchmark the performance and tighten the reactivation loop.",
+    1: "You know AI campaign and review tools exist — here's how to connect them to your dormant lead list and review profile inside GHL this week.",
+    2: "AI Campaign Agents run reactivations and reply to reviews on autopilot — inside GHL, SimpleSequence connects them directly to your CRM.",
+    3: "Your past customer database and review profile are two revenue streams sitting completely idle. An AI Campaign Agent works both simultaneously, every month, without your involvement.",
+  };
+
+  const quickWins: string[] = [];
+  if (voiceScore >= 2)    quickWins.push("Deploy an AI Voice Agent that answers every call, qualifies the lead, and books the appointment — your front door never closes again.");
+  if (omniScore >= 2)     quickWins.push("Activate an Omnichannel AI Agent across SMS, web chat, and social DMs — one agent, every channel, zero manual follow-up required.");
+  if (campaignScore >= 2) quickWins.push("Launch an AI Campaign Agent against your dormant database — even a 10% response rate on 100 cold contacts generates immediate revenue.");
+
+  return {
+    awarenessScore,
+    captureInsight:  captureInsights[voiceScore]    ?? null,
+    convertInsight:  convertInsights[omniScore]     ?? null,
+    compoundInsight: compoundInsights[campaignScore] ?? null,
+    quickWins,
+  };
+}
+
 function recommendTier(
   captureScore: number,
   convertScore: number,
   compoundScore: number,
   monthlyLeads: number,
   complexity: string,
-  adSpend: number
+  adSpend: number,
+  aiAwarenessScore: number = 0
 ): { tier: 'Blueprint' | 'Growth Architecture' | 'Operating System'; reason: string } {
   const lowestScore = Math.min(captureScore, convertScore, compoundScore);
   const overallScore = Math.round((captureScore + convertScore + compoundScore) / 3);
@@ -752,7 +812,7 @@ function recommendTier(
   if (convertScore === lowestScore) lowestPillar = "Convert";
   else if (compoundScore === lowestScore) lowestPillar = "Compound";
 
-  if (complexity.includes("Enterprise") || monthlyLeads > 150) {
+  if (complexity.includes("Enterprise") || monthlyLeads > 150 || aiAwarenessScore >= 6) {
     return {
       tier: 'Operating System',
       reason: `At ${monthlyLeads} leads/month, your volume demands full operational transformation. Operating System deploys the complete Sequential Revenue™ loop: Capture (24/7 AI Front Door for speed-to-lead + missed calls), Convert (Invisible Sales Rep for quotes, no-shows, and pipeline), and Compound (review automation + the Found-Money DBR Campaign that turns your dormant database into immediate revenue). With a ${lowestPillar} score of ${lowestScore}/100, you need all three pillars working as one loop.`
@@ -1068,6 +1128,13 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
   const adSpend = parseInt((data.ad_spend || "0").replace(/[$,]/g, '')) || 0;
   const monthlySalesVolume = parseInt((data.monthly_sales_volume || "0").replace(/[$,]/g, '')) || 0;
 
+  // ---------------------------------------------------------------------------
+  // Referral vs. paid lead split
+  // ---------------------------------------------------------------------------
+  const referralLeadSplit = /^\d+$/.test((data.referral_lead_split ?? "").trim())
+    ? Math.min(100, Math.max(0, parseInt(data.referral_lead_split!)))
+    : 50; // default 50% when user hasn't answered yet
+
   // Cross-validate the user's reported lead volume against their job volume.
   // If the numbers contradict each other, anchor the financial model to the
   // actual job volume the user reported (most trustworthy signal).
@@ -1141,13 +1208,50 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     allBlindspots.push(...adjusted.dragFindings.filter(f => f.includes("drag") || f.includes("complexity") || f.includes("documented") || f.includes("interrupted")));
   }
 
+  // AI Readiness — append pillar-matched insights to blindspots
+  const aiReadiness = analyzeAIReadiness(data);
+  if (aiReadiness.captureInsight)  allBlindspots.push(aiReadiness.captureInsight);
+  if (aiReadiness.convertInsight)  allBlindspots.push(aiReadiness.convertInsight);
+  if (aiReadiness.compoundInsight) allBlindspots.push(aiReadiness.compoundInsight);
+
   // Prepend the coherence warning as a visible blindspot so users see it
   // before acting on the dollar figures.
   if (!inputCoherence.consistent && inputCoherence.warning) {
     allBlindspots.unshift(`⚠ Data coherence check: ${inputCoherence.warning}`);
   }
 
+  // ---------------------------------------------------------------------------
+  // Referral vs. paid lead split — compute derived values & paid close rate gap
+  // ---------------------------------------------------------------------------
+  const referralLeadsPerMonth = Math.round(monthlyLeads * referralLeadSplit / 100);
+  const paidLeadsPerMonth = monthlyLeads - referralLeadsPerMonth;
+
+  const paidCloseRate: number | null = /^\d+$/.test((data.paid_close_rate ?? "").trim())
+    ? Math.min(100, Math.max(0, parseInt(data.paid_close_rate!))) / 100
+    : null;
+
+  const paidCloseGap: number | null =
+    paidCloseRate !== null
+      ? Math.round((closeRate - paidCloseRate) * 100) // e.g. 35% - 15% = 20 pts
+      : null;
+
+  // Inject paid close rate gap into Convert findings when gap is ≥ 20 points
+  if (paidCloseGap !== null && paidCloseGap >= 20 && paidLeadsPerMonth > 0) {
+    const paidPct = Math.round(paidCloseRate! * 100);
+    const overallPct = Math.round(closeRate * 100);
+    convertScore.findings.push(
+      `Paid lead close rate: ${paidPct}% vs. overall ${overallPct}% — ${paidCloseGap}-pt gap`
+    );
+    convertScore.blindspots.push(
+      `Your paid leads close ${paidCloseGap} points lower than your blended rate. ` +
+      `With ~${paidLeadsPerMonth} paid leads/month, a targeted nurture sequence could ` +
+      `recover ${Math.round(paidLeadsPerMonth * (closeRate - paidCloseRate!) * avgJobValue).toLocaleString()} ` +
+      `in potential monthly revenue.`
+    );
+  }
+
   const actionPlan = generateActionPlan(captureScore, convertScore, compoundScore, data);
+  actionPlan.quickWins.unshift(...aiReadiness.quickWins);
 
   const gapBreakdown = estimateMonthlyGapBreakdown(data, monthlyLeads, avgJobValue, closeRate, confidenceBand);
   const totalMonthlyGap = gapBreakdown.total;
@@ -1158,8 +1262,9 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     adjusted.convert,
     adjusted.compound,
     monthlyLeads,
-    data.operational_complexity,
-    adSpend
+    data.operational_complexity ?? "",
+    adSpend,
+    aiReadiness.awarenessScore
   );
 
   const financialNarrative = calculateFinancialNarrative(
@@ -1210,5 +1315,12 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     industryBenchmark,
     userPainPoints,
     inputCoherence,
+
+    // Referral vs. paid lead split
+    referralLeadSplit,
+    referralLeadsPerMonth,
+    paidLeadsPerMonth,
+    paidCloseRate: paidCloseRate !== null ? Math.round(paidCloseRate * 100) : null,
+    paidCloseGap,
   };
 }

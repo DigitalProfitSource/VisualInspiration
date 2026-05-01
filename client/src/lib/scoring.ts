@@ -59,11 +59,13 @@ export interface FinancialNarrative {
   foundMoneyPotentialLow: number;
   foundMoneyPotentialHigh: number;
   confidenceBand: number;
-  // DBR as a recurring campaign engine (seasonal, new services, re-engagement)
+  // DBR as a recurring campaign engine (industry-aware cadence)
   dbrCampaignValue: number;       // per-campaign revenue
-  dbrCampaignsPerYear: number;    // conservative cadence
+  dbrCampaignsPerYear: number;    // industry-appropriate cadence (1–3)
   dbrAnnualPotential: number;     // annual revenue from DBR campaigns
   dbrMonthlyEquivalent: number;   // annual ÷ 12, for side-by-side comparison
+  dbrCampaignFrame: string;       // e.g. "Referral Reactivation", "Seasonal Push"
+  dbrDescription: string;         // industry-appropriate body copy for DBR box
 }
 
 export type PillarKey = 'capture' | 'convert' | 'compound' | 'drag';
@@ -203,7 +205,7 @@ const REVENUE_PAIN_PILLAR_MAP: Record<string, PillarKey> = {
   "Old leads sitting in the database": 'compound',
   "Reputation not growing fast enough": 'compound',
   "Too much time on manual admin work": 'drag',
-  "Inconsistent customer experience": 'drag',
+  "Can't track lead conversion or ad spend ROI": 'capture',
 };
 
 function analyzeRevenuePain(
@@ -329,6 +331,70 @@ function applyBand(value: number, band: number): { low: number; high: number } {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Industry type — drives DBR cadence, reactivation rate, and copy.
+// Emergency/one-time industries get a very different story than recurring ones.
+// ---------------------------------------------------------------------------
+type IndustryType = 'emergency' | 'project' | 'recurring' | 'appointment' | 'professional';
+
+function getIndustryType(industry: string): IndustryType {
+  const lower = (industry ?? '').toLowerCase();
+  if (/restoration|flood|fire damage|mold|water damage|disaster/.test(lower)) return 'emergency';
+  if (/plumbing|locksmith|towing|garage door/.test(lower)) return 'emergency';
+  if (/landscaping|lawn|cleaning|pest control|pool|auto services|car wash/.test(lower)) return 'recurring';
+  if (/med spa|aesthetics|chiropractic|dental|fitness|wellness|gym/.test(lower)) return 'appointment';
+  if (/legal|law firm|real estate|financial|insurance|staffing|accounting/.test(lower)) return 'professional';
+  return 'project'; // roofing, remodeling, solar, electrical, painting, windows, etc.
+}
+
+interface DbrConfig {
+  campaignsPerYear: number;
+  reactivationRate: number;  // % of dormant contacts that generate a conversion per campaign
+  campaignFrame: string;
+  description: string;
+}
+
+function getDbrConfig(type: IndustryType): DbrConfig {
+  switch (type) {
+    case 'emergency':
+      return {
+        campaignsPerYear: 1,
+        reactivationRate: 0.04,
+        campaignFrame: 'Referral Reactivation',
+        description: "Past clients rarely need the same emergency service twice — but they're warm advocates. One targeted annual campaign activates referrals, insurance agent relationships, and adjacent opportunities like inspections or prevention services.",
+      };
+    case 'recurring':
+      return {
+        campaignsPerYear: 3,
+        reactivationRate: 0.08,
+        campaignFrame: 'Seasonal Push',
+        description: "Past clients are prime candidates for recurring service reactivation. Three seasonal campaigns — spring, fall, and off-season — consistently bring dormant relationships back into active revenue.",
+      };
+    case 'appointment':
+      return {
+        campaignsPerYear: 3,
+        reactivationRate: 0.10,
+        campaignFrame: 'Recall Campaign',
+        description: "Clients who haven't booked in 6+ months are your highest-yield dormant segment. Automated recall sequences and check-in campaigns recover 8–12% of inactive clients per run.",
+      };
+    case 'professional':
+      return {
+        campaignsPerYear: 2,
+        reactivationRate: 0.05,
+        campaignFrame: 'Referral Check-In',
+        description: "Past clients are your best source of referrals and repeat engagements. Two targeted check-in campaigns per year maintain top-of-mind presence and generate new matter flow or referrals.",
+      };
+    case 'project':
+    default:
+      return {
+        campaignsPerYear: 2,
+        reactivationRate: 0.06,
+        campaignFrame: 'Re-Engagement',
+        description: "Past project clients are warm leads for phase-2 work, adjacent services, and referrals. Two targeted campaigns per year keep your database generating revenue between active projects.",
+      };
+  }
+}
+
 function calculateCaptureScore(data: AssessmentData): PillarScore {
   let score = 100;
   const findings: string[] = [];
@@ -437,6 +503,29 @@ function calculateCaptureScore(data: AssessmentData): PillarScore {
     findings.push(`${channelCount} contact channels active`);
   }
 
+  // Ad spend waste — if user is running paid ads, calculate how much ad budget is lost due to slow response
+  const adSpend = parseInt((data.ad_spend || "0").replace(/[$,]/g, '')) || 0;
+  if (adSpend > 0) {
+    // Speed loss rate determines what fraction of ad-driven leads are unreachable due to response time
+    const speedLossRates: Record<string, number> = {
+      "Under 5 minutes (excellent—top 10%)": 0.05,
+      "5-30 minutes (good—top 25%)": 0.18,
+      "30 minutes to 2 hours (average—middle 50%)": 0.30,
+      "2-4 hours (slow—bottom 25%)": 0.40,
+      "4-24 hours (very slow—bottom 10%)": 0.55,
+      "24+ hours (critical problem)": 0.70,
+      "It varies wildly (inconsistent)": 0.45
+    };
+    const speedLoss = speedLossRates[data.first_contact_speed] || 0.30;
+    const adSpendWasted = Math.round(adSpend * speedLoss);
+    if (adSpendWasted > 0) {
+      findings.push(`Ad spend waste: ~$${adSpendWasted}/mo lost to slow response time`);
+      if (speedLoss >= 0.40) {
+        blindspots.push(`Your response time is costing ~$${adSpendWasted}/month in wasted ad budget — every month you delay closing the speed gap, you're throwing money away on unreachable leads`);
+      }
+    }
+  }
+
   return {
     score: clampScore(score),
     findings,
@@ -539,6 +628,22 @@ function calculateConvertScore(data: AssessmentData): PillarScore {
     blindspots.push("Businesses with full CRM automation close 30-50% more deals than manual operations — every step that requires a human to remember is a step where leads go cold");
   }
 
+  // Ad spend efficiency — if running paid ads, ensure conversion pipeline is optimized to handle them
+  const adSpend = parseInt((data.ad_spend || "0").replace(/[$,]/g, '')) || 0;
+  if (adSpend > 0) {
+    // Low quote follow-up + paid ads = wasted ad spend
+    if (followUpPenalty <= -22) {
+      score -= 5;
+      blindspots.push(`You're spending $${adSpend}/month on ads but your quote follow-up is inconsistent — that's money flowing into a leaky conversion funnel. Automating follow-up would immediately improve your ad ROI`);
+    }
+    // Low no-show recovery + paid ads = wasted ad spend
+    if (noShowRecoveryPenalty <= -15) {
+      score -= 3;
+      blindspots.push(`Paid leads have a lower tolerance for friction — your no-show recovery rate affects ad budget efficiency more than organic leads`);
+    }
+    findings.push(`Ad spend: $${adSpend}/mo — requires optimized conversion pipeline`);
+  }
+
   return {
     score: clampScore(score),
     findings,
@@ -574,9 +679,8 @@ function calculateCompoundScore(data: AssessmentData): PillarScore {
   }
   score += dormantPenalty;
   findings.push(`Dormant lead database: ${dormantLabel}`);
-  if (dormantPenalty <= -18) {
-    blindspots.push("Your dormant database is an untapped asset — reactivation campaigns typically recover 5-12% of old leads at near-zero acquisition cost");
-  }
+  // DBR opportunity is surfaced in the dedicated DBR box on the results page —
+  // we don't duplicate it here as a blindspot so the reviews section stays focused on reviews.
 
   const reviewScores: Record<string, number> = {
     "Yes, automatically (every customer gets a review request)": 0,
@@ -587,8 +691,19 @@ function calculateCompoundScore(data: AssessmentData): PillarScore {
   const reviewPenalty = reviewScores[data.review_request] || -20;
   score += reviewPenalty;
   findings.push(`Review generation: ${data.review_request.split('(')[0].trim()}`);
+  // Fire at -15 (manual) — the majority of businesses land here
+  if (reviewPenalty <= -15) {
+    blindspots.push("Manual review requests are inconsistent — automating this after every completed job turns your work into a passive lead engine that compounds over time.");
+  }
   if (reviewPenalty <= -25) {
-    blindspots.push("Reviews are your compounding engine — every 5-star review generates future leads passively, and you're leaving this on the table");
+    blindspots.push("Reviews are your compounding engine — every 5-star review generates future leads passively. Without a systematic ask, you're leaving your most credible marketing tool unused.");
+  }
+
+  // Paid ads + weak compounding = high customer acquisition cost without repeat/referral leverage
+  const adSpend = parseInt((data.ad_spend || "0").replace(/[$,]/g, '')) || 0;
+  if (adSpend >= 2500 && reviewPenalty <= -15) {
+    score -= 5;
+    blindspots.push(`You're spending $${adSpend}/month on paid acquisition but relying on manual review collection — without reviews compounding your reputation, your paid customers are largely one-time acquires. Automate review requests to turn your ad spend into a repeatable acquisition engine`);
   }
 
   return {
@@ -614,27 +729,7 @@ function applyOperationalDrag(captureScore: number, convertScore: number, compou
     dragFindings.push(`${manualHours} hours/week on manual processes`);
   }
 
-  const staffRepeat = data.staff_repeat_questions || "";
-  if (staffRepeat.includes("Constantly")) {
-    dragMultiplier -= 0.04;
-    dragFindings.push("Staff constantly interrupted by repeat questions — a shared knowledge base or AI assistant could eliminate this");
-  } else if (staffRepeat.includes("Sometimes")) {
-    dragMultiplier -= 0.02;
-  }
-
-  const processDoc = data.process_documentation || "";
-  if (processDoc.includes("Nothing documented")) {
-    dragMultiplier -= 0.03;
-    dragFindings.push("No process documentation means every task depends on institutional memory — one departure can break your operations");
-  } else if (processDoc.includes("Mostly in people's heads")) {
-    dragMultiplier -= 0.02;
-    dragFindings.push("Critical processes undocumented — creates fragility and inconsistency across your team");
-  }
-
-  if (data.operational_complexity.includes("complex") || data.operational_complexity.includes("Enterprise")) {
-    dragMultiplier -= 0.03;
-    dragFindings.push("High operational complexity amplifies friction across all systems");
-  }
+  // staff_repeat_questions, process_documentation, operational_complexity removed from assessment
 
   return {
     capture: clampScore(Math.round(captureScore * dragMultiplier)),
@@ -678,19 +773,81 @@ function generateActionPlan(captureScore: PillarScore, convertScore: PillarScore
     supportingActions.push("Track your review velocity — aim for at least 2-4 new reviews per month");
   }
 
-  if ((data.staff_repeat_questions || "").includes("Constantly")) {
-    supportingActions.push("Document your top 10 most-asked customer questions into a shared FAQ or internal knowledge base for your team");
-  }
-
-  if ((data.process_documentation || "").includes("Nothing documented") || (data.process_documentation || "").includes("Mostly in people's heads")) {
-    supportingActions.push("Start documenting your core processes — even a Google Doc SOP for your top 3 workflows can reduce training time and errors by 40%");
-  }
 
   if ((data.has_automations || "").includes("No — everything is done manually")) {
     supportingActions.push("Identify your top 3 manual tasks and map them to automation candidates — most CRMs can handle follow-up, reminders, and intake automatically");
   }
 
   return { quickWins, supportingActions };
+}
+
+// ---------------------------------------------------------------------------
+// AI Agent Readiness — awareness scoring across all three agent categories.
+// Higher score = less aware = more opportunity. Maps each gap to its pillar
+// and generates personalised findings + quick wins for the report.
+// ---------------------------------------------------------------------------
+function analyzeAIReadiness(data: AssessmentData): {
+  awarenessScore: number;
+  isDisplacementOpportunity: boolean;
+  captureInsight: string | null;
+  convertInsight: string | null;
+  compoundInsight: string | null;
+  quickWins: string[];
+} {
+  const score = (answer: string | undefined): number => {
+    if (!answer) return 3;
+    if (answer.startsWith("Yes")) return 0;
+    if (answer.includes("heard of it") || answer.includes("heard of it but")) return 1;
+    if (answer.includes("seen it") || answer.includes("seen ads")) return 2;
+    return 3;
+  };
+
+  const voiceScore      = score(data.ai_voice_booking_awareness);
+  const omniScore       = score(data.ai_omnichannel_awareness);
+  const campaignScore   = score(data.ai_campaigns_reviews_awareness);
+  const awarenessScore  = voiceScore + omniScore + campaignScore;
+  const isDisplacementOpportunity = voiceScore === 0 || omniScore === 0 || campaignScore === 0;
+
+  const captureInsights: Record<number, string> = {
+    0: "You're already running AI for calls and booking — let's audit the gaps and make sure it's fully connected inside your pipeline.",
+    1: "You know AI Voice & Booking Agents exist — activation inside GHL is faster than you think. Your front door could be open 24/7 this week.",
+    2: "AI Voice & Booking Agents answer every call, qualify the lead, and lock in the appointment automatically. This applies directly to your business.",
+    3: "AI Voice & Booking Agents can answer every call, book the appointment, and send a confirmation — 24/7, without you picking up. This is your single biggest untapped Capture lever.",
+  };
+
+  const convertInsights: Record<number, string> = {
+    0: "You're running conversational AI across channels — let's make sure SMS, chat, and DMs are all feeding the same pipeline and nothing falls through.",
+    1: "You know omnichannel AI agents exist — SimpleSequence runs SMS, chat, and DM conversations as one unified agent inside GHL, not three separate tools.",
+    2: "An Omnichannel AI Agent holds real conversations across SMS, web chat, and social DMs — moving leads toward a booking without manual follow-up. It applies to your business today.",
+    3: "Most of your unconverted leads are sitting in silence right now. An Omnichannel AI Agent picks up every conversation — SMS, web chat, DMs — and keeps moving them toward a yes, automatically.",
+  };
+
+  const compoundInsights: Record<number, string> = {
+    0: "You're running AI campaigns and review management — let's benchmark the performance and identify where the reactivation loop can be tightened.",
+    1: "You know AI campaign and review tools exist — here's how to connect them to your dormant lead list and review profile inside GHL this week.",
+    2: "AI Campaign Agents run reactivations and reply to reviews on autopilot — inside GHL, SimpleSequence connects them directly to your CRM so nothing requires manual triggering.",
+    3: "Your past customer database and review profile are two revenue streams sitting completely idle. An AI Campaign Agent works both simultaneously, every month, without your involvement.",
+  };
+
+  const quickWins: string[] = [];
+  if (voiceScore >= 2) {
+    quickWins.push("Deploy an AI Voice Agent that answers every call, qualifies the lead, and books the appointment — your front door never closes again.");
+  }
+  if (omniScore >= 2) {
+    quickWins.push("Activate an Omnichannel AI Agent across SMS, web chat, and social DMs — one agent, every channel, zero manual follow-up required.");
+  }
+  if (campaignScore >= 2) {
+    quickWins.push("Launch an AI Campaign Agent against your dormant database — even a 10% response rate on 100 cold contacts generates immediate revenue.");
+  }
+
+  return {
+    awarenessScore,
+    isDisplacementOpportunity,
+    captureInsight:  captureInsights[voiceScore]    ?? null,
+    convertInsight:  convertInsights[omniScore]     ?? null,
+    compoundInsight: compoundInsights[campaignScore] ?? null,
+    quickWins,
+  };
 }
 
 function estimateMonthlyGapBreakdown(
@@ -730,17 +887,36 @@ function estimateMonthlyGapBreakdown(
   const captureCalc = `${monthlyLeads} leads × ${Math.round(unavailRate * 100)}% unreached × ${Math.round(speedLoss * 100)}% lost to speed × ${Math.round(closeRate * 100)}% would-close × $${avgJobValue.toLocaleString()} avg job`;
 
   // CONVERT GAP — no-show recovery + quote follow-up recovery
+  //
+  // Two separate loss pools:
+  //   1. No-shows: jobs that were committed/booked but the customer didn't follow through.
+  //      Formula: monthlyLeads × closeRate × noShowRate × recoveryFraction × avgJobValue
+  //      (closeRate anchors this to jobs that were genuinely on the books)
+  //
+  //   2. Open quotes: leads that never committed — the actual (1 - closeRate) loss pool.
+  //      Formula: monthlyLeads × (1 - closeRate) × quoteRecoveryRate × avgJobValue
+  //      This replaces the old "× closeRate × 0.50" which contradicted the stated close rate.
+  //
   const noShowRate = parseNoShowRate(data.no_show_rate);
   const noShowMonthly = monthlyLeads * closeRate * (noShowRate / 100) * 0.25 * avgJobValue;
-  let quoteRecoveryRate = 0.20;
-  if (data.quote_followup.includes("Automated")) quoteRecoveryRate = 0.10;
-  else if (data.quote_followup.includes("Manual")) quoteRecoveryRate = 0.15;
-  else if (data.quote_followup.includes("Nothing")) quoteRecoveryRate = 0.25;
-  const quoteMonthly = monthlyLeads * closeRate * 0.50 * quoteRecoveryRate * avgJobValue;
+
+  // Quote recovery — anchored to the actual unconverted lead pool
+  const lostLeadsPerMonth = monthlyLeads * (1 - closeRate);
+  let quoteRecoveryRate = 0.20; // default: manual follow-up
+  if (data.quote_followup.includes("Automated")) quoteRecoveryRate = 0.35;
+  else if (data.quote_followup.includes("One attempt")) quoteRecoveryRate = 0.10;
+  else if (data.quote_followup.includes("Nothing")) quoteRecoveryRate = 0.08;
+  // Pipeline tracking quality refines recovery potential
+  if (data.pipeline_tracking.includes("consistently")) quoteRecoveryRate += 0.05;
+  else if (data.pipeline_tracking.includes("No, we mostly")) quoteRecoveryRate -= 0.05;
+  quoteRecoveryRate = Math.min(0.50, Math.max(0.05, quoteRecoveryRate));
+
+  const quoteMonthly = lostLeadsPerMonth * quoteRecoveryRate * avgJobValue;
   const rawConvertGap = noShowMonthly + quoteMonthly;
   const convertGap = Math.round(rawConvertGap / 50) * 50;
-  const noShowCalcLine = `No-show: ${monthlyLeads} leads × ${Math.round(closeRate * 100)}% close × ${noShowRate}% no-show × 25% recoverable × $${avgJobValue.toLocaleString()} = ~$${Math.round(noShowMonthly).toLocaleString()}`;
-  const quoteCalcLine = `Quote: ${monthlyLeads} leads × ${Math.round(closeRate * 100)}% close × 50% open quotes × ${Math.round(quoteRecoveryRate * 100)}% gap × $${avgJobValue.toLocaleString()} = ~$${Math.round(quoteMonthly).toLocaleString()}`;
+
+  const noShowCalcLine = `No-show: ${monthlyLeads} leads × ${Math.round(closeRate * 100)}% booked × ${noShowRate}% no-show × 25% recoverable × $${avgJobValue.toLocaleString()} = ~$${Math.round(noShowMonthly).toLocaleString()}`;
+  const quoteCalcLine = `Open quotes: ${monthlyLeads} leads × ${Math.round((1 - closeRate) * 100)}% not closed = ${Math.round(lostLeadsPerMonth * 10) / 10} open × ${Math.round(quoteRecoveryRate * 100)}% recoverable × $${avgJobValue.toLocaleString()} = ~$${Math.round(quoteMonthly).toLocaleString()}`;
   const convertCalc = `${noShowCalcLine}\n${quoteCalcLine}`;
 
   // COMPOUND GAP — review/reputation penalty on new business acquisition
@@ -788,7 +964,8 @@ function recommendTier(
   compoundScore: number,
   monthlyLeads: number,
   complexity: string,
-  adSpend: number
+  adSpend: number,
+  aiAwarenessScore: number = 0
 ): { tier: 'Blueprint' | 'Growth Architecture' | 'Operating System'; reason: string } {
   const lowestScore = Math.min(captureScore, convertScore, compoundScore);
   const overallScore = Math.round((captureScore + convertScore + compoundScore) / 3);
@@ -796,7 +973,9 @@ function recommendTier(
   if (convertScore === lowestScore) lowestPillar = "Convert";
   else if (compoundScore === lowestScore) lowestPillar = "Compound";
 
-  if (complexity.includes("Enterprise") || monthlyLeads > 150) {
+  // High AI unawareness (6-9) signals they need full build-out + education,
+  // not just a point solution — push toward Operating System
+  if (complexity.includes("Enterprise") || monthlyLeads > 150 || aiAwarenessScore >= 6) {
     return {
       tier: 'Operating System',
       reason: `At ${monthlyLeads} leads/month, your volume demands full operational transformation. Operating System deploys the complete Sequential Revenue™ loop: Capture (24/7 AI Front Door for speed-to-lead + missed calls), Convert (Invisible Sales Rep for quotes, no-shows, and pipeline), and Compound (review automation + the Found-Money DBR Campaign that turns your dormant database into immediate revenue). With a ${lowestPillar} score of ${lowestScore}/100, you need all three pillars working as one loop.`
@@ -1028,7 +1207,8 @@ function calculateFinancialNarrative(
   conversionGap: number,
   compoundingGap: number,
   dormantLeads: string,
-  confidenceBand: number
+  confidenceBand: number,
+  industry: string,
 ): FinancialNarrative {
   const estimatedJobs = monthlySalesVolume > 0
     ? monthlySalesVolume
@@ -1074,15 +1254,17 @@ function calculateFinancialNarrative(
       if (dormantLeads.includes(key)) { dormantLeadMidpoint = midpoint; break; }
     }
   }
-  const foundMoneyPotential = Math.round(dormantLeadMidpoint * 0.08 * avgJobValue);
-  // Found money reactivation is especially uncertain — widen the band.
+  // Industry-aware DBR config — cadence and reactivation rate differ by business type.
+  // Emergency/one-time industries (restoration, legal) get 1x/yr + referral framing.
+  // Recurring industries (HVAC, cleaning) get 3x/yr + seasonal framing.
+  const industryType = getIndustryType(industry);
+  const dbrConfig = getDbrConfig(industryType);
+  const foundMoneyPotential = Math.round(dormantLeadMidpoint * dbrConfig.reactivationRate * avgJobValue);
+  // DBR reactivation estimates are inherently uncertain — widen the band.
   const foundMoneyBand = applyBand(foundMoneyPotential, Math.min(confidenceBand + 0.15, 0.60));
 
-  // DBR as a recurring campaign engine — not one-time.
-  // Seasonal campaigns, new service launches, re-engagement blasts = ~3x/year conservative.
-  // Each campaign targets the same dormant pool + new dormant leads that accumulate.
   const dbrCampaignValue = foundMoneyPotential;
-  const dbrCampaignsPerYear = 3; // conservative: spring, fall, new service launch
+  const dbrCampaignsPerYear = dbrConfig.campaignsPerYear;
   const dbrAnnualPotential = dbrCampaignValue * dbrCampaignsPerYear;
   const dbrMonthlyEquivalent = Math.round(dbrAnnualPotential / 12);
 
@@ -1118,6 +1300,8 @@ function calculateFinancialNarrative(
     dbrCampaignsPerYear,
     dbrAnnualPotential,
     dbrMonthlyEquivalent,
+    dbrCampaignFrame: dbrConfig.campaignFrame,
+    dbrDescription: dbrConfig.description,
   };
 }
 
@@ -1201,6 +1385,12 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     allBlindspots.push(...adjusted.dragFindings.filter(f => f.includes("drag") || f.includes("complexity") || f.includes("documented") || f.includes("interrupted")));
   }
 
+  // AI Readiness — append pillar-matched insights to blindspots
+  const aiReadiness = analyzeAIReadiness(data);
+  if (aiReadiness.captureInsight)  allBlindspots.push(aiReadiness.captureInsight);
+  if (aiReadiness.convertInsight)  allBlindspots.push(aiReadiness.convertInsight);
+  if (aiReadiness.compoundInsight) allBlindspots.push(aiReadiness.compoundInsight);
+
   // Prepend the coherence warning as a visible blindspot so users see it
   // before acting on the dollar figures.
   if (!inputCoherence.consistent && inputCoherence.warning) {
@@ -1208,6 +1398,8 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
   }
 
   const actionPlan = generateActionPlan(captureScore, convertScore, compoundScore, data);
+  // Prepend AI-specific quick wins so they appear prominently
+  actionPlan.quickWins.unshift(...aiReadiness.quickWins);
 
   const gapBreakdown = estimateMonthlyGapBreakdown(data, monthlyLeads, avgJobValue, closeRate, confidenceBand);
   const totalMonthlyGap = gapBreakdown.total;
@@ -1218,8 +1410,9 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     adjusted.convert,
     adjusted.compound,
     monthlyLeads,
-    data.operational_complexity,
-    adSpend
+    data.operational_complexity ?? "",
+    adSpend,
+    aiReadiness.awarenessScore
   );
 
   const financialNarrative = calculateFinancialNarrative(
@@ -1232,7 +1425,8 @@ export function calculateResults(data: AssessmentData): AssessmentResult {
     gapBreakdown.convertGap,
     gapBreakdown.compoundGap,
     data.dormant_leads,
-    confidenceBand
+    confidenceBand,
+    data.industry,
   );
 
   const industryBenchmark = getIndustryBenchmark(data.industry);
