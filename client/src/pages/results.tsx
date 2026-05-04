@@ -7,7 +7,7 @@ import {
 } from "recharts";
 import {
   ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw,
-  Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Download, Calendar,
+  Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Calendar,
   ChevronDown, TrendingDown, Info, Globe,
 } from "lucide-react";
 import { AssessmentResult, PillarScore, IndustryBenchmark, calculateResults } from "@/lib/scoring";
@@ -1669,59 +1669,14 @@ export default function Results() {
                 30-minute Revenue Recovery Audit · No pitch deck · Walk away with a written plan either way
               </p>
 
-              <div className="mt-8 pt-6 border-t border-slate-800/60">
-                <button
-                  onClick={async () => {
-                    const storedLeadId = sessionStorage.getItem('leadId');
-                    const storedData = sessionStorage.getItem('assessmentData');
-                    const storedEmail = sessionStorage.getItem('contactEmail');
-
-                    // Prefer direct endpoint (no DB needed) when we have the raw data
-                    if (storedData) {
-                      try {
-                        const parsed = JSON.parse(storedData);
-                        const resp = await fetch('/api/assessment/pdf-direct', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            assessmentData: parsed,
-                            contactName: `${parsed.contact_first_name ?? ''} ${parsed.contact_last_name ?? ''}`.trim(),
-                            contactEmail: storedEmail || parsed.contact_email || '',
-                            contactPhone: parsed.contact_phone || '',
-                            websiteUrl: parsed.website_url || '',
-                          }),
-                        });
-                        if (resp.ok) {
-                          const blob = await resp.blob();
-                          const url = URL.createObjectURL(blob);
-                          const a = document.createElement('a');
-                          a.href = url;
-                          a.download = 'friction_analysis.pdf';
-                          a.click();
-                          URL.revokeObjectURL(url);
-                          return;
-                        }
-                      } catch {}
-                    }
-                    // Fallback to leadId-based endpoint
-                    if (storedLeadId) {
-                      window.open(`/api/assessment/${storedLeadId}/pdf`, '_blank');
-                    }
-                  }}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-slate-700/50 bg-slate-900/40 text-slate-300 hover:text-cyan-400 hover:border-cyan-500/30 transition-all text-sm font-medium"
-                  data-testid="link-download-pdf"
-                >
-                  <Download size={14} />
-                  Download Your Full Analysis (PDF)
-                </button>
-
-                {contactEmail && (
-                  <p className="text-xs text-slate-500 mt-3">
+              {contactEmail && (
+                <div className="mt-8 pt-6 border-t border-slate-800/60">
+                  <p className="text-xs text-slate-500">
                     <CheckCircle size={12} className="inline text-cyan-400/60 mr-1" />
                     Results also emailed to {contactEmail}
                   </p>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </GlassCard>
         </motion.div>

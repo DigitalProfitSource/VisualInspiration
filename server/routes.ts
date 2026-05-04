@@ -130,6 +130,7 @@ async function sendToGHL(data: GHLWebhookData) {
       assessment_email_html: emailHtml,
       assessment_pdf_base64: pdfBase64,
       results_url: data.leadId ? `${process.env.APP_BASE_URL || "https://simplesequence.ai"}/results?id=${data.leadId}` : "",
+      pdf_url: data.leadId ? `${process.env.APP_BASE_URL || "https://simplesequence.ai"}/api/assessment/${data.leadId}/pdf` : "",
     };
 
     const response = await fetch(webhookUrl, {
