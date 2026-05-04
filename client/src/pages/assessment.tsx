@@ -1968,7 +1968,7 @@ export default function Assessment() {
             If you don't see it, check your spam folder.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex justify-center">
             <a
               href="https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi"
               target="_blank"
@@ -1977,14 +1977,6 @@ export default function Assessment() {
             >
               Book a Strategy Call <ArrowRight size={15} />
             </a>
-            {submittedLeadId && (
-              <Link
-                href={`/results?id=${submittedLeadId}`}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-slate-700 hover:border-slate-500 text-slate-400 hover:text-white font-medium text-sm transition-colors"
-              >
-                View results now
-              </Link>
-            )}
           </div>
         </motion.div>
       </div>
