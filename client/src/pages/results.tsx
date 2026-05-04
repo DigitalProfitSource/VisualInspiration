@@ -539,7 +539,7 @@ function TierCard({
         ))}
       </ul>
 
-      <Link href="/book">
+      <a href="https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi" target="_blank" rel="noopener noreferrer" className="block w-full">
         <Button
           className={`w-full ${isRecommended ? 'bg-cyan-500 hover:bg-cyan-400 text-black' : 'bg-slate-700 hover:bg-slate-600'}`}
           data-testid={`button-tier-${tier.toLowerCase().replace(/\s+/g, '-')}`}
@@ -547,7 +547,7 @@ function TierCard({
           Discuss fit &amp; investment
           <ArrowRight size={14} className="ml-2" />
         </Button>
-      </Link>
+      </a>
     </div>
   );
 }
@@ -1654,7 +1654,7 @@ export default function Results() {
                 You get a system designed to turn past customers into new cash flow &mdash; without increasing your ad spend.
               </p>
 
-              <Link href="/book">
+              <a href={calendarUrl} target="_blank" rel="noopener noreferrer">
                 <GlassButton
                   className="w-full md:w-auto min-w-[340px] bg-cyan-500 hover:bg-cyan-400 text-black text-lg font-bold py-5 px-10 rounded-xl shadow-[0_0_30px_rgba(103,232,249,0.35)]"
                   data-testid="button-book-strategy-call"
@@ -1663,7 +1663,7 @@ export default function Results() {
                   Claim My Revenue Recovery Plan
                   <ArrowRight size={20} className="ml-2" />
                 </GlassButton>
-              </Link>
+              </a>
 
               <p className="text-xs text-slate-500 mt-4">
                 30-minute Revenue Recovery Audit · No pitch deck · Walk away with a written plan either way
