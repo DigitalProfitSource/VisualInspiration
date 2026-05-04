@@ -22,6 +22,7 @@ interface GHLWebhookData {
   revenuePains: string[];
   submittedAt: Date;
   rawAssessmentData?: Record<string, unknown>;
+  leadId?: string | null;
 }
 
 async function sendToGHL(data: GHLWebhookData) {
@@ -128,6 +129,7 @@ async function sendToGHL(data: GHLWebhookData) {
       // Report content
       assessment_email_html: emailHtml,
       assessment_pdf_base64: pdfBase64,
+      results_url: data.leadId ? `${process.env.APP_BASE_URL || "https://simplesequence.ai"}/results?id=${data.leadId}` : "",
     };
 
     const response = await fetch(webhookUrl, {
@@ -237,6 +239,7 @@ export async function registerRoutes(
       revenuePains: data.assessmentData.revenue_pain.map(p => p.value),
       submittedAt: new Date(),
       rawAssessmentData: data.assessmentData as unknown as Record<string, unknown>,
+      leadId,
     }).catch(err => console.error("GHL webhook error:", err));
 
     // Always succeed — the results page is computed client-side so it doesn't

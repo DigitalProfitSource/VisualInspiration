@@ -3,7 +3,7 @@ import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, ArrowRight, ArrowLeft, ExternalLink, Sparkles, Wand2, X } from "lucide-react";
+import { Loader2, ArrowRight, ArrowLeft, ExternalLink, Sparkles, Wand2, X, CheckCircle, Mail } from "lucide-react";
 import { Link } from "wouter";
 
 import {
@@ -79,6 +79,9 @@ const ASSESSMENT_STEPS: Step[] = [
 export default function Assessment() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState('');
+  const [submittedLeadId, setSubmittedLeadId] = useState('');
   const [, setLocation] = useLocation();
 
   const {
@@ -285,8 +288,10 @@ export default function Assessment() {
         sessionStorage.setItem('assessmentData', JSON.stringify(data));
         sessionStorage.setItem('leadId', responseData.leadId || '');
         sessionStorage.setItem('contactEmail', data.contact_email || '');
-        
-        setLocation('/results');
+
+        setSubmittedEmail(data.contact_email || '');
+        setSubmittedLeadId(responseData.leadId || '');
+        setSubmitted(true);
       } catch (error) {
         console.error('Error submitting assessment:', error);
       } finally {
@@ -1923,11 +1928,74 @@ export default function Assessment() {
     );
   };
 
+  if (submitted) {
+    return (
+      <div className="min-h-screen text-foreground font-sans relative overflow-hidden bg-background flex items-center justify-center">
+        <div className="fixed inset-0 z-0 bg-grid-pattern pointer-events-none" />
+        <div className="fixed inset-0 z-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 max-w-lg w-full mx-4 text-center"
+        >
+          {/* Glow ring */}
+          <div className="flex justify-center mb-6">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full bg-cyan-400/20 blur-2xl scale-150" />
+              <div className="relative w-20 h-20 rounded-full bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center">
+                <CheckCircle className="text-cyan-400" size={36} />
+              </div>
+            </div>
+          </div>
+
+          <p className="text-[11px] font-bold text-cyan-400 uppercase tracking-[0.25em] mb-3">Sequential Revenue™ Report</p>
+          <h1 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4 leading-tight">
+            Your report is on its way!
+          </h1>
+          <p className="text-slate-400 text-base mb-6 leading-relaxed">
+            We just sent your full Sequential Revenue™ Friction Analysis to
+          </p>
+
+          {/* Email pill */}
+          <div className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-cyan-950/50 border border-cyan-500/30 mb-8">
+            <Mail size={15} className="text-cyan-400" />
+            <span className="font-mono text-cyan-300 text-sm font-semibold">{submittedEmail}</span>
+          </div>
+
+          <p className="text-slate-500 text-sm mb-10">
+            Check your inbox — it may take a minute or two.<br />
+            If you don't see it, check your spam folder.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <a
+              href="https://api.leadconnectorhq.com/widget/booking/3thrLJtlhjEWrn7rrzMi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-sm transition-colors"
+            >
+              Book a Strategy Call <ArrowRight size={15} />
+            </a>
+            {submittedLeadId && (
+              <Link
+                href={`/results?id=${submittedLeadId}`}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-slate-700 hover:border-slate-500 text-slate-400 hover:text-white font-medium text-sm transition-colors"
+              >
+                View results now
+              </Link>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen text-foreground font-sans selection:bg-primary/30 relative overflow-hidden bg-background">
       <div className="fixed inset-0 z-0 bg-grid-pattern pointer-events-none" />
       <div className="fixed inset-0 z-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
-      
+
       <header className="fixed top-0 left-0 right-0 z-50 h-20 glass-panel flex items-center px-6 md:px-12 justify-between">
         <Link href="/">
           <div className="text-xl font-heading font-bold tracking-tighter hover:opacity-80 transition-opacity flex items-center gap-3 cursor-pointer">

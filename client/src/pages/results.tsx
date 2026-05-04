@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useLocation, Link } from "wouter";
+import { useLocation, useSearch, Link } from "wouter";
 import { motion, useInView } from "framer-motion";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
@@ -10,7 +10,8 @@ import {
   Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Download, Calendar,
   ChevronDown, TrendingDown, Info, Globe,
 } from "lucide-react";
-import { AssessmentResult, PillarScore, IndustryBenchmark } from "@/lib/scoring";
+import { AssessmentResult, PillarScore, IndustryBenchmark, calculateResults } from "@/lib/scoring";
+import type { AssessmentData } from "@shared/assessment-schema";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -569,6 +570,9 @@ function AnswerGroup({ label, rows }: { label: string; rows: [string, string][] 
 
 export default function Results() {
   const [, setLocation] = useLocation();
+  const search = useSearch();
+  const urlLeadId = new URLSearchParams(search).get('id');
+
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [leadId, setLeadId] = useState<string>('');
   const [contactEmail, setContactEmail] = useState<string>('');
@@ -576,51 +580,62 @@ export default function Results() {
   const [showAnswers, setShowAnswers] = useState(false);
   const { value: animatedScore, ref: scoreRef } = useCountUp(result?.totalMonthlyGap ?? 0);
 
+  function applyResult(parsed: AssessmentResult) {
+    if (!parsed.gapBreakdown) {
+      parsed.gapBreakdown = {
+        captureGap: 0, convertGap: 0, compoundGap: 0,
+        total: parsed.totalMonthlyGap || 0,
+        captureCalc: "Calculation unavailable — retake assessment for full breakdown",
+        convertCalc: "Calculation unavailable — retake assessment for full breakdown",
+        compoundCalc: "Calculation unavailable — retake assessment for full breakdown",
+        captureGapLow: 0, captureGapHigh: 0, convertGapLow: 0, convertGapHigh: 0,
+        compoundGapLow: 0, compoundGapHigh: 0,
+        totalLow: 0, totalHigh: parsed.totalMonthlyGap || 0, confidenceBand: 0.25,
+      };
+    }
+    setResult(parsed);
+  }
+
+  // Load from URL param (email link) or sessionStorage (fresh submission)
   useEffect(() => {
+    if (urlLeadId) {
+      fetch(`/api/assessment/${urlLeadId}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(lead => {
+          if (!lead) { setLocation('/assessment'); return; }
+          const data = lead.assessmentData as Record<string, unknown>;
+          setAssessmentData(data);
+          setLeadId(lead.id);
+          if (lead.contactEmail) setContactEmail(lead.contactEmail);
+          applyResult(calculateResults(data as unknown as AssessmentData));
+        })
+        .catch(() => setLocation('/assessment'));
+      return;
+    }
+
     const storedResult = sessionStorage.getItem('assessmentResult');
     const storedLeadId = sessionStorage.getItem('leadId');
     const storedEmail = sessionStorage.getItem('contactEmail');
-
     const storedAssessmentData = sessionStorage.getItem('assessmentData');
+
     if (storedAssessmentData) {
       try { setAssessmentData(JSON.parse(storedAssessmentData)); } catch {}
     }
     if (storedResult) {
-      const parsed = JSON.parse(storedResult) as AssessmentResult;
-      if (!parsed.gapBreakdown) {
-        parsed.gapBreakdown = {
-          captureGap: 0,
-          convertGap: 0,
-          compoundGap: 0,
-          total: parsed.totalMonthlyGap || 0,
-          captureCalc: "Calculation unavailable — retake assessment for full breakdown",
-          convertCalc: "Calculation unavailable — retake assessment for full breakdown",
-          compoundCalc: "Calculation unavailable — retake assessment for full breakdown",
-          captureGapLow: 0,
-          captureGapHigh: 0,
-          convertGapLow: 0,
-          convertGapHigh: 0,
-          compoundGapLow: 0,
-          compoundGapHigh: 0,
-          totalLow: 0,
-          totalHigh: parsed.totalMonthlyGap || 0,
-          confidenceBand: 0.25,
-        };
-      }
-      setResult(parsed);
+      try { applyResult(JSON.parse(storedResult) as AssessmentResult); } catch {}
     }
     if (storedLeadId) setLeadId(storedLeadId);
     if (storedEmail) setContactEmail(storedEmail);
-  }, []);
+  }, [urlLeadId]);
 
   useEffect(() => {
-    if (!result) {
+    if (!result && !urlLeadId) {
       const timer = setTimeout(() => {
         if (!result) setLocation("/assessment");
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [result, setLocation]);
+  }, [result, setLocation, urlLeadId]);
 
   if (!result) {
     return (
@@ -1713,11 +1728,24 @@ export default function Results() {
 
         <FeedbackSection />
 
+        {/* Disclaimer */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+          className="mb-12 rounded-xl border border-slate-800/60 bg-slate-900/20 p-5"
+        >
+          <p className="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-2">Important Disclaimer</p>
+          <p className="text-xs text-slate-500 leading-relaxed">
+            The revenue gap figures, scores, and projections in this report are forward-looking estimates generated from your self-reported inputs and industry benchmark data for businesses in your category. They represent <em>potential opportunities identified through this assessment</em> — not guaranteed results or promises of income. Actual outcomes depend on implementation quality, team execution, market conditions, competitive environment, seasonality, and other factors unique to your business that this assessment cannot fully account for. SimpleSequence LLC makes no representation or warranty that you will recover the revenue gaps identified, achieve the projections shown, or replicate any results described. All figures should be treated as planning benchmarks, not financial forecasts. This report does not constitute financial, legal, or business advice. Past performance of other businesses using similar systems is not indicative of your individual results.
+          </p>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-12 text-center"
+          className="mt-4 text-center"
         >
           <Link
             href="/"
