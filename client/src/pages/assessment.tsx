@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, ArrowRight, ArrowLeft, ExternalLink, Sparkles, Wand2, X, CheckCircle, Mail } from "lucide-react";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { Link } from "wouter";
 
 import {
@@ -82,6 +83,7 @@ export default function Assessment() {
   const [submitted, setSubmitted] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState('');
   const [submittedLeadId, setSubmittedLeadId] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [, setLocation] = useLocation();
 
   const {
@@ -264,12 +266,13 @@ export default function Assessment() {
     if (!isValid) return;
 
     if (currentStepIndex === ASSESSMENT_STEPS.length - 1) {
+      if (!turnstileToken) return;
       setIsSubmitting(true);
       const data = getValues();
-      
+
       try {
         const result = calculateResults(data);
-        
+
         const response = await fetch('/api/assessment/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -279,6 +282,7 @@ export default function Assessment() {
             contactLastName: data.contact_last_name,
             contactEmail: data.contact_email,
             contactPhone: data.contact_phone || '',
+            turnstileToken,
           }),
         });
         
@@ -2094,6 +2098,18 @@ export default function Assessment() {
                     ))}
               </div>
 
+              {currentStepIndex === ASSESSMENT_STEPS.length - 1 && (
+                <div className="mt-6 flex justify-center">
+                  <Turnstile
+                    siteKey="0x4AAAAAADJEchzw19iY_MGT"
+                    onSuccess={(token) => setTurnstileToken(token)}
+                    onExpire={() => setTurnstileToken(null)}
+                    onError={() => setTurnstileToken(null)}
+                    options={{ theme: 'dark' }}
+                  />
+                </div>
+              )}
+
               <div className="flex justify-between mt-8 pt-6 border-t border-slate-700/50">
                 <GlassButton
                   type="button"
@@ -2108,7 +2124,7 @@ export default function Assessment() {
                 <GlassButton
                   type="button"
                   onClick={handleNext}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || (currentStepIndex === ASSESSMENT_STEPS.length - 1 && !turnstileToken)}
                   data-testid="button-next"
                 >
                   {isSubmitting ? (
