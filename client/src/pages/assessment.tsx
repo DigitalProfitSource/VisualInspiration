@@ -2098,7 +2098,7 @@ export default function Assessment() {
                     ))}
               </div>
 
-              {currentStepIndex === ASSESSMENT_STEPS.length - 1 && (
+              {currentStepIndex === 0 && (
                 <div className="mt-6 flex justify-center">
                   <Turnstile
                     siteKey="0x4AAAAAADJEchzw19iY_MGT"
@@ -2124,7 +2124,7 @@ export default function Assessment() {
                 <GlassButton
                   type="button"
                   onClick={handleNext}
-                  disabled={isSubmitting || (currentStepIndex === ASSESSMENT_STEPS.length - 1 && !turnstileToken)}
+                  disabled={isSubmitting || (currentStepIndex === 0 && !turnstileToken)}
                   data-testid="button-next"
                 >
                   {isSubmitting ? (
