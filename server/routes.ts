@@ -187,30 +187,7 @@ export async function registerRoutes(
 
   // Assessment submission endpoint
   app.post("/api/assessment/submit", async (req, res) => {
-    // Step 1: verify Turnstile token
-    const turnstileToken = req.body.turnstileToken;
-    const turnstileSecret = process.env.CLOUDFLARE_TURNSTILE_SECRET;
-    if (turnstileSecret) {
-      if (!turnstileToken) {
-        return res.status(400).json({ error: "Human verification required" });
-      }
-      try {
-        const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ secret: turnstileSecret, response: turnstileToken }),
-        });
-        const verifyData = await verifyRes.json() as { success: boolean };
-        if (!verifyData.success) {
-          return res.status(403).json({ error: "Human verification failed" });
-        }
-      } catch (err) {
-        console.error("Turnstile verification error:", err);
-        // Fail open — don't block submission if Cloudflare is unreachable
-      }
-    }
-
-    // Step 2: validate schema — hard failure, must return 400 if this fails.
+    // Step 1: validate schema — hard failure, must return 400 if this fails.
     let data: ReturnType<typeof AssessmentSubmitSchema.parse>;
     try {
       data = AssessmentSubmitSchema.parse(req.body);
@@ -401,8 +378,33 @@ export async function registerRoutes(
     try {
       const schema = z.object({
         url: z.string().trim().min(4).max(500),
+        turnstileToken: z.string().optional(),
       });
-      const { url } = schema.parse(req.body);
+      const { url, turnstileToken } = schema.parse(req.body);
+
+      // Verify Turnstile here (protects Firecrawl). Token is valid for ~5 min,
+      // so verifying at scrape time (Step 1) rather than at final submit ensures
+      // the token hasn't expired by the time the user finishes the assessment.
+      const turnstileSecret = process.env.CLOUDFLARE_TURNSTILE_SECRET;
+      if (turnstileSecret) {
+        if (!turnstileToken) {
+          return res.status(400).json({ error: "Human verification required" });
+        }
+        try {
+          const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ secret: turnstileSecret, response: turnstileToken }),
+          });
+          const verifyData = await verifyRes.json() as { success: boolean };
+          if (!verifyData.success) {
+            return res.status(403).json({ error: "Human verification failed" });
+          }
+        } catch (err) {
+          console.error("Turnstile verification error:", err);
+          // Fail open — don't block if Cloudflare is unreachable
+        }
+      }
       const insights = await scrapeWebsite(url);
       res.json(insights);
     } catch (error) {

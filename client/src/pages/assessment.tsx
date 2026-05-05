@@ -161,7 +161,7 @@ export default function Assessment() {
     insights: scrapeInsights,
     status: scrapeStatus,
     dismiss: dismissScrape,
-  } = useWebsiteScrape(watchedValues.website_url);
+  } = useWebsiteScrape(watchedValues.website_url, turnstileToken);
 
   // AI-powered NAICS classification. Returns industry label (NAICS-aligned) +
   // 6-digit code + official title + a 2–6 word specialization from the scraped
@@ -266,7 +266,6 @@ export default function Assessment() {
     if (!isValid) return;
 
     if (currentStepIndex === ASSESSMENT_STEPS.length - 1) {
-      if (!turnstileToken) return;
       setIsSubmitting(true);
       const data = getValues();
 
@@ -282,7 +281,6 @@ export default function Assessment() {
             contactLastName: data.contact_last_name,
             contactEmail: data.contact_email,
             contactPhone: data.contact_phone || '',
-            turnstileToken,
           }),
         });
         

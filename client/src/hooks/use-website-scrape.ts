@@ -44,7 +44,7 @@ function toDomain(raw: string): string | null {
   }
 }
 
-export function useWebsiteScrape(url: string | undefined): UseWebsiteScrapeResult {
+export function useWebsiteScrape(url: string | undefined, turnstileToken?: string | null): UseWebsiteScrapeResult {
   const [insights, setInsights] = useState<ScrapeInsights | null>(null);
   const [status, setStatus] = useState<ScrapeStatus>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -65,7 +65,7 @@ export function useWebsiteScrape(url: string | undefined): UseWebsiteScrapeResul
     // Same domain already processed — no-op.
     if (domain === currentDomainRef.current) return;
 
-    // Check session cache
+    // Check session cache — cached results don't need a Turnstile token.
     try {
       const cached = sessionStorage.getItem(CACHE_PREFIX + domain);
       if (cached) {
@@ -80,6 +80,11 @@ export function useWebsiteScrape(url: string | undefined): UseWebsiteScrapeResul
       // sessionStorage unavailable (private browsing, SSR, etc.) — fall through to fetch.
     }
 
+    // Don't fire Firecrawl until the human has verified via Turnstile.
+    // The effect re-runs when turnstileToken changes, so the scrape fires
+    // as soon as the user completes the challenge.
+    if (turnstileToken === null || turnstileToken === undefined || turnstileToken === "") return;
+
     const timer = setTimeout(() => {
       // Abort any in-flight request for a stale domain.
       abortRef.current?.abort();
@@ -92,7 +97,7 @@ export function useWebsiteScrape(url: string | undefined): UseWebsiteScrapeResul
       fetch("/api/scrape", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url, turnstileToken }),
         signal: controller.signal,
       })
         .then(res => res.json() as Promise<ScrapeInsights>)
@@ -120,7 +125,7 @@ export function useWebsiteScrape(url: string | undefined): UseWebsiteScrapeResul
     return () => {
       clearTimeout(timer);
     };
-  }, [url]);
+  }, [url, turnstileToken]);
 
   const dismiss = () => {
     setInsights(null);
