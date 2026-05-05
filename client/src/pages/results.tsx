@@ -7,15 +7,13 @@ import {
 } from "recharts";
 import {
   ArrowRight, CheckCircle, ExternalLink, Wrench, Clock, Code, RefreshCw,
-  Send, Eye, Zap, TrendingUp, Target, AlertTriangle, Calendar,
+  Eye, Zap, TrendingUp, Target, AlertTriangle, Calendar,
   ChevronDown, TrendingDown, Info, Globe,
 } from "lucide-react";
 import { AssessmentResult, PillarScore, IndustryBenchmark, calculateResults } from "@/lib/scoring";
 import type { AssessmentData } from "@shared/assessment-schema";
 import { GlassCard, GlassButton } from "@/components/ui/glass-ui";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 
 function useCountUp(end: number, duration: number = 1500) {
   const [value, setValue] = useState(0);
@@ -1681,8 +1679,6 @@ export default function Results() {
           </GlassCard>
         </motion.div>
 
-        <FeedbackSection />
-
         {/* Disclaimer */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -1728,70 +1724,3 @@ function DailyCostCounter({ dailyCost }: { dailyCost: number }) {
   );
 }
 
-function FeedbackSection() {
-  const [feedback, setFeedback] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const { toast } = useToast();
-
-  const handleSubmit = async () => {
-    if (!feedback.trim()) return;
-    setIsSubmitting(true);
-    try {
-      const leadId = sessionStorage.getItem('leadId');
-      const response = await fetch("/api/feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ leadId: leadId || undefined, feedback: feedback.trim() }),
-      });
-      if (!response.ok) throw new Error("Failed to submit feedback");
-      setSubmitted(true);
-      toast({ title: "Thank you!", description: "Your feedback helps us improve the assessment." });
-    } catch {
-      toast({ title: "Error", description: "Failed to submit feedback. Please try again.", variant: "destructive" });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (submitted) {
-    return (
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mb-12">
-        <GlassCard className="p-6 border-cyan-500/20 bg-cyan-950/10">
-          <div className="flex items-center gap-3">
-            <CheckCircle className="text-cyan-400" size={24} />
-            <div>
-              <p className="text-white font-semibold">Thank you for your feedback!</p>
-              <p className="text-sm text-slate-400">Your input helps us improve the assessment for future users.</p>
-            </div>
-          </div>
-        </GlassCard>
-      </motion.div>
-    );
-  }
-
-  return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mb-12">
-      <GlassCard className="p-6 border-slate-700/50 bg-slate-900/30">
-        <h3 className="text-lg font-heading font-semibold text-white mb-2">Was this helpful?</h3>
-        <p className="text-sm text-slate-400 mb-4">Your feedback helps us improve the assessment experience.</p>
-        <Textarea
-          placeholder="Tell us what you think about your results..."
-          value={feedback}
-          onChange={(e) => setFeedback(e.target.value)}
-          className="bg-slate-900/50 border-slate-700/50 text-white mb-4"
-          data-testid="textarea-feedback"
-        />
-        <Button
-          onClick={handleSubmit}
-          disabled={isSubmitting || !feedback.trim()}
-          className="bg-cyan-500 hover:bg-cyan-400 text-black"
-          data-testid="button-submit-feedback"
-        >
-          {isSubmitting ? "Sending..." : "Send Feedback"}
-          <Send size={14} className="ml-2" />
-        </Button>
-      </GlassCard>
-    </motion.div>
-  );
-}

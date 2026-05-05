@@ -187,7 +187,30 @@ export async function registerRoutes(
 
   // Assessment submission endpoint
   app.post("/api/assessment/submit", async (req, res) => {
-    // Step 1: validate schema — hard failure, must return 400 if this fails.
+    // Step 1: verify Turnstile token
+    const turnstileToken = req.body.turnstileToken;
+    const turnstileSecret = process.env.CLOUDFLARE_TURNSTILE_SECRET;
+    if (turnstileSecret) {
+      if (!turnstileToken) {
+        return res.status(400).json({ error: "Human verification required" });
+      }
+      try {
+        const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ secret: turnstileSecret, response: turnstileToken }),
+        });
+        const verifyData = await verifyRes.json() as { success: boolean };
+        if (!verifyData.success) {
+          return res.status(403).json({ error: "Human verification failed" });
+        }
+      } catch (err) {
+        console.error("Turnstile verification error:", err);
+        // Fail open — don't block submission if Cloudflare is unreachable
+      }
+    }
+
+    // Step 2: validate schema — hard failure, must return 400 if this fails.
     let data: ReturnType<typeof AssessmentSubmitSchema.parse>;
     try {
       data = AssessmentSubmitSchema.parse(req.body);
@@ -196,7 +219,7 @@ export async function registerRoutes(
       return res.status(400).json({ error: "Invalid assessment data" });
     }
 
-    // Step 2: calculate results (pure function, never throws unless data is corrupted)
+    // Step 3: calculate results (pure function, never throws unless data is corrupted)
     const result = calculateResults(data.assessmentData);
     const overallScore = result.overallScore;
     const revenueLeakLow = Math.round(result.totalMonthlyGap * 0.8);
