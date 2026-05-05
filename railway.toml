@@ -1,0 +1,7 @@
+[build]
+
+[deploy]
+startCommand = "npm run start"
+
+[variables]
+RAILPACK_INSTALL_CMD = "npm install"
