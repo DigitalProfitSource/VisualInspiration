@@ -114,7 +114,7 @@ export interface AssessmentResult {
   annualizedGap: number;
   gapBreakdown: GapBreakdown;
 
-  recommendedTier: 'Blueprint' | 'Growth Architecture' | 'Operating System';
+  recommendedTier: 'Foundation' | 'Growth Architecture' | 'Operating System';
   tierReason: string;
   adSpend: number;
   monthlySalesVolume: number;
@@ -966,7 +966,7 @@ function recommendTier(
   complexity: string,
   adSpend: number,
   aiAwarenessScore: number = 0
-): { tier: 'Blueprint' | 'Growth Architecture' | 'Operating System'; reason: string } {
+): { tier: 'Foundation' | 'Growth Architecture' | 'Operating System'; reason: string } {
   const lowestScore = Math.min(captureScore, convertScore, compoundScore);
   const overallScore = Math.round((captureScore + convertScore + compoundScore) / 3);
   let lowestPillar = "Capture";
@@ -1018,8 +1018,8 @@ function recommendTier(
   }
 
   return {
-    tier: 'Blueprint',
-    reason: `Your Capture score (${captureScore}/100) is your biggest opportunity. Blueprint installs the 24/7 AI Front Door — instant response, AI qualification, and 24/7 availability so no lead goes unanswered.`
+    tier: 'Foundation',
+    reason: `Your Capture score (${captureScore}/100) is your biggest opportunity. Foundation installs the 24/7 AI Front Door — instant response, AI qualification, and 24/7 availability so no lead goes unanswered.`
   };
 }
 

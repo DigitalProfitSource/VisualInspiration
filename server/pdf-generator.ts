@@ -668,7 +668,7 @@ export async function generateAssessmentPDF(data: PDFGeneratorData): Promise<Buf
 
     const tiers = [
       {
-        name: "Blueprint",
+        name: "Foundation",
         focus: "Capture pillar — the 24/7 AI Front Door (speed-to-lead, missed-call recovery, AI voice)",
         ideal: "Lead capture and response speed are your primary friction point",
       },

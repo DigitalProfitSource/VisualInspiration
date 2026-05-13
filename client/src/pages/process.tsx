@@ -136,7 +136,7 @@ const phases: Phase[] = [
 ];
 
 const tierCards = [
-  { icon: Brain, name: "Blueprint", tier: "Capture — 24/7 AI Front Door", desc: "Chatbot, Voice, SMS — every lead answered in <60s" },
+  { icon: Brain, name: "Foundation", tier: "Capture — 24/7 AI Front Door", desc: "Chatbot, Voice, SMS — every lead answered in <60s" },
   { icon: Cpu, name: "Growth Architecture", tier: "Capture + Convert + Compound", desc: "Recovery, Triage, 90-Day Nurture, Reviews — pipeline on autopilot" },
   { icon: Globe, name: "Operating System", tier: "Complete Sequential Revenue™ Loop", desc: "AI Search Visibility, DBR Campaign, Full Reputation Engine" },
 ];
@@ -182,7 +182,7 @@ const faqs = [
   },
   {
     question: "What if I\u2019m not ready for a full build?",
-    answer: "Start with Blueprint at $150/mo — it covers the capture essentials (chatbot, voice, SMS). You can upgrade to Growth Architecture or Operating System anytime."
+    answer: "Start with Foundation at $297/mo — it covers the capture essentials (chatbot, voice, SMS). You can upgrade to Growth Architecture or Operating System anytime."
   },
   {
     question: "How do you measure success?",

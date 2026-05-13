@@ -674,7 +674,7 @@ export default function Results() {
   ];
 
   const growthFeatures = [
-    "Everything in Blueprint, plus:",
+    "Everything in Foundation, plus:",
     "Proactive Quote / No-Show Recovery workflows",
     "Smart Lead Triage & AI Qualification",
     "90-Day Lead Nurture Sequences",
@@ -1604,11 +1604,11 @@ export default function Results() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <TierCard
-              tier="Blueprint"
+              tier="Foundation"
               description="Stop the bleed. We install the 24/7 AI Front Door — every inquiry answered in under 60 seconds, every missed call recovered, every channel consolidated into one inbox."
               features={blueprintFeatures}
-              isRecommended={result.recommendedTier === 'Blueprint'}
-              reason={result.recommendedTier === 'Blueprint' ? result.tierReason : undefined}
+              isRecommended={result.recommendedTier === 'Foundation'}
+              reason={result.recommendedTier === 'Foundation' ? result.tierReason : undefined}
             />
             <TierCard
               tier="Growth Architecture"
