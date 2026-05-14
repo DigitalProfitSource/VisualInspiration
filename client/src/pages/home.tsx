@@ -478,7 +478,7 @@ export default function Home() {
               className="order-1 lg:order-2"
             >
               <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-capture">Never miss a dollar.</h3>
-              <p className="text-primary font-medium mb-4">Never miss a dollar.</p>
+              <p className="text-primary font-medium mb-4">The Always-On AI-Presence</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 Your marketing works, but your capture system is leaking. Leads reach out through your website, Google, text, and social — and get silence. By the time you reply, they've hired your competitor. We install an always-on AI layer that responds in under 60 seconds, qualifies intent, and books the appointment — 24/7, without adding staff.
               </p>
@@ -519,7 +519,7 @@ export default function Home() {
               className="order-2 lg:order-1"
             >
               <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-convert">Squeeze every dollar from your pipeline.</h3>
-              <p className="text-primary font-medium mb-4">Squeeze every dollar from your pipeline.</p>
+              <p className="text-primary font-medium mb-4">The 24/7 AI-Sales Rep</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 You send a quote, follow up once, and forget about it. No-shows ghost you. Old estimates expire. Thousands of dollars rot in your CRM — leads you already paid to acquire. We deploy relentless, intelligent automation that chases every opportunity until it closes, declines, or books — and knows exactly when to hand off to your team.
               </p>
@@ -606,7 +606,7 @@ export default function Home() {
               className="order-1 lg:order-2"
             >
               <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-compound">Turn past customers into future revenue.</h3>
-              <p className="text-primary font-medium mb-4">Turn past customers into future revenue.</p>
+              <p className="text-primary font-medium mb-4">The Compounding Engine</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 You do great work, but you're ignoring the most profitable asset you already own — your existing customers and past leads. We install automated review collection that drives 5-star ratings at the perfect moment, intercept negative feedback before it goes public, and run database reactivation campaigns that turn dormant contacts into immediate cash — with zero additional ad spend.
               </p>
