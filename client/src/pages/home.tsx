@@ -634,6 +634,88 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* Revenue Friction Analysis */}
+      <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
+            <motion.div
+              initial={fadeInUpViewport.initial}
+              whileInView={fadeInUpViewport.whileInView}
+              viewport={fadeInUpViewport.viewport}
+              transition={fadeInUpViewport.transition}
+              className="max-w-2xl"
+            >
+              <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
+                CHECK YOUR BLINDSPOTS
+              </div>
+              <h2 className="text-4xl md:text-6xl font-medium mb-6 tracking-tight">The Sequential Revenue™ Friction Analysis</h2>
+              <p className="text-xl text-white font-medium mb-4 leading-relaxed">
+                See exactly how much revenue is quietly leaking from your business every month — and which fix will get it back fastest.
+              </p>
+              <p className="text-base text-muted-foreground mb-6 leading-relaxed">
+                In just <span className="text-white font-semibold">under 90 seconds</span>, our free analysis will show you:
+              </p>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Your personalized <span className="text-white font-medium">Business Health Score</span> (out of 100)</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Your exact <span className="text-white font-medium">monthly revenue gap</span> (with conservative projections)</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Which pillar — Capture, Convert, or Compound — is costing you the most</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>A clear recommendation on whether <span className="text-white font-medium">Foundation</span>, <span className="text-white font-medium">Growth Architecture</span>, or <span className="text-white font-medium">Operating System</span> is the best starting point for you</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Your custom 30-day action plan + Found Money DBR potential</span>
+                </li>
+              </ul>
+              <p className="text-sm text-muted-foreground mb-8">
+                <span className="text-white font-medium">Over 340 business owners</span> have run this analysis in the last 30 days.
+              </p>
+              <Link
+                href="/assessment"
+                data-testid="button-assessment-cta"
+                className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
+              >
+                Get My Free Friction Analysis →
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="w-full max-w-md relative"
+            >
+               {/* Video glow effect */}
+               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-2xl blur-lg opacity-50" />
+               <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                 <video
+                   autoPlay
+                   muted
+                   loop
+                   playsInline
+                   className="w-full h-auto"
+                 >
+                   <source src="/videos/ReportAnalysisVid-optimized.mp4" type="video/mp4" />
+                   Your browser does not support the video tag.
+                 </video>
+               </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
       {/* Bento Grid — "We Align Your Entire Customer Journey" */}
       <BentoGridSection />
       {/* Industry Results Carousel */}
@@ -818,88 +900,6 @@ export default function Home() {
             </div>
             <p className="text-sm text-muted-foreground mt-4">See where your revenue is leaking — in 15 minutes.</p>
           </motion.div>
-        </div>
-      </section>
-      {/* Revenue Friction Analysis */}
-      <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
-            <motion.div 
-              initial={fadeInUpViewport.initial}
-              whileInView={fadeInUpViewport.whileInView}
-              viewport={fadeInUpViewport.viewport}
-              transition={fadeInUpViewport.transition}
-              className="max-w-2xl"
-            >
-              <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
-                CHECK YOUR BLINDSPOTS
-              </div>
-              <h2 className="text-4xl md:text-6xl font-medium mb-6 tracking-tight">The Sequential Revenue™ Friction Analysis</h2>
-              <p className="text-xl text-white font-medium mb-4 leading-relaxed">
-                See exactly how much revenue is quietly leaking from your business every month — and which fix will get it back fastest.
-              </p>
-              <p className="text-base text-muted-foreground mb-6 leading-relaxed">
-                In just <span className="text-white font-semibold">under 90 seconds</span>, our free analysis will show you:
-              </p>
-              <ul className="space-y-3 mb-6">
-                <li className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Your personalized <span className="text-white font-medium">Business Health Score</span> (out of 100)</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Your exact <span className="text-white font-medium">monthly revenue gap</span> (with conservative projections)</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Which pillar — Capture, Convert, or Compound — is costing you the most</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>A clear recommendation on whether <span className="text-white font-medium">Foundation</span>, <span className="text-white font-medium">Growth Architecture</span>, or <span className="text-white font-medium">Operating System</span> is the best starting point for you</span>
-                </li>
-                <li className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Your custom 30-day action plan + Found Money DBR potential</span>
-                </li>
-              </ul>
-              <p className="text-sm text-muted-foreground mb-8">
-                <span className="text-white font-medium">Over 340 business owners</span> have run this analysis in the last 30 days.
-              </p>
-              <Link
-                href="/assessment"
-                data-testid="button-assessment-cta"
-                className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
-              >
-                Get My Free Friction Analysis →
-              </Link>
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="w-full max-w-md relative"
-            >
-               {/* Video glow effect */}
-               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-2xl blur-lg opacity-50" />
-               <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-                 <video
-                   autoPlay
-                   muted
-                   loop
-                   playsInline
-                   className="w-full h-auto"
-                 >
-                   <source src="/videos/ReportAnalysisVid-optimized.mp4" type="video/mp4" />
-                   Your browser does not support the video tag.
-                 </video>
-               </div>
-            </motion.div>
-          </div>
         </div>
       </section>
       {/* FAQ Section */}
