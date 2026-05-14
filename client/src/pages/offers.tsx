@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { Check, Zap } from "lucide-react";
+import { Check, Zap, CheckCircle, FileText, Activity, TrendingUp, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { CircuitBeams } from "@/components/ui/circuit-beams";
@@ -610,6 +610,142 @@ function SetupTimelineSection() {
   );
 }
 
+function FrictionAnalysisSection() {
+  return (
+    <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
+
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Section heading */}
+        <motion.div
+          initial={fadeInUpViewport.initial}
+          whileInView={fadeInUpViewport.whileInView}
+          viewport={fadeInUpViewport.viewport}
+          transition={fadeInUpViewport.transition}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-display font-medium">
+            Not Sure Which Tier Is Right For You?
+          </h2>
+        </motion.div>
+
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
+          {/* Left column — copy */}
+          <motion.div
+            initial={fadeInUpViewport.initial}
+            whileInView={fadeInUpViewport.whileInView}
+            viewport={fadeInUpViewport.viewport}
+            transition={fadeInUpViewport.transition}
+            className="max-w-2xl"
+          >
+            <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
+              CHECK YOUR BLINDSPOTS
+            </div>
+            <h3 className="text-4xl md:text-5xl font-medium mb-6 tracking-tight">The Sequential Revenue™ Friction Analysis</h3>
+            <p className="text-xl text-white font-medium mb-4 leading-relaxed">
+              See exactly how much revenue is quietly leaking from your business every month — and which fix will get it back fastest.
+            </p>
+            <p className="text-base text-muted-foreground mb-6 leading-relaxed">
+              In just <span className="text-white font-semibold">under 90 seconds</span>, our free analysis will show you:
+            </p>
+            <ul className="space-y-3 mb-6">
+              <li className="flex items-start gap-3 text-slate-300">
+                <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                <span>Your personalized <span className="text-white font-medium">Business Health Score</span> (out of 100)</span>
+              </li>
+              <li className="flex items-start gap-3 text-slate-300">
+                <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                <span>Your exact <span className="text-white font-medium">monthly revenue gap</span> (with conservative projections)</span>
+              </li>
+              <li className="flex items-start gap-3 text-slate-300">
+                <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                <span>Which pillar — Capture, Convert, or Compound — is costing you the most</span>
+              </li>
+              <li className="flex items-start gap-3 text-slate-300">
+                <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                <span>A clear recommendation on whether <span className="text-white font-medium">Foundation</span>, <span className="text-white font-medium">Growth Architecture</span>, or <span className="text-white font-medium">Operating System</span> is the best starting point for you</span>
+              </li>
+              <li className="flex items-start gap-3 text-slate-300">
+                <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                <span>Your custom 30-day action plan + Found Money DBR potential</span>
+              </li>
+            </ul>
+            <p className="text-sm text-muted-foreground mb-8">
+              <span className="text-white font-medium">Over 340 business owners</span> have run this analysis in the last 30 days.
+            </p>
+            <Link
+              href="/assessment"
+              data-testid="button-offers-friction-analysis-cta"
+              className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
+            >
+              Get My Free Friction Analysis →
+            </Link>
+          </motion.div>
+
+          {/* Right column — mockup card placeholder */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="w-full max-w-md relative"
+          >
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-2xl blur-lg opacity-50" />
+            <div className="relative bg-zinc-900 p-8 rounded-2xl border border-white/10 shadow-2xl">
+              {/* Header */}
+              <div className="flex items-center gap-2 mb-6">
+                <span className="text-xs font-mono text-zinc-400 tracking-wider">SEQUENTIAL REVENUE™ ANALYSIS</span>
+                <FileText className="w-4 h-4 text-primary" />
+              </div>
+
+              {/* Pillar scores */}
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-zinc-400">Capture</span>
+                  <span className="text-xs font-mono text-white">72/100</span>
+                </div>
+                <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/70 rounded-full" style={{width: '72%'}} /></div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-zinc-400">Convert</span>
+                  <span className="text-xs font-mono text-white">58/100</span>
+                </div>
+                <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/50 rounded-full" style={{width: '58%'}} /></div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-zinc-400">Compound</span>
+                  <span className="text-xs font-mono text-white">41/100</span>
+                </div>
+                <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/30 rounded-full" style={{width: '41%'}} /></div>
+              </div>
+
+              {/* Sequential Revenue Score */}
+              <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Activity className="w-4 h-4 text-primary" />
+                  <span className="text-xs text-zinc-400">Sequential Revenue™ Score</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-4xl font-mono font-bold text-white">59</span>
+                  <span className="text-2xl font-mono text-zinc-600">/100</span>
+                  <TrendingUp className="w-5 h-5 text-primary ml-auto" />
+                </div>
+              </div>
+
+              {/* Blindspots count */}
+              <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  <span className="text-xs text-zinc-400">Blindspots Identified</span>
+                </div>
+                <div className="text-3xl font-mono font-bold text-white">4</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FinalCTASection() {
   return (
     <section className="py-24 relative overflow-hidden">
@@ -704,6 +840,8 @@ export default function Offers() {
       <ComparePlansSection />
 
       <SetupTimelineSection />
+
+      <FrictionAnalysisSection />
 
       <FinalCTASection />
 

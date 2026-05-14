@@ -836,31 +836,44 @@ export default function Home() {
               <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
                 CHECK YOUR BLINDSPOTS
               </div>
-              <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight">The Sequential Revenue™ Friction Analysis</h2>
-              <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
-                Revenue doesn't stall because you're not working hard enough — it stalls because of invisible flow problems. Leads go cold before you respond. Quotes disappear into silence. Past customers never come back. This analysis maps friction across your three revenue pillars — <span className="text-white font-medium">Capture, Convert, and Compound</span> — and shows you exactly where the drag is.
+              <h2 className="text-4xl md:text-6xl font-medium mb-6 tracking-tight">The Sequential Revenue™ Friction Analysis</h2>
+              <p className="text-xl text-white font-medium mb-4 leading-relaxed">
+                See exactly how much revenue is quietly leaking from your business every month — and which fix will get it back fastest.
               </p>
-              <ul className="space-y-3 mb-8">
+              <p className="text-base text-muted-foreground mb-6 leading-relaxed">
+                In just <span className="text-white font-semibold">under 90 seconds</span>, our free analysis will show you:
+              </p>
+              <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-3 text-slate-300">
                   <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Your Sequential Revenue™ Score across all three pillars</span>
+                  <span>Your personalized <span className="text-white font-medium">Business Health Score</span> (out of 100)</span>
                 </li>
                 <li className="flex items-start gap-3 text-slate-300">
                   <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Prioritized blindspots showing where deals are slowing down</span>
+                  <span>Your exact <span className="text-white font-medium">monthly revenue gap</span> (with conservative projections)</span>
                 </li>
                 <li className="flex items-start gap-3 text-slate-300">
                   <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>A next-30-day action plan you can start implementing today</span>
+                  <span>Which pillar — Capture, Convert, or Compound — is costing you the most</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>A clear recommendation on whether <span className="text-white font-medium">Foundation</span>, <span className="text-white font-medium">Growth Architecture</span>, or <span className="text-white font-medium">Operating System</span> is the best starting point for you</span>
+                </li>
+                <li className="flex items-start gap-3 text-slate-300">
+                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Your custom 30-day action plan + Found Money DBR potential</span>
                 </li>
               </ul>
-              <Link 
+              <p className="text-sm text-muted-foreground mb-8">
+                <span className="text-white font-medium">Over 340 business owners</span> have run this analysis in the last 30 days.
+              </p>
+              <Link
                 href="/assessment"
                 data-testid="button-assessment-cta"
-                className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] group transition-colors"
+                className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
               >
-                Get My 30-Day Plan
-                <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                Get My Free Friction Analysis →
               </Link>
             </motion.div>
             
