@@ -884,55 +884,19 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="w-full max-w-md relative"
             >
-               {/* Mockup Effect */}
+               {/* Video glow effect */}
                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-2xl blur-lg opacity-50" />
-               <div className="relative bg-zinc-900 p-8 rounded-2xl border border-white/10 shadow-2xl">
-                  {/* Header */}
-                  <div className="flex items-center gap-2 mb-6">
-                    <span className="text-xs font-mono text-zinc-400 tracking-wider">SEQUENTIAL REVENUE™ ANALYSIS</span>
-                    <FileText className="w-4 h-4 text-primary" />
-                  </div>
-                  
-                  {/* Pillar scores */}
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-zinc-400">Capture</span>
-                      <span className="text-xs font-mono text-white">72/100</span>
-                    </div>
-                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/70 rounded-full" style={{width: '72%'}} /></div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-zinc-400">Convert</span>
-                      <span className="text-xs font-mono text-white">58/100</span>
-                    </div>
-                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/50 rounded-full" style={{width: '58%'}} /></div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-zinc-400">Compound</span>
-                      <span className="text-xs font-mono text-white">41/100</span>
-                    </div>
-                    <div className="h-1.5 bg-zinc-800 rounded-full overflow-hidden"><div className="h-full bg-cyan-400/30 rounded-full" style={{width: '41%'}} /></div>
-                  </div>
-                  
-                  {/* Sequential Revenue Score */}
-                  <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5 mb-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Activity className="w-4 h-4 text-primary" />
-                      <span className="text-xs text-zinc-400">Sequential Revenue™ Score</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-4xl font-mono font-bold text-white">59</span>
-                      <span className="text-2xl font-mono text-zinc-600">/100</span>
-                      <TrendingUp className="w-5 h-5 text-primary ml-auto" />
-                    </div>
-                  </div>
-                  
-                  {/* Blindspots count */}
-                  <div className="p-4 rounded-lg bg-zinc-800/50 border border-white/5">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Sparkles className="w-4 h-4 text-primary" />
-                      <span className="text-xs text-zinc-400">Blindspots Identified</span>
-                    </div>
-                    <div className="text-3xl font-mono font-bold text-white">4</div>
-                  </div>
+               <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                 <video
+                   autoPlay
+                   muted
+                   loop
+                   playsInline
+                   className="w-full h-auto"
+                 >
+                   <source src="/videos/ReportAnalysisVid-optimized.mp4" type="video/mp4" />
+                   Your browser does not support the video tag.
+                 </video>
                </div>
             </motion.div>
           </div>
