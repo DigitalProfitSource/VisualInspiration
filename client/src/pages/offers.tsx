@@ -48,7 +48,7 @@ const pricingTiers: PricingTier[] = [
     ],
     goal: "Ensure every inquiry is answered in <60 seconds, 24/7. Stop leaking leads to competitors while your team sleeps or is on the job.",
     infrastructureFooter: "INCLUDES: 250 AI Voice Minutes/mo • Instant SMS Text-Back • Omnichannel Intake",
-    ctaText: "Apply Now",
+    ctaText: "Discuss Fit & Investment",
     ctaSource: "foundation"
   },
   {
@@ -66,7 +66,7 @@ const pricingTiers: PricingTier[] = [
     ],
     goal: "Automatically chase and recover stuck revenue hiding in your pipeline. Quotes that went cold, no-shows that never rebooked, leads that went silent.",
     infrastructureFooter: "INCLUDES: 500 AI Voice Minutes/mo • Smart Triage • 90-Day Nurture • Review Automation",
-    ctaText: "Apply Now",
+    ctaText: "Discuss Fit & Investment",
     ctaSource: "growth-architecture",
     isPopular: true
   },
@@ -85,7 +85,7 @@ const pricingTiers: PricingTier[] = [
     ],
     goal: "Complete the Sequential Revenue™ loop. Every lead captured, every dollar maximized, every customer compounding your growth — whether you're there or not.",
     infrastructureFooter: "INCLUDES: 750 AI Voice Minutes/mo • AI Search Visibility • DBR Campaign • Full Reputation Engine",
-    ctaText: "Apply Now",
+    ctaText: "Discuss Fit & Investment",
     ctaSource: "operating-system"
   }
 ];
@@ -183,7 +183,7 @@ function PricingGridSection() {
               )}
             </AnimatePresence>
 
-            <Link href="/book">
+            <Link href="/book?tier=foundation">
               <Button
                 data-testid="button-offers-ai-brain"
                 className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 h-12 rounded-lg font-medium transition-all group-hover:border-primary/30"
@@ -260,7 +260,7 @@ function PricingGridSection() {
                 )}
               </AnimatePresence>
 
-              <Link href="/book">
+              <Link href="/book?tier=growth-architecture">
                 <Button
                   data-testid="button-offers-ai-system"
                   className="w-full bg-primary text-primary-foreground hover:bg-cyan-300 h-12 rounded-lg font-medium shadow-[0_0_20px_-5px_var(--color-primary)] transition-all"
@@ -302,7 +302,7 @@ function PricingGridSection() {
                   <div className="text-sm text-slate-500">One-time setup: {infra.buildFee}</div>
                 </div>
 
-                <Link href="/book">
+                <Link href="/book?tier=operating-system">
                   <Button
                     data-testid="button-offers-ai-infrastructure"
                     className="bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-primary/30 h-14 px-8 rounded-lg font-medium text-base transition-all"
