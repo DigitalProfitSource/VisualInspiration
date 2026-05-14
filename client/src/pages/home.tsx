@@ -477,7 +477,7 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-1 lg:order-2"
             >
-              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-capture">The 24/7 AI-Presence</h3>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-capture">Never miss a dollar.</h3>
               <p className="text-primary font-medium mb-4">Never miss a dollar.</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 Your marketing works, but your capture system is leaking. Leads reach out through your website, Google, text, and social — and get silence. By the time you reply, they've hired your competitor. We install an always-on AI layer that responds in under 60 seconds, qualifies intent, and books the appointment — 24/7, without adding staff.
@@ -518,7 +518,7 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-2 lg:order-1"
             >
-              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-convert">The 24/7 AI-Sales Rep</h3>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-convert">Squeeze every dollar from your pipeline.</h3>
               <p className="text-primary font-medium mb-4">Squeeze every dollar from your pipeline.</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 You send a quote, follow up once, and forget about it. No-shows ghost you. Old estimates expire. Thousands of dollars rot in your CRM — leads you already paid to acquire. We deploy relentless, intelligent automation that chases every opportunity until it closes, declines, or books — and knows exactly when to hand off to your team.
@@ -605,7 +605,7 @@ export default function Home() {
               transition={{ duration: 0.7 }}
               className="order-1 lg:order-2"
             >
-              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-compound">The Compounding Engine</h3>
+              <h3 className="text-2xl md:text-3xl font-display font-medium text-white mb-2" data-testid="text-pillar-compound">Turn past customers into future revenue.</h3>
               <p className="text-primary font-medium mb-4">Turn past customers into future revenue.</p>
               <p className="text-slate-400 leading-relaxed mb-8 max-w-lg">
                 You do great work, but you're ignoring the most profitable asset you already own — your existing customers and past leads. We install automated review collection that drives 5-star ratings at the perfect moment, intercept negative feedback before it goes public, and run database reactivation campaigns that turn dormant contacts into immediate cash — with zero additional ad spend.
@@ -634,6 +634,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* Bento Grid — "We Align Your Entire Customer Journey" */}
+      <BentoGridSection />
       {/* Revenue Friction Analysis */}
       <section className="py-32 bg-white/[0.02] border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none" />
@@ -716,8 +718,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* Bento Grid — "We Align Your Entire Customer Journey" */}
-      <BentoGridSection />
       {/* Industry Results Carousel */}
       <IndustryCarousel />
       {/* "Found Money" Guarantee */}
