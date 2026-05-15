@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "wouter";
-import { Activity, Layers, Zap, Brain, ShieldCheck, Shield, LayoutTemplate, ChevronDown, Quote, RefreshCw, TrendingUp, FileText, Globe, ChevronRight, ArrowUpRight, Sparkles, Star, CheckCircle } from "lucide-react";
+import { Activity, Layers, Zap, Brain, ShieldCheck, Shield, LayoutTemplate, ChevronDown, Quote, RefreshCw, TrendingUp, FileText, Globe, ChevronRight, ArrowUpRight, Sparkles, Star, CheckCircle, Lock, Users } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -652,13 +652,35 @@ export default function Home() {
               <div className="inline-block px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-8 tracking-wide">
                 CHECK YOUR BLINDSPOTS
               </div>
-              <h2 className="text-4xl md:text-6xl font-medium mb-6 tracking-tight">The Sequential Revenue™ Friction Analysis</h2>
-              <p className="text-xl text-white font-medium mb-4 leading-relaxed">
-                See exactly how much revenue is quietly leaking from your business every month — and which fix will get it back fastest.
+              <h2 className="text-4xl md:text-6xl font-medium mb-6 tracking-tight">
+                Find the <span className="text-primary">Friction</span> Slowing Your Growth
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                Discover exactly where revenue friction is limiting your business growth — and which fix delivers the fastest recovery.
               </p>
-              <p className="text-base text-muted-foreground mb-6 leading-relaxed">
-                In just <span className="text-white font-semibold">under 90 seconds</span>, our free analysis will show you:
-              </p>
+
+              {/* Social proof block */}
+              <div className="grid grid-cols-2 gap-4 mb-8 p-4 rounded-xl bg-white/[0.03] border border-white/10">
+                <div className="flex items-start gap-3">
+                  <TrendingUp className="w-7 h-7 text-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-xs text-slate-400">Most businesses identify</p>
+                    <p className="text-2xl font-bold text-white leading-tight">5–15%</p>
+                    <p className="text-xs text-slate-400">growth inefficiency.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 border-l border-white/10 pl-4">
+                  <div>
+                    <div className="flex gap-0.5 mb-1.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-primary text-primary" />
+                      ))}
+                    </div>
+                    <p className="text-xs text-slate-400">Trusted by hundreds of business owners nationwide.</p>
+                  </div>
+                </div>
+              </div>
+
               <ul className="space-y-3 mb-6">
                 <li className="flex items-start gap-3 text-slate-300">
                   <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
@@ -670,27 +692,34 @@ export default function Home() {
                 </li>
                 <li className="flex items-start gap-3 text-slate-300">
                   <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Which pillar — Capture, Convert, or Compound — is costing you the most</span>
+                  <span>Which <span className="text-white font-medium">pillar</span> — Capture, Convert, or Compound — is costing you the most</span>
                 </li>
                 <li className="flex items-start gap-3 text-slate-300">
                   <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>A clear recommendation on whether <span className="text-white font-medium">Foundation</span>, <span className="text-white font-medium">Growth Architecture</span>, or <span className="text-white font-medium">Operating System</span> is the best starting point for you</span>
+                  <span>A clear recommendation on your <span className="text-white font-medium">best starting point</span> (<span className="text-white font-medium">Foundation</span>, <span className="text-white font-medium">Growth Architecture</span>, or <span className="text-white font-medium">Operating System</span>)</span>
                 </li>
                 <li className="flex items-start gap-3 text-slate-300">
                   <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>Your custom 30-day action plan + Found Money DBR potential</span>
+                  <span>Your custom <span className="text-white font-medium">30-day action plan</span> + Found Money DBR potential</span>
                 </li>
               </ul>
-              <p className="text-sm text-muted-foreground mb-8">
-                <span className="text-white font-medium">Over 340 business owners</span> have run this analysis in the last 30 days.
+
+              <p className="text-sm text-muted-foreground mb-6 flex items-center gap-2">
+                <Users className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                <span><span className="text-white font-medium">Over 340 business owners</span> have run this analysis in the last 30 days.</span>
               </p>
+
               <Link
                 href="/assessment"
                 data-testid="button-assessment-cta"
                 className="inline-flex items-center justify-center bg-[#1ab1d9] text-primary-foreground hover:bg-cyan-300 rounded-full px-10 h-14 text-lg font-semibold shadow-[0_0_20px_-5px_var(--color-primary)] transition-colors"
               >
-                Get My Free Friction Analysis →
+                Run My Free Analysis →
               </Link>
+              <p className="text-sm text-slate-500 mt-3 flex items-center gap-2">
+                <Lock className="w-3.5 h-3.5 flex-shrink-0" />
+                Free • No obligation • Takes 90 seconds
+              </p>
             </motion.div>
 
             <motion.div
