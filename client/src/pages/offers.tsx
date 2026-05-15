@@ -522,35 +522,43 @@ function ComparePlansSection() {
             </table>
           </div>
 
-          <div className="md:hidden space-y-4">
-            {comparisonRows.map((row, i) => {
-              if (row.isSection) {
+          {/* Mobile: compact table with sticky tier header */}
+          <div className="md:hidden">
+            <div className="sticky top-16 z-20 -mx-6 px-6 py-2.5 bg-zinc-950/95 backdrop-blur-sm border-b border-white/10 grid grid-cols-[2fr_1fr_1fr_1fr] gap-1">
+              <div />
+              <div className="text-center">
+                <p className="text-[10px] font-semibold text-slate-300 leading-tight">Foundation</p>
+                <p className="text-[10px] text-slate-500">$297</p>
+              </div>
+              <div className="text-center rounded-sm py-0.5 bg-primary/[0.08]">
+                <p className="text-[10px] font-semibold text-primary leading-tight">Growth</p>
+                <p className="text-[10px] text-primary/60">$597</p>
+              </div>
+              <div className="text-center">
+                <p className="text-[10px] font-semibold text-slate-400 leading-tight">Op. Sys</p>
+                <p className="text-[10px] text-slate-500">$1,197</p>
+              </div>
+            </div>
+
+            <div>
+              {comparisonRows.map((row, i) => {
+                if (row.isSection) {
+                  return (
+                    <div key={i} className="pt-4 pb-1.5">
+                      <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest border-b border-white/5 pb-1">{row.label}</p>
+                    </div>
+                  );
+                }
                 return (
-                  <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02] mt-6">
-                    <p className="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold text-left">{row.label}</p>
+                  <div key={i} className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-1 py-2 border-b border-white/[0.04] items-start">
+                    <p className="text-[11px] text-slate-400 pr-1 leading-snug">{row.label}</p>
+                    <div className="text-center pt-0.5"><ComparisonCell value={row.brain} /></div>
+                    <div className="text-center pt-0.5 bg-primary/[0.03] rounded-sm"><ComparisonCell value={row.system} isPopular /></div>
+                    <div className="text-center pt-0.5"><ComparisonCell value={row.infrastructure} /></div>
                   </div>
                 );
-              }
-              return (
-                <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
-                  <p className="text-sm text-slate-300 font-medium mb-4 text-left">{row.label}</p>
-                  <div className="grid grid-cols-3 gap-2 text-center">
-                    <div>
-                      <p className="text-[10px] text-slate-500 mb-1">Foundation</p>
-                      <ComparisonCell value={row.brain} />
-                    </div>
-                    <div className="bg-primary/[0.03] rounded-lg py-1 px-1">
-                      <p className="text-[10px] text-primary mb-1">Growth Arch.</p>
-                      <ComparisonCell value={row.system} isPopular />
-                    </div>
-                    <div>
-                      <p className="text-[10px] text-slate-500 mb-1">Op. System</p>
-                      <ComparisonCell value={row.infrastructure} />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+              })}
+            </div>
           </div>
         </motion.div>
       </div>
@@ -568,7 +576,7 @@ function SetupTimelineSection() {
   ];
 
   return (
-    <section className="py-24 border-t border-white/5">
+    <section className="hidden md:block py-24 border-t border-white/5">
       <div className="container mx-auto px-6 max-w-4xl">
         <motion.div
           initial={fadeInUpViewport.initial}
