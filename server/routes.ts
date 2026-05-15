@@ -23,6 +23,7 @@ interface GHLWebhookData {
   submittedAt: Date;
   rawAssessmentData?: Record<string, unknown>;
   leadId?: string | null;
+  ref?: string;
 }
 
 async function sendToGHL(data: GHLWebhookData) {
@@ -131,6 +132,7 @@ async function sendToGHL(data: GHLWebhookData) {
       assessment_pdf_base64: pdfBase64,
       results_url: data.leadId ? `${process.env.APP_BASE_URL || "https://simplesequence.ai"}/results?id=${data.leadId}` : "",
       pdf_url: data.leadId ? `${process.env.APP_BASE_URL || "https://simplesequence.ai"}/api/assessment/${data.leadId}/pdf` : "",
+      lead_source_ref: data.ref || "",
     };
 
     const response = await fetch(webhookUrl, {
@@ -189,6 +191,7 @@ export async function registerRoutes(
   app.post("/api/assessment/submit", async (req, res) => {
     // Step 1: validate schema — hard failure, must return 400 if this fails.
     let data: ReturnType<typeof AssessmentSubmitSchema.parse>;
+    const ref = typeof req.body?.ref === "string" ? req.body.ref.slice(0, 50) : undefined;
     try {
       data = AssessmentSubmitSchema.parse(req.body);
     } catch (err) {
@@ -241,6 +244,7 @@ export async function registerRoutes(
       submittedAt: new Date(),
       rawAssessmentData: data.assessmentData as unknown as Record<string, unknown>,
       leadId,
+      ref,
     }).catch(err => console.error("GHL webhook error:", err));
 
     // Always succeed — the results page is computed client-side so it doesn't

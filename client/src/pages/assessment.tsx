@@ -85,6 +85,7 @@ export default function Assessment() {
   const [submittedLeadId, setSubmittedLeadId] = useState('');
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [, setLocation] = useLocation();
+  const refParam = React.useRef(new URLSearchParams(window.location.search).get("ref") || "");
 
   const {
     register,
@@ -281,6 +282,7 @@ export default function Assessment() {
             contactLastName: data.contact_last_name,
             contactEmail: data.contact_email,
             contactPhone: data.contact_phone || '',
+            ref: refParam.current || undefined,
           }),
         });
         
