@@ -688,10 +688,12 @@ function FrictionAnalysisSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="w-full max-w-md relative"
+            className="w-full max-w-lg relative"
           >
-            {/* Video glow effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-cyan-500/20 rounded-2xl blur-lg opacity-50" />
+            {/* Outer diffuse backlight */}
+            <div className="absolute -inset-6 bg-gradient-to-r from-primary/25 to-cyan-500/15 rounded-3xl blur-3xl opacity-40" />
+            {/* Inner rim glow */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/50 to-cyan-500/40 rounded-2xl blur-md opacity-60" />
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
               <video
                 autoPlay
