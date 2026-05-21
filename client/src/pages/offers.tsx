@@ -37,8 +37,8 @@ const pricingTiers: PricingTier[] = [
     name: "Foundation",
     hook: "Stop the Bleed.",
     descriptor: "24/7 AI Front Door — Capture Essentials",
-    buildFee: "$997",
-    monthlyFee: "$297/mo",
+    buildFee: "",
+    monthlyFee: "",
     expandedBullets: [
       { title: "Stop losing jobs to slow response", description: "every inbound lead gets an immediate reply before they dial your competitor" },
       { title: "You get your time back", description: "the system handles intake, booking, and follow-up while you're on the job" },
@@ -56,8 +56,8 @@ const pricingTiers: PricingTier[] = [
     name: "Growth Architecture",
     hook: "The Invisible Sales Rep.",
     descriptor: "Capture + Convert + Compound",
-    buildFee: "$1,997",
-    monthlyFee: "$597/mo",
+    buildFee: "",
+    monthlyFee: "",
     clarityLine: "Everything in Foundation, PLUS:",
     expandedBullets: [
       { title: "Proactive Quote / No-Show Recovery", description: "AI automatically follows up on unsent quotes and no-show appointments to rebook them." },
@@ -75,8 +75,8 @@ const pricingTiers: PricingTier[] = [
     name: "Operating System",
     hook: "Total Revenue Loop.",
     descriptor: "Complete Sequential Revenue™ Transformation",
-    buildFee: "$3,997",
-    monthlyFee: "$1,197/mo",
+    buildFee: "",
+    monthlyFee: "",
     clarityLine: "Everything in Growth Architecture, PLUS:",
     expandedBullets: [
       { title: "AI Search Visibility", description: "Machine-readable schema injection (JSON-LD) so ChatGPT, Perplexity, and Google AI Overviews recommend your business." },
@@ -141,11 +141,6 @@ function PricingGridSection() {
 
             <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
               <p className="text-slate-300 text-sm">{brain.goal}</p>
-            </div>
-
-            <div className="mb-6">
-              <div className="text-3xl font-display font-bold text-white mb-1">{brain.monthlyFee}</div>
-              <div className="text-sm text-slate-500">One-time setup: {brain.buildFee}</div>
             </div>
 
             <AnimatePresence>
@@ -219,11 +214,6 @@ function PricingGridSection() {
                 <p className="text-slate-300 text-sm">{system.goal}</p>
               </div>
 
-              <div className="mb-6">
-                <div className="text-3xl font-display font-bold text-white mb-1">{system.monthlyFee}</div>
-                <div className="text-sm text-slate-500">One-time setup: {system.buildFee}</div>
-              </div>
-
               <AnimatePresence>
                 {entryCardsHovered && (
                   <motion.div
@@ -295,11 +285,6 @@ function PricingGridSection() {
 
                 <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 mb-6">
                   <p className="text-slate-300 text-sm">{infra.goal}</p>
-                </div>
-
-                <div className="mb-6">
-                  <div className="text-3xl font-display font-bold text-white mb-1">{infra.monthlyFee}</div>
-                  <div className="text-sm text-slate-500">One-time setup: {infra.buildFee}</div>
                 </div>
 
                 <Link href="/book?tier=operating-system">
@@ -382,7 +367,7 @@ interface ComparisonRow {
 }
 
 const comparisonRows: ComparisonRow[] = [
-  { label: "One-Time Setup", brain: "$997", system: "$1,997", infrastructure: "$3,997" },
+  { label: "One-Time Setup", brain: "✅", system: "✅", infrastructure: "✅" },
 
   { label: "CAPTURE", brain: "", system: "", infrastructure: "", isSection: true },
   { label: "24/7 AI Website Chat Agent", brain: "✅ 1 Service Type", system: "✅ Multi-Service", infrastructure: "✅ Advanced + Multi-Service Trained" },
@@ -434,7 +419,7 @@ const comparisonRows: ComparisonRow[] = [
   { label: "MONTHLY USAGE", brain: "", system: "", infrastructure: "", isSection: true },
   { label: "AI Voice Minutes (Inbound Only)", brain: "250/mo", system: "500/mo", infrastructure: "750/mo" },
   { label: "SMS Included", brain: "500/mo", system: "1,500/mo", infrastructure: "3,000/mo" },
-  { label: "Voice Overage", brain: "$0.25/min", system: "$0.25/min", infrastructure: "$0.25/min" },
+  { label: "Voice Overage", brain: "Standard rates", system: "Standard rates", infrastructure: "Standard rates" },
 ];
 
 function ComparisonCell({ value, isPopular = false }: { value: string; isPopular?: boolean }) {
@@ -486,15 +471,12 @@ function ComparePlansSection() {
                   <th className="text-left py-4 pr-6 text-xs font-mono text-slate-500 uppercase tracking-wider w-1/3"></th>
                   <th className="py-4 px-4 text-center w-1/5">
                     <div className="text-sm font-semibold text-white">Foundation</div>
-                    <div className="text-xs text-slate-400 font-normal mt-0.5">$297/mo</div>
                   </th>
                   <th className="py-4 px-4 text-center bg-primary/[0.03] w-1/5">
                     <div className="text-sm font-semibold text-primary">Growth Architecture</div>
-                    <div className="text-xs text-primary/70 font-normal mt-0.5">$597/mo</div>
                   </th>
                   <th className="py-4 px-4 text-center w-1/5">
                     <div className="text-sm font-semibold text-white/80">Operating System</div>
-                    <div className="text-xs text-slate-400 font-normal mt-0.5">$1,197/mo</div>
                   </th>
                 </tr>
               </thead>
@@ -528,15 +510,12 @@ function ComparePlansSection() {
               <div />
               <div className="text-center">
                 <p className="text-[10px] font-semibold text-slate-300 leading-tight">Foundation</p>
-                <p className="text-[10px] text-slate-500">$297</p>
               </div>
               <div className="text-center rounded-sm py-0.5 bg-primary/[0.08]">
                 <p className="text-[10px] font-semibold text-primary leading-tight">Growth</p>
-                <p className="text-[10px] text-primary/60">$597</p>
               </div>
               <div className="text-center">
                 <p className="text-[10px] font-semibold text-slate-400 leading-tight">Op. Sys</p>
-                <p className="text-[10px] text-slate-500">$1,197</p>
               </div>
             </div>
 
