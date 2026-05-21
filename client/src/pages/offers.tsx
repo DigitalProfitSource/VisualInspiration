@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { Check, Zap, CheckCircle, FileText, Activity, TrendingUp, Sparkles, Star, Lock, Users } from "lucide-react";
+import { Check, Zap, CheckCircle, TrendingUp, Star, Lock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { CircuitBeams } from "@/components/ui/circuit-beams";

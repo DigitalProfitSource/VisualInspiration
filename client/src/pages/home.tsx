@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "wouter";
-import { Activity, Layers, Zap, Brain, ShieldCheck, Shield, LayoutTemplate, ChevronDown, Quote, RefreshCw, TrendingUp, FileText, Globe, ChevronRight, ArrowUpRight, Sparkles, Star, CheckCircle, Lock, Users } from "lucide-react";
+import { Zap, Shield, ChevronDown, Quote, RefreshCw, TrendingUp, Globe, Star, CheckCircle, Lock, Users } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
